@@ -35,6 +35,30 @@ namespace PTP_Parser
             return _id.ToString() + _size.ToString() + _data;
         }
 
+        public bool IsType(string type)
+        {
+            if (_id != 0)
+            {
+                return false;
+            }
+            switch (type)
+            {
+                case "available":
+                    {
+                        return true;
+                    }
+                case "unavailable":
+                    {
+                        return true;
+                    }
+                case "start_package":
+                    {
+                        return true;
+                    }
+            }
+            return false;
+        }
+
     }
     internal class PTP
     {
