@@ -73,6 +73,13 @@ namespace PTP_Parser
             return response.ToPackage();
         }
 
+        public static string Start_Package()
+        {
+            string msg = "start_package";
+            PTP_Block response = new PTP_Block(0, msg.Length, msg);
+            return response.ToPackage();
+        }
+
     }
 
 }
