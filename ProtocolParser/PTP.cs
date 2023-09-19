@@ -35,6 +35,30 @@ namespace PTP_Parser
             return _id.ToString() + _size.ToString() + _data;
         }
 
+        public bool IsType(string type)
+        {
+            if (_id != 0)
+            {
+                return false;
+            }
+            switch (type)
+            {
+                case "available":
+                    {
+                        return true;
+                    }
+                case "unavailable":
+                    {
+                        return true;
+                    }
+                case "start_package":
+                    {
+                        return true;
+                    }
+            }
+            return false;
+        }
+
     }
     internal class PTP
     {
@@ -69,6 +93,13 @@ namespace PTP_Parser
         public static string Unavailable_Package()
         {
             string msg = "unavailable";
+            PTP_Block response = new PTP_Block(0, msg.Length, msg);
+            return response.ToPackage();
+        }
+
+        public static string Start_Package()
+        {
+            string msg = "start_package";
             PTP_Block response = new PTP_Block(0, msg.Length, msg);
             return response.ToPackage();
         }
