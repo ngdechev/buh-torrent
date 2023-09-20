@@ -2,7 +2,7 @@
 
 namespace PTP_Parser
 {
-    internal class PTP_Block
+    public class PTP_Block
     {
         private int _id;
         private int _size;
@@ -60,7 +60,7 @@ namespace PTP_Parser
         }
 
     }
-    internal class PTP
+    public static class PTP
     {
         public static PTP_Block Parse_To_Block(NetworkStream networkStream)
         {
