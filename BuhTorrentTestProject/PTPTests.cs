@@ -14,10 +14,10 @@ namespace BuhTorrentTestProject
     public class PTPTests
     {
         [Test]
-        public void ToPackage_ReturnsCorrectString()
+        public void ToPackageReturnsCorrectString()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(1, 5, "hello");
+            PTPBlock block = new PTPBlock(1, 5, "hello");
 
             // Act
             string result = block.ToPackage();
@@ -27,10 +27,10 @@ namespace BuhTorrentTestProject
         }
 
         [Test]
-        public void IsType_ReturnsTrueForAvailable()
+        public void IsTypeReturnsTrueForAvailable()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(0, 10, "available");
+            PTPBlock block = new PTPBlock(0, 10, "available");
 
             // Act
             bool result = block.IsType("available");
@@ -39,43 +39,43 @@ namespace BuhTorrentTestProject
             Assert.IsTrue(result);
         }
         [Test]
-        public void UnavailablePackage_ReturnsCorrectString()
+        public void UnavailablePackageReturnsCorrectString()
         {
             // Act
-            string result = PTP.Unavailable_Package();
+            string result = PTP.UnavailablePackage();
 
             // Assert
             Assert.AreEqual("011unavailable", result);
         }
         [Test]
-        public void AvailablePackage_ReturnsCorrectString()
+        public void AvailablePackageReturnsCorrectString()
         {
             // Act
-            string result = PTP.Available_Package();
+            string result = PTP.AvailablePackage();
 
             // Assert
             Assert.AreEqual("09available", result);
         }
         [Test]
-        public void StartPackage_ReturnsCorrectString()
+        public void StartPackageReturnsCorrectString()
         {
             // Act
-            string result = PTP.Start_Package();
+            string result = PTP.StartPackage();
 
             // Assert
-            Assert.AreEqual("013start_package", result);
+            Assert.AreEqual("013StartPackage", result);
         }
 
         [Test]
-        public void Get_Size_ReturnsCorrectValue()
+        public void GetSizeReturnsCorrectValue()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(1, 5, "hello");
+            PTPBlock block = new PTPBlock(1, 5, "hello");
 
             // Act
-            int size = block.Get_Size();
-            string data = block.Get_Data();
-            int id = block.Get_Id();
+            int size = block.GetSize();
+            string data = block.GetData();
+            int id = block.GetId();
 
             // Assert
             Assert.AreEqual(5, size);
@@ -83,10 +83,10 @@ namespace BuhTorrentTestProject
             Assert.AreEqual(1, id);
         }
         [Test]
-        public void IsType_AvailableType_ReturnsTrue()
+        public void IsTypeAvailableTypeReturnsTrue()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(0, 5, "hello");
+            PTPBlock block = new PTPBlock(0, 5, "hello");
 
             // Act
             bool isAvailable = block.IsType("available");
@@ -96,10 +96,10 @@ namespace BuhTorrentTestProject
         }
 
         [Test]
-        public void IsType_UnavailableType_ReturnsTrue()
+        public void IsTypeUnavailableTypeReturnsTrue()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(0, 5, "hello");
+            PTPBlock block = new PTPBlock(0, 5, "hello");
 
             // Act
             bool isUnavailable = block.IsType("unavailable");
@@ -109,23 +109,23 @@ namespace BuhTorrentTestProject
         }
 
         [Test]
-        public void IsType_StartPackageType_ReturnsTrue()
+        public void IsTypeStartPackageTypeReturnsTrue()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(0, 5, "hello");
+            PTPBlock block = new PTPBlock(0, 5, "hello");
 
             // Act
-            bool isStartPackage = block.IsType("start_package");
+            bool isStartPackage = block.IsType("StartPackage");
 
             // Assert
             Assert.IsTrue(isStartPackage);
         }
 
         [Test]
-        public void IsType_NonMatchingType_ReturnsFalse()
+        public void IsTypeNonMatchingTypeReturnsFalse()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(0, 5, "hello");
+            PTPBlock block = new PTPBlock(0, 5, "hello");
 
             // Act
             bool isNonMatching = block.IsType("non_matching");
@@ -135,10 +135,10 @@ namespace BuhTorrentTestProject
         }
 
         [Test]
-        public void IsType_NonZeroId_ReturnsFalse()
+        public void IsTypeNonZeroIdReturnsFalse()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(1, 5, "hello");
+            PTPBlock block = new PTPBlock(1, 5, "hello");
 
             // Act
             bool isAnyType = block.IsType("available");
@@ -148,13 +148,13 @@ namespace BuhTorrentTestProject
         }
 
         [Test]
-        public void ParseToPackage_ReturnsCorrectPackage()
+        public void ParseToPackageReturnsCorrectPackage()
         {
             // Arrange
-            PTP_Block block = new PTP_Block(1, 5, "hello");
+            PTPBlock block = new PTPBlock(1, 5, "hello");
 
             // Act
-            string result = PTP.Parse_To_Package(block);
+            string result = PTP.ParseToPackage(block);
 
             // Assert
             Assert.AreEqual("15hello", result);

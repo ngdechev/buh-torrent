@@ -2,30 +2,30 @@
 
 namespace PTP_Parser
 {
-    public class PTP_Block
+    public class PTPBlock
     {
         private int _id;
         private int _size;
         private string _data;
 
-        public PTP_Block(int id, int size, string data)
+        public PTPBlock(int id, int size, string data)
         {
             _data = data;
             _id = id;
             _size = size;
         }
 
-        public int Get_Id()
+        public int GetId()
         {
             return _id;
         }
 
-        public int Get_Size()
+        public int GetSize()
         {
             return _size;
         }
 
-        public string Get_Data()
+        public string GetData()
         {
             return _data;
         }
@@ -51,7 +51,7 @@ namespace PTP_Parser
                     {
                         return true;
                     }
-                case "start_package":
+                case "StartPackage":
                     {
                         return true;
                     }
@@ -62,7 +62,7 @@ namespace PTP_Parser
     }
     public static class PTP
     {
-        public static PTP_Block Parse_To_Block(NetworkStream networkStream)
+        public static PTPBlock ParseToBlock(NetworkStream networkStream)
         {
             byte[]? id = null;
             byte[]? data = null;
@@ -74,33 +74,33 @@ namespace PTP_Parser
             int.TryParse(size.ToString(), out int block_size);
             networkStream.Read(data, 8, block_size);
 
-            return new PTP_Block(block_id, block_size, data.ToString());
+            return new PTPBlock(block_id, block_size, data.ToString());
         }
 
-        public static string Parse_To_Package(PTP_Block block)
+        public static string ParseToPackage(PTPBlock block)
         {
             return block.ToPackage();
         }
 
-        public static string Available_Package()
+        public static string AvailablePackage()
         {
             string msg = "available";
-            PTP_Block response = new PTP_Block(0, msg.Length, msg);
+            PTPBlock response = new PTPBlock(0, msg.Length, msg);
 
             return response.ToPackage();
         }
 
-        public static string Unavailable_Package()
+        public static string UnavailablePackage()
         {
             string msg = "unavailable";
-            PTP_Block response = new PTP_Block(0, msg.Length, msg);
+            PTPBlock response = new PTPBlock(0, msg.Length, msg);
             return response.ToPackage();
         }
 
-        public static string Start_Package()
+        public static string StartPackage()
         {
-            string msg = "start_package";
-            PTP_Block response = new PTP_Block(0, msg.Length, msg);
+            string msg = "StartPackage";
+            PTPBlock response = new PTPBlock(0, msg.Length, msg);
             return response.ToPackage();
         }
 
