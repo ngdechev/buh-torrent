@@ -19,12 +19,12 @@ namespace TorrentTracker.Server
             throw new NotImplementedException();
         }
 
-        internal void Disconnect()
+        public void Disconnect()
         {
             throw new NotImplementedException();
         }
 
-        internal void SendMessage(string v)
+        public void SendMessage(string message)
         {
             throw new NotImplementedException();
         }

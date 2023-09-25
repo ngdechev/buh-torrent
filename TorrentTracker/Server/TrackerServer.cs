@@ -61,6 +61,7 @@ namespace TorrentTracker
                 {
                     foreach (PeerHandler peer in _connectedPeers)
                     {
+                        peer.SendMessage("Server stopped! All the clients are disconnected!");
                         peer.Disconnect();
                     }
                 }
@@ -69,11 +70,6 @@ namespace TorrentTracker
             if (_listener != null)
             {
                 _listener?.Stop();
-            }
-
-            foreach (PeerHandler peer in _connectedPeers)
-            {
-                peer.SendMessage("Server stopped! All the clients are disconnected!");
             }
         }
 
