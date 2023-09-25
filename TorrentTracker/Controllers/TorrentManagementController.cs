@@ -24,7 +24,7 @@
             throw new NotImplementedException();
         }
 
-        public string SearchTorrent(string fileName)
+        public string SearchTorrent(string torrentName)
         {
             throw new NotImplementedException();
         }

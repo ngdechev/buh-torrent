@@ -9,6 +9,6 @@
         
         public string ListTorrents();
         
-        public string SearchTorrent(string fileName);
+        public string SearchTorrent(string torrentName);
     }
 }
