@@ -63,7 +63,7 @@ namespace BuhTorrentTestProject
             string result = PTP.StartPackage();
 
             // Assert
-            Assert.AreEqual("013StartPackage", result);
+            Assert.AreEqual("012StartPackage", result);
         }
 
         [Test]
