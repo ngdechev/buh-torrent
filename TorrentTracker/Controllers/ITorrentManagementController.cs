@@ -6,9 +6,9 @@
         public string CreateTorrent();
 
         public string DeleteTorrent();
-        
-        public string ListTorrents();
-        
+
+        public List<Torrent> ListTorrents(Dictionary<Peer, List<Torrent>> _torrentDictionary);
+
         public string SearchTorrent(string torrentName);
     }
 }

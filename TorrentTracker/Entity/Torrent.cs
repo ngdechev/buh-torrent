@@ -16,4 +16,13 @@
 		description = description;
 		sharedFileLength = sharedFileLength;
     }
+    public Torrent()
+    {
+        trackerIp = "udp://tracker.openbittorrent.com";
+        checkSum = "bba9950a917398a665cf86c3d820e3d6";
+        fileName = "Pictures";
+        torrentName = "Pictures";
+        description = "filesld4:attr1:h6:lengthi380e4:pathl11:desktop.inieee4:name8:Pictures12:piece lengthi16384e6";
+        sharedFileLength = 16384;
+    }
 }
