@@ -34,8 +34,8 @@ namespace PTT_Parser
     {
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
-            byte[] command = new byte[1];
-            byte[] payload = new byte[1023];
+            byte[] command = new byte[4];
+            byte[] payload = new byte[1020];
 
             int bytesRead = networkStream.Read(command, 0, 1);
 
@@ -51,7 +51,7 @@ namespace PTT_Parser
                 throw new Exception("Invalid command.");
             }
 
-            bytesRead = networkStream.Read(payload, 1, 1023);
+            bytesRead = networkStream.Read(payload, 4, 1020);
 
             if(bytesRead <= 1)
             {
