@@ -24,7 +24,7 @@ namespace BuhTorrentTestProject.TorrentManagementControllerTest
                 { new Peer(), new List<Torrent> { torrent3 } }
             };
 
-            torrentController.SetD(dictionary);
+            torrentController.SetDictionary(dictionary);
             var result = torrentController.ListTorrents(dictionary);
 
             Assert.IsNotNull(result);

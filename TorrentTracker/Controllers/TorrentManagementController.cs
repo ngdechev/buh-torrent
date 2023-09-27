@@ -5,14 +5,16 @@
         private Dictionary<Peer, List<Torrent>> _torrentDictionary;
         private List<Torrent> _AllTorrents = new List<Torrent>();
 
-        public void SetD(Dictionary<Peer, List<Torrent>> torrentDictionary)
+        public void SetDictionary(Dictionary<Peer, List<Torrent>> torrentDictionary)
         {
             _torrentDictionary = torrentDictionary;
         }
+
         public List<Torrent> GetAllTorrents()
         {
             return _AllTorrents;
         }
+
         public TorrentManagementController()
         {
             _torrentDictionary = new Dictionary<Peer, List<Torrent>>();
@@ -31,6 +33,7 @@
         public List<Torrent> ListTorrents(Dictionary<Peer, List<Torrent>> _torrentDictionary)
         {
             _AllTorrents.Clear();
+
             foreach (var pair in _torrentDictionary)
             {
                 List<Torrent> TorrentsList = pair.Value;
@@ -39,6 +42,7 @@
                     _AllTorrents.Add(torrent);
                 }
             }
+
             return _AllTorrents;
         }
 
