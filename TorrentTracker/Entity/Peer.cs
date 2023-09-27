@@ -10,4 +10,10 @@
         ipAddress = ipAddress;
         port = port;
     }
+    public Peer()
+    {
+        peerId = "1";
+        ipAddress = "1";
+        port = 12345;
+    }
 }

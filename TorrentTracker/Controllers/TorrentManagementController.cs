@@ -3,6 +3,17 @@
     public class TorrentManagementController : ITorrentManagementController
     {
         private Dictionary<Peer, List<Torrent>> _torrentDictionary;
+        private List<Torrent> _AllTorrents = new List<Torrent>();
+
+        public void SetDictionary(Dictionary<Peer, List<Torrent>> torrentDictionary)
+        {
+            _torrentDictionary = torrentDictionary;
+        }
+
+        public List<Torrent> GetAllTorrents()
+        {
+            return _AllTorrents;
+        }
 
         public TorrentManagementController()
         {
@@ -19,9 +30,20 @@
             throw new NotImplementedException();
         }
 
-        public string ListTorrents()
+        public List<Torrent> ListTorrents(Dictionary<Peer, List<Torrent>> _torrentDictionary)
         {
-            throw new NotImplementedException();
+            _AllTorrents.Clear();
+
+            foreach (var pair in _torrentDictionary)
+            {
+                List<Torrent> TorrentsList = pair.Value;
+                foreach (Torrent torrent in TorrentsList)
+                {
+                    _AllTorrents.Add(torrent);
+                }
+            }
+
+            return _AllTorrents;
         }
 
         public string SearchTorrent(string torrentName)
