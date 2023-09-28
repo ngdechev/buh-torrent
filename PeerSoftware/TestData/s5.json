@@ -1,10 +1,10 @@
 {
-  "announce": "127.0.0.0:12345",
-  
-    "checksum": "checksum_5",
-    "file_name": "File5.txt",
-    "torrent_name": "Torrent 5",
-    "length": 32768000,
-    "description": "This is Torrent 5."
+  "Announce": "127.0.0.0:12345",
+  "Info": {
+    "Checksum": "checksum_5",
+    "FileName": "File5.txt",
+    "TorrentName": "Torrent 5",
+    "Length": 8192000,
+    "Description": "This is Torrent 5."
   }
-
+}

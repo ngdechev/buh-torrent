@@ -15,12 +15,8 @@ namespace PeerSoftware
     public class TorrentFile
     {
         public string Announce { get; set; }
-        //public Info Info { get; set; }
-        public string Checksum { get; set; }
-        public string FileName { get; set; }
-        public string TorrentName { get; set; }
-        public int Length { get; set; }
-        public string Description { get; set; }
+        public Info Info { get; set; }
+        
     }
 
 

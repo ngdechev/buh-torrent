@@ -57,6 +57,8 @@
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
+            button1 = new Button();
+            button2 = new Button();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -179,6 +181,8 @@
             // 
             // browes
             // 
+            browes.Controls.Add(button2);
+            browes.Controls.Add(button1);
             browes.Controls.Add(tableLayoutPanel2);
             browes.Controls.Add(refresh);
             browes.Controls.Add(search);
@@ -200,7 +204,7 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.Location = new Point(3, 57);
+            tableLayoutPanel2.Location = new Point(3, 80);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 5;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
@@ -208,7 +212,7 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel2.Size = new Size(784, 357);
+            tableLayoutPanel2.Size = new Size(784, 334);
             tableLayoutPanel2.TabIndex = 8;
             // 
             // refresh
@@ -335,7 +339,6 @@
             save.TabIndex = 1;
             save.Text = "Save";
             save.UseVisualStyleBackColor = true;
-            save.Click += save_Click;
             // 
             // label10
             // 
@@ -387,6 +390,26 @@
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.Size = new Size(200, 100);
             tableLayoutPanel3.TabIndex = 0;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(589, 55);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 9;
+            button1.Text = "button1";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(686, 55);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 10;
+            button2.Text = "button2";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // Form1
             // 
@@ -446,5 +469,7 @@
         private Button save;
         private Label label10;
         private TextBox trackerIP;
+        private Button button2;
+        private Button button1;
     }
 }
