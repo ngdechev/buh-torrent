@@ -103,7 +103,7 @@ namespace PeerSoftware
             {
                 MessageBox.Show(ex.Message);
             }
-            maxpage = torrentFiles.Count/5;
+            maxpage = torrentFiles.Count / 5;
             Show(page);
         }
 
@@ -120,7 +120,7 @@ namespace PeerSoftware
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(page > 0)
+            if (page > 0)
             {
                 page--;
             }
