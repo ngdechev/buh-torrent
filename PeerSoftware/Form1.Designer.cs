@@ -40,10 +40,6 @@
             status = new Button();
             browes = new TabPage();
             tableLayoutPanel2 = new TableLayoutPanel();
-            download = new Button();
-            label5 = new Label();
-            label6 = new Label();
-            label7 = new Label();
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
@@ -65,7 +61,6 @@
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             browes.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
             myTorrents.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             settings.SuspendLayout();
@@ -201,61 +196,20 @@
             tableLayoutPanel2.Anchor = AnchorStyles.None;
             tableLayoutPanel2.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel2.ColumnCount = 4;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 64.44444F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35.5555573F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 567F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 78F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Controls.Add(download, 3, 0);
-            tableLayoutPanel2.Controls.Add(label5, 0, 0);
-            tableLayoutPanel2.Controls.Add(label6, 1, 0);
-            tableLayoutPanel2.Controls.Add(label7, 2, 0);
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel2.Location = new Point(3, 57);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 12.5F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 87.5F));
-            tableLayoutPanel2.Size = new Size(784, 307);
+            tableLayoutPanel2.RowCount = 5;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.Size = new Size(784, 357);
             tableLayoutPanel2.TabIndex = 8;
-            // 
-            // download
-            // 
-            download.Location = new Point(707, 4);
-            download.Name = "download";
-            download.Size = new Size(70, 23);
-            download.TabIndex = 10;
-            download.Text = "Download";
-            download.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Left;
-            label5.AutoSize = true;
-            label5.Location = new Point(4, 12);
-            label5.Name = "label5";
-            label5.Size = new Size(42, 15);
-            label5.TabIndex = 9;
-            label5.Text = "Name ";
-            // 
-            // label6
-            // 
-            label6.Anchor = AnchorStyles.Left;
-            label6.AutoSize = true;
-            label6.Location = new Point(91, 12);
-            label6.Name = "label6";
-            label6.Size = new Size(27, 15);
-            label6.TabIndex = 11;
-            label6.Text = "Size";
-            // 
-            // label7
-            // 
-            label7.Anchor = AnchorStyles.Left;
-            label7.AutoSize = true;
-            label7.Location = new Point(139, 12);
-            label7.Name = "label7";
-            label7.Size = new Size(63, 15);
-            label7.TabIndex = 12;
-            label7.Text = "Descripion";
             // 
             // refresh
             // 
@@ -265,6 +219,7 @@
             refresh.TabIndex = 2;
             refresh.Text = "Refresh";
             refresh.UseVisualStyleBackColor = true;
+            refresh.Click += refresh_Click;
             // 
             // search
             // 
@@ -447,8 +402,6 @@
             tableLayoutPanel1.PerformLayout();
             browes.ResumeLayout(false);
             browes.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
             myTorrents.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel4.PerformLayout();
@@ -480,13 +433,9 @@
         private Button refresh;
         private Button search;
         private TableLayoutPanel tableLayoutPanel2;
-        private Label label5;
-        private Button download;
         private ProgressBar progressBar2;
         private Label label4;
         private TableLayoutPanel tableLayoutPanel3;
-        private Label label6;
-        private Label label7;
         private Button createNewTorrent;
         private TableLayoutPanel tableLayoutPanel4;
         private Button delete;

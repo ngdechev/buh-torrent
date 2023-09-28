@@ -1,0 +1,10 @@
+{
+  "announce": "127.0.0.0:12345",
+
+    "checksum": "checksum_3",
+    "file_name": "File3.txt",
+    "torrent_name": "Torrent 3",
+    "length": 8192000,
+    "description": "This is Torrent 3."
+  
+}
