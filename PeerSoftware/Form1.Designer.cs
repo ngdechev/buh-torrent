@@ -40,36 +40,36 @@
             status = new Button();
             browes = new TabPage();
             tableLayoutPanel2 = new TableLayoutPanel();
-            label5 = new Label();
             download = new Button();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
             myTorrents = new TabPage();
-            settings = new TabPage();
-            help = new TabPage();
-            progressBar2 = new ProgressBar();
-            label4 = new Label();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            label6 = new Label();
-            label7 = new Label();
+            createNewTorrent = new Button();
             tableLayoutPanel4 = new TableLayoutPanel();
             delete = new Button();
             label8 = new Label();
             label9 = new Label();
-            createNewTorrent = new Button();
-            label10 = new Label();
-            save = new Button();
+            settings = new TabPage();
             trakerIP = new TextBox();
+            save = new Button();
+            label10 = new Label();
+            help = new TabPage();
+            progressBar2 = new ProgressBar();
+            label4 = new Label();
+            tableLayoutPanel3 = new TableLayoutPanel();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             browes.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             myTorrents.SuspendLayout();
+            tableLayoutPanel4.SuspendLayout();
             settings.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
-            tableLayoutPanel4.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -218,16 +218,6 @@
             tableLayoutPanel2.Size = new Size(784, 307);
             tableLayoutPanel2.TabIndex = 8;
             // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Left;
-            label5.AutoSize = true;
-            label5.Location = new Point(4, 12);
-            label5.Name = "label5";
-            label5.Size = new Size(42, 15);
-            label5.TabIndex = 9;
-            label5.Text = "Name ";
-            // 
             // download
             // 
             download.Location = new Point(707, 4);
@@ -237,95 +227,15 @@
             download.Text = "Download";
             download.UseVisualStyleBackColor = true;
             // 
-            // refresh
+            // label5
             // 
-            refresh.Location = new Point(707, 20);
-            refresh.Name = "refresh";
-            refresh.Size = new Size(75, 23);
-            refresh.TabIndex = 2;
-            refresh.Text = "Refresh";
-            refresh.UseVisualStyleBackColor = true;
-            // 
-            // search
-            // 
-            search.Location = new Point(626, 20);
-            search.Name = "search";
-            search.Size = new Size(75, 23);
-            search.TabIndex = 1;
-            search.Text = "Search";
-            search.UseVisualStyleBackColor = true;
-            // 
-            // searchBar
-            // 
-            searchBar.Location = new Point(15, 20);
-            searchBar.Name = "searchBar";
-            searchBar.Size = new Size(605, 23);
-            searchBar.TabIndex = 0;
-            // 
-            // myTorrents
-            // 
-            myTorrents.Controls.Add(createNewTorrent);
-            myTorrents.Controls.Add(tableLayoutPanel4);
-            myTorrents.Location = new Point(4, 24);
-            myTorrents.Name = "myTorrents";
-            myTorrents.Size = new Size(791, 420);
-            myTorrents.TabIndex = 2;
-            myTorrents.Text = "My Torrents";
-            myTorrents.UseVisualStyleBackColor = true;
-            // 
-            // settings
-            // 
-            settings.Controls.Add(trakerIP);
-            settings.Controls.Add(save);
-            settings.Controls.Add(label10);
-            settings.Location = new Point(4, 24);
-            settings.Name = "settings";
-            settings.Size = new Size(791, 420);
-            settings.TabIndex = 3;
-            settings.Text = "Settings";
-            settings.UseVisualStyleBackColor = true;
-            // 
-            // help
-            // 
-            help.Location = new Point(4, 24);
-            help.Name = "help";
-            help.Size = new Size(791, 420);
-            help.TabIndex = 4;
-            help.Text = "Help";
-            help.UseVisualStyleBackColor = true;
-            // 
-            // progressBar2
-            // 
-            progressBar2.Location = new Point(65, 4);
-            progressBar2.Name = "progressBar2";
-            progressBar2.Size = new Size(54, 20);
-            progressBar2.TabIndex = 0;
-            // 
-            // label4
-            // 
-            label4.Anchor = AnchorStyles.Left;
-            label4.AutoSize = true;
-            label4.Location = new Point(4, 27);
-            label4.Name = "label4";
-            label4.Size = new Size(47, 45);
-            label4.TabIndex = 9;
-            label4.Text = "Torrent Name 2023";
-            // 
-            // tableLayoutPanel3
-            // 
-            tableLayoutPanel3.Anchor = AnchorStyles.None;
-            tableLayoutPanel3.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            tableLayoutPanel3.ColumnCount = 3;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 75F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel3.Controls.Add(progressBar2, 1, 0);
-            tableLayoutPanel3.Location = new Point(0, 0);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 1;
-            tableLayoutPanel3.Size = new Size(200, 100);
-            tableLayoutPanel3.TabIndex = 0;
+            label5.Anchor = AnchorStyles.Left;
+            label5.AutoSize = true;
+            label5.Location = new Point(4, 12);
+            label5.Name = "label5";
+            label5.Size = new Size(42, 15);
+            label5.TabIndex = 9;
+            label5.Text = "Name ";
             // 
             // label6
             // 
@@ -346,6 +256,52 @@
             label7.Size = new Size(63, 15);
             label7.TabIndex = 12;
             label7.Text = "Descripion";
+            // 
+            // refresh
+            // 
+            refresh.Location = new Point(707, 20);
+            refresh.Name = "refresh";
+            refresh.Size = new Size(75, 23);
+            refresh.TabIndex = 2;
+            refresh.Text = "Refresh";
+            refresh.UseVisualStyleBackColor = true;
+            // 
+            // search
+            // 
+            search.Location = new Point(626, 20);
+            search.Name = "search";
+            search.Size = new Size(75, 23);
+            search.TabIndex = 1;
+            search.Text = "Search";
+            search.UseVisualStyleBackColor = true;
+            search.Click += search_Click;
+            // 
+            // searchBar
+            // 
+            searchBar.Location = new Point(15, 20);
+            searchBar.Name = "searchBar";
+            searchBar.Size = new Size(605, 23);
+            searchBar.TabIndex = 0;
+            // 
+            // myTorrents
+            // 
+            myTorrents.Controls.Add(createNewTorrent);
+            myTorrents.Controls.Add(tableLayoutPanel4);
+            myTorrents.Location = new Point(4, 24);
+            myTorrents.Name = "myTorrents";
+            myTorrents.Size = new Size(791, 420);
+            myTorrents.TabIndex = 2;
+            myTorrents.Text = "My Torrents";
+            myTorrents.UseVisualStyleBackColor = true;
+            // 
+            // createNewTorrent
+            // 
+            createNewTorrent.Location = new Point(63, 18);
+            createNewTorrent.Name = "createNewTorrent";
+            createNewTorrent.Size = new Size(124, 23);
+            createNewTorrent.TabIndex = 10;
+            createNewTorrent.Text = "Create new Torrent";
+            createNewTorrent.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel4
             // 
@@ -396,23 +352,24 @@
             label9.TabIndex = 11;
             label9.Text = "Size";
             // 
-            // createNewTorrent
+            // settings
             // 
-            createNewTorrent.Location = new Point(63, 18);
-            createNewTorrent.Name = "createNewTorrent";
-            createNewTorrent.Size = new Size(124, 23);
-            createNewTorrent.TabIndex = 10;
-            createNewTorrent.Text = "Create new Torrent";
-            createNewTorrent.UseVisualStyleBackColor = true;
+            settings.Controls.Add(trakerIP);
+            settings.Controls.Add(save);
+            settings.Controls.Add(label10);
+            settings.Location = new Point(4, 24);
+            settings.Name = "settings";
+            settings.Size = new Size(791, 420);
+            settings.TabIndex = 3;
+            settings.Text = "Settings";
+            settings.UseVisualStyleBackColor = true;
             // 
-            // label10
+            // trakerIP
             // 
-            label10.AutoSize = true;
-            label10.Location = new Point(13, 31);
-            label10.Name = "label10";
-            label10.Size = new Size(51, 15);
-            label10.TabIndex = 0;
-            label10.Text = "Traker IP";
+            trakerIP.Location = new Point(70, 28);
+            trakerIP.Name = "trakerIP";
+            trakerIP.Size = new Size(174, 23);
+            trakerIP.TabIndex = 2;
             // 
             // save
             // 
@@ -423,12 +380,56 @@
             save.Text = "Save";
             save.UseVisualStyleBackColor = true;
             // 
-            // trakerIP
+            // label10
             // 
-            trakerIP.Location = new Point(70, 28);
-            trakerIP.Name = "trakerIP";
-            trakerIP.Size = new Size(174, 23);
-            trakerIP.TabIndex = 2;
+            label10.AutoSize = true;
+            label10.Location = new Point(13, 31);
+            label10.Name = "label10";
+            label10.Size = new Size(51, 15);
+            label10.TabIndex = 0;
+            label10.Text = "Traker IP";
+            // 
+            // help
+            // 
+            help.Location = new Point(4, 24);
+            help.Name = "help";
+            help.Size = new Size(791, 420);
+            help.TabIndex = 4;
+            help.Text = "Help";
+            help.UseVisualStyleBackColor = true;
+            // 
+            // progressBar2
+            // 
+            progressBar2.Location = new Point(65, 4);
+            progressBar2.Name = "progressBar2";
+            progressBar2.Size = new Size(54, 20);
+            progressBar2.TabIndex = 0;
+            // 
+            // label4
+            // 
+            label4.Anchor = AnchorStyles.Left;
+            label4.AutoSize = true;
+            label4.Location = new Point(4, 27);
+            label4.Name = "label4";
+            label4.Size = new Size(47, 45);
+            label4.TabIndex = 9;
+            label4.Text = "Torrent Name 2023";
+            // 
+            // tableLayoutPanel3
+            // 
+            tableLayoutPanel3.Anchor = AnchorStyles.None;
+            tableLayoutPanel3.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
+            tableLayoutPanel3.ColumnCount = 3;
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 75F));
+            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel3.Controls.Add(progressBar2, 1, 0);
+            tableLayoutPanel3.Location = new Point(0, 0);
+            tableLayoutPanel3.Name = "tableLayoutPanel3";
+            tableLayoutPanel3.RowCount = 1;
+            tableLayoutPanel3.Size = new Size(200, 100);
+            tableLayoutPanel3.TabIndex = 0;
             // 
             // Form1
             // 
@@ -449,11 +450,11 @@
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
             myTorrents.ResumeLayout(false);
+            tableLayoutPanel4.ResumeLayout(false);
+            tableLayoutPanel4.PerformLayout();
             settings.ResumeLayout(false);
             settings.PerformLayout();
             tableLayoutPanel3.ResumeLayout(false);
-            tableLayoutPanel4.ResumeLayout(false);
-            tableLayoutPanel4.PerformLayout();
             ResumeLayout(false);
         }
 

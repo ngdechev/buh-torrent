@@ -9,5 +9,11 @@ namespace PeerSoftware
         {
             InitializeComponent();
         }
+
+        private void search_Click(object sender, EventArgs e)
+        {
+            Control control = sender as Control;
+            tableLayoutPanel2.GetRow
+        }
     }
 }
