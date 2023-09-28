@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PeerSoftware\PeerSoftware.csproj" />
     <ProjectReference Include="..\ProtocolParser\ProtocolParser.csproj" />
     <ProjectReference Include="..\TorrentTracker\TorrentTracker.csproj" />
   </ItemGroup>

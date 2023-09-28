@@ -50,7 +50,7 @@
             label8 = new Label();
             label9 = new Label();
             settings = new TabPage();
-            trakerIP = new TextBox();
+            trackerIP = new TextBox();
             save = new Button();
             label10 = new Label();
             help = new TabPage();
@@ -309,7 +309,7 @@
             // 
             // settings
             // 
-            settings.Controls.Add(trakerIP);
+            settings.Controls.Add(trackerIP);
             settings.Controls.Add(save);
             settings.Controls.Add(label10);
             settings.Location = new Point(4, 24);
@@ -319,12 +319,13 @@
             settings.Text = "Settings";
             settings.UseVisualStyleBackColor = true;
             // 
-            // trakerIP
+            // trackerIP
             // 
-            trakerIP.Location = new Point(70, 28);
-            trakerIP.Name = "trakerIP";
-            trakerIP.Size = new Size(174, 23);
-            trakerIP.TabIndex = 2;
+            trackerIP.Location = new Point(70, 28);
+            trackerIP.Name = "trackerIP";
+            trackerIP.Size = new Size(174, 23);
+            trackerIP.TabIndex = 2;
+            trackerIP.Text = "127.0.0.1:12345";
             // 
             // save
             // 
@@ -334,6 +335,7 @@
             save.TabIndex = 1;
             save.Text = "Save";
             save.UseVisualStyleBackColor = true;
+            save.Click += save_Click;
             // 
             // label10
             // 
@@ -443,6 +445,6 @@
         private Label label9;
         private Button save;
         private Label label10;
-        private TextBox trakerIP;
+        private TextBox trackerIP;
     }
 }
