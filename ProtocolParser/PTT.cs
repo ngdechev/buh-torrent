@@ -30,9 +30,9 @@ namespace PTT_Parser
         }
     }
 
-    public static class PTT
+    public class PTT
     {
-        public static PTTBlock ParseToBlock(NetworkStream networkStream)
+        public PTTBlock ParseToBlock(NetworkStream networkStream)
         {
             byte[] command = new byte[4];
             byte[] payload = new byte[1020];

@@ -1,34 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TorrentTracker.Controllers;
+﻿
 
-namespace BuhTorrentTestProject.TorrentManagementControllerTest
+namespace TorrentTracker.Controllers.Tests
 {
     [TestFixture]
-    public class ListTorrentTest
+    public class TorrentManagementControllerTests
     {
-        [Test]
-        public void TestTorrentFile()
+        private DictionaryController _dictionaryController;
+        private TorrentManagementController _torrentController;
+
+        [SetUp]
+        public void Setup()
         {
-            var torrentController = new TorrentManagementController();
+            _dictionaryController = new DictionaryController();
+            _torrentController = new TorrentManagementController(_dictionaryController);
+        }
+
+        [Test]
+        public void ListTorrents_Should_Return_All_Torrents_From_DictionaryController()
+        {
             var peer = new Peer();
             var torrent1 = new Torrent();
             var torrent2 = new Torrent();
             var torrent3 = new Torrent();
-            var dictionary = new Dictionary<Peer, List<Torrent>>
+
+            var sampleDictionary = new Dictionary<Peer, List<Torrent>>
             {
-                { peer, new List<Torrent> { torrent1, torrent2 } },
-                { new Peer(), new List<Torrent> { torrent3 } }
+             { peer, new List<Torrent> { torrent1, torrent2 } },
+             { new Peer(), new List<Torrent> { torrent3 } }
             };
 
-            torrentController.SetDictionary(dictionary);
-            var result = torrentController.ListTorrents(dictionary);
+            _dictionaryController.SetDictionary(sampleDictionary);
 
-            Assert.IsNotNull(result);
-            CollectionAssert.AreEqual(new List<Torrent> { torrent1, torrent2, torrent3 }, result);
+            var result = _torrentController.ListTorrents();
+ 
+            CollectionAssert.AreEquivalent(new List<Torrent> { torrent1, torrent2, torrent3 }, result);
         }
     }
 }

@@ -1,23 +1,25 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using TorrentTracker.Controllers;
 using TorrentTracker.Server;
 
 namespace TorrentTracker
 {
     public class TrackerServer
     {
-        public readonly object _peersLock;
         public bool _isRunning { get; set; }
 
         private TcpListener? _listener;
         private PeerHandler _peerHandler;
-        private List<PeerHandler> _connectedPeers;
+        private DictionaryController _dictionary;
+        private ITorrentManagementController _torrentManagementController;
+        private IPeerManagementController _peerManagementController;
 
         public TrackerServer()
         {
-            _connectedPeers = new List<PeerHandler>();
-            _peersLock = new object();
-
+            _dictionary = new DictionaryController();
+            _torrentManagementController = new TorrentManagementController(_dictionary);
+            _peerManagementController = new PeerManagementController(_dictionary);
             _isRunning = true;
         }
 
@@ -34,14 +36,9 @@ namespace TorrentTracker
                 {
                     TcpClient clientSocket = _listener.AcceptTcpClient();
 
-                    Console.WriteLine("Peer connected!");
+                    Console.WriteLine("Peer opened the app!");
 
-                    _peerHandler = new(clientSocket, this);
-
-                    lock (_peersLock)
-                    {
-                        _connectedPeers.Add(_peerHandler);
-                    }
+                    _peerHandler = new(clientSocket, this, _torrentManagementController, _peerManagementController);
 
                     Thread peerThread = new Thread(_peerHandler.HandlePeer);
 
@@ -49,22 +46,6 @@ namespace TorrentTracker
                 }
 
                 Thread.Sleep(10);
-            }
-
-            lock (_peersLock)
-            {
-                if (_connectedPeers.Count == 0)
-                {
-                    _connectedPeers.Clear();
-                }                   
-                else
-                {
-                    foreach (PeerHandler peer in _connectedPeers)
-                    {
-                        peer.SendMessage("Server stopped! All the clients are disconnected!");
-                        peer.Disconnect();
-                    }
-                }
             }
 
             if (_listener != null)
@@ -77,14 +58,5 @@ namespace TorrentTracker
         {
             _isRunning = false;
         }
-
-        public void RemovePeer(PeerHandler peer)
-        {
-            lock (_peersLock)
-            {
-                _connectedPeers.Remove(peer);
-            }
-        }
     }
-
 }

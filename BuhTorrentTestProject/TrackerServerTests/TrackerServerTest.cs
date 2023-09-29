@@ -39,15 +39,6 @@ namespace BuhTorrentTestProject
             Assert.IsFalse(server._isRunning);
         }
 
-        [Test]
-        public void RemovePeer_PeerConnected_PeerRemoved()
-        {
-            // Arrange
-            var server = new TrackerServer();
-            var peerHandler = new PeerHandler(new TcpClient(), server);
-
-            // Act
-            server.RemovePeer(peerHandler);
-        }
+        
     }
 }
