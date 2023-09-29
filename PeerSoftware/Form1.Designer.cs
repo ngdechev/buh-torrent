@@ -42,6 +42,12 @@
             button2 = new Button();
             button1 = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
+
+            download = new Button();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
@@ -59,7 +65,9 @@
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
+
             pagelabel = new Label();
+
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -238,6 +246,47 @@
             tableLayoutPanel2.Size = new Size(784, 334);
             tableLayoutPanel2.TabIndex = 8;
             // 
+
+            // download
+            // 
+            download.Location = new Point(707, 4);
+            download.Name = "download";
+            download.Size = new Size(70, 23);
+            download.TabIndex = 10;
+            download.Text = "Download";
+            download.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.Left;
+            label5.AutoSize = true;
+            label5.Location = new Point(4, 12);
+            label5.Name = "label5";
+            label5.Size = new Size(42, 15);
+            label5.TabIndex = 9;
+            label5.Text = "Name ";
+            // 
+            // label6
+            // 
+            label6.Anchor = AnchorStyles.Left;
+            label6.AutoSize = true;
+            label6.Location = new Point(91, 12);
+            label6.Name = "label6";
+            label6.Size = new Size(27, 15);
+            label6.TabIndex = 11;
+            label6.Text = "Size";
+            // 
+            // label7
+            // 
+            label7.Anchor = AnchorStyles.Left;
+            label7.AutoSize = true;
+            label7.Location = new Point(139, 12);
+            label7.Name = "label7";
+            label7.Size = new Size(63, 15);
+            label7.TabIndex = 12;
+            label7.Text = "Descripion";
+            // 
+
             // refresh
             // 
             refresh.Location = new Point(707, 20);
@@ -352,7 +401,9 @@
             trackerIP.Name = "trackerIP";
             trackerIP.Size = new Size(174, 23);
             trackerIP.TabIndex = 2;
+
             trackerIP.Text = "127.0.0.1:12345";
+
             // 
             // save
             // 
@@ -383,6 +434,27 @@
             // 
             // progressBar2
             // 
+
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(13, 31);
+            label10.Name = "label10";
+            label10.Size = new Size(51, 15);
+            label10.TabIndex = 0;
+            label10.Text = "Traker IP";
+            // 
+            // help
+            // 
+            help.Location = new Point(4, 24);
+            help.Name = "help";
+            help.Size = new Size(791, 420);
+            help.TabIndex = 4;
+            help.Text = "Help";
+            help.UseVisualStyleBackColor = true;
+            // 
+            // progressBar2
+            // 
+
             progressBar2.Location = new Point(65, 4);
             progressBar2.Name = "progressBar2";
             progressBar2.Size = new Size(54, 20);
@@ -413,6 +485,7 @@
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.Size = new Size(200, 100);
             tableLayoutPanel3.TabIndex = 0;
+
             // 
             // pagelabel
             // 
@@ -422,6 +495,7 @@
             pagelabel.Size = new Size(89, 15);
             pagelabel.TabIndex = 11;
             pagelabel.Text = "Page Number 0";
+
             // 
             // Form1
             // 
@@ -481,8 +555,10 @@
         private Button save;
         private Label label10;
         private TextBox trackerIP;
+
         private Button button2;
         private Button button1;
         private Label pagelabel;
+
     }
 }

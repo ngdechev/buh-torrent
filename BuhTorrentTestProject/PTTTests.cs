@@ -4,7 +4,7 @@
 namespace BuhTorrentTestProject
 {
     [TestFixture]
-    internal class PTTTests
+    public class PTTTests
     {
         [Test]
         public void ToStringReturnsCorrectString()

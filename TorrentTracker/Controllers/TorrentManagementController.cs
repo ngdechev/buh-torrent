@@ -1,13 +1,15 @@
-﻿namespace TorrentTracker.Controllers
+﻿
+
+namespace TorrentTracker.Controllers
 {
     public class TorrentManagementController : ITorrentManagementController
     {
-        private Dictionary<Peer, List<Torrent>> _torrentDictionary;
+        private DictionaryController _dictionaryController;
         private List<Torrent> _AllTorrents = new List<Torrent>();
 
-        public void SetDictionary(Dictionary<Peer, List<Torrent>> torrentDictionary)
+        public TorrentManagementController(DictionaryController dictionaryController)
         {
-            _torrentDictionary = torrentDictionary;
+            _dictionaryController = dictionaryController;
         }
 
         public List<Torrent> GetAllTorrents()
@@ -15,26 +17,21 @@
             return _AllTorrents;
         }
 
-        public TorrentManagementController()
-        {
-            _torrentDictionary = new Dictionary<Peer, List<Torrent>>();
-        }
-
-        public string CreateTorrent()
+        public string CreateTorrent(string ip, string torrentFile)
         {
             throw new NotImplementedException();
         }
 
-        public string DeleteTorrent()
+        public string DeleteTorrent(string ip, string checksum)
         {
             throw new NotImplementedException();
         }
 
-        public List<Torrent> ListTorrents(Dictionary<Peer, List<Torrent>> _torrentDictionary)
+        public List<Torrent> ListTorrents()
         {
             _AllTorrents.Clear();
 
-            foreach (var pair in _torrentDictionary)
+            foreach (var pair in _dictionaryController.GetDictionary())
             {
                 List<Torrent> TorrentsList = pair.Value;
                 foreach (Torrent torrent in TorrentsList)
