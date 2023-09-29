@@ -5,17 +5,17 @@ namespace PeerSoftware
 
     public class Info
     {
-        public string Checksum { get; set; }
-        public string FileName { get; set; }
-        public string TorrentName { get; set; }
-        public int Length { get; set; }
-        public string Description { get; set; }
+        public string checksum { get; set; }
+        public string fileName { get; set; }
+        public string torrentName { get; set; }
+        public int length { get; set; }
+        public string description { get; set; }
     }
 
     public class TorrentFile
     {
-        public string Announce { get; set; }
-        public Info Info { get; set; }
+        public string announce { get; set; }
+        public Info info { get; set; }
         
     }
 
@@ -30,40 +30,16 @@ namespace PeerSoftware
 
             return torrent;
         }
-       /* public TorrentFile ReadFromJSON(string filename)
+       
+
+        public static void WriteJSON(TorrentFile torrent)
         {
-            string json = File.ReadAllText(@"..\..\..\Storage\storage.json");
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string folderPath = Path.Combine(currentDirectory, "TestData", torrent.info.torrentName + ".json");
 
-
-
-            if (string.IsNullOrEmpty(json))
-            {
-                Console.WriteLine("JSON file is empty.");
-                return null;
-            }
-
-
-
-            TorrentFile torrent = JsonSerializer.Deserialize<TorrentFile>(json);
-            return 
-        }*/
-
-
-
-       /* public void WriteJSON(ref List<Product> products)
-        {
-            string json = File.ReadAllText(@"..\..\..\Storage\storage.json");
-            List<Product> existingProducts = new List<Product>();
-
-
-
-            existingProducts.AddRange(products);
-
-
-
-            json = JsonSerializer.Serialize(existingProducts);
-            File.WriteAllText(@"..\..\..\Storage\storage.json", json);
-        }*/
+            string json = JsonSerializer.Serialize(torrent);
+            File.WriteAllText(folderPath, json);
+        }
     }
 }
 

@@ -59,6 +59,7 @@
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
+            pagelabel = new Label();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -81,6 +82,7 @@
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(799, 448);
             tabControl1.TabIndex = 0;
+            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // buhTorrent
             // 
@@ -181,6 +183,7 @@
             // 
             // browes
             // 
+            browes.Controls.Add(pagelabel);
             browes.Controls.Add(button2);
             browes.Controls.Add(button1);
             browes.Controls.Add(tableLayoutPanel2);
@@ -411,6 +414,15 @@
             tableLayoutPanel3.Size = new Size(200, 100);
             tableLayoutPanel3.TabIndex = 0;
             // 
+            // pagelabel
+            // 
+            pagelabel.AutoSize = true;
+            pagelabel.Location = new Point(479, 59);
+            pagelabel.Name = "pagelabel";
+            pagelabel.Size = new Size(89, 15);
+            pagelabel.TabIndex = 11;
+            pagelabel.Text = "Page Number 0";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -471,5 +483,6 @@
         private TextBox trackerIP;
         private Button button2;
         private Button button1;
+        private Label pagelabel;
     }
 }
