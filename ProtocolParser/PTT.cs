@@ -32,7 +32,7 @@ namespace PTT_Parser
 
     public class PTT
     {
-        public PTTBlock ParseToBlock(NetworkStream networkStream)
+        public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
             byte[] command = new byte[4];
             byte[] payload = new byte[1020];

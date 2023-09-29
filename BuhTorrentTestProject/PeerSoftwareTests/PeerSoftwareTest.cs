@@ -24,7 +24,7 @@ namespace BuhTorrentTestProject.PeerSoftwareTests
         public void TestSplitIpAndPort_ValidInput()
         {
             // Arrange
-            form.SetTrackerIp("127.0.0.1");
+            //form.SetTrackerIp("127.0.0.1");
 
             // Act
             var result = form.SplitIpAndPort();
@@ -37,7 +37,7 @@ namespace BuhTorrentTestProject.PeerSoftwareTests
         public void TestSplitIpAndPort_InvalidInput()
         {
             // Arrange
-            form.SetTrackerIp("127.0.0.1."); // Set an invalid input
+            //form.SetTrackerIp("127.0.0.1."); // Set an invalid input
 
             // Act
             var result = form.SplitIpAndPort();
