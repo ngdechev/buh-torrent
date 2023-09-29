@@ -39,11 +39,15 @@
             label3 = new Label();
             status = new Button();
             browes = new TabPage();
+            button2 = new Button();
+            button1 = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
+
             download = new Button();
             label5 = new Label();
             label6 = new Label();
             label7 = new Label();
+
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
@@ -61,11 +65,13 @@
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
+
+            pagelabel = new Label();
+
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             browes.SuspendLayout();
-            tableLayoutPanel2.SuspendLayout();
             myTorrents.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             settings.SuspendLayout();
@@ -84,6 +90,7 @@
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new Size(799, 448);
             tabControl1.TabIndex = 0;
+            tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // buhTorrent
             // 
@@ -184,6 +191,9 @@
             // 
             // browes
             // 
+            browes.Controls.Add(pagelabel);
+            browes.Controls.Add(button2);
+            browes.Controls.Add(button1);
             browes.Controls.Add(tableLayoutPanel2);
             browes.Controls.Add(refresh);
             browes.Controls.Add(search);
@@ -196,28 +206,47 @@
             browes.Text = "Browse";
             browes.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            button2.Location = new Point(686, 55);
+            button2.Name = "button2";
+            button2.Size = new Size(75, 23);
+            button2.TabIndex = 10;
+            button2.Text = "next";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(589, 55);
+            button1.Name = "button1";
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 9;
+            button1.Text = "previos";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.Anchor = AnchorStyles.None;
             tableLayoutPanel2.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel2.ColumnCount = 4;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 64.44444F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35.5555573F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 567F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 78F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Controls.Add(download, 3, 0);
-            tableLayoutPanel2.Controls.Add(label5, 0, 0);
-            tableLayoutPanel2.Controls.Add(label6, 1, 0);
-            tableLayoutPanel2.Controls.Add(label7, 2, 0);
-            tableLayoutPanel2.Location = new Point(3, 57);
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.Location = new Point(3, 80);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 2;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 12.5F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 87.5F));
-            tableLayoutPanel2.Size = new Size(784, 307);
+            tableLayoutPanel2.RowCount = 5;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.Size = new Size(784, 334);
             tableLayoutPanel2.TabIndex = 8;
             // 
+
             // download
             // 
             download.Location = new Point(707, 4);
@@ -257,6 +286,7 @@
             label7.TabIndex = 12;
             label7.Text = "Descripion";
             // 
+
             // refresh
             // 
             refresh.Location = new Point(707, 20);
@@ -265,6 +295,7 @@
             refresh.TabIndex = 2;
             refresh.Text = "Refresh";
             refresh.UseVisualStyleBackColor = true;
+            refresh.Click += refresh_Click;
             // 
             // search
             // 
@@ -274,6 +305,7 @@
             search.TabIndex = 1;
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
+            search.Click += search_Click;
             // 
             // searchBar
             // 
@@ -369,6 +401,9 @@
             trackerIP.Name = "trackerIP";
             trackerIP.Size = new Size(174, 23);
             trackerIP.TabIndex = 2;
+
+            trackerIP.Text = "127.0.0.1:12345";
+
             // 
             // save
             // 
@@ -399,6 +434,27 @@
             // 
             // progressBar2
             // 
+
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(13, 31);
+            label10.Name = "label10";
+            label10.Size = new Size(51, 15);
+            label10.TabIndex = 0;
+            label10.Text = "Traker IP";
+            // 
+            // help
+            // 
+            help.Location = new Point(4, 24);
+            help.Name = "help";
+            help.Size = new Size(791, 420);
+            help.TabIndex = 4;
+            help.Text = "Help";
+            help.UseVisualStyleBackColor = true;
+            // 
+            // progressBar2
+            // 
+
             progressBar2.Location = new Point(65, 4);
             progressBar2.Name = "progressBar2";
             progressBar2.Size = new Size(54, 20);
@@ -429,6 +485,17 @@
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.Size = new Size(200, 100);
             tableLayoutPanel3.TabIndex = 0;
+
+            // 
+            // pagelabel
+            // 
+            pagelabel.AutoSize = true;
+            pagelabel.Location = new Point(479, 59);
+            pagelabel.Name = "pagelabel";
+            pagelabel.Size = new Size(89, 15);
+            pagelabel.TabIndex = 11;
+            pagelabel.Text = "Page Number 0";
+
             // 
             // Form1
             // 
@@ -446,8 +513,6 @@
             tableLayoutPanel1.PerformLayout();
             browes.ResumeLayout(false);
             browes.PerformLayout();
-            tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
             myTorrents.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel4.PerformLayout();
@@ -479,13 +544,9 @@
         private Button refresh;
         private Button search;
         private TableLayoutPanel tableLayoutPanel2;
-        private Label label5;
-        private Button download;
         private ProgressBar progressBar2;
         private Label label4;
         private TableLayoutPanel tableLayoutPanel3;
-        private Label label6;
-        private Label label7;
         private Button createNewTorrent;
         private TableLayoutPanel tableLayoutPanel4;
         private Button delete;
@@ -494,5 +555,10 @@
         private Button save;
         private Label label10;
         private TextBox trackerIP;
+
+        private Button button2;
+        private Button button1;
+        private Label pagelabel;
+
     }
 }
