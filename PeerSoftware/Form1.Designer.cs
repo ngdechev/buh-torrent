@@ -43,10 +43,7 @@
             button1 = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
 
-            download = new Button();
-            label5 = new Label();
-            label6 = new Label();
-            label7 = new Label();
+           
 
             refresh = new Button();
             search = new Button();
@@ -247,45 +244,6 @@
             tableLayoutPanel2.TabIndex = 8;
             // 
 
-            // download
-            // 
-            download.Location = new Point(707, 4);
-            download.Name = "download";
-            download.Size = new Size(70, 23);
-            download.TabIndex = 10;
-            download.Text = "Download";
-            download.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Left;
-            label5.AutoSize = true;
-            label5.Location = new Point(4, 12);
-            label5.Name = "label5";
-            label5.Size = new Size(42, 15);
-            label5.TabIndex = 9;
-            label5.Text = "Name ";
-            // 
-            // label6
-            // 
-            label6.Anchor = AnchorStyles.Left;
-            label6.AutoSize = true;
-            label6.Location = new Point(91, 12);
-            label6.Name = "label6";
-            label6.Size = new Size(27, 15);
-            label6.TabIndex = 11;
-            label6.Text = "Size";
-            // 
-            // label7
-            // 
-            label7.Anchor = AnchorStyles.Left;
-            label7.AutoSize = true;
-            label7.Location = new Point(139, 12);
-            label7.Name = "label7";
-            label7.Size = new Size(63, 15);
-            label7.TabIndex = 12;
-            label7.Text = "Descripion";
-            // 
 
             // refresh
             // 

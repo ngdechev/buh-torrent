@@ -27,6 +27,7 @@ namespace PeerSoftware
         int resultPage = 0;
         int resultMaxPage = 0;
         bool searchOnFlag = false;
+
         public Form1()
         {
             InitializeComponent();
@@ -69,10 +70,6 @@ namespace PeerSoftware
             Show(allPage, allTorrentFiles);
         }
 
-        public void SetTrackerIp(string ip)
-        {
-            trackerIP.Text = ip;
-        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -222,7 +219,7 @@ namespace PeerSoftware
             resultMaxPage = searchResults.Count / 5;
             searchOnFlag = true;
             return searchResults;
-
+        }
         public void SendPTTMessage(string command, string payload)
         {
             var pttBlock = new PTTBlock(command, payload);
@@ -283,12 +280,7 @@ namespace PeerSoftware
             trackerIP.Text = ip;
         }
 
-        private void search_Click(object sender, EventArgs e)
-        {
-            Control control = sender as Control;
-            //tableLayoutPanel2.GetRow
-        }
-
+       
         private void save_Click(object sender, EventArgs e)
         {
             if (_isConnected)
