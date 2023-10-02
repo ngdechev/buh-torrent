@@ -9,7 +9,7 @@ namespace TorrentTracker.Server
         private TcpClient _peerSocket;
         private NetworkStream _stream;
         private TrackerServer _server;
-        private PTT _peerToTracker = new PTT();
+        //private PTT _peerToTracker = new PTT();
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
         
@@ -33,7 +33,7 @@ namespace TorrentTracker.Server
 
             while (_isRunning)
             {
-                _block = _peerToTracker.ParseToBlock(_stream);
+                _block = PTT.ParseToBlock(_stream); //_peerToTracker.ParseToBlock(_stream);
                 string command = _block.GetCommand();
                 string payload = _block.GetPayload();
 
