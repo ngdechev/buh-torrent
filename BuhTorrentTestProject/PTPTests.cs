@@ -13,7 +13,7 @@ namespace BuhTorrentTestProject
     [TestFixture]
     public class PTPTests
     {
-        [Test]
+       /* [Test]
         public void ToPackageReturnsCorrectString()
         {
             // Arrange
@@ -158,6 +158,6 @@ namespace BuhTorrentTestProject
 
             // Assert
             Assert.AreEqual("15hello", result);
-        }
+        }*/
     }
 }

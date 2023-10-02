@@ -1,6 +1,11 @@
 
 
 
+using PTT_Parser;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
 namespace PeerSoftware
 {
     public partial class Form1 : Form
@@ -57,7 +62,7 @@ namespace PeerSoftware
         private void search_Click(object sender, EventArgs e)
         {
             resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
-            Show(allPage, resultTorrentFiles);
+            Show(resultPage, resultTorrentFiles);
         }
 
 
@@ -70,7 +75,7 @@ namespace PeerSoftware
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(searchOnFlag)
+            if(!searchOnFlag)
             {
                 if (allPage - 1 >= 0)
                 {
@@ -93,7 +98,7 @@ namespace PeerSoftware
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (searchOnFlag)
+            if (!searchOnFlag)
             {
                 if (allPage + 1 < allMaxPage)
                 {
