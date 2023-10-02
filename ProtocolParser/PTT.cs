@@ -85,6 +85,8 @@ namespace PTT_Parser
                 case "0x05":
                 case "0x06":
                 case "0x07":
+                case "0x08":
+                case "0x09":
                     return true;
                 default:
                     return false;
