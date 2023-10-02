@@ -37,7 +37,7 @@ namespace PeerSoftware
 
             _trackerIpField = trackerIP.Text;
             allTorrentFiles = new List<TorrentFile>();
-          
+
             for (int i = 0; i < 5; i++)
             {
                 Label titleLabel = new Label();
@@ -45,17 +45,17 @@ namespace PeerSoftware
                 Label descriptionLabel = new Label(); // Corrected the variable name
                 Button button = new Button();
                 button.Text = "Download";
-              
+
                 tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
                 tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
                 tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
                 tableLayoutPanel2.Controls.Add(button, 3, i);
-              
+
                 titleControls.Add(titleLabel);
                 sizeControls.Add(sizeLabel);
                 descriptionControls.Add(descriptionLabel);
                 downloadControls.Add(button);
-              
+
             }
         }
 
@@ -75,7 +75,7 @@ namespace PeerSoftware
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(!searchOnFlag)
+            if (!searchOnFlag)
             {
                 if (allPage - 1 >= 0)
                 {
@@ -93,7 +93,7 @@ namespace PeerSoftware
                 }
                 Show(resultPage, resultTorrentFiles);
             }
-            
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -116,9 +116,9 @@ namespace PeerSoftware
                 }
                 Show(resultPage, resultTorrentFiles);
             }
-            
+
         }
-        void Show(int i , List<TorrentFile> torrentFiles)
+        void Show(int i, List<TorrentFile> torrentFiles)
         {
             int row = i * 5;
             for (int index = 0; index < titleControls.Count; index++)
@@ -231,7 +231,7 @@ namespace PeerSoftware
             _stream.Write(messageBytes, 0, messageBytes.Length);
         }
 
-        
+
 
         public PTTBlock ReceivePTTMessage()
         {
@@ -282,7 +282,7 @@ namespace PeerSoftware
             trackerIP.Text = ip;
         }
 
-       
+
         private void save_Click(object sender, EventArgs e)
         {
             if (_isConnected)

@@ -39,12 +39,10 @@ namespace PeerSoftware
             label3 = new Label();
             status = new Button();
             browes = new TabPage();
+            pagelabel = new Label();
             button2 = new Button();
             button1 = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
-
-           
-
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
@@ -62,9 +60,6 @@ namespace PeerSoftware
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
-
-            pagelabel = new Label();
-
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -203,6 +198,15 @@ namespace PeerSoftware
             browes.Text = "Browse";
             browes.UseVisualStyleBackColor = true;
             // 
+            // pagelabel
+            // 
+            pagelabel.AutoSize = true;
+            pagelabel.Location = new Point(479, 59);
+            pagelabel.Name = "pagelabel";
+            pagelabel.Size = new Size(89, 15);
+            pagelabel.TabIndex = 11;
+            pagelabel.Text = "Page Number 0";
+            // 
             // button2
             // 
             button2.Location = new Point(686, 55);
@@ -243,8 +247,6 @@ namespace PeerSoftware
             tableLayoutPanel2.Size = new Size(784, 334);
             tableLayoutPanel2.TabIndex = 8;
             // 
-
-
             // refresh
             // 
             refresh.Location = new Point(707, 20);
@@ -359,9 +361,7 @@ namespace PeerSoftware
             trackerIP.Name = "trackerIP";
             trackerIP.Size = new Size(174, 23);
             trackerIP.TabIndex = 2;
-
             trackerIP.Text = "127.0.0.1:12345";
-
             // 
             // save
             // 
@@ -371,6 +371,7 @@ namespace PeerSoftware
             save.TabIndex = 1;
             save.Text = "Save";
             save.UseVisualStyleBackColor = true;
+            save.Click += save_Click;
             // 
             // label10
             // 
@@ -392,27 +393,6 @@ namespace PeerSoftware
             // 
             // progressBar2
             // 
-
-            // 
-            label10.AutoSize = true;
-            label10.Location = new Point(13, 31);
-            label10.Name = "label10";
-            label10.Size = new Size(51, 15);
-            label10.TabIndex = 0;
-            label10.Text = "Traker IP";
-            // 
-            // help
-            // 
-            help.Location = new Point(4, 24);
-            help.Name = "help";
-            help.Size = new Size(791, 420);
-            help.TabIndex = 4;
-            help.Text = "Help";
-            help.UseVisualStyleBackColor = true;
-            // 
-            // progressBar2
-            // 
-
             progressBar2.Location = new Point(65, 4);
             progressBar2.Name = "progressBar2";
             progressBar2.Size = new Size(54, 20);
@@ -443,17 +423,6 @@ namespace PeerSoftware
             tableLayoutPanel3.RowCount = 1;
             tableLayoutPanel3.Size = new Size(200, 100);
             tableLayoutPanel3.TabIndex = 0;
-
-            // 
-            // pagelabel
-            // 
-            pagelabel.AutoSize = true;
-            pagelabel.Location = new Point(479, 59);
-            pagelabel.Name = "pagelabel";
-            pagelabel.Size = new Size(89, 15);
-            pagelabel.TabIndex = 11;
-            pagelabel.Text = "Page Number 0";
-
             // 
             // Form1
             // 
