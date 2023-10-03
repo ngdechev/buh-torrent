@@ -1,5 +1,8 @@
 ﻿
 
+using System.Data;
+using System.Text.Json;
+
 namespace TorrentTracker.Controllers
 {
     public class TorrentManagementController : ITorrentManagementController
@@ -46,6 +49,35 @@ namespace TorrentTracker.Controllers
         public string SearchTorrent(string torrentName)
         {
             throw new NotImplementedException();
+        }
+
+        public void ReadTorrentFileFromFile()
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string folderPath = Path.Combine(currentDirectory, "TorrentFile");
+
+            if (Directory.Exists(folderPath))
+            {
+                string[] files = Directory.GetFiles(folderPath);
+
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        string jsonText = File.ReadAllText(file);
+                        Torrent torrent = JsonSerializer.Deserialize<Torrent>(jsonText);
+                        _AllTorrents.Add(torrent);
+                    }
+                    catch (Exception ecxeption)
+                    {
+                        throw new Exception("Error: " + ecxeption);
+                    }
+                }
+            }
+            else 
+            {
+                throw new Exception("Missing folder");
+            }
         }
     }
 }
