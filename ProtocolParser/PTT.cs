@@ -36,9 +36,9 @@ namespace PTT_Parser
         {
             byte[] command = new byte[4];
 
-            int bytesRead = networkStream.Read(command, 0, 1);
+            int bytesRead = networkStream.Read(command, 0, 4);
 
-            if (bytesRead != 1)
+            if (bytesRead != 4)
             {
                 throw new Exception("Failed to read command byte.");
             }
