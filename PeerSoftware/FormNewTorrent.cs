@@ -1,4 +1,5 @@
 ﻿using PTT_Parser;
+using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
@@ -137,9 +138,10 @@ namespace PeerSoftware
                 using (TcpClient client = new TcpClient())
                 {
                     await client.ConnectAsync(ipAddressString, port);
-
+                    string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
+                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
                     // Send data asynchronously
-                    PTTBlock block = new("0x02", JsonSerializer.Serialize(_newTorrent));
+                    PTTBlock block = new("0x02", myip+";"+JsonSerializer.Serialize(_newTorrent));
                     byte[] data = Encoding.UTF8.GetBytes(block.ToString());
                     await client.GetStream().WriteAsync(data, 0, data.Length);
 

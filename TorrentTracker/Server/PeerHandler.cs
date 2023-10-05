@@ -47,7 +47,7 @@ namespace TorrentTracker.Server
                 }
                 else if (command == "0x02")
                 {
-                    string[] payloadArray = payload.Split(" ");
+                    string[] payloadArray = payload.Split(";",2);
 
                     string ip = payloadArray[0];
                     string torrentFile = payloadArray[1];
