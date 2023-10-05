@@ -9,12 +9,16 @@ namespace TorrentTracker.Controllers
     {
         private DictionaryController _dictionaryController;
         private List<Torrent> _AllTorrents = new List<Torrent>();
-
+        private string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "TorrentFile");
         public TorrentManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
         }
-
+        public TorrentManagementController(string folderPath)
+        {
+            this.folderPath = folderPath;
+            _AllTorrents = new List<Torrent>();
+        }
         public List<Torrent> GetAllTorrents()
         {
             return _AllTorrents;
@@ -51,30 +55,30 @@ namespace TorrentTracker.Controllers
             throw new NotImplementedException();
         }
 
-        public void ReadTorrentFileFromFile()
+        public void ReadTorrentFileFromFoulder()
         {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string folderPath = Path.Combine(currentDirectory, "TorrentFile");
-
             if (Directory.Exists(folderPath))
             {
-                string[] files = Directory.GetFiles(folderPath);
+                string[] files = Directory.GetFiles(folderPath, "*.json");
 
                 foreach (string file in files)
                 {
                     try
                     {
-                        string jsonText = File.ReadAllText(file);
-                        Torrent torrent = JsonSerializer.Deserialize<Torrent>(jsonText);
-                        _AllTorrents.Add(torrent);
+                        using (StreamReader reader = new StreamReader(file))
+                        {
+                            string jsonText = reader.ReadToEnd();
+                            Torrent torrent = JsonSerializer.Deserialize<Torrent>(jsonText);
+                            _AllTorrents.Add(torrent);
+                        }
                     }
-                    catch (Exception ecxeption)
+                    catch (Exception exception)
                     {
-                        throw new Exception("Error: " + ecxeption);
+                        throw new Exception("Error: " + exception);
                     }
                 }
             }
-            else 
+            else
             {
                 throw new Exception("Missing folder");
             }
