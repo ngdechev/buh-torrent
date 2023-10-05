@@ -52,7 +52,14 @@ namespace TorrentTracker.Controllers
 
         public string SearchTorrent(string torrentName)
         {
-            throw new NotImplementedException();
+            Torrent foundTorrent = _AllTorrents.Find(torrent => torrent.torrentName == torrentName);
+
+            if (foundTorrent == null)
+            {
+                throw new Exception("Torrent file cannot be found.");
+            }
+
+            return foundTorrent.ToString();
         }
 
         public void ReadTorrentFileFromFoulder()
