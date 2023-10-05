@@ -11,5 +11,6 @@ namespace TorrentTracker.Controllers
         public List<Torrent> ListTorrents();
 
         public string SearchTorrent(string torrentName);
+        public void ReadTorrentFileFromFoulder();
     }
 }

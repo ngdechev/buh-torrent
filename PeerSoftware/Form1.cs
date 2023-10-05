@@ -117,6 +117,7 @@ namespace PeerSoftware
             }
 
         }
+        
         void Show(int i, List<TorrentFile> torrentFiles)
         {
             int row = i * 5;
@@ -206,6 +207,7 @@ namespace PeerSoftware
             }
 
         }
+        
         private List<TorrentFile> SearchTorrentFiles(string searchTerm)
         {
             // Convert the search term to lowercase for case-insensitive search
@@ -221,6 +223,7 @@ namespace PeerSoftware
             _searchOnFlag = true;
             return searchResults;
         }
+        
         public void SendPTTMessage(string command, string payload)
         {
             var pttBlock = new PTTBlock(command, payload);
@@ -311,6 +314,7 @@ namespace PeerSoftware
             }
         }
 
+
         private void createNewTorrent_Click(object sender, EventArgs e)
         {
             FormNewTorrent formNewTorrent = new FormNewTorrent(this);
@@ -321,7 +325,13 @@ namespace PeerSoftware
         {
             return trackerIP.Text;
         }
+        
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+
+        }
+        
     }
 
 }
-
