@@ -32,10 +32,10 @@ namespace PeerSoftware
         }
        
 
-        public static void WriteJSON(TorrentFile torrent)
+        public static void WriteJSON(string finaleFolder, TorrentFile torrent)
         {
             string currentDirectory = Directory.GetCurrentDirectory();
-            string folderPath = Path.Combine(currentDirectory, "TestData", torrent.info.torrentName + ".json");
+            string folderPath = Path.Combine(currentDirectory, finaleFolder, torrent.info.torrentName + ".json");
 
             string json = JsonSerializer.Serialize(torrent);
             File.WriteAllText(folderPath, json);

@@ -147,6 +147,7 @@ namespace PeerSoftware
 
                     // Handle any response from the server if needed
                     // ...
+                    TorrentReader.WriteJSON("MyTorrent", _newTorrent);
                 }
 
             }
