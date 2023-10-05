@@ -1,6 +1,3 @@
-
-
-
 using PTT_Parser;
 using System.Net;
 using System.Net.Sockets;
@@ -18,17 +15,19 @@ namespace PeerSoftware
         private string _trackerIpField;
         private int _trackerPortField;
 
-        private List<Control> titleControls = new List<Control>();
-        private List<Control> sizeControls = new List<Control>();
-        private List<Control> descriptionControls = new List<Control>();
-        private List<Control> downloadControls = new List<Control>();
-        private List<TorrentFile> allTorrentFiles = new List<TorrentFile>();
-        int allPage = 0;
-        int allMaxPage = 0;
-        private List<TorrentFile> resultTorrentFiles = new List<TorrentFile>();
-        int resultPage = 0;
-        int resultMaxPage = 0;
-        bool searchOnFlag = false;
+        private List<Control> _titleControls = new List<Control>();
+        private List<Control> _sizeControls = new List<Control>();
+        private List<Control> _descriptionControls = new List<Control>();
+        private List<Control> _downloadControls = new List<Control>();
+        
+        private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
+        private int _allPage = 0;
+        private int _allMaxPage = 0;
+        
+        private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
+        private int _resultPage = 0;
+        private int _resultMaxPage = 0;
+        private bool _searchOnFlag = false;
 
         public Form1()
         {
@@ -36,7 +35,7 @@ namespace PeerSoftware
             SplitIpAndPort();
 
             _trackerIpField = trackerIP.Text;
-            allTorrentFiles = new List<TorrentFile>();
+            _allTorrentFiles = new List<TorrentFile>();
 
             for (int i = 0; i < 5; i++)
             {
@@ -51,83 +50,83 @@ namespace PeerSoftware
                 tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
                 tableLayoutPanel2.Controls.Add(button, 3, i);
 
-                titleControls.Add(titleLabel);
-                sizeControls.Add(sizeLabel);
-                descriptionControls.Add(descriptionLabel);
-                downloadControls.Add(button);
+                _titleControls.Add(titleLabel);
+                _sizeControls.Add(sizeLabel);
+                _descriptionControls.Add(descriptionLabel);
+                _downloadControls.Add(button);
 
             }
         }
 
         private void search_Click(object sender, EventArgs e)
         {
-            resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
-            Show(resultPage, resultTorrentFiles);
+            _resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
+            Show(_resultPage, _resultTorrentFiles);
         }
 
 
         private void refresh_Click(object sender, EventArgs e)
         {
-            searchOnFlag = false;
-            Show(allPage, allTorrentFiles);
+            _searchOnFlag = false;
+            Show(_allPage, _allTorrentFiles);
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!searchOnFlag)
+            if (!_searchOnFlag)
             {
-                if (allPage - 1 >= 0)
+                if (_allPage - 1 >= 0)
                 {
-                    allPage--;
-                    pagelabel.Text = "Page Number " + allPage.ToString();
+                    _allPage--;
+                    pagelabel.Text = "Page Number " + _allPage.ToString();
                 }
-                Show(allPage, allTorrentFiles);
+                Show(_allPage, _allTorrentFiles);
             }
             else
             {
-                if (resultPage - 1 >= 0)
+                if (_resultPage - 1 >= 0)
                 {
-                    resultPage--;
-                    pagelabel.Text = "Page Number " + resultPage.ToString();
+                    _resultPage--;
+                    pagelabel.Text = "Page Number " + _resultPage.ToString();
                 }
-                Show(resultPage, resultTorrentFiles);
+                Show(_resultPage, _resultTorrentFiles);
             }
 
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!searchOnFlag)
+            if (!_searchOnFlag)
             {
-                if (allPage + 1 < allMaxPage)
+                if (_allPage + 1 < _allMaxPage)
                 {
-                    allPage++;
-                    pagelabel.Text = "Page Number " + allPage.ToString();
+                    _allPage++;
+                    pagelabel.Text = "Page Number " + _allPage.ToString();
                 }
-                Show(allPage, allTorrentFiles);
+                Show(_allPage, _allTorrentFiles);
             }
             else
             {
-                if (resultPage + 1 < resultMaxPage)
+                if (_resultPage + 1 < _resultMaxPage)
                 {
-                    resultPage++;
-                    pagelabel.Text = "Page Number " + resultPage.ToString();
+                    _resultPage++;
+                    pagelabel.Text = "Page Number " + _resultPage.ToString();
                 }
-                Show(resultPage, resultTorrentFiles);
+                Show(_resultPage, _resultTorrentFiles);
             }
 
         }
         void Show(int i, List<TorrentFile> torrentFiles)
         {
             int row = i * 5;
-            for (int index = 0; index < titleControls.Count; index++)
+            for (int index = 0; index < _titleControls.Count; index++)
             {
                 if (index + row < torrentFiles.Count)
                 {
-                    Control titleControl = titleControls[index];
-                    Control sizeControl = sizeControls[index];
-                    Control descriptionControl = descriptionControls[index];
+                    Control titleControl = _titleControls[index];
+                    Control sizeControl = _sizeControls[index];
+                    Control descriptionControl = _descriptionControls[index];
 
                     if (titleControl != null)
                     {
@@ -147,9 +146,9 @@ namespace PeerSoftware
                 else
                 {
                     // If there are no more items in torrentFiles, clear the text of the controls
-                    Control titleControl = titleControls[index];
-                    Control sizeControl = sizeControls[index];
-                    Control descriptionControl = descriptionControls[index];
+                    Control titleControl = _titleControls[index];
+                    Control sizeControl = _sizeControls[index];
+                    Control descriptionControl = _descriptionControls[index];
 
                     if (titleControl != null)
                     {
@@ -180,7 +179,7 @@ namespace PeerSoftware
                 string[] fileNames = Directory.GetFiles(folderPath);
 
                 // Clear the previous torrentFiles list
-                allTorrentFiles.Clear();
+                _allTorrentFiles.Clear();
 
                 // Iterate through the file names and display them
                 foreach (string fileName in fileNames)
@@ -188,7 +187,7 @@ namespace PeerSoftware
                     TorrentFile torrentFile = TorrentReader.ReadFromJSON(fileName);
                     if (torrentFile != null)
                     {
-                        allTorrentFiles.Add(torrentFile);
+                        _allTorrentFiles.Add(torrentFile);
                     }
                 }
             }
@@ -196,7 +195,7 @@ namespace PeerSoftware
             {
                 MessageBox.Show(ex.Message);
             }
-            allMaxPage = allTorrentFiles.Count / 5;
+            _allMaxPage = _allTorrentFiles.Count / 5;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -213,13 +212,13 @@ namespace PeerSoftware
             searchTerm = searchTerm.ToLower();
 
             // Use LINQ to filter torrentFiles based on the search term in filename or description
-            List<TorrentFile> searchResults = allTorrentFiles
+            List<TorrentFile> searchResults = _allTorrentFiles
                 .Where(file =>
                     file.info.fileName.ToLower().Contains(searchTerm) ||
                     file.info.description.ToLower().Contains(searchTerm))
                 .ToList();
-            resultMaxPage = searchResults.Count / 5;
-            searchOnFlag = true;
+            _resultMaxPage = searchResults.Count / 5;
+            _searchOnFlag = true;
             return searchResults;
         }
         public void SendPTTMessage(string command, string payload)
@@ -312,6 +311,16 @@ namespace PeerSoftware
             }
         }
 
+        private void createNewTorrent_Click(object sender, EventArgs e)
+        {
+            FormNewTorrent formNewTorrent = new FormNewTorrent(this);
+            formNewTorrent.ShowDialog();
+        }
+
+        public string TextForAnnoncer()
+        {
+            return trackerIP.Text;
+        }
     }
 
 }
