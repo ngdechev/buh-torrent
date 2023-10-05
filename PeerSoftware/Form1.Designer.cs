@@ -310,6 +310,7 @@ namespace PeerSoftware
             createNewTorrent.TabIndex = 10;
             createNewTorrent.Text = "Create new Torrent";
             createNewTorrent.UseVisualStyleBackColor = true;
+            createNewTorrent.Click += createNewTorrent_Click;
             // 
             // tableLayoutPanel4
             // 
