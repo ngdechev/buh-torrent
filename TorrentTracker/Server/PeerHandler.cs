@@ -71,6 +71,10 @@ namespace TorrentTracker.Server
                 {
                     _peerManagementController.ListPeers();
                 }
+                else if (command == "0x08")
+                {
+                    _torrentManagementController.SearchTorrent(payload);
+                }
             }
         }
 
