@@ -8,7 +8,7 @@ namespace PeerSoftware
         public string checksum { get; set; }
         public string fileName { get; set; }
         public string torrentName { get; set; }
-        public int length { get; set; }
+        public long length { get; set; }
         public string description { get; set; }
     }
 
