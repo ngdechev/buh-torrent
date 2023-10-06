@@ -341,6 +341,9 @@ namespace PeerSoftware
                     _client = new TcpClient(_trackerIpField, _trackerPortField);
                     _stream = _client.GetStream();
 
+                    string localIpPort = $"{GetLocalIPAddress()}:{GetLocalPort()}";
+                    SendPTTMessage("0x00", localIpPort);
+
                     MessageBox.Show($"Connected to {_trackerIpField}");
                 }
                 catch (Exception ex)
@@ -352,6 +355,35 @@ namespace PeerSoftware
             {
                 MessageBox.Show("Invalid IP address or port. Please enter a valid IP address and port.");
             }
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            string localIpAddress = string.Empty;
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddresses = host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
+            foreach (var ipAddress in ipAddresses)
+            {
+                localIpAddress = ipAddress.ToString();
+                break;
+            }
+
+            return localIpAddress;
+        }
+
+        public static int GetLocalPort()
+        {
+            int localPort = -1;
+
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            {
+                socket.Bind(new IPEndPoint(IPAddress.Any, 0));
+                localPort = ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+
+            return localPort;
         }
 
     }
