@@ -30,7 +30,7 @@ namespace PeerSoftware
         int resultMaxPage = 0;
         bool searchOnFlag = false;
 
-        Button button = new Button();
+        Button button;
 
         public Form1()
         {
@@ -47,6 +47,7 @@ namespace PeerSoftware
                 Label sizeLabel = new Label();
                 Label descriptionLabel = new Label(); // Corrected the variable name
 
+                button = new Button();
                 button.Text = "Download";
 
                 tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
@@ -240,10 +241,6 @@ namespace PeerSoftware
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
         {
-            //MessageBox.Show("it works!");
-            //TableLayoutPanel panel = this.tableLayoutPanel1;
-
-            //AddRowToPanel(panel);
             Label label1 = new Label();
             label1.Text = "Torrent Name";
 
@@ -255,17 +252,26 @@ namespace PeerSoftware
             Button button = new Button();
             button.Text = "Pause";
 
-            // Set the properties for the controls, if needed
+            // Create a new row
+            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
 
-            // Add the controls to the new row
-            tableLayoutPanel1.Controls.Add(label1, 0, tableLayoutPanel1.RowCount); // Add label1 to the first column
-            tableLayoutPanel1.Controls.Add(label2, 1, tableLayoutPanel1.RowCount); // Add label2 to the second column
-            tableLayoutPanel1.Controls.Add(progressBar, 2, tableLayoutPanel1.RowCount); // Add progressBar to the third column
-            tableLayoutPanel1.Controls.Add(button, 3, tableLayoutPanel1.RowCount); // Add button to the fourth column
+            // Move the existing controls to the next row
+            foreach (Control control in tableLayoutPanel1.Controls)
+            {
+                int row = tableLayoutPanel1.GetRow(control);
+                tableLayoutPanel1.SetRow(control, row + 1);
+            }
+
+            // Insert the new controls into the first row
+            tableLayoutPanel1.Controls.Add(label1, 0, 0); // Add label1 to the first column of the first row
+            tableLayoutPanel1.Controls.Add(label2, 1, 0); // Add label2 to the second column of the first row
+            tableLayoutPanel1.Controls.Add(progressBar, 2, 0); // Add progressBar to the third column of the first row
+            tableLayoutPanel1.Controls.Add(button, 3, 0); // Add button to the fourth column of the first row
 
             // Increment the row count
             tableLayoutPanel1.RowCount++;
         }
+
 
         public PTTBlock ReceivePTTMessage()
         {
