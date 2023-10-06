@@ -50,7 +50,7 @@ namespace TorrentTracker.Controllers
             return _AllTorrents;
         }
 
-        public string SearchTorrent(string torrentName)
+        public Torrent SearchTorrent(string torrentName)
         {
             Torrent foundTorrent = _AllTorrents.Find(torrent => torrent.torrentName == torrentName);
 
@@ -59,7 +59,7 @@ namespace TorrentTracker.Controllers
                 throw new Exception("Torrent file cannot be found.");
             }
 
-            return foundTorrent.ToString();
+            return foundTorrent;
         }
 
         public void ReadTorrentFileFromFoulder()
