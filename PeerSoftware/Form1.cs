@@ -1,6 +1,4 @@
 using PTT_Parser;
-using System.Diagnostics.Metrics;
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -31,11 +29,10 @@ namespace PeerSoftware
         bool searchOnFlag = false;
 
         Button button;
-
+        
         public Form1()
         {
             InitializeComponent();
-            //InitializeTorrentTable();
             SplitIpAndPort();
 
             _trackerIpField = trackerIP.Text;
@@ -49,6 +46,7 @@ namespace PeerSoftware
 
                 button = new Button();
                 button.Text = "Download";
+                button.Click += DownloadButton_Click;
 
                 tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
                 tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
@@ -59,10 +57,8 @@ namespace PeerSoftware
                 sizeControls.Add(sizeLabel);
                 descriptionControls.Add(descriptionLabel);
                 downloadControls.Add(button);
-
             }
-
-            button.Click += DownloadButton_Click;
+            
         }
 
         private void search_Click(object sender, EventArgs e)
@@ -124,6 +120,7 @@ namespace PeerSoftware
             }
 
         }
+
         void Show(int i, List<TorrentFile> torrentFiles)
         {
             int row = i * 5;
@@ -241,11 +238,17 @@ namespace PeerSoftware
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
         {
+            Button downloadButton = (Button)sender;
+            int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
+
+            Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
+            Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
+
             Label label1 = new Label();
-            label1.Text = "Torrent Name";
+            label1.Text = torrentNameLabel.Text;
 
             Label label2 = new Label();
-            label2.Text = "File Size";
+            label2.Text = sizeLabel.Text;
 
             ProgressBar progressBar = new ProgressBar();
 
