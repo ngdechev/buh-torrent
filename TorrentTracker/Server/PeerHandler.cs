@@ -10,17 +10,19 @@ namespace TorrentTracker.Server
         private NetworkStream _stream;
         private TrackerServer _server;
         //private PTT _peerToTracker = new PTT();
+        private DictionaryController _dictionaryController;
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
         
         private bool _isRunning = false;
 
-        public PeerHandler(TcpClient peerSocket, TrackerServer server, ITorrentManagementController torrentManagementController, IPeerManagementController peerManagementController)
+        public PeerHandler(TcpClient peerSocket, TrackerServer server, ITorrentManagementController torrentManagementController, IPeerManagementController peerManagementController, DictionaryController dictionaryController)
         {
             _peerSocket = peerSocket; 
             _server = server;
             _torrentManagementController = torrentManagementController;
             _peerManagementController = peerManagementController;
+            _dictionaryController = dictionaryController;
         }
 
         public void HandlePeer()
@@ -39,29 +41,25 @@ namespace TorrentTracker.Server
 
                 if (command == "0x00")
                 {
-                    _peerManagementController.CreatePeer(payload);
+                  _peerManagementController.CreatePeer(payload);
                 } 
                 else if (command == "0x01")
                 {
-                    _peerManagementController.DestroyPeer(payload);
+                   _peerManagementController.DestroyPeer(payload);
                 }
                 else if (command == "0x02")
                 {
                     string[] payloadArray = payload.Split(";",2);
-
                     string ip = payloadArray[0];
                     string torrentFile = payloadArray[1];
-
-                    _torrentManagementController.CreateTorrent(ip, torrentFile);
+                    _torrentManagementController.CreateTorrent(ip,torrentFile);
                 }
                 else if (command == "0x03")
                 {
-                    string[] payloadArray = payload.Split(" ");
-
+                    string[] payloadArray = payload.Split(";",2);
                     string ip = payloadArray[0];
                     string checksum = payloadArray[1];
-
-                    _torrentManagementController.DeleteTorrent(ip, checksum);
+                    _torrentManagementController.DeleteTorrent(checksum);
                 }
                 else if (command == "0x04")
                 {
@@ -69,7 +67,7 @@ namespace TorrentTracker.Server
                 }
                 else if (command == "0x06")
                 {
-                    _peerManagementController.ListPeers();
+                    _peerManagementController.ListPeersWithTorrentFile(payload);
                 }
                 else if (command == "0x08")
                 {
