@@ -239,6 +239,14 @@ namespace PeerSoftware
         public void DownloadButton_Click(object sender, EventArgs e)
         {
             Button downloadButton = (Button)sender;
+
+            if(!(sender as Control).Enabled)
+            {
+                return;
+            }
+
+            downloadButton.Enabled = false;
+
             int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
 
             Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
