@@ -2,6 +2,7 @@ using PTT_Parser;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Forms;
 
 namespace PeerSoftware
 {
@@ -29,6 +30,8 @@ namespace PeerSoftware
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
 
+        Button button;
+        
         public Form1()
         {
             InitializeComponent();
@@ -42,20 +45,25 @@ namespace PeerSoftware
                 Label titleLabel = new Label();
                 Label sizeLabel = new Label();
                 Label descriptionLabel = new Label(); // Corrected the variable name
-                Button button = new Button();
+
+                button = new Button();
                 button.Text = "Download";
+                button.Click += DownloadButton_Click;
 
                 tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
                 tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
                 tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
                 tableLayoutPanel2.Controls.Add(button, 3, i);
 
+
                 _titleControls.Add(titleLabel);
                 _sizeControls.Add(sizeLabel);
                 _descriptionControls.Add(descriptionLabel);
                 _downloadControls.Add(button);
 
+
             }
+            
         }
 
         private void search_Click(object sender, EventArgs e)
@@ -117,7 +125,7 @@ namespace PeerSoftware
             }
 
         }
-        
+
         void Show(int i, List<TorrentFile> torrentFiles)
         {
             int row = i * 5;
@@ -234,6 +242,54 @@ namespace PeerSoftware
         }
 
 
+        // Downloading torrents tab..
+        public void DownloadButton_Click(object sender, EventArgs e)
+        {
+            Button downloadButton = (Button)sender;
+
+            if(!(sender as Control).Enabled)
+            {
+                return;
+            }
+
+            downloadButton.Enabled = false;
+
+            int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
+
+            Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
+            Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
+
+            Label label1 = new Label();
+            label1.Text = torrentNameLabel.Text;
+
+            Label label2 = new Label();
+            label2.Text = sizeLabel.Text;
+
+            ProgressBar progressBar = new ProgressBar();
+
+            Button button = new Button();
+            button.Text = "Pause";
+
+            // Create a new row
+            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+
+            // Move the existing controls to the next row
+            foreach (Control control in tableLayoutPanel1.Controls)
+            {
+                int row = tableLayoutPanel1.GetRow(control);
+                tableLayoutPanel1.SetRow(control, row + 1);
+            }
+
+            // Insert the new controls into the first row
+            tableLayoutPanel1.Controls.Add(label1, 0, 0); // Add label1 to the first column of the first row
+            tableLayoutPanel1.Controls.Add(label2, 1, 0); // Add label2 to the second column of the first row
+            tableLayoutPanel1.Controls.Add(progressBar, 2, 0); // Add progressBar to the third column of the first row
+            tableLayoutPanel1.Controls.Add(button, 3, 0); // Add button to the fourth column of the first row
+
+            // Increment the row count
+            tableLayoutPanel1.RowCount++;
+        }
+
 
         public PTTBlock ReceivePTTMessage()
         {
@@ -284,7 +340,6 @@ namespace PeerSoftware
             trackerIP.Text = ip;
         }
 
-
         private void save_Click(object sender, EventArgs e)
         {
             if (_isConnected)
@@ -301,6 +356,9 @@ namespace PeerSoftware
                     _client = new TcpClient(_trackerIpField, _trackerPortField);
                     _stream = _client.GetStream();
 
+                    string localIpPort = $"{GetLocalIPAddress()}:{GetLocalPort()}";
+                    SendPTTMessage("0x00", localIpPort);
+
                     MessageBox.Show($"Connected to {_trackerIpField}");
                 }
                 catch (Exception ex)
@@ -313,6 +371,37 @@ namespace PeerSoftware
                 MessageBox.Show("Invalid IP address or port. Please enter a valid IP address and port.");
             }
         }
+
+        public static string GetLocalIPAddress()
+        {
+            string localIpAddress = string.Empty;
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddresses = host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
+            foreach (var ipAddress in ipAddresses)
+            {
+                localIpAddress = ipAddress.ToString();
+                break;
+            }
+
+            return localIpAddress;
+        }
+
+        public static int GetLocalPort()
+        {
+            int localPort = -1;
+
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            {
+                socket.Bind(new IPEndPoint(IPAddress.Any, 0));
+                localPort = ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+
+            return localPort;
+        }
+
+    }
 
 
         private void createNewTorrent_Click(object sender, EventArgs e)

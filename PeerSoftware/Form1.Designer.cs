@@ -30,14 +30,12 @@ namespace PeerSoftware
         {
             tabControl1 = new TabControl();
             buhTorrent = new TabPage();
-            resumeAll = new Button();
-            pauseAll = new Button();
+            button5 = new Button();
+            button4 = new Button();
+            label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
-            progressBar1 = new ProgressBar();
-            label3 = new Label();
-            status = new Button();
             browes = new TabPage();
             pagelabel = new Label();
             button2 = new Button();
@@ -62,7 +60,6 @@ namespace PeerSoftware
             tableLayoutPanel3 = new TableLayoutPanel();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
             browes.SuspendLayout();
             myTorrents.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
@@ -87,8 +84,9 @@ namespace PeerSoftware
             // 
             // buhTorrent
             // 
-            buhTorrent.Controls.Add(resumeAll);
-            buhTorrent.Controls.Add(pauseAll);
+            buhTorrent.Controls.Add(button5);
+            buhTorrent.Controls.Add(button4);
+            buhTorrent.Controls.Add(label3);
             buhTorrent.Controls.Add(label2);
             buhTorrent.Controls.Add(label1);
             buhTorrent.Controls.Add(tableLayoutPanel1);
@@ -101,7 +99,7 @@ namespace PeerSoftware
             buhTorrent.Text = "BuhTorrent";
             buhTorrent.UseVisualStyleBackColor = true;
             // 
-            // resumeAll
+            // button5
             // 
             resumeAll.Location = new Point(717, 33);
             resumeAll.Margin = new Padding(3, 4, 3, 4);
@@ -111,7 +109,7 @@ namespace PeerSoftware
             resumeAll.Text = "Resume All";
             resumeAll.UseVisualStyleBackColor = true;
             // 
-            // pauseAll
+            // button4
             // 
             pauseAll.Location = new Point(809, 33);
             pauseAll.Margin = new Padding(3, 4, 3, 4);
@@ -120,6 +118,18 @@ namespace PeerSoftware
             pauseAll.TabIndex = 10;
             pauseAll.Text = "Pause All";
             pauseAll.UseVisualStyleBackColor = true;
+
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(436, 56);
+            label3.Name = "label3";
+            label3.Size = new Size(109, 15);
+            label3.TabIndex = 3;
+            label3.Text = "Download Progress";
+
+        
             // 
             // label2
             // 
@@ -129,6 +139,7 @@ namespace PeerSoftware
             label2.Size = new Size(65, 20);
             label2.TabIndex = 9;
             label2.Text = "Progress";
+
             // 
             // label1
             // 
@@ -137,57 +148,24 @@ namespace PeerSoftware
             label1.Name = "label1";
             label1.Size = new Size(49, 20);
             label1.TabIndex = 8;
+
             label1.Text = "Name";
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.Anchor = AnchorStyles.None;
+            tableLayoutPanel1.AutoScroll = true;
             tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 88F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 23F));
-            tableLayoutPanel1.Controls.Add(progressBar1, 1, 0);
-            tableLayoutPanel1.Controls.Add(label3, 0, 0);
-            tableLayoutPanel1.Controls.Add(status, 2, 0);
-            tableLayoutPanel1.Location = new Point(5, 72);
-            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel1.ColumnCount = 4;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84.85523F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.1447659F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 272F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 78F));
+            tableLayoutPanel1.Location = new Point(6, 78);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 2;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 12.5F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 87.5F));
-            tableLayoutPanel1.Size = new Size(896, 409);
-            tableLayoutPanel1.TabIndex = 7;
-            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
-            // 
-            // progressBar1
-            // 
-            progressBar1.Location = new Point(407, 5);
-            progressBar1.Margin = new Padding(3, 4, 3, 4);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(395, 27);
-            progressBar1.TabIndex = 0;
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Left;
-            label3.AutoSize = true;
-            label3.Location = new Point(4, 16);
-            label3.Name = "label3";
-            label3.Size = new Size(136, 20);
-            label3.TabIndex = 9;
-            label3.Text = "Torrent Name 2023";
-            // 
-            // status
-            // 
-            status.Location = new Point(810, 5);
-            status.Margin = new Padding(3, 4, 3, 4);
-            status.Name = "status";
-            status.Size = new Size(80, 31);
-            status.TabIndex = 10;
-            status.Text = "Pause";
-            status.UseVisualStyleBackColor = true;
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(779, 336);
+            tableLayoutPanel1.TabIndex = 0;
             // 
             // browes
             // 
@@ -461,8 +439,6 @@ namespace PeerSoftware
             tabControl1.ResumeLayout(false);
             buhTorrent.ResumeLayout(false);
             buhTorrent.PerformLayout();
-            tableLayoutPanel1.ResumeLayout(false);
-            tableLayoutPanel1.PerformLayout();
             browes.ResumeLayout(false);
             browes.PerformLayout();
             myTorrents.ResumeLayout(false);
@@ -479,19 +455,10 @@ namespace PeerSoftware
         #endregion
 
         private TabControl tabControl1;
-        private TabPage buhTorrent;
         private TabPage browes;
         private TabPage myTorrents;
-        private Label label1;
-        private TableLayoutPanel tableLayoutPanel1;
-        private Label label2;
-        private ProgressBar progressBar1;
-        private Label label3;
-        private Button pauseAll;
         private TabPage settings;
         private TabPage help;
-        private Button resumeAll;
-        private Button status;
         private TextBox searchBar;
         private Button refresh;
         private Button search;
@@ -511,7 +478,13 @@ namespace PeerSoftware
         private Button button2;
         private Button button1;
         private Label pagelabel;
-
+        private TabPage buhTorrent;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button button5;
+        private Button button4;
     }
 }
 
