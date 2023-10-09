@@ -401,8 +401,6 @@ namespace PeerSoftware
             return localPort;
         }
 
-    }
-
 
         private void createNewTorrent_Click(object sender, EventArgs e)
         {
