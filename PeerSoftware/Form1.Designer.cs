@@ -101,23 +101,23 @@ namespace PeerSoftware
             // 
             // button5
             // 
-            resumeAll.Location = new Point(717, 33);
-            resumeAll.Margin = new Padding(3, 4, 3, 4);
-            resumeAll.Name = "resumeAll";
-            resumeAll.Size = new Size(86, 31);
-            resumeAll.TabIndex = 11;
-            resumeAll.Text = "Resume All";
-            resumeAll.UseVisualStyleBackColor = true;
+            button5.Location = new Point(717, 33);
+            button5.Margin = new Padding(3, 4, 3, 4);
+            button5.Name = "resumeAll";
+            button5.Size = new Size(86, 31);
+            button5.TabIndex = 11;
+            button5.Text = "Resume All";
+            button5.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            pauseAll.Location = new Point(809, 33);
-            pauseAll.Margin = new Padding(3, 4, 3, 4);
-            pauseAll.Name = "pauseAll";
-            pauseAll.Size = new Size(86, 31);
-            pauseAll.TabIndex = 10;
-            pauseAll.Text = "Pause All";
-            pauseAll.UseVisualStyleBackColor = true;
+            button4.Location = new Point(809, 33);
+            button4.Margin = new Padding(3, 4, 3, 4);
+            button4.Name = "pauseAll";
+            button4.Size = new Size(86, 31);
+            button4.TabIndex = 10;
+            button4.Text = "Pause All";
+            button4.UseVisualStyleBackColor = true;
 
             // 
             // label3
