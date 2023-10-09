@@ -1,17 +1,24 @@
 ﻿
 
+using System.Data;
+using System.Text.Json;
+
 namespace TorrentTracker.Controllers
 {
     public class TorrentManagementController : ITorrentManagementController
     {
         private DictionaryController _dictionaryController;
         private List<Torrent> _AllTorrents = new List<Torrent>();
-
+        private string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "TorrentFile");
         public TorrentManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
         }
-
+        public TorrentManagementController(string folderPath)
+        {
+            this.folderPath = folderPath;
+            _AllTorrents = new List<Torrent>();
+        }
         public List<Torrent> GetAllTorrents()
         {
             return _AllTorrents;
@@ -46,6 +53,35 @@ namespace TorrentTracker.Controllers
         public string SearchTorrent(string torrentName)
         {
             throw new NotImplementedException();
+        }
+
+        public void ReadTorrentFileFromFoulder()
+        {
+            if (Directory.Exists(folderPath))
+            {
+                string[] files = Directory.GetFiles(folderPath, "*.json");
+
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        using (StreamReader reader = new StreamReader(file))
+                        {
+                            string jsonText = reader.ReadToEnd();
+                            Torrent torrent = JsonSerializer.Deserialize<Torrent>(jsonText);
+                            _AllTorrents.Add(torrent);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        throw new Exception("Error: " + exception);
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Missing folder");
+            }
         }
     }
 }

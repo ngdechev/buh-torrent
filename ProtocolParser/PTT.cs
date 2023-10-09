@@ -34,38 +34,80 @@ namespace PTT_Parser
     {
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
+            
             byte[] command = new byte[4];
-            byte[] payload = new byte[1020];
 
-            int bytesRead = networkStream.Read(command, 0, 1);
+            int bytesRead = networkStream.Read(command, 0, 4);
 
-            if(bytesRead != 1)
+
+            if (bytesRead != 4)
+
+
             {
                 throw new Exception("Failed to read command byte.");
             }
 
             string blockCommand = Encoding.ASCII.GetString(command);
 
-            if(!IsValidCommand(blockCommand))
+            if (!IsValidCommand(blockCommand))
             {
                 throw new Exception("Invalid command.");
             }
 
-            bytesRead = networkStream.Read(payload, 4, 1020);
 
-            if(bytesRead <= 1)
+            if (blockCommand == "0x05")
+
             {
-                throw new Exception("Failed to read payload data.");
+                byte[] lengthIndicator = new byte[4];
+                bytesRead = networkStream.Read(lengthIndicator, 0, 4);
+
+                if (bytesRead != 4)
+                {
+                    throw new Exception("Failed to read length indicator.");
+                }
+
+                int totalLength = BitConverter.ToInt32(lengthIndicator, 0);
+
+                List<byte[]> payloadChunks = new List<byte[]>();
+                int totalBytesRead = 0;
+                int chunkSize = 1020;
+
+                while (totalBytesRead < totalLength)
+                {
+                    int remainingBytes = totalLength - totalBytesRead;
+                    int bytesToRead = Math.Min(chunkSize, remainingBytes);
+
+                    byte[] chunk = new byte[bytesToRead];
+                    bytesRead = networkStream.Read(chunk, 0, bytesToRead);
+
+                    if (bytesRead <= 0)
+                    {
+                        throw new Exception("Failed to read payload data.");
+                    }
+
+                    payloadChunks.Add(chunk);
+                    totalBytesRead += bytesRead;
+                }
+
+                byte[] payload = payloadChunks.SelectMany(chunk => chunk).ToArray();
+                string payloadCommand = Encoding.ASCII.GetString(payload);
+
+                return new PTTBlock(blockCommand, payloadCommand);
             }
-
-            string payloadCommand = Encoding.ASCII.GetString(payload);
-
-            if(payloadCommand == null && blockCommand != "0x04")
+            else
             {
-                throw new Exception("Invalid payload.");
-            }
+                byte[] payload = new byte[1020];
+                bytesRead = networkStream.Read(payload, 0, 1020);
 
-            return new PTTBlock(blockCommand, payloadCommand);
+                if (bytesRead <= 0)
+                {
+                    throw new Exception("Failed to read payload data.");
+                }
+
+                string payloadCommand = Encoding.ASCII.GetString(payload);
+
+                return new PTTBlock(blockCommand, payloadCommand);
+            }
         }
 
         public static string ParseToString(PTTBlock block)
@@ -85,11 +127,12 @@ namespace PTT_Parser
                 case "0x05":
                 case "0x06":
                 case "0x07":
+                case "0x08":
+                case "0x09":
                     return true;
                 default:
                     return false;
             }
         }
-
     }
 }
