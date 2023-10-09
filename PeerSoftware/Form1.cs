@@ -2,6 +2,7 @@ using PTT_Parser;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 
 namespace PeerSoftware
 {
@@ -19,11 +20,11 @@ namespace PeerSoftware
         private List<Control> _sizeControls = new List<Control>();
         private List<Control> _descriptionControls = new List<Control>();
         private List<Control> _downloadControls = new List<Control>();
-        
+
         private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
         private int _allPage = 0;
         private int _allMaxPage = 0;
-        
+
         private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
@@ -117,7 +118,7 @@ namespace PeerSoftware
             }
 
         }
-        
+
         void Show(int i, List<TorrentFile> torrentFiles)
         {
             int row = i * 5;
@@ -169,9 +170,9 @@ namespace PeerSoftware
             }
         }
 
-        void LoadData()
+        async void LoadData()
         {
-            string currentDirectory = Directory.GetCurrentDirectory();
+            /*string currentDirectory = Directory.GetCurrentDirectory();
             string folderPath = Path.Combine(currentDirectory, "TestData");
 
             try
@@ -195,8 +196,65 @@ namespace PeerSoftware
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }*/
+            _allTorrentFiles.Clear();
+
+            tabControl1.Enabled = false;
+
+            try
+            {
+                string payload ="";
+                // Perform your TCP operations asynchronously
+                PTTBlock block = new PTTBlock("0x04", "");
+                await SendDataAsync(block, payload);
+
+                // Enable the UI controls after sending is done
+                tabControl1.Enabled = true;
+                _allTorrentFiles.AddRange( JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                // Enable other controls as needed
+
             }
-            _allMaxPage = _allTorrentFiles.Count / 5;
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur during the TCP operation
+                MessageBox.Show("An error occurred: " + ex.Message);
+
+                // Make sure to re-enable the UI controls in case of an error
+                tabControl1.Enabled = true;
+                // Enable other controls as needed
+            }
+
+        }
+
+        private async Task SendDataAsync(PTTBlock block, string payload)
+        {
+            try
+            {
+                // Create a TCP client and connect to the server
+                using (TcpClient client = new TcpClient())
+                {
+                    await client.ConnectAsync(_trackerIpField, _trackerPortField);
+                    string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
+                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+                    // Send data asynchronously
+
+                    byte[] data = Encoding.UTF8.GetBytes(block.ToString());
+                    await client.GetStream().WriteAsync(data, 0, data.Length);
+                    if(client.GetStream().Length > 0)
+                    {
+                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                        payload = receive.GetPayload();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                // Handle exceptions that may occur during the TCP operation
+                throw new Exception("Error sending data: " + ex.Message);
+
+            }
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -207,7 +265,7 @@ namespace PeerSoftware
             }
 
         }
-        
+
         private List<TorrentFile> SearchTorrentFiles(string searchTerm)
         {
             // Convert the search term to lowercase for case-insensitive search
@@ -223,7 +281,7 @@ namespace PeerSoftware
             _searchOnFlag = true;
             return searchResults;
         }
-        
+
         public void SendPTTMessage(string command, string payload)
         {
             var pttBlock = new PTTBlock(command, payload);
@@ -325,13 +383,13 @@ namespace PeerSoftware
         {
             return trackerIP.Text;
         }
-        
+
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
 
         }
-        
+
     }
 
 }

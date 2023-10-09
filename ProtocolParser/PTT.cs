@@ -41,8 +41,6 @@ namespace PTT_Parser
 
 
             if (bytesRead != 4)
-
-
             {
                 throw new Exception("Failed to read command byte.");
             }
@@ -99,12 +97,18 @@ namespace PTT_Parser
                 byte[] payload = new byte[1020];
                 bytesRead = networkStream.Read(payload, 0, 1020);
 
-                if (bytesRead <= 0)
+                if (bytesRead < 0)
                 {
                     throw new Exception("Failed to read payload data.");
                 }
 
                 string payloadCommand = Encoding.ASCII.GetString(payload);
+
+                if (payloadCommand == null && blockCommand != "0x04")
+                {
+                    throw new Exception("Invalid payload.");
+                }
+
 
                 return new PTTBlock(blockCommand, payloadCommand);
             }

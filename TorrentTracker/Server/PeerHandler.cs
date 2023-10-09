@@ -33,17 +33,19 @@ namespace TorrentTracker.Server
 
             while (_isRunning)
             {
-                _block = PTT.ParseToBlock(_stream); //_peerToTracker.ParseToBlock(_stream);
+                _block = PTT.ParseToBlock(_stream);//_peerToTracker.ParseToBlock(_stream);
                 string command = _block.GetCommand();
                 string payload = _block.GetPayload();
 
                 if (command == "0x00")
                 {
                     _peerManagementController.CreatePeer(payload);
-                } 
+                    _isRunning = false;
+                }
                 else if (command == "0x01")
                 {
                     _peerManagementController.DestroyPeer(payload);
+                    _isRunning = false;
                 }
                 else if (command == "0x02")
                 {
@@ -53,6 +55,7 @@ namespace TorrentTracker.Server
                     string torrentFile = payloadArray[1];
 
                     _torrentManagementController.CreateTorrent(ip, torrentFile);
+                    _isRunning = false;
                 }
                 else if (command == "0x03")
                 {
@@ -62,18 +65,22 @@ namespace TorrentTracker.Server
                     string checksum = payloadArray[1];
 
                     _torrentManagementController.DeleteTorrent(ip, checksum);
+                    _isRunning = false;
                 }
                 else if (command == "0x04")
                 {
                     _torrentManagementController.ListTorrents();
+                    _isRunning = false;
                 }
                 else if (command == "0x06")
                 {
                     _peerManagementController.ListPeers();
+                    _isRunning = false;
                 }
                 else if (command == "0x08")
                 {
                     _torrentManagementController.SearchTorrent(payload);
+                    _isRunning = false;
                 }
             }
         }
