@@ -1,8 +1,9 @@
 using PTT_Parser;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace PeerSoftware
 {
@@ -20,18 +21,18 @@ namespace PeerSoftware
         private List<Control> _sizeControls = new List<Control>();
         private List<Control> _descriptionControls = new List<Control>();
         private List<Control> _downloadControls = new List<Control>();
-        
+
         private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
         private int _allPage = 0;
         private int _allMaxPage = 0;
-        
+
         private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
 
         Button button;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -63,7 +64,7 @@ namespace PeerSoftware
 
 
             }
-            
+
         }
 
         private void search_Click(object sender, EventArgs e)
@@ -128,14 +129,17 @@ namespace PeerSoftware
 
         void Show(int i, List<TorrentFile> torrentFiles)
         {
+            List<TorrentFile> disable = StatusDownloadButton();
             int row = i * 5;
             for (int index = 0; index < _titleControls.Count; index++)
             {
+                Control titleControl = _titleControls[index];
+                Control sizeControl = _sizeControls[index];
+                Control descriptionControl = _descriptionControls[index];
+                
                 if (index + row < torrentFiles.Count)
                 {
-                    Control titleControl = _titleControls[index];
-                    Control sizeControl = _sizeControls[index];
-                    Control descriptionControl = _descriptionControls[index];
+
 
                     if (titleControl != null)
                     {
@@ -155,9 +159,7 @@ namespace PeerSoftware
                 else
                 {
                     // If there are no more items in torrentFiles, clear the text of the controls
-                    Control titleControl = _titleControls[index];
-                    Control sizeControl = _sizeControls[index];
-                    Control descriptionControl = _descriptionControls[index];
+
 
                     if (titleControl != null)
                     {
@@ -174,9 +176,42 @@ namespace PeerSoftware
                         descriptionControl.Text = "";
                     }
                 }
+                
+
             }
         }
 
+        List<TorrentFile> StatusDownloadButton()
+        {
+            if (tableLayoutPanel1.RowCount == 1)
+            {
+                return null;
+            }
+            List<string> downloadingTorrentsNames = new List<string>();
+            List<TorrentFile> torrentFiles = new List<TorrentFile>();
+            if(_searchOnFlag)
+            {
+                torrentFiles = _resultTorrentFiles;
+            }
+            else
+            {
+                torrentFiles = _allTorrentFiles;
+            }
+            for(int i = 0;i < tableLayoutPanel1.RowCount-1; i++) 
+            {
+                downloadingTorrentsNames.Add(tableLayoutPanel1.GetControlFromPosition(0, i).Text);
+            }
+            List<TorrentFile> downloading = new List<TorrentFile>();
+            foreach (TorrentFile torrent in torrentFiles)
+            {
+                foreach(string s in downloadingTorrentsNames)
+                    if(torrent.info.fileName == s)
+                    {
+                        downloading.Add(torrent);
+                    }
+            }
+            return downloading;
+        }
         void LoadData()
         {
             string currentDirectory = Directory.GetCurrentDirectory();
@@ -204,7 +239,7 @@ namespace PeerSoftware
             {
                 MessageBox.Show(ex.Message);
             }
-            _allMaxPage = _allTorrentFiles.Count / 5;
+            _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -215,7 +250,7 @@ namespace PeerSoftware
             }
 
         }
-        
+
         private List<TorrentFile> SearchTorrentFiles(string searchTerm)
         {
             // Convert the search term to lowercase for case-insensitive search
@@ -231,7 +266,7 @@ namespace PeerSoftware
             _searchOnFlag = true;
             return searchResults;
         }
-        
+
         public void SendPTTMessage(string command, string payload)
         {
             var pttBlock = new PTTBlock(command, payload);
@@ -247,7 +282,7 @@ namespace PeerSoftware
         {
             Button downloadButton = (Button)sender;
 
-            if(!(sender as Control).Enabled)
+            if (!(sender as Control).Enabled)
             {
                 return;
             }
@@ -255,12 +290,11 @@ namespace PeerSoftware
             downloadButton.Enabled = false;
 
             int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
-
             Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
             Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
 
             Label label1 = new Label();
-            label1.Text = torrentNameLabel.Text;
+            label1.Text = torrentNameLabel.Text;            
 
             Label label2 = new Label();
             label2.Text = sizeLabel.Text;
@@ -412,13 +446,7 @@ namespace PeerSoftware
         {
             return trackerIP.Text;
         }
-        
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
 
-
-        }
-        
     }
 
 }
