@@ -1,4 +1,5 @@
 using PTT_Parser;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -199,18 +200,28 @@ namespace PeerSoftware
             }*/
             _allTorrentFiles.Clear();
 
-            tabControl1.Enabled = false;
+            //tabControl1.Enabled = false;
 
             try
             {
-                string payload ="";
+               
                 // Perform your TCP operations asynchronously
                 PTTBlock block = new PTTBlock("0x04", "");
-                await SendDataAsync(block, payload);
+                Thread thread = new Thread(SendDataAsync);
+                thread.Start(block);
+
+                // Main thread continues to execute here
+                Console.WriteLine("Main thread is running.");
+
+                // Wait for the created thread to finish
+                thread.Join();
+
+                Console.WriteLine("Main thread has completed.");
+                
 
                 // Enable the UI controls after sending is done
-                tabControl1.Enabled = true;
-                _allTorrentFiles.AddRange( JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                //tabControl1.Enabled = true;
+               
                 // Enable other controls as needed
 
             }
@@ -226,24 +237,30 @@ namespace PeerSoftware
 
         }
 
-        private async Task SendDataAsync(PTTBlock block, string payload)
+        public void SendDataAsync(object? blockin)
         {
             try
             {
                 // Create a TCP client and connect to the server
                 using (TcpClient client = new TcpClient())
                 {
-                    await client.ConnectAsync(_trackerIpField, _trackerPortField);
+                    PTTBlock block = (PTTBlock)blockin;
+                    client.ConnectAsync(_trackerIpField, _trackerPortField);
                     string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
                         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
                     // Send data asynchronously
 
                     byte[] data = Encoding.UTF8.GetBytes(block.ToString());
-                    await client.GetStream().WriteAsync(data, 0, data.Length);
-                    if(client.GetStream().Length > 0)
+                    client.GetStream().WriteAsync(data, 0, data.Length);
+                    client.GetStream().Flush();
+                    byte[] buffer = new byte[1020];
+                    int bytesRead;
+                    while ((bytesRead = _stream.Read(buffer, 0, buffer.Length)) > 0)
                     {
+                        string payload;
                         PTTBlock receive = PTT.ParseToBlock(client.GetStream());
                         payload = receive.GetPayload();
+                        _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
                     }
                 }
 
