@@ -32,6 +32,7 @@ namespace PeerSoftware
         private bool _searchOnFlag = false;
 
         Button button;
+        private List<string> _torrentDownloadingNames = new List<string>();
 
         public Form1()
         {
@@ -136,7 +137,7 @@ namespace PeerSoftware
                 Control titleControl = _titleControls[index];
                 Control sizeControl = _sizeControls[index];
                 Control descriptionControl = _descriptionControls[index];
-                
+
                 if (index + row < torrentFiles.Count)
                 {
 
@@ -176,7 +177,22 @@ namespace PeerSoftware
                         descriptionControl.Text = "";
                     }
                 }
-                
+                if (_torrentDownloadingNames.Count != 0)
+                {
+                    foreach (string name in _torrentDownloadingNames)
+                    {
+                        if (titleControl.Text == name)
+                        {
+                            _downloadControls[index].Enabled = false;
+                            break;
+                        }
+                        if (titleControl.Text != name)
+                        {
+                            _downloadControls[index].Enabled = true;
+                        }
+
+                    }
+                }
 
             }
         }
@@ -189,7 +205,7 @@ namespace PeerSoftware
             }
             List<string> downloadingTorrentsNames = new List<string>();
             List<TorrentFile> torrentFiles = new List<TorrentFile>();
-            if(_searchOnFlag)
+            if (_searchOnFlag)
             {
                 torrentFiles = _resultTorrentFiles;
             }
@@ -197,15 +213,15 @@ namespace PeerSoftware
             {
                 torrentFiles = _allTorrentFiles;
             }
-            for(int i = 0;i < tableLayoutPanel1.RowCount-1; i++) 
+            for (int i = 0; i < tableLayoutPanel1.RowCount - 1; i++)
             {
                 downloadingTorrentsNames.Add(tableLayoutPanel1.GetControlFromPosition(0, i).Text);
             }
             List<TorrentFile> downloading = new List<TorrentFile>();
             foreach (TorrentFile torrent in torrentFiles)
             {
-                foreach(string s in downloadingTorrentsNames)
-                    if(torrent.info.fileName == s)
+                foreach (string s in downloadingTorrentsNames)
+                    if (torrent.info.fileName == s)
                     {
                         downloading.Add(torrent);
                     }
@@ -294,7 +310,7 @@ namespace PeerSoftware
             Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
 
             Label label1 = new Label();
-            label1.Text = torrentNameLabel.Text;            
+            label1.Text = torrentNameLabel.Text;
 
             Label label2 = new Label();
             label2.Text = sizeLabel.Text;
@@ -322,8 +338,22 @@ namespace PeerSoftware
 
             // Increment the row count
             tableLayoutPanel1.RowCount++;
+
+            _torrentDownloadingNames.Add(label1.Text);
         }
 
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Call your function here
+                _resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
+                Show(_resultPage, _resultTorrentFiles);
+
+                // Optionally, you can prevent the "Enter" key from adding a newline to the TextBox
+                e.SuppressKeyPress = true;
+            }
+        }
 
         public PTTBlock ReceivePTTMessage()
         {
