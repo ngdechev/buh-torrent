@@ -251,6 +251,7 @@ namespace PeerSoftware
             searchBar.Name = "searchBar";
             searchBar.Size = new Size(605, 23);
             searchBar.TabIndex = 0;
+            searchBar.KeyDown += textBox1_KeyDown;
             // 
             // myTorrents
             // 
