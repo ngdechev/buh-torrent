@@ -250,7 +250,7 @@ namespace PeerSoftware
                         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
                     // Send data asynchronously
 
-                    byte[] data = Encoding.UTF8.GetBytes(block.ToString());
+                    byte[] data = Encoding.ASCII.GetBytes(block.ToString());
                     client.GetStream().WriteAsync(data, 0, data.Length);
                     client.GetStream().Flush();
                     byte[] buffer = new byte[1020];
