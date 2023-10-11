@@ -270,7 +270,8 @@ namespace PeerSoftware
                
                 // Perform your TCP operations asynchronously
                 PTTBlock block = new PTTBlock("0x04", "");
-                Thread thread = new Thread(SendDataAsync);
+                SendDataAsync(block);
+                /*Thread thread = new Thread(SendDataAsync);
                 thread.Start(block);
 
                 // Main thread continues to execute here
@@ -281,7 +282,7 @@ namespace PeerSoftware
 
                 Console.WriteLine("Main thread has completed.");
                 
-
+*/
                 // Enable the UI controls after sending is done
                 //tabControl1.Enabled = true;
                
@@ -300,7 +301,7 @@ namespace PeerSoftware
 
         }
 
-        public void SendDataAsync(object? blockin)
+        public void SendDataAsync(object blockin)
         {
             try
             {
@@ -308,23 +309,25 @@ namespace PeerSoftware
                 using (TcpClient client = new TcpClient())
                 {
                     PTTBlock block = (PTTBlock)blockin;
-                    client.ConnectAsync(_trackerIpField, _trackerPortField);
+                    client.Connect(_trackerIpField, _trackerPortField);
                     string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
                         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
                     // Send data asynchronously
 
                     byte[] data = Encoding.ASCII.GetBytes(block.ToString());
-                    client.GetStream().WriteAsync(data, 0, data.Length);
-                    client.GetStream().Flush();
+                    client.GetStream().Write(data, 0, data.Length);
+                   /* client.GetStream().Flush();
                     byte[] buffer = new byte[1020];
                     int bytesRead;
-                    while ((bytesRead = _stream.Read(buffer, 0, buffer.Length)) > 0)
+                    Thread.Sleep(10);
+                    while ((bytesRead = client.GetStream().Read(buffer, 0, buffer.Length)) == 0)
                     {
-                        string payload;
-                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
-                        payload = receive.GetPayload();
-                        _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
-                    }
+                        ;
+                    }*/
+                   /* string payload;
+                    PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                    payload = receive.GetPayload();
+                    _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));*/
                 }
 
             }
