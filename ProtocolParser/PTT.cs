@@ -54,7 +54,6 @@ namespace PTT_Parser
 
 
             if (blockCommand == "0x05")
-
             {
                 byte[] lengthIndicator = new byte[4];
                 bytesRead = networkStream.Read(lengthIndicator, 0, 4);
@@ -90,7 +89,9 @@ namespace PTT_Parser
                 byte[] payload = payloadChunks.SelectMany(chunk => chunk).ToArray();
                 string payloadCommand = Encoding.ASCII.GetString(payload);
 
-                return new PTTBlock(blockCommand, payloadCommand);
+                PTTBlock PTTBlock = new PTTBlock(blockCommand, payloadCommand);
+                
+                return PTTBlock;
             }
             else
             {

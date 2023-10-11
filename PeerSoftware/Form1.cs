@@ -1,9 +1,15 @@
 using PTT_Parser;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Windows.Forms.VisualStyles;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
+
 
 namespace PeerSoftware
 {
@@ -31,6 +37,9 @@ namespace PeerSoftware
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
 
+        Button button;
+        private List<string> _torrentDownloadingNames = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
@@ -44,20 +53,25 @@ namespace PeerSoftware
                 Label titleLabel = new Label();
                 Label sizeLabel = new Label();
                 Label descriptionLabel = new Label(); // Corrected the variable name
-                Button button = new Button();
+
+                button = new Button();
                 button.Text = "Download";
+                button.Click += DownloadButton_Click;
 
                 tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
                 tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
                 tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
                 tableLayoutPanel2.Controls.Add(button, 3, i);
 
+
                 _titleControls.Add(titleLabel);
                 _sizeControls.Add(sizeLabel);
                 _descriptionControls.Add(descriptionLabel);
                 _downloadControls.Add(button);
 
+
             }
+
         }
 
         private void search_Click(object sender, EventArgs e)
@@ -122,14 +136,17 @@ namespace PeerSoftware
 
         void Show(int i, List<TorrentFile> torrentFiles)
         {
+            List<TorrentFile> disable = StatusDownloadButton();
             int row = i * 5;
             for (int index = 0; index < _titleControls.Count; index++)
             {
+                Control titleControl = _titleControls[index];
+                Control sizeControl = _sizeControls[index];
+                Control descriptionControl = _descriptionControls[index];
+
                 if (index + row < torrentFiles.Count)
                 {
-                    Control titleControl = _titleControls[index];
-                    Control sizeControl = _sizeControls[index];
-                    Control descriptionControl = _descriptionControls[index];
+
 
                     if (titleControl != null)
                     {
@@ -149,9 +166,7 @@ namespace PeerSoftware
                 else
                 {
                     // If there are no more items in torrentFiles, clear the text of the controls
-                    Control titleControl = _titleControls[index];
-                    Control sizeControl = _sizeControls[index];
-                    Control descriptionControl = _descriptionControls[index];
+
 
                     if (titleControl != null)
                     {
@@ -168,10 +183,58 @@ namespace PeerSoftware
                         descriptionControl.Text = "";
                     }
                 }
+                if (_torrentDownloadingNames.Count != 0)
+                {
+                    foreach (string name in _torrentDownloadingNames)
+                    {
+                        if (titleControl.Text == name)
+                        {
+                            _downloadControls[index].Enabled = false;
+                            break;
+                        }
+                        if (titleControl.Text != name)
+                        {
+                            _downloadControls[index].Enabled = true;
+                        }
+
+                    }
+                }
+
             }
         }
-
-        async void LoadData()
+        
+        List<TorrentFile> StatusDownloadButton()
+        {
+            if (tableLayoutPanel1.RowCount == 1)
+            {
+                return null;
+            }
+            List<string> downloadingTorrentsNames = new List<string>();
+            List<TorrentFile> torrentFiles = new List<TorrentFile>();
+            if (_searchOnFlag)
+            {
+                torrentFiles = _resultTorrentFiles;
+            }
+            else
+            {
+                torrentFiles = _allTorrentFiles;
+            }
+            for (int i = 0; i < tableLayoutPanel1.RowCount - 1; i++)
+            {
+                downloadingTorrentsNames.Add(tableLayoutPanel1.GetControlFromPosition(0, i).Text);
+            }
+            List<TorrentFile> downloading = new List<TorrentFile>();
+            foreach (TorrentFile torrent in torrentFiles)
+            {
+                foreach (string s in downloadingTorrentsNames)
+                    if (torrent.info.fileName == s)
+                    {
+                        downloading.Add(torrent);
+                    }
+            }
+            return downloading;
+        }
+        void LoadData()
         {
             /*string currentDirectory = Directory.GetCurrentDirectory();
             string folderPath = Path.Combine(currentDirectory, "TestData");
@@ -272,6 +335,8 @@ namespace PeerSoftware
                 throw new Exception("Error sending data: " + ex.Message);
 
             }
+            _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
+
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -309,6 +374,67 @@ namespace PeerSoftware
         }
 
 
+        // Downloading torrents tab..
+        public void DownloadButton_Click(object sender, EventArgs e)
+        {
+            Button downloadButton = (Button)sender;
+
+            if (!(sender as Control).Enabled)
+            {
+                return;
+            }
+
+            downloadButton.Enabled = false;
+
+            int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
+            Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
+            Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
+
+            Label label1 = new Label();
+            label1.Text = torrentNameLabel.Text;
+
+            Label label2 = new Label();
+            label2.Text = sizeLabel.Text;
+
+            ProgressBar progressBar = new ProgressBar();
+
+            Button button = new Button();
+            button.Text = "Pause";
+
+            // Create a new row
+            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+
+            // Move the existing controls to the next row
+            foreach (Control control in tableLayoutPanel1.Controls)
+            {
+                int row = tableLayoutPanel1.GetRow(control);
+                tableLayoutPanel1.SetRow(control, row + 1);
+            }
+
+            // Insert the new controls into the first row
+            tableLayoutPanel1.Controls.Add(label1, 0, 0); // Add label1 to the first column of the first row
+            tableLayoutPanel1.Controls.Add(label2, 1, 0); // Add label2 to the second column of the first row
+            tableLayoutPanel1.Controls.Add(progressBar, 2, 0); // Add progressBar to the third column of the first row
+            tableLayoutPanel1.Controls.Add(button, 3, 0); // Add button to the fourth column of the first row
+
+            // Increment the row count
+            tableLayoutPanel1.RowCount++;
+
+            _torrentDownloadingNames.Add(label1.Text);
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Call your function here
+                _resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
+                Show(_resultPage, _resultTorrentFiles);
+
+                // Optionally, you can prevent the "Enter" key from adding a newline to the TextBox
+                e.SuppressKeyPress = true;
+            }
+        }
 
         public PTTBlock ReceivePTTMessage()
         {
@@ -359,7 +485,6 @@ namespace PeerSoftware
             trackerIP.Text = ip;
         }
 
-
         private void save_Click(object sender, EventArgs e)
         {
             if (_isConnected)
@@ -369,12 +494,15 @@ namespace PeerSoftware
 
             (_trackerIpField, _trackerPortField) = SplitIpAndPort();
 
-            if (IPAddress.TryParse(_trackerIpField, out IPAddress ipAddress))
+           /* if (IPAddress.TryParse(_trackerIpField, out IPAddress ipAddress))
             {
                 try
                 {
                     _client = new TcpClient(_trackerIpField, _trackerPortField);
                     _stream = _client.GetStream();
+
+                    string localIpPort = $"{GetLocalIPAddress()}:{GetLocalPort()}";
+                    SendPTTMessage("0x00", localIpPort);
 
                     MessageBox.Show($"Connected to {_trackerIpField}");
                 }
@@ -386,7 +514,36 @@ namespace PeerSoftware
             else
             {
                 MessageBox.Show("Invalid IP address or port. Please enter a valid IP address and port.");
+            }*/
+        }
+
+        public static string GetLocalIPAddress()
+        {
+            string localIpAddress = string.Empty;
+
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddresses = host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+
+            foreach (var ipAddress in ipAddresses)
+            {
+                localIpAddress = ipAddress.ToString();
+                break;
             }
+
+            return localIpAddress;
+        }
+
+        public static int GetLocalPort()
+        {
+            int localPort = -1;
+
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            {
+                socket.Bind(new IPEndPoint(IPAddress.Any, 0));
+                localPort = ((IPEndPoint)socket.LocalEndPoint).Port;
+            }
+
+            return localPort;
         }
 
 

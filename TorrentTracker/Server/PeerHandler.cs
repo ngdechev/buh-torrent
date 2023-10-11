@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 using PTT_Parser;
 using TorrentTracker.Controllers;
 
@@ -9,7 +10,9 @@ namespace TorrentTracker.Server
         private TcpClient _peerSocket;
         private NetworkStream _stream;
         private TrackerServer _server;
-        //private PTT _peerToTracker = new PTT();
+
+        //private List<Torrent> _allTorrents = new List<Torrent>();
+
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
         
@@ -29,11 +32,13 @@ namespace TorrentTracker.Server
             
             _stream = _peerSocket.GetStream();
 
-            _isRunning = true;
+            //_isRunning = true;
 
-            while (_isRunning)
-            {
-                _block = PTT.ParseToBlock(_stream);//_peerToTracker.ParseToBlock(_stream);
+
+            //while (_isRunning)
+            //{
+                _block = PTT.ParseToBlock(_stream); //_peerToTracker.ParseToBlock(_stream);
+
                 string command = _block.GetCommand();
                 string payload = _block.GetPayload();
 
@@ -69,8 +74,15 @@ namespace TorrentTracker.Server
                 }
                 else if (command == "0x04")
                 {
-                    _torrentManagementController.ListTorrents();
-                    _isRunning = false;
+
+                    List<Torrent> allTorrents = _torrentManagementController.ListTorrents();
+
+                    PTTBlock PTTBlock = new("0x05", allTorrents.ToArray().ToString());
+
+                    byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
+
+                    _stream.Write(bytes, 0, bytes.Length);
+
                 }
                 else if (command == "0x06")
                 {
@@ -82,12 +94,12 @@ namespace TorrentTracker.Server
                     _torrentManagementController.SearchTorrent(payload);
                     _isRunning = false;
                 }
-            }
+           // }
         }
 
-        public void Disconnect()
+        /*public void Disconnect()
         {
             _isRunning = false;
-        }
+        }*/
     }
 }
