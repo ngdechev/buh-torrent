@@ -41,8 +41,6 @@ namespace PTT_Parser
 
 
             if (bytesRead != 4)
-
-
             {
                 throw new Exception("Failed to read command byte.");
             }
