@@ -1,4 +1,5 @@
 ﻿using System.Net.Sockets;
+using System.Text;
 using PTT_Parser;
 using TorrentTracker.Controllers;
 
@@ -69,7 +70,11 @@ namespace TorrentTracker.Server
                 {
                     List<Torrent> allTorrents = _torrentManagementController.ListTorrents();
 
-                    //PTTBlock PTTBlock = new("0x05", allTorrents.ToArray().ToString());
+                    PTTBlock PTTBlock = new("0x05", allTorrents.ToArray().ToString());
+
+                    byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
+
+                    _stream.Write(bytes, 0, bytes.Length);
                 }
                 else if (command == "0x06")
                 {
