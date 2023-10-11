@@ -10,15 +10,18 @@ namespace TorrentTracker.Controllers
         private DictionaryController _dictionaryController;
         private List<Torrent> _AllTorrents = new List<Torrent>();
         private string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "TorrentFile");
+
         public TorrentManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
         }
+
         public TorrentManagementController(string folderPath)
         {
             this.folderPath = folderPath;
             _AllTorrents = new List<Torrent>();
         }
+
         public List<Torrent> GetAllTorrents()
         {
             return _AllTorrents;

@@ -99,7 +99,7 @@ namespace PTT_Parser
                 byte[] payload = new byte[1020];
                 bytesRead = networkStream.Read(payload, 0, 1020);
 
-                if (bytesRead <= 0)
+                if (bytesRead > 0)
                 {
                     throw new Exception("Failed to read payload data.");
                 }

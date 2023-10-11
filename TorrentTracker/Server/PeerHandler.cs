@@ -9,7 +9,9 @@ namespace TorrentTracker.Server
         private TcpClient _peerSocket;
         private NetworkStream _stream;
         private TrackerServer _server;
-        //private PTT _peerToTracker = new PTT();
+
+        //private List<Torrent> _allTorrents = new List<Torrent>();
+
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
         
@@ -29,10 +31,10 @@ namespace TorrentTracker.Server
             
             _stream = _peerSocket.GetStream();
 
-            _isRunning = true;
+            //_isRunning = true;
 
-            while (_isRunning)
-            {
+            //while (_isRunning)
+            //{
                 _block = PTT.ParseToBlock(_stream); //_peerToTracker.ParseToBlock(_stream);
                 string command = _block.GetCommand();
                 string payload = _block.GetPayload();
@@ -65,7 +67,9 @@ namespace TorrentTracker.Server
                 }
                 else if (command == "0x04")
                 {
-                    _torrentManagementController.ListTorrents();
+                    List<Torrent> allTorrents = _torrentManagementController.ListTorrents();
+
+                    //PTTBlock PTTBlock = new("0x05", allTorrents.ToArray().ToString());
                 }
                 else if (command == "0x06")
                 {
@@ -75,12 +79,12 @@ namespace TorrentTracker.Server
                 {
                     _torrentManagementController.SearchTorrent(payload);
                 }
-            }
+           // }
         }
 
-        public void Disconnect()
+        /*public void Disconnect()
         {
             _isRunning = false;
-        }
+        }*/
     }
 }
