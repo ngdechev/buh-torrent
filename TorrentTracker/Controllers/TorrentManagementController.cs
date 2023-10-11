@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.Data;
 using System.Text.Json;
 
@@ -10,7 +11,6 @@ namespace TorrentTracker.Controllers
         private DictionaryController _dictionaryController;
         private List<Torrent> _AllTorrents = new List<Torrent>();
         private string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "TorrentFile");
-
         public TorrentManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
@@ -27,14 +27,39 @@ namespace TorrentTracker.Controllers
             return _AllTorrents;
         }
 
-        public string CreateTorrent(string ip, string torrentFile)
+        public void CreateTorrent(string ip,string torrentFile)
         {
-            throw new NotImplementedException();
+            Torrent NewTorrent = JsonSerializer.Deserialize<Torrent>(torrentFile);
+            _AllTorrents.Add(NewTorrent);
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                if (ip == pair.Key.ipAddress)
+                {
+                    pair.Value.Add(NewTorrent);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
 
-        public string DeleteTorrent(string ip, string checksum)
+        public void DeleteTorrent(string checksum)
         {
-            throw new NotImplementedException();
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                foreach (Torrent torrent in pair.Value)
+                {
+                    if (checksum == torrent.checkSum)
+                    {
+                        pair.Value.Remove(torrent);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         public List<Torrent> ListTorrents()
@@ -53,7 +78,9 @@ namespace TorrentTracker.Controllers
             return _AllTorrents;
         }
 
+
         public Torrent SearchTorrent(string torrentName)
+
         {
             Torrent foundTorrent = _AllTorrents.Find(torrent => torrent.torrentName == torrentName);
 
