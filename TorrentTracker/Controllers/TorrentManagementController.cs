@@ -1,15 +1,11 @@
-﻿
-
-using System;
-using System.Data;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace TorrentTracker.Controllers
 {
     public class TorrentManagementController : ITorrentManagementController
     {
         private DictionaryController _dictionaryController;
-        private List<Torrent> _AllTorrents = new List<Torrent>();
+        private List<TorrentFile> _AllTorrents = new List<TorrentFile>();
         private string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "TorrentFile");
         public TorrentManagementController(DictionaryController dictionaryController)
         {
@@ -19,17 +15,17 @@ namespace TorrentTracker.Controllers
         public TorrentManagementController(string folderPath)
         {
             this.folderPath = folderPath;
-            _AllTorrents = new List<Torrent>();
+            _AllTorrents = new List<TorrentFile>();
         }
 
-        public List<Torrent> GetAllTorrents()
+        public List<TorrentFile> GetAllTorrents()
         {
             return _AllTorrents;
         }
 
         public void CreateTorrent(string ip,string torrentFile)
         {
-            Torrent NewTorrent = JsonSerializer.Deserialize<Torrent>(torrentFile);
+            TorrentFile NewTorrent = JsonSerializer.Deserialize<TorrentFile>(torrentFile);
             _AllTorrents.Add(NewTorrent);
             foreach (var pair in _dictionaryController.GetDictionary())
             {
@@ -48,9 +44,9 @@ namespace TorrentTracker.Controllers
         {
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                foreach (Torrent torrent in pair.Value)
+                foreach (TorrentFile torrent in pair.Value)
                 {
-                    if (checksum == torrent.checkSum)
+                    if (checksum == torrent.info.checksum)
                     {
                         pair.Value.Remove(torrent);
                     }
@@ -62,27 +58,27 @@ namespace TorrentTracker.Controllers
             }
         }
 
-        public List<Torrent> ListTorrents()
+        public List<TorrentFile> ListTorrents()
         {
-            _AllTorrents.Clear();
+            //_AllTorrents.Clear();
 
-            foreach (var pair in _dictionaryController.GetDictionary())
+            /*foreach (var pair in _dictionaryController.GetDictionary())
             {
                 List<Torrent> TorrentsList = pair.Value;
                 foreach (Torrent torrent in TorrentsList)
                 {
                     _AllTorrents.Add(torrent);
                 }
-            }
-
+            }*/
+            ReadTorrentFileFromFoulder();
             return _AllTorrents;
         }
 
 
-        public Torrent SearchTorrent(string torrentName)
+        public TorrentFile SearchTorrent(string torrentName)
 
         {
-            Torrent foundTorrent = _AllTorrents.Find(torrent => torrent.torrentName == torrentName);
+            TorrentFile foundTorrent = _AllTorrents.Find(torrent => torrent.info.torrentName == torrentName);
 
             if (foundTorrent == null)
             {
@@ -96,18 +92,26 @@ namespace TorrentTracker.Controllers
         {
             if (Directory.Exists(folderPath))
             {
-                string[] files = Directory.GetFiles(folderPath, "*.json");
+                string[] files = Directory.GetFiles(folderPath);
 
                 foreach (string file in files)
                 {
                     try
                     {
-                        using (StreamReader reader = new StreamReader(file))
+                        string jsonText = File.ReadAllText(file);
+
+                        TorrentFile? torrent = JsonSerializer.Deserialize<TorrentFile>(jsonText);
+
+                        if (torrent != null)
                         {
-                            string jsonText = reader.ReadToEnd();
-                            Torrent torrent = JsonSerializer.Deserialize<Torrent>(jsonText);
                             _AllTorrents.Add(torrent);
                         }
+                        /*using (StreamReader reader = new StreamReader(file))
+                        {
+                            string jsonText = reader.ReadToEnd();
+                            TorrentFile torrent = JsonSerializer.Deserialize<TorrentFile>(jsonText);
+                            _AllTorrents.Add(torrent);
+                        }*/
                     }
                     catch (Exception exception)
                     {

@@ -316,18 +316,24 @@ namespace PeerSoftware
 
                     byte[] data = Encoding.ASCII.GetBytes(block.ToString());
                     client.GetStream().Write(data, 0, data.Length);
-                   /* client.GetStream().Flush();
-                    byte[] buffer = new byte[1020];
-                    int bytesRead;
-                    Thread.Sleep(10);
-                    while ((bytesRead = client.GetStream().Read(buffer, 0, buffer.Length)) == 0)
+                    /* client.GetStream().Flush();
+                     byte[] buffer = new byte[1020];
+                     int bytesRead;
+                     Thread.Sleep(10);
+                     while ((bytesRead = client.GetStream().Read(buffer, 0, buffer.Length)) == 0)
+                     {
+                         ;
+                     }*/
+                    MessageBox.Show("b recive");
+                    while (client.GetStream().DataAvailable)
                     {
-                        ;
-                    }*/
-                   /* string payload;
-                    PTTBlock receive = PTT.ParseToBlock(client.GetStream());
-                    payload = receive.GetPayload();
-                    _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));*/
+                        MessageBox.Show("recive");
+                        string payload;
+                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                        payload = receive.GetPayload();
+                        _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                    }
+                        
                 }
 
             }

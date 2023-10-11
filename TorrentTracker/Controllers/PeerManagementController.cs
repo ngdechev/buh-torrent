@@ -41,9 +41,9 @@ namespace TorrentTracker.Controllers
         {
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                foreach (Torrent torrent in pair.Value)
+                foreach (TorrentFile torrent in pair.Value)
                 {
-                    if (checksum == torrent.checkSum)
+                    if (checksum == torrent.info.checksum)
                     {
                         _peerWithTorrentFile.Add(pair.Key);
                     }
