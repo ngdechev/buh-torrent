@@ -34,15 +34,11 @@ namespace PTT_Parser
     {
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
-            
             byte[] command = new byte[4];
 
             int bytesRead = networkStream.Read(command, 0, 4);
 
-
             if (bytesRead != 4)
-
-
             {
                 throw new Exception("Failed to read command byte.");
             }
