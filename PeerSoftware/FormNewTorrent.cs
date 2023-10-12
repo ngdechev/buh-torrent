@@ -137,9 +137,11 @@ namespace PeerSoftware
                 // Create a TCP client and connect to the server
                 using (TcpClient client = new TcpClient())
                 {
+
                     await client.ConnectAsync(ipAddressString, port);
                     string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
                         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+
                     // Send data asynchronously
                     PTTBlock block = new("0x02", myip+";"+JsonSerializer.Serialize(_newTorrent));
                     byte[] data = Encoding.UTF8.GetBytes(block.ToString());
@@ -148,6 +150,8 @@ namespace PeerSoftware
                     // Handle any response from the server if needed
                     // ...
                     TorrentReader.WriteJSON("MyTorrent", _newTorrent);
+                    
+                    client.Close();
                 }
 
             }

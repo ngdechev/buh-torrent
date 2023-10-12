@@ -4,6 +4,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms.VisualStyles;
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
+
 
 namespace PeerSoftware
 {
@@ -196,7 +202,7 @@ namespace PeerSoftware
 
             }
         }
-
+        
         List<TorrentFile> StatusDownloadButton()
         {
             if (tableLayoutPanel1.RowCount == 1)
@@ -230,7 +236,7 @@ namespace PeerSoftware
         }
         void LoadData()
         {
-            string currentDirectory = Directory.GetCurrentDirectory();
+            /*string currentDirectory = Directory.GetCurrentDirectory();
             string folderPath = Path.Combine(currentDirectory, "TestData");
 
             try
@@ -254,8 +260,83 @@ namespace PeerSoftware
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }*/
+            _allTorrentFiles.Clear();
+
+            //tabControl1.Enabled = false;
+
+            try
+            {
+               
+                // Perform your TCP operations asynchronously
+                PTTBlock block = new PTTBlock("0x04", "");
+                Thread thread = new Thread(SendDataAsync);
+                thread.Start(block);
+
+                // Main thread continues to execute here
+                Console.WriteLine("Main thread is running.");
+
+                // Wait for the created thread to finish
+                thread.Join();
+
+                Console.WriteLine("Main thread has completed.");
+                
+
+                // Enable the UI controls after sending is done
+                //tabControl1.Enabled = true;
+               
+                // Enable other controls as needed
+
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that may occur during the TCP operation
+                MessageBox.Show("An error occurred: " + ex.Message);
+
+                // Make sure to re-enable the UI controls in case of an error
+                tabControl1.Enabled = true;
+                // Enable other controls as needed
+            }
+
+        }
+
+        public void SendDataAsync(object? blockin)
+        {
+            try
+            {
+                // Create a TCP client and connect to the server
+                using (TcpClient client = new TcpClient())
+                {
+                    PTTBlock block = (PTTBlock)blockin;
+                    client.ConnectAsync(_trackerIpField, _trackerPortField);
+                    string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
+                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+                    // Send data asynchronously
+
+                    byte[] data = Encoding.ASCII.GetBytes(block.ToString());
+                    client.GetStream().WriteAsync(data, 0, data.Length);
+                    client.GetStream().Flush();
+                    byte[] buffer = new byte[1020];
+                    int bytesRead;
+                    while ((bytesRead = _stream.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        string payload;
+                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                        payload = receive.GetPayload();
+                        _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                // Handle exceptions that may occur during the TCP operation
+                throw new Exception("Error sending data: " + ex.Message);
+
             }
             _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
+
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -475,6 +556,12 @@ namespace PeerSoftware
         public string TextForAnnoncer()
         {
             return trackerIP.Text;
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+
         }
 
     }
