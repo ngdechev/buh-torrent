@@ -5,18 +5,25 @@ namespace PTT_Parser
 {
     public class PTTBlock
     {
-        private string _command;
+        private byte _command;
+        private int _size;
         private string _payload;
 
-        public PTTBlock(string command, string payload)
+        public PTTBlock(byte command, int size, string payload)
         {
             _command = command;
+            _size = size;
             _payload = payload;
         }
 
-        public string GetCommand()
+        public byte GetCommand()
         {
             return _command;
+        }
+
+        public int GetSize()
+        {
+            return _size;
         }
 
         public string GetPayload()
@@ -24,9 +31,9 @@ namespace PTT_Parser
             return _payload;
         }
 
-        public string ToString()
+        public override string ToString()
         {
-            return _command + _payload;
+            return $"{_command}{_size}{_payload}";
         }
     }
 
@@ -34,80 +41,43 @@ namespace PTT_Parser
     {
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
-            
-            byte[] command = new byte[4];
+            byte[]? command = null;
+            byte[]? size = null;
+            byte[]? payload = null;
 
-            int bytesRead = networkStream.Read(command, 0, 4);
+            int bytesRead = networkStream.Read(command, 0, 1);
 
-
-            if (bytesRead != 4)
-
-
+            if (bytesRead != 1)
             {
                 throw new Exception("Failed to read command byte.");
             }
 
-            string blockCommand = Encoding.ASCII.GetString(command);
+            byte blockCommand = command[0];
 
             if (!IsValidCommand(blockCommand))
             {
-                throw new Exception("Invalid command.");
+                throw new Exception("Incorrect command.");
             }
 
+            bytesRead = networkStream.Read(size, 1, 4);
 
-            if (blockCommand == "0x05")
-
+            if (bytesRead != 4)
             {
-                byte[] lengthIndicator = new byte[4];
-                bytesRead = networkStream.Read(lengthIndicator, 0, 4);
-
-                if (bytesRead != 4)
-                {
-                    throw new Exception("Failed to read length indicator.");
-                }
-
-                int totalLength = BitConverter.ToInt32(lengthIndicator, 0);
-
-                List<byte[]> payloadChunks = new List<byte[]>();
-                int totalBytesRead = 0;
-                int chunkSize = 1020;
-
-                while (totalBytesRead < totalLength)
-                {
-                    int remainingBytes = totalLength - totalBytesRead;
-                    int bytesToRead = Math.Min(chunkSize, remainingBytes);
-
-                    byte[] chunk = new byte[bytesToRead];
-                    bytesRead = networkStream.Read(chunk, 0, bytesToRead);
-
-                    if (bytesRead <= 0)
-                    {
-                        throw new Exception("Failed to read payload data.");
-                    }
-
-                    payloadChunks.Add(chunk);
-                    totalBytesRead += bytesRead;
-                }
-
-                byte[] payload = payloadChunks.SelectMany(chunk => chunk).ToArray();
-                string payloadCommand = Encoding.ASCII.GetString(payload);
-
-                return new PTTBlock(blockCommand, payloadCommand);
+                throw new Exception("Failed to read size byte.");
             }
-            else
+
+            int.TryParse(Encoding.ASCII.GetString(size), out int blockSize);
+
+            bytesRead = networkStream.Read(payload, 4, blockSize);
+
+            if (bytesRead != blockSize)
             {
-                byte[] payload = new byte[1020];
-                bytesRead = networkStream.Read(payload, 0, 1020);
-
-                if (bytesRead <= 0)
-                {
-                    throw new Exception("Failed to read payload data.");
-                }
-
-                string payloadCommand = Encoding.ASCII.GetString(payload);
-
-                return new PTTBlock(blockCommand, payloadCommand);
+                throw new Exception("Failed to read payload byte.");
             }
+
+            string blockPayload = Encoding.ASCII.GetString(payload);
+
+            return new PTTBlock(blockCommand, blockSize, blockPayload);
         }
 
         public static string ParseToString(PTTBlock block)
@@ -115,20 +85,20 @@ namespace PTT_Parser
             return block.ToString();
         }
 
-        public static bool IsValidCommand(string command) 
+        public static bool IsValidCommand(byte command) 
         {
             switch (command)
             {
-                case "0x00":
-                case "0x01":
-                case "0x02":
-                case "0x03":
-                case "0x04":
-                case "0x05":
-                case "0x06":
-                case "0x07":
-                case "0x08":
-                case "0x09":
+                case 0x00:
+                case 0x01:
+                case 0x02:
+                case 0x03:
+                case 0x04:
+                case 0x05:
+                case 0x06:
+                case 0x07:
+                case 0x08:
+                case 0x09:
                     return true;
                 default:
                     return false;
