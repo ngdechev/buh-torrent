@@ -283,9 +283,9 @@ namespace PeerSoftware
             return searchResults;
         }
 
-        public void SendPTTMessage(string command, string payload)
+        public void SendPTTMessage(byte command, string payload)
         {
-            var pttBlock = new PTTBlock(command, payload);
+            var pttBlock = new PTTBlock(command, payload.Length ,payload);
             string pttMessage = PTT.ParseToString(pttBlock);
 
             byte[] messageBytes = Encoding.ASCII.GetBytes(pttMessage);
@@ -421,7 +421,7 @@ namespace PeerSoftware
                     _stream = _client.GetStream();
 
                     string localIpPort = $"{GetLocalIPAddress()}:{GetLocalPort()}";
-                    SendPTTMessage("0x00", localIpPort);
+                    SendPTTMessage(0x00, localIpPort);
 
                     MessageBox.Show($"Connected to {_trackerIpField}");
                 }

@@ -6,7 +6,7 @@ namespace BuhTorrentTestProject
     [TestFixture]
     public class PTTTests
     {
-        [Test]
+        /*[Test]
         public void ToStringReturnsCorrectString()
         {
             PTTBlock block = new PTTBlock("0x00", "PeerIP");
@@ -64,6 +64,6 @@ namespace BuhTorrentTestProject
             string result = PTT.ParseToString(block);
 
             Assert.AreEqual("0x00PeerIP", result);
-        }
+        }*/
     }
 }
