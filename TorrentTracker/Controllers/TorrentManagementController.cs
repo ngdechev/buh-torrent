@@ -51,7 +51,7 @@ namespace TorrentTracker.Controllers
 
         public TorrentFile SearchTorrent(string torrentName)
         {
-            TorrentFile foundTorrent = _AllTorrents.Find(torrent => torrent.torrentName == torrentName);
+            TorrentFile foundTorrent = _AllTorrents.Find(torrent => torrent.info.torrentName == torrentName);
 
             if (foundTorrent == null)
             {
