@@ -41,9 +41,8 @@ namespace PTT_Parser
     {
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
-            byte[]? command = null;
-            byte[]? size = null;
-            byte[]? payload = null;
+            byte[] command = new byte[1];
+            byte[]? size = new byte[4];
 
             int bytesRead = networkStream.Read(command, 0, 1);
 
@@ -59,7 +58,7 @@ namespace PTT_Parser
                 throw new Exception("Incorrect command.");
             }
 
-            bytesRead = networkStream.Read(size, 1, 4);
+            bytesRead = networkStream.Read(size, 0, 4);
 
             if (bytesRead != 4)
             {
@@ -68,7 +67,9 @@ namespace PTT_Parser
 
             int.TryParse(Encoding.ASCII.GetString(size), out int blockSize);
 
-            bytesRead = networkStream.Read(payload, 4, blockSize);
+            byte[]? payload = new byte[blockSize];
+
+            bytesRead = networkStream.Read(payload, 0, blockSize);
 
             if (bytesRead != blockSize)
             {
@@ -89,16 +90,16 @@ namespace PTT_Parser
         {
             switch (command)
             {
-                case 0x00:
-                case 0x01:
-                case 0x02:
-                case 0x03:
-                case 0x04:
-                case 0x05:
-                case 0x06:
-                case 0x07:
-                case 0x08:
-                case 0x09:
+                case 48:
+                case 49:
+                case 50:
+                case 51:
+                case 52:
+                case 53:
+                case 54:
+                case 55:
+                case 56:
+                case 57:
                     return true;
                 default:
                     return false;

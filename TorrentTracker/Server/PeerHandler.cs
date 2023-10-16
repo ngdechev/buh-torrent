@@ -33,7 +33,7 @@ namespace TorrentTracker.Server
             int size = _block.GetSize();
             string payload = _block.GetPayload();
 
-            if (command == 0x00)
+            if (command == 48)
             {
                 _peerManagementController.CreatePeer(payload);
             } 
