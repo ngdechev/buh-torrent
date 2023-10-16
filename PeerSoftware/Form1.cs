@@ -1,9 +1,9 @@
 using PTT_Parser;
-using System.Collections.Generic;
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
-using System.Windows.Forms.VisualStyles;
 
 namespace PeerSoftware
 {
@@ -31,7 +31,6 @@ namespace PeerSoftware
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
 
-        Button button;
         private List<string> _torrentDownloadingNames = new List<string>();
 
         public Form1()
@@ -42,26 +41,49 @@ namespace PeerSoftware
             _trackerIpField = trackerIP.Text;
             _allTorrentFiles = new List<TorrentFile>();
 
+            // Create the TableLayoutPanel for the heading row
+            TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
+
+            headingTableLayoutPanel.ColumnCount = 3;
+
+            // Create the heading labels
+            Label nameLabel = new Label();
+            nameLabel.Text = "Name1";
+
+            headingTableLayoutPanel.Controls.Add(nameLabel, 0, 0);
+
+            Label sizeLabel1 = new Label();
+            sizeLabel1.Text = "File Size1";
+            headingTableLayoutPanel.Controls.Add(sizeLabel1, 1, 0);
+
+            Label progressLabel = new Label();
+            progressLabel.Text = "Progress1";
+
+            headingTableLayoutPanel.Controls.Add(progressLabel, 2, 0);
+
+            this.Controls.Add(headingTableLayoutPanel);
+
             for (int i = 0; i < 5; i++)
             {
                 Label titleLabel = new Label();
                 Label sizeLabel = new Label();
                 Label descriptionLabel = new Label(); // Corrected the variable name
+                Button downloadButton = new Button();
 
-                button = new Button();
-                button.Text = "Download";
-                button.Click += DownloadButton_Click;
+                downloadButton.Text = "Download";
+                downloadButton.Click += DownloadButton_Click;
+                downloadButton.Visible = false;
 
                 tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
                 tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
                 tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
-                tableLayoutPanel2.Controls.Add(button, 3, i);
+                tableLayoutPanel2.Controls.Add(downloadButton, 3, i);
 
 
                 _titleControls.Add(titleLabel);
                 _sizeControls.Add(sizeLabel);
                 _descriptionControls.Add(descriptionLabel);
-                _downloadControls.Add(button);
+                _downloadControls.Add(downloadButton);
 
 
             }
@@ -137,11 +159,10 @@ namespace PeerSoftware
                 Control titleControl = _titleControls[index];
                 Control sizeControl = _sizeControls[index];
                 Control descriptionControl = _descriptionControls[index];
+                Control downloadButtonControl = _downloadControls[index];
 
                 if (index + row < torrentFiles.Count)
                 {
-
-
                     if (titleControl != null)
                     {
                         titleControl.Text = torrentFiles[index + row].info.fileName;
@@ -149,12 +170,17 @@ namespace PeerSoftware
 
                     if (sizeControl != null)
                     {
-                        sizeControl.Text = torrentFiles[index + row].info.length.ToString();
+                        sizeControl.Text = FormatFileSize(torrentFiles[index + row].info.length);
                     }
 
                     if (descriptionControl != null)
                     {
                         descriptionControl.Text = torrentFiles[index + row].info.description;
+                    }
+
+                    if (downloadButtonControl != null)
+                    {
+                        downloadButtonControl.Visible = true;
                     }
                 }
                 else
@@ -175,6 +201,11 @@ namespace PeerSoftware
                     if (descriptionControl != null)
                     {
                         descriptionControl.Text = "";
+                    }
+
+                    if (downloadButtonControl != null)
+                    {
+                        downloadButtonControl.Visible = false;
                     }
                 }
                 if (_torrentDownloadingNames.Count != 0)
@@ -197,7 +228,7 @@ namespace PeerSoftware
             }
         }
 
-        List<TorrentFile> StatusDownloadButton()
+        private List<TorrentFile> StatusDownloadButton()
         {
             if (tableLayoutPanel1.RowCount == 1)
             {
@@ -228,7 +259,7 @@ namespace PeerSoftware
             }
             return downloading;
         }
-        void LoadData()
+        private void LoadData()
         {
             string currentDirectory = Directory.GetCurrentDirectory();
             string folderPath = Path.Combine(currentDirectory, "TestData");
@@ -264,7 +295,6 @@ namespace PeerSoftware
             {
                 LoadData();
             }
-
         }
 
         private List<TorrentFile> SearchTorrentFiles(string searchTerm)
@@ -311,9 +341,9 @@ namespace PeerSoftware
 
             Label label1 = new Label();
             label1.Text = torrentNameLabel.Text;
-
+            List<TorrentFile> torrentFiles = SearchTorrentFiles(label1.Text);
             Label label2 = new Label();
-            label2.Text = sizeLabel.Text;
+            label2.Text = FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
 
             ProgressBar progressBar = new ProgressBar();
 
@@ -340,6 +370,26 @@ namespace PeerSoftware
             tableLayoutPanel1.RowCount++;
 
             _torrentDownloadingNames.Add(label1.Text);
+        }
+
+        public string FormatFileSize(long sizeInBytes)
+        {
+            double sizeInKB = (double)sizeInBytes / 1024;
+            double sizeInMB = sizeInKB / 1024;
+            double sizeInGB = sizeInMB / 1024;
+
+            if (sizeInGB >= 1)
+            {
+                return $"{sizeInGB:0.00} GB";
+            }
+            else if (sizeInMB >= 1)
+            {
+                return $"{sizeInMB:0.00} MB";
+            }
+            else
+            {
+                return $"{sizeInKB:0.00} KB";
+            }
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
