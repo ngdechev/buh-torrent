@@ -33,15 +33,15 @@ namespace TorrentTracker.Server
             int size = _block.GetSize();
             string payload = _block.GetPayload();
 
-            if (command == 48)
+            if (command == 48) //0
             {
                 _peerManagementController.CreatePeer(payload);
             } 
-            else if (command == 0x01)
+            else if (command == 49) //1
             {
                 _peerManagementController.DestroyPeer(payload);
             }
-            else if (command == 0x02)
+            else if (command == 50) //2
             {
                 string[] payloadArray = payload.Split(";", 2);
 
@@ -50,7 +50,7 @@ namespace TorrentTracker.Server
 
                 _torrentManagementController.CreateTorrent(ip, torrentFile);
             }
-            else if (command == 0x03)
+            else if (command == 51) //3
             {
                 string[] payloadArray = payload.Split(";", 2);
 
@@ -59,7 +59,7 @@ namespace TorrentTracker.Server
 
                 _torrentManagementController.DeleteTorrent(ip, checksum);
             }
-            else if (command == 0x04)
+            else if (command == 52) //4
             {
                 List<TorrentFile> allTorrents = _torrentManagementController.ListTorrents();
 
@@ -80,11 +80,11 @@ namespace TorrentTracker.Server
                     Console.WriteLine("Error sending data: " + ex.Message);
                 }
             }
-            else if (command == 0x06)
+            else if (command == 54) //6
             {
                 _peerManagementController.ListPeers();
             }
-            else if (command == 0x08)
+            else if (command == 56) //8
             {
                 _torrentManagementController.SearchTorrent(payload);
             }

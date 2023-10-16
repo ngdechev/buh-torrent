@@ -33,7 +33,7 @@ namespace PTT_Parser
 
         public override string ToString()
         {
-            return $"{_command}{_size}{_payload}";
+            return $"{_command}|{_size}|{_payload}";
         }
     }
 
@@ -42,7 +42,7 @@ namespace PTT_Parser
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
             byte[] command = new byte[1];
-            byte[]? size = new byte[4];
+            byte[] size = new byte[4];
 
             int bytesRead = networkStream.Read(command, 0, 1);
 
@@ -58,11 +58,23 @@ namespace PTT_Parser
                 throw new Exception("Incorrect command.");
             }
 
-            bytesRead = networkStream.Read(size, 0, 4);
+            byte[] temp = new byte[1];
 
-            if (bytesRead != 4)
+            for (int i = 0; i <= 5; i++)
             {
-                throw new Exception("Failed to read size byte.");
+                networkStream.Read(temp, 0, 1);
+
+                if (i == 0)
+                {
+                    continue;
+                }
+
+                if (temp[0] == 124)
+                {
+                    break;
+                }
+
+                size[i-1] = temp[0];
             }
 
             int.TryParse(Encoding.ASCII.GetString(size), out int blockSize);
@@ -78,7 +90,7 @@ namespace PTT_Parser
 
             string blockPayload = Encoding.ASCII.GetString(payload);
 
-            return new PTTBlock(blockCommand, blockSize, blockPayload);
+            return new PTTBlock(blockCommand, blockSize ,blockPayload);
         }
 
         public static string ParseToString(PTTBlock block)
