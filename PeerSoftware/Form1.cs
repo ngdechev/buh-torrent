@@ -1,9 +1,13 @@
+using PeerSoftware;
 using PTT_Parser;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+using System.Windows.Forms.VisualStyles;
+
 
 namespace PeerSoftware
 {
@@ -259,36 +263,89 @@ namespace PeerSoftware
             }
             return downloading;
         }
-        private void LoadData()
-        {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string folderPath = Path.Combine(currentDirectory, "TestData");
 
+        private void LoadData()
+
+        {
+          
+        _allTorrentFiles.Clear();
+
+            
             try
             {
-                // Get an array of file names in the folder
-                string[] fileNames = Directory.GetFiles(folderPath);
+               
+                // Perform your TCP operations asynchronously
+                PTTBlock block = new PTTBlock(0x04,0,null);
+                //SendDataAsync(block);
+                Thread thread = new Thread(SendDataAsync);
+                thread.Start(block);
 
-                // Clear the previous torrentFiles list
-                _allTorrentFiles.Clear();
+                // Main thread continues to execute here
+                Console.WriteLine("Main thread is running.");
 
-                // Iterate through the file names and display them
-                foreach (string fileName in fileNames)
-                {
-                    TorrentFile torrentFile = TorrentReader.ReadFromJSON(fileName);
-                    if (torrentFile != null)
-                    {
-                        _allTorrentFiles.Add(torrentFile);
-                    }
-                }
+                // Wait for the created thread to finish
+                /*thread.Join();*/
+
+                Console.WriteLine("Main thread has completed.");
+                
+
+                // Enable the UI controls after sending is done
+                //tabControl1.Enabled = true;
+               
+                // Enable other controls as needed
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                // Handle any exceptions that may occur during the TCP operation
+                MessageBox.Show("An error occurred: " + ex.Message);
+
+                // Make sure to re-enable the UI controls in case of an error
+                tabControl1.Enabled = true;
+                // Enable other controls as needed
             }
-            _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
+
         }
 
+            public void SendDataAsync(object blockin)
+    {
+        try
+        {
+            // Create a TCP client and connect to the server
+            using (TcpClient client = new TcpClient())
+            {
+                PTTBlock block = (PTTBlock)blockin;
+                client.Connect(_trackerIpField, _trackerPortField);
+                string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
+                    .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+                // Send data asynchronously
+
+                byte[] data = Encoding.ASCII.GetBytes(block.ToString());
+                client.GetStream().Write(data, 0, data.Length);
+                    
+                    while (!client.GetStream().DataAvailable) ;
+                while (client.GetStream().DataAvailable)
+                {
+                    
+                    string payload;
+                    PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                    payload = receive.GetPayload();
+                    _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                }
+
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+            // Handle exceptions that may occur during the TCP operation
+            throw new Exception("Error sending data: " + ex.Message);
+
+        }
+        _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
+
+    }
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 1)
@@ -313,9 +370,9 @@ namespace PeerSoftware
             return searchResults;
         }
 
-        public void SendPTTMessage(string command, string payload)
+        public void SendPTTMessage(byte command, string payload)
         {
-            var pttBlock = new PTTBlock(command, payload);
+            var pttBlock = new PTTBlock(command, payload.Length ,payload);
             string pttMessage = PTT.ParseToString(pttBlock);
 
             byte[] messageBytes = Encoding.ASCII.GetBytes(pttMessage);
@@ -471,7 +528,7 @@ namespace PeerSoftware
                     _stream = _client.GetStream();
 
                     string localIpPort = $"{GetLocalIPAddress()}:{GetLocalPort()}";
-                    SendPTTMessage("0x00", localIpPort);
+                    SendPTTMessage(0x00, localIpPort);
 
                     MessageBox.Show($"Connected to {_trackerIpField}");
                 }

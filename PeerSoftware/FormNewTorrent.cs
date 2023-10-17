@@ -165,7 +165,10 @@ namespace PeerSoftware
                     string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
                         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
                     // Send data asynchronously
-                    PTTBlock block = new("0x02", myip + ";" + JsonSerializer.Serialize(_newTorrent));
+
+                    string ipPlusJson = myip + ";" + JsonSerializer.Serialize(_newTorrent);
+                    PTTBlock block = new(0x02, ipPlusJson.Length, ipPlusJson);
+
                     byte[] data = Encoding.UTF8.GetBytes(block.ToString());
                     await client.GetStream().WriteAsync(data, 0, data.Length);
 

@@ -1,5 +1,4 @@
-﻿
-
+﻿using PeerSoftware;
 using System.Data;
 using System.Text.Json;
 
@@ -8,7 +7,7 @@ namespace TorrentTracker.Controllers
     public class TorrentManagementController : ITorrentManagementController
     {
         private DictionaryController _dictionaryController;
-        private List<Torrent> _AllTorrents = new List<Torrent>();
+        private List<TorrentFile> _AllTorrents = new List<TorrentFile>();
         private string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "TorrentFile");
         public TorrentManagementController(DictionaryController dictionaryController)
         {
@@ -17,9 +16,9 @@ namespace TorrentTracker.Controllers
         public TorrentManagementController(string folderPath)
         {
             this.folderPath = folderPath;
-            _AllTorrents = new List<Torrent>();
+            _AllTorrents = new List<TorrentFile>();
         }
-        public List<Torrent> GetAllTorrents()
+        public List<TorrentFile> GetAllTorrents()
         {
             return _AllTorrents;
         }
@@ -33,15 +32,15 @@ namespace TorrentTracker.Controllers
         {
             throw new NotImplementedException();
         }
-
-        public List<Torrent> ListTorrents()
+        
+        public List<TorrentFile> ListTorrents()
         {
             _AllTorrents.Clear();
 
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                List<Torrent> TorrentsList = pair.Value;
-                foreach (Torrent torrent in TorrentsList)
+                List<TorrentFile> TorrentsList = pair.Value;
+                foreach (TorrentFile torrent in TorrentsList)
                 {
                     _AllTorrents.Add(torrent);
                 }
@@ -50,9 +49,9 @@ namespace TorrentTracker.Controllers
             return _AllTorrents;
         }
 
-        public Torrent SearchTorrent(string torrentName)
+        public TorrentFile SearchTorrent(string torrentName)
         {
-            Torrent foundTorrent = _AllTorrents.Find(torrent => torrent.torrentName == torrentName);
+            TorrentFile foundTorrent = _AllTorrents.Find(torrent => torrent.info.torrentName == torrentName);
 
             if (foundTorrent == null)
             {
@@ -75,7 +74,7 @@ namespace TorrentTracker.Controllers
                         using (StreamReader reader = new StreamReader(file))
                         {
                             string jsonText = reader.ReadToEnd();
-                            Torrent torrent = JsonSerializer.Deserialize<Torrent>(jsonText);
+                            TorrentFile torrent = JsonSerializer.Deserialize<TorrentFile>(jsonText);
                             _AllTorrents.Add(torrent);
                         }
                     }
