@@ -40,6 +40,7 @@ namespace TorrentTracker
 
                     _peerHandler = new(clientSocket, this, _torrentManagementController, _peerManagementController,_dictionary);
 
+
                     Thread peerThread = new Thread(_peerHandler.HandlePeer);
 
                     peerThread.Start();

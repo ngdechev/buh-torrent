@@ -1,5 +1,7 @@
 ﻿
 
+using PeerSoftware;
+
 namespace TorrentTracker.Controllers
 {
     public interface ITorrentManagementController
@@ -8,11 +10,13 @@ namespace TorrentTracker.Controllers
 
         public void DeleteTorrent(string checksum);
 
+
         public List<TorrentFile> GetAllTorrents();
 
         public void RemoveTorrentFromDictionary(string checksum);
 
         public TorrentFile SearchTorrent(string torrentName);
+
 
         public void ReadTorrentFileFromFoulder();
     }

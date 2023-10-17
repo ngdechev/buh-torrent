@@ -3,7 +3,9 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+
 using TorrentTracker.Controllers;
+using PeerSoftware;
 
 namespace TorrentTracker.Server
 {
@@ -11,17 +13,14 @@ namespace TorrentTracker.Server
     {
         private TcpClient _peerSocket;
         private NetworkStream _stream;
-        private TrackerServer _server;
-        public DictionaryController _dictionaryController;
+
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
-
-        private bool _isRunning = false;
-
-        public PeerHandler(TcpClient peerSocket, TrackerServer server, ITorrentManagementController torrentManagementController, IPeerManagementController peerManagementController, DictionaryController dictionaryController)
+        
+        public PeerHandler(TcpClient peerSocket, ITorrentManagementController torrentManagementController, IPeerManagementController peerManagementController)
         {
-            _peerSocket = peerSocket;
-            _server = server;
+            _peerSocket = peerSocket; 
+
             _torrentManagementController = torrentManagementController;
             _peerManagementController = peerManagementController;
             _dictionaryController = dictionaryController;
@@ -33,52 +32,47 @@ namespace TorrentTracker.Server
            // _dictionaryController.ReadDictionaryFromFile();
             _stream = _peerSocket.GetStream();
 
-            //_isRunning = true;
 
+            _block = PTT.ParseToBlock(_stream);
 
-            //while (_isRunning)
-            //{
-            _block = PTT.ParseToBlock(_stream); //_peerToTracker.ParseToBlock(_stream);
-
-            string command = _block.GetCommand();
+            byte command = _block.GetCommand();
+            int size = _block.GetSize();
             string payload = _block.GetPayload();
 
-            if (command == "0x00")
+            if (command == 48) //0
             {
-                string[] payloadArray = payload.Split(":", 2);
-                string ip = payloadArray[0];
-                string Forport = payloadArray[1];
-                string[] p=Forport.Split("\\");
-                int port = int.Parse(p[0]);
-                _peerManagementController.CreatePeer(ip,port);
-
-            }
-            else if (command == "0x01")
+                //_peerManagementController.CreatePeer(payload);
+            } 
+            else if (command == 49) //1
             {
                 _peerManagementController.DestroyPeer(payload);
             }
-            else if (command == "0x02")
+            else if (command == 50) //2
             {
                 string[] payloadArray = payload.Split(";", 2);
+
                 string ip = payloadArray[0];
                 string torrentFile = payloadArray[1];
-                _torrentManagementController.CreateTorrent(ip, torrentFile);
 
+                _torrentManagementController.CreateTorrent(ip, torrentFile);
             }
-            else if (command == "0x03")
+            else if (command == 51) //3
             {
                 string[] payloadArray = payload.Split(";", 2);
+
                 string ip = payloadArray[0];
                 string checksum = payloadArray[1];
 
-                _torrentManagementController.DeleteTorrent(checksum);
+                _torrentManagementController.DeleteTorrent(ip, checksum);
             }
-            else if (command == "0x04")
+            else if (command == 52) //4
             {
+                List<TorrentFile> allTorrents = _torrentManagementController.ListTorrents();
 
-                List<TorrentFile> allTorrents = _torrentManagementController.GetAllTorrents();
+                string json = JsonSerializer.Serialize(allTorrents);
 
-                PTTBlock PTTBlock = new("0x05", JsonSerializer.Serialize<List<TorrentFile>>(allTorrents));
+                PTTBlock PTTBlock = new(0x05, json.Length, json);
+
 
                 byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
                 Console.WriteLine("before send");
@@ -94,24 +88,16 @@ namespace TorrentTracker.Server
                 }
 
             }
-            else if (command == "0x06")
+
+            else if (command == 54) //6
             {
-
-                _peerManagementController.ListPeersWithTorrentFile(payload);
-
+                _peerManagementController.ListPeers();
             }
-            else if (command == "0x08")
+            else if (command == 56) //8
             {
                 _torrentManagementController.SearchTorrent(payload);
-                _isRunning = false;
             }
-            // }
-            _dictionaryController.WriteDictionaryToFile();
         }
 
-        /*public void Disconnect()
-        {
-            _isRunning = false;
-        }*/
     }
 }

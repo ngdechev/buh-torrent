@@ -1,5 +1,7 @@
+
 ﻿using Newtonsoft.Json;
 using System;
+
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -14,6 +16,7 @@ namespace TorrentTracker.Controllers
         {
             _dictionaryController = dictionaryController;
         }
+
 
         public List<TorrentFile> GetAllTorrents()
         {
@@ -42,10 +45,12 @@ namespace TorrentTracker.Controllers
         } 
 
         public void DeleteTorrent(string checksum)
+
         {
             foreach (var pair in _dictionaryController.GetDictionary())
             {
                 foreach (TorrentFile torrent in pair.Value)
+
                 {
                     if (checksum == torrent.info.checksum)
                     {
@@ -73,7 +78,6 @@ namespace TorrentTracker.Controllers
         }
 
         public TorrentFile SearchTorrent(string torrentName)
-
         {
             TorrentFile foundTorrent = _AllTorrents.Find(torrent => torrent.info.torrentName == torrentName);
 
@@ -101,6 +105,7 @@ namespace TorrentTracker.Controllers
 
                         if (torrent != null)
                         {
+
                             _AllTorrents.Add(torrent);
                         }     
                     }

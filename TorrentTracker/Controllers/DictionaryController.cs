@@ -1,12 +1,16 @@
 ﻿
 
+
 using Newtonsoft.Json;
+
 
 namespace TorrentTracker.Controllers
 {
     public class DictionaryController
     {
+
         public Dictionary<Peer, List<TorrentFile>> _torrentDictionary = new Dictionary<Peer, List<TorrentFile>>();
+
         object _lock = new object();
        
         public DictionaryController()
@@ -22,6 +26,7 @@ namespace TorrentTracker.Controllers
         public void SetDictionary(Dictionary<Peer, List<TorrentFile>> torrentDictionary)
         {
             _torrentDictionary = torrentDictionary;
+
         }
  
         public object GetLock()

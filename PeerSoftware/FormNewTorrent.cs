@@ -22,7 +22,7 @@ namespace PeerSoftware
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.Title = "Pick File to share";
+                openFileDialog.Title = "Choose File";
                 openFileDialog.Filter = "All Files (*.*)|*.*"; // Filter for all file types
                 openFileDialog.CheckFileExists = true;
 
@@ -57,16 +57,17 @@ namespace PeerSoftware
 
                     // Set the description
                     //description.Text = newTorrentFile.info.checksum;
-
+                    filePathTextBox.Text = filePath;
                     // Update any other parts of your UI or data structures as needed
                     torrentName.Text = newTorrentFile.info.torrentName;
 
+                    fileSizeTextBox.Text = FormatFileSize(fileSizeInBytes);
                     // Now, you can use newTorrentFile as needed
                     _newTorrent = newTorrentFile;
                 }
             }
         }
-        
+
         private async void upload_Click(object sender, EventArgs e)
         {
             // Disable UI controls that should not be used while sending data
@@ -75,6 +76,7 @@ namespace PeerSoftware
             _newTorrent.info.torrentName = torrentName.Text;
             _newTorrent.info.description = description.Text;
             _newTorrent.announce = _mainForm.TextForAnnoncer();
+
             // Disable other controls as needed
 
             try
@@ -97,6 +99,28 @@ namespace PeerSoftware
             }
 
         }
+
+        public string FormatFileSize(long sizeInBytes)
+        {
+            double sizeInKB = (double)sizeInBytes / 1024;
+            double sizeInMB = sizeInKB / 1024;
+            double sizeInGB = sizeInMB / 1024;
+
+            if (sizeInGB >= 1)
+            {
+                return $"{sizeInGB:0.00} GB";
+            }
+            else if (sizeInMB >= 1)
+            {
+                return $"{sizeInMB:0.00} MB";
+            }
+            else
+            {
+                return $"{sizeInKB:0.00} KB";
+            }
+        }
+
+
         public (string, int) SplitIpAndPort()
         {
             string trackerIpField = _mainForm.TextForAnnoncer();
@@ -143,7 +167,10 @@ namespace PeerSoftware
                         .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
 
                     // Send data asynchronously
-                    PTTBlock block = new("0x02", myip+";"+JsonSerializer.Serialize(_newTorrent));
+
+                    string ipPlusJson = myip + ";" + JsonSerializer.Serialize(_newTorrent);
+                    PTTBlock block = new(0x02, ipPlusJson.Length, ipPlusJson);
+
                     byte[] data = Encoding.UTF8.GetBytes(block.ToString());
                     await client.GetStream().WriteAsync(data, 0, data.Length);
 
