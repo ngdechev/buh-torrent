@@ -41,12 +41,14 @@ namespace PTT_Parser
     {
         public static PTTBlock ParseToBlock(NetworkStream networkStream)
         {
+
             byte[] command = new byte[1];
             byte[] size = new byte[4];
 
             int bytesRead = networkStream.Read(command, 0, 1);
 
             if (bytesRead != 1)
+
             {
                 throw new Exception("Failed to read command byte.");
             }
@@ -60,7 +62,9 @@ namespace PTT_Parser
 
             byte[] temp = new byte[1];
 
+
             for (int i = 0; i <= 5; i++)
+
             {
                 networkStream.Read(temp, 0, 1);
 
@@ -81,16 +85,20 @@ namespace PTT_Parser
 
             byte[]? payload = new byte[blockSize];
 
+
             if (blockCommand == 52)
             {
                 return new PTTBlock(blockCommand, blockSize, "");
             }
 
+
             bytesRead = networkStream.Read(payload, 0, blockSize);
+
 
             if (bytesRead != blockSize)
             {
                 throw new Exception("Failed to read payload byte.");
+
             }
 
             string blockPayload = Encoding.ASCII.GetString(payload);

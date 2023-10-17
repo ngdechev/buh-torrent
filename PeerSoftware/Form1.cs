@@ -7,6 +7,12 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms.VisualStyles;
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Json;
+
 
 
 namespace PeerSoftware
@@ -231,8 +237,8 @@ namespace PeerSoftware
 
             }
         }
+       private List<TorrentFile> StatusDownloadButton()
 
-        private List<TorrentFile> StatusDownloadButton()
         {
             if (tableLayoutPanel1.RowCount == 1)
             {
@@ -267,10 +273,9 @@ namespace PeerSoftware
         private void LoadData()
 
         {
-          
+
         _allTorrentFiles.Clear();
 
-            
             try
             {
                
@@ -297,6 +302,7 @@ namespace PeerSoftware
             }
             catch (Exception ex)
             {
+
                 // Handle any exceptions that may occur during the TCP operation
                 MessageBox.Show("An error occurred: " + ex.Message);
 
@@ -306,6 +312,7 @@ namespace PeerSoftware
             }
 
         }
+
 
             public void SendDataAsync(object blockin)
     {
@@ -341,6 +348,7 @@ namespace PeerSoftware
 
             // Handle exceptions that may occur during the TCP operation
             throw new Exception("Error sending data: " + ex.Message);
+
 
         }
         _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
@@ -582,6 +590,12 @@ namespace PeerSoftware
         public string TextForAnnoncer()
         {
             return trackerIP.Text;
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+
         }
 
     }

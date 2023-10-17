@@ -1,7 +1,9 @@
-﻿using System.Net.Sockets;
-using System.Text.Json;
+﻿using PTT_Parser;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
-using PTT_Parser;
+using System.Text.Json;
+
 using TorrentTracker.Controllers;
 using PeerSoftware;
 
@@ -11,21 +13,25 @@ namespace TorrentTracker.Server
     {
         private TcpClient _peerSocket;
         private NetworkStream _stream;
+
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
         
         public PeerHandler(TcpClient peerSocket, ITorrentManagementController torrentManagementController, IPeerManagementController peerManagementController)
         {
             _peerSocket = peerSocket; 
+
             _torrentManagementController = torrentManagementController;
             _peerManagementController = peerManagementController;
+            _dictionaryController = dictionaryController;
         }
 
         public void HandlePeer()
         {
             PTTBlock _block;
-            
+           // _dictionaryController.ReadDictionaryFromFile();
             _stream = _peerSocket.GetStream();
+
 
             _block = PTT.ParseToBlock(_stream);
 
@@ -67,6 +73,7 @@ namespace TorrentTracker.Server
 
                 PTTBlock PTTBlock = new(0x05, json.Length, json);
 
+
                 byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
                 Console.WriteLine("before send");
                 try
@@ -79,7 +86,9 @@ namespace TorrentTracker.Server
                 {
                     Console.WriteLine("Error sending data: " + ex.Message);
                 }
+
             }
+
             else if (command == 54) //6
             {
                 _peerManagementController.ListPeers();
@@ -89,5 +98,6 @@ namespace TorrentTracker.Server
                 _torrentManagementController.SearchTorrent(payload);
             }
         }
+
     }
 }

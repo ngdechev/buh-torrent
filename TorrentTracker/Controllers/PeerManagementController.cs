@@ -1,30 +1,56 @@
 ﻿
 
+using System.Text.Json;
+
 namespace TorrentTracker.Controllers
 {
     public class PeerManagementController : IPeerManagementController
     {
         private DictionaryController _dictionaryController;
-        private List<Peer> _AllPeers = new List<Peer>();
-
+        private List<Peer> _peerWithTorrentFile;
         public PeerManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
         }
 
-        public string CreatePeer(string ip)
+        public void CreatePeer(string ip, int port)
         {
-            throw new NotImplementedException();
+            Peer peer = new Peer(_dictionaryController.GetDictionary().Count()+1, ip, port);
+            _dictionaryController.GetDictionary().Add(peer, new List<TorrentFile>());
         }
 
-        public string DestroyPeer(string ip)
+        public void DestroyPeer(string ip)
         {
-            throw new NotImplementedException();
+            Peer PeerForRemove = new Peer();
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                if (pair.Key.IPAddress == ip)
+                {
+                    PeerForRemove = pair.Key;
+                    _dictionaryController.GetDictionary().Remove(PeerForRemove);
+
+                }
+                else
+                {
+                    throw new Exception("This peer does not exist");
+                }
+            }
         }
 
-        public List<Peer> ListPeers()
+        public List<Peer> ListPeersWithTorrentFile(string checksum)
         {
-            throw new NotImplementedException();
+            
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                foreach (TorrentFile torrent in pair.Value)
+                {
+                    if (checksum == torrent.info.checksum)
+                    {
+                        _peerWithTorrentFile.Add(pair.Key);
+                    }
+                }
+            }
+            return _peerWithTorrentFile;
         }
     }
 }
