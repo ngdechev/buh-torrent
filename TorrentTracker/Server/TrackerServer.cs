@@ -38,7 +38,7 @@ namespace TorrentTracker
 
                     Console.WriteLine("Peer opened the app!");
 
-                    _peerHandler = new(clientSocket, this, _torrentManagementController, _peerManagementController,_dictionary);
+                    _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
 
 
                     Thread peerThread = new Thread(_peerHandler.HandlePeer);

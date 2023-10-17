@@ -44,7 +44,7 @@ namespace TorrentTracker.Controllers
             }
         } 
 
-        public void DeleteTorrent(string checksum)
+        public void DeleteTorrent(string ip, string checksum)
 
         {
             foreach (var pair in _dictionaryController.GetDictionary())
