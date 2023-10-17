@@ -35,7 +35,7 @@ namespace TorrentTracker.Server
 
             if (command == 48) //0
             {
-                _peerManagementController.CreatePeer(payload);
+                //_peerManagementController.CreatePeer(payload);
             } 
             else if (command == 49) //1
             {

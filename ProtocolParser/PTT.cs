@@ -81,6 +81,11 @@ namespace PTT_Parser
 
             byte[]? payload = new byte[blockSize];
 
+            if (blockCommand == 52)
+            {
+                return new PTTBlock(blockCommand, blockSize, "");
+            }
+
             bytesRead = networkStream.Read(payload, 0, blockSize);
 
             if (bytesRead != blockSize)
