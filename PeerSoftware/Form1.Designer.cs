@@ -45,6 +45,10 @@ namespace PeerSoftware
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
+            tableLayoutPanel7 = new TableLayoutPanel();
+            browseTabTorrentName = new Label();
+            browseTabSizeLabel = new Label();
+            browseTabDescriptionLabel = new Label();
             myTorrents = new TabPage();
             tableLayoutPanel6 = new TableLayoutPanel();
             label5 = new Label();
@@ -64,6 +68,7 @@ namespace PeerSoftware
             buhTorrent.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             browes.SuspendLayout();
+            tableLayoutPanel7.SuspendLayout();
             myTorrents.SuspendLayout();
             tableLayoutPanel6.SuspendLayout();
             settings.SuspendLayout();
@@ -194,6 +199,7 @@ namespace PeerSoftware
             browes.Controls.Add(refresh);
             browes.Controls.Add(search);
             browes.Controls.Add(searchBar);
+            browes.Controls.Add(tableLayoutPanel7);
             browes.Location = new Point(4, 24);
             browes.Name = "browes";
             browes.Padding = new Padding(3);
@@ -284,6 +290,53 @@ namespace PeerSoftware
             searchBar.Size = new Size(701, 23);
             searchBar.TabIndex = 0;
             searchBar.KeyDown += textBox1_KeyDown;
+            // 
+            // tableLayoutPanel7
+            // 
+            tableLayoutPanel7.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel7.ColumnCount = 3;
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.6124039F));
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.3875961F));
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 604F));
+            tableLayoutPanel7.Controls.Add(browseTabTorrentName, 0, 0);
+            tableLayoutPanel7.Controls.Add(browseTabSizeLabel, 1, 0);
+            tableLayoutPanel7.Controls.Add(browseTabDescriptionLabel, 2, 0);
+            tableLayoutPanel7.Location = new Point(3, 53);
+            tableLayoutPanel7.Name = "tableLayoutPanel7";
+            tableLayoutPanel7.RowCount = 1;
+            tableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel7.Size = new Size(863, 24);
+            tableLayoutPanel7.TabIndex = 12;
+            // 
+            // browseTabTorrentName
+            // 
+            browseTabTorrentName.Anchor = AnchorStyles.Left;
+            browseTabTorrentName.AutoSize = true;
+            browseTabTorrentName.Location = new Point(3, 4);
+            browseTabTorrentName.Name = "browseTabTorrentName";
+            browseTabTorrentName.Size = new Size(39, 15);
+            browseTabTorrentName.TabIndex = 0;
+            browseTabTorrentName.Text = "Name";
+            // 
+            // browseTabSizeLabel
+            // 
+            browseTabSizeLabel.Anchor = AnchorStyles.Left;
+            browseTabSizeLabel.AutoSize = true;
+            browseTabSizeLabel.Location = new Point(131, 4);
+            browseTabSizeLabel.Name = "browseTabSizeLabel";
+            browseTabSizeLabel.Size = new Size(27, 15);
+            browseTabSizeLabel.TabIndex = 1;
+            browseTabSizeLabel.Text = "Size";
+            // 
+            // browseTabDescriptionLabel
+            // 
+            browseTabDescriptionLabel.Anchor = AnchorStyles.Left;
+            browseTabDescriptionLabel.AutoSize = true;
+            browseTabDescriptionLabel.Location = new Point(261, 4);
+            browseTabDescriptionLabel.Name = "browseTabDescriptionLabel";
+            browseTabDescriptionLabel.Size = new Size(67, 15);
+            browseTabDescriptionLabel.TabIndex = 2;
+            browseTabDescriptionLabel.Text = "Description";
             // 
             // myTorrents
             // 
@@ -467,6 +520,8 @@ namespace PeerSoftware
             tableLayoutPanel5.PerformLayout();
             browes.ResumeLayout(false);
             browes.PerformLayout();
+            tableLayoutPanel7.ResumeLayout(false);
+            tableLayoutPanel7.PerformLayout();
             myTorrents.ResumeLayout(false);
             tableLayoutPanel6.ResumeLayout(false);
             tableLayoutPanel6.PerformLayout();
@@ -513,6 +568,10 @@ namespace PeerSoftware
         private Label label5;
         private Label myTorrentsTabActionLabel;
         private Label myTorrentsTabNameLabel;
+        private TableLayoutPanel tableLayoutPanel7;
+        private Label browseTabTorrentName;
+        private Label browseTabSizeLabel;
+        private Label browseTabDescriptionLabel;
     }
 }
 
