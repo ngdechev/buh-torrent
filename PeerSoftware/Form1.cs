@@ -320,10 +320,12 @@ namespace PeerSoftware
                 using (TcpClient client = new TcpClient())
                 {
                     PTTBlock block = (PTTBlock)blockin;
-                    (_trackerIpField, _trackerPortField) = SplitIpAndPort();
+                    if(!_isConnected)
+                    {
+                        (_trackerIpField, _trackerPortField) = SplitIpAndPort();
+                    }
                     client.Connect(_trackerIpField, _trackerPortField);
-                    string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
-                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+                    
                     // Send data asynchronously
 
                     byte[] data = Encoding.ASCII.GetBytes(block.ToString());
@@ -337,8 +339,11 @@ namespace PeerSoftware
                         PTTBlock receive = PTT.ParseToBlock(client.GetStream());
                         payload = receive.GetPayload();
                         _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                        //_isConnected = false;
+                        
                     }
-
+                    client.GetStream().Close();
+                    client.Close();
                 }
 
             }
@@ -509,7 +514,7 @@ namespace PeerSoftware
                     port = 12345;
                 }
             }
-
+            _isConnected = true;
             return (ipAddressString, port);
         }
 
@@ -523,7 +528,7 @@ namespace PeerSoftware
         {
             if (_isConnected)
             {
-                CloseConnection();
+                //CloseConnection();
             }
 
             (_trackerIpField, _trackerPortField) = SplitIpAndPort();
@@ -539,11 +544,16 @@ namespace PeerSoftware
                     SendPTTMessage(0x00, localIpPort);
 
                     MessageBox.Show($"Connected to {_trackerIpField}");
+                    //CloseConnection();
+                    _stream.Close();
+                    _client.Close();
+                    _isConnected = false;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error connecting to {_trackerIpField}: {ex.Message}");
                 }
+                
             }
             else
             {
