@@ -8,8 +8,9 @@ namespace TorrentTracker.Controllers
 
         public void DeleteTorrent(string checksum);
 
-        public List<TorrentFile> ListTorrents();
+        public List<TorrentFile> GetAllTorrents();
 
+        public void RemoveTorrentFromDictionary(string checksum);
 
         public TorrentFile SearchTorrent(string torrentName);
 

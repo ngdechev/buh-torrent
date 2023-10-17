@@ -1,5 +1,6 @@
 ﻿using PTT_Parser;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using TorrentTracker.Controllers;
@@ -11,12 +12,7 @@ namespace TorrentTracker.Server
         private TcpClient _peerSocket;
         private NetworkStream _stream;
         private TrackerServer _server;
-
-        //private PTT _peerToTracker = new PTT();
-        private DictionaryController _dictionaryController;
-
-        //private List<Torrent> _allTorrents = new List<Torrent>();
-
+        public DictionaryController _dictionaryController;
         private ITorrentManagementController _torrentManagementController;
         private IPeerManagementController _peerManagementController;
 
@@ -34,7 +30,7 @@ namespace TorrentTracker.Server
         public void HandlePeer()
         {
             PTTBlock _block;
-
+           // _dictionaryController.ReadDictionaryFromFile();
             _stream = _peerSocket.GetStream();
 
             //_isRunning = true;
@@ -49,8 +45,13 @@ namespace TorrentTracker.Server
 
             if (command == "0x00")
             {
+                string[] payloadArray = payload.Split(":", 2);
+                string ip = payloadArray[0];
+                string Forport = payloadArray[1];
+                string[] p=Forport.Split("\\");
+                int port = int.Parse(p[0]);
+                _peerManagementController.CreatePeer(ip,port);
 
-                _peerManagementController.CreatePeer(payload);
             }
             else if (command == "0x01")
             {
@@ -61,7 +62,6 @@ namespace TorrentTracker.Server
                 string[] payloadArray = payload.Split(";", 2);
                 string ip = payloadArray[0];
                 string torrentFile = payloadArray[1];
-
                 _torrentManagementController.CreateTorrent(ip, torrentFile);
 
             }
@@ -76,7 +76,7 @@ namespace TorrentTracker.Server
             else if (command == "0x04")
             {
 
-                List<TorrentFile> allTorrents = _torrentManagementController.ListTorrents();
+                List<TorrentFile> allTorrents = _torrentManagementController.GetAllTorrents();
 
                 PTTBlock PTTBlock = new("0x05", JsonSerializer.Serialize<List<TorrentFile>>(allTorrents));
 
@@ -106,6 +106,7 @@ namespace TorrentTracker.Server
                 _isRunning = false;
             }
             // }
+            _dictionaryController.WriteDictionaryToFile();
         }
 
         /*public void Disconnect()

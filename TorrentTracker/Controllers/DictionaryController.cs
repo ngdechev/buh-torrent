@@ -6,9 +6,9 @@ namespace TorrentTracker.Controllers
 {
     public class DictionaryController
     {
-        private Dictionary<Peer, List<TorrentFile>> _torrentDictionary = new Dictionary<Peer, List<TorrentFile>>();
+        public Dictionary<Peer, List<TorrentFile>> _torrentDictionary = new Dictionary<Peer, List<TorrentFile>>();
         object _lock = new object();
-
+       
         public DictionaryController()
         {
             _torrentDictionary = new Dictionary<Peer, List<TorrentFile>>();
@@ -51,6 +51,7 @@ namespace TorrentTracker.Controllers
         public void WriteDictionaryToFile() 
         {
             string filename = "Dictionary.json";
+            File.WriteAllText(filename, string.Empty);
             string json = JsonConvert.SerializeObject(_torrentDictionary);
             File.WriteAllText(filename, json);
         }

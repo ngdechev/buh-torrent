@@ -13,10 +13,10 @@ namespace TorrentTracker.Controllers
             _dictionaryController = dictionaryController;
         }
 
-        public void CreatePeer(string ip)
+        public void CreatePeer(string ip, int port)
         {
-            Peer peer = new Peer(null, ip, 12345);
-            _dictionaryController.GetDictionary().Add(peer, null);
+            Peer peer = new Peer(_dictionaryController.GetDictionary().Count()+1, ip, port);
+            _dictionaryController.GetDictionary().Add(peer, new List<TorrentFile>());
         }
 
         public void DestroyPeer(string ip)
@@ -24,7 +24,7 @@ namespace TorrentTracker.Controllers
             Peer PeerForRemove = new Peer();
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                if (pair.Key.ipAddress == ip)
+                if (pair.Key.IPAddress == ip)
                 {
                     PeerForRemove = pair.Key;
                     _dictionaryController.GetDictionary().Remove(PeerForRemove);
@@ -39,6 +39,7 @@ namespace TorrentTracker.Controllers
 
         public List<Peer> ListPeersWithTorrentFile(string checksum)
         {
+            
             foreach (var pair in _dictionaryController.GetDictionary())
             {
                 foreach (TorrentFile torrent in pair.Value)

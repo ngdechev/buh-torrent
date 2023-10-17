@@ -1,19 +1,19 @@
 ﻿public class Peer
 {
-    public string peerId { get; set; }
-    public string ipAddress { get; set; }
-    public int port { get; set; }
+    public int peerID { get; set; }
+    public string IPAddress { get; set; }
+    public int Port { get; set; }
     
-    public Peer(string peerId, string ipAddress, int port)
+    public Peer(int peerId, string ipAddress, int port)
     {
-        peerId = peerId;
-        ipAddress = ipAddress;
-        port = port;
+        peerID = peerId;
+        IPAddress = ipAddress;
+        Port = port;
     }
     public Peer()
     {
-        peerId = "1";
-        ipAddress = "1";
-        port = 12345;
+        peerID = 1;
+        IPAddress = "1";
+        Port = 12345;
     }
 }

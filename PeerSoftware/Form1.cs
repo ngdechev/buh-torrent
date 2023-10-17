@@ -503,7 +503,7 @@ namespace PeerSoftware
 
             (_trackerIpField, _trackerPortField) = SplitIpAndPort();
 
-           /* if (IPAddress.TryParse(_trackerIpField, out IPAddress ipAddress))
+            if (IPAddress.TryParse(_trackerIpField, out IPAddress ipAddress))
             {
                 try
                 {
@@ -523,7 +523,7 @@ namespace PeerSoftware
             else
             {
                 MessageBox.Show("Invalid IP address or port. Please enter a valid IP address and port.");
-            }*/
+            }
         }
 
         public static string GetLocalIPAddress()

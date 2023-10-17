@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TorrentTracker", "TorrentTracker\TorrentTracker.csproj", "{35E9E49A-AA2E-4CA2-8B2D-4DDCF7F91FAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TorrentTracker", "TorrentTracker\TorrentTracker.csproj", "{35E9E49A-AA2E-4CA2-8B2D-4DDCF7F91FAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeerSoftware", "PeerSoftware\PeerSoftware.csproj", "{2564E2E9-07A5-474E-8BF9-CE623B38E214}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeerSoftware", "PeerSoftware\PeerSoftware.csproj", "{2564E2E9-07A5-474E-8BF9-CE623B38E214}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtocolParser", "ProtocolParser\ProtocolParser.csproj", "{49AA0F38-E829-4346-9037-1E5666BA340A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProtocolParser", "ProtocolParser\ProtocolParser.csproj", "{49AA0F38-E829-4346-9037-1E5666BA340A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuhTorrentTestProject", "BuhTorrentTestProject\BuhTorrentTestProject.csproj", "{AB5CE26E-2BB5-4AF6-AD48-504848815C3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuhTorrentTestProject", "BuhTorrentTestProject\BuhTorrentTestProject.csproj", "{AB5CE26E-2BB5-4AF6-AD48-504848815C3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE8C73E0-206B-417F-BAAF-F38A9907DD1E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

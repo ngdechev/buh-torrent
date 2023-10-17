@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using Newtonsoft.Json;
+using System;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace TorrentTracker.Controllers
 {
@@ -12,33 +15,31 @@ namespace TorrentTracker.Controllers
             _dictionaryController = dictionaryController;
         }
 
-        public TorrentManagementController(string folderPath)
-        {
-            this.folderPath = folderPath;
-            _AllTorrents = new List<TorrentFile>();
-        }
-
         public List<TorrentFile> GetAllTorrents()
         {
+            _AllTorrents.Clear();
+            ReadTorrentFileFromFoulder();
             return _AllTorrents;
         }
 
         public void CreateTorrent(string ip,string torrentFile)
         {
-            TorrentFile NewTorrent = JsonSerializer.Deserialize<TorrentFile>(torrentFile);
-            _AllTorrents.Add(NewTorrent);
+            TorrentFile NewTorrent = JsonConvert.DeserializeObject<TorrentFile>(torrentFile);
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                if (ip == pair.Key.ipAddress)
+                if (ip == pair.Key.IPAddress)
                 {
                     pair.Value.Add(NewTorrent);
+                    string json = JsonConvert.SerializeObject(NewTorrent);
+                    string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName+ ".json");
+                    File.WriteAllText(filePath, json);
                 }
                 else
                 {
                     break;
                 }
             }
-        }
+        } 
 
         public void DeleteTorrent(string checksum)
         {
@@ -49,6 +50,7 @@ namespace TorrentTracker.Controllers
                     if (checksum == torrent.info.checksum)
                     {
                         pair.Value.Remove(torrent);
+                        RemoveTorrentFromDictionary(checksum);
                     }
                     else
                     {
@@ -57,23 +59,18 @@ namespace TorrentTracker.Controllers
                 }
             }
         }
-
-        public List<TorrentFile> ListTorrents()
+        public void RemoveTorrentFromDictionary(string checksum)
         {
-            //_AllTorrents.Clear();
-
-            /*foreach (var pair in _dictionaryController.GetDictionary())
-            {
-                List<Torrent> TorrentsList = pair.Value;
-                foreach (Torrent torrent in TorrentsList)
+                string jsonContent = File.ReadAllText("Dictionary.json");
+                List<TorrentFile> torrents = JsonConvert.DeserializeObject<List<TorrentFile>>(jsonContent);
+                TorrentFile torrentToRemove = torrents.FirstOrDefault(t => t.info.checksum == checksum);
+                if (torrentToRemove != null)
                 {
-                    _AllTorrents.Add(torrent);
+                    torrents.Remove(torrentToRemove);
                 }
-            }*/
-            ReadTorrentFileFromFoulder();
-            return _AllTorrents;
+                string updatedJsonContent = JsonConvert.SerializeObject(torrents, Formatting.Indented);
+                File.WriteAllText("Dictionary.json", updatedJsonContent);            
         }
-
 
         public TorrentFile SearchTorrent(string torrentName)
 
@@ -105,13 +102,7 @@ namespace TorrentTracker.Controllers
                         if (torrent != null)
                         {
                             _AllTorrents.Add(torrent);
-                        }
-                        /*using (StreamReader reader = new StreamReader(file))
-                        {
-                            string jsonText = reader.ReadToEnd();
-                            TorrentFile torrent = JsonSerializer.Deserialize<TorrentFile>(jsonText);
-                            _AllTorrents.Add(torrent);
-                        }*/
+                        }     
                     }
                     catch (Exception exception)
                     {
