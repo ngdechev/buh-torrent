@@ -175,7 +175,7 @@ namespace PeerSoftware
                 {
                     if (titleControl != null)
                     {
-                        titleControl.Text = torrentFiles[index + row].info.fileName;
+                        titleControl.Text = torrentFiles[index + row].info.torrentName;
                     }
 
                     if (sizeControl != null)
