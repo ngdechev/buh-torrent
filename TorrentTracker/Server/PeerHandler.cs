@@ -43,7 +43,9 @@ namespace TorrentTracker.Server
 
             if (command == 48) //0
             {
-                //_peerManagementController.CreatePeer(payload);
+                string[] ip = payload.Split(':', 2);
+                int.TryParse(ip[1], out int int_port);
+                _peerManagementController.CreatePeer(ip[0],int_port);
             } 
             else if (command == 49) //1
             {
