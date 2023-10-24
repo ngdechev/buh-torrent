@@ -26,13 +26,13 @@ namespace TorrentTracker.Controllers
 
         public void CreateTorrent(string ip,string torrentFile)
         {
-            TorrentFile NewTorrent = JsonConvert.DeserializeObject<TorrentFile>(torrentFile);
+            TorrentFile NewTorrent = JsonSerializer.Deserialize<TorrentFile>(torrentFile);
             foreach (var pair in _dictionaryController.GetDictionary())
             {
                 if (ip == pair.Key.IPAddress)
                 {
                     pair.Value.Add(NewTorrent);
-                    string json = JsonConvert.SerializeObject(NewTorrent);
+                    string json = JsonSerializer.Serialize(NewTorrent);
                     string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName+ ".json");
                     File.WriteAllText(filePath, json);
                 }
