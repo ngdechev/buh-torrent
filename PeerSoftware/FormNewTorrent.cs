@@ -87,6 +87,7 @@ namespace PeerSoftware
                 // Enable the UI controls after sending is done
                 upload.Enabled = true;
                 // Enable other controls as needed
+                this.Close();
             }
             catch (Exception ex)
             {
