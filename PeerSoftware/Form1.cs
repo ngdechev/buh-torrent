@@ -493,8 +493,8 @@ namespace PeerSoftware
 
             string[] parts = _trackerIpField.Split(':');
 
-            string ipAddressString = null;
-            int port = 0;
+            string ipAddressString=_trackerIpField;
+            int port=_trackerPortField;
 
             if (parts.Length == 2)
             {
@@ -598,6 +598,10 @@ namespace PeerSoftware
 
         }
 
+        private void buhTorrent_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
