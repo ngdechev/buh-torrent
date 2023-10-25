@@ -36,11 +36,11 @@ namespace PeerSoftware
         {
             string currentDirectory = Directory.GetCurrentDirectory();
             string folderPath = Path.Combine(currentDirectory, finaleFolder, torrent.info.torrentName + ".json");
-
             string json = JsonSerializer.Serialize(torrent);
             File.WriteAllText(folderPath, json);
         }
     }
 }
+
 
 

@@ -30,11 +30,12 @@ namespace PeerSoftware
         {
             tabControl1 = new TabControl();
             buhTorrent = new TabPage();
+            tableLayoutPanel5 = new TableLayoutPanel();
+            label3 = new Label();
+            label1 = new Label();
+            label2 = new Label();
             button5 = new Button();
             button4 = new Button();
-            label3 = new Label();
-            label2 = new Label();
-            label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             browes = new TabPage();
             pagelabel = new Label();
@@ -44,12 +45,17 @@ namespace PeerSoftware
             refresh = new Button();
             search = new Button();
             searchBar = new TextBox();
+            tableLayoutPanel7 = new TableLayoutPanel();
+            browseTabTorrentName = new Label();
+            browseTabSizeLabel = new Label();
+            browseTabDescriptionLabel = new Label();
             myTorrents = new TabPage();
+            tableLayoutPanel6 = new TableLayoutPanel();
+            label5 = new Label();
+            myTorrentsTabActionLabel = new Label();
+            myTorrentsTabNameLabel = new Label();
             createNewTorrent = new Button();
             tableLayoutPanel4 = new TableLayoutPanel();
-            delete = new Button();
-            label8 = new Label();
-            label9 = new Label();
             settings = new TabPage();
             trackerIP = new TextBox();
             save = new Button();
@@ -60,103 +66,133 @@ namespace PeerSoftware
             tableLayoutPanel3 = new TableLayoutPanel();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
+            tableLayoutPanel5.SuspendLayout();
             browes.SuspendLayout();
+            tableLayoutPanel7.SuspendLayout();
             myTorrents.SuspendLayout();
-            tableLayoutPanel4.SuspendLayout();
+            tableLayoutPanel6.SuspendLayout();
             settings.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
             // 
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl1.Controls.Add(buhTorrent);
             tabControl1.Controls.Add(browes);
             tabControl1.Controls.Add(myTorrents);
             tabControl1.Controls.Add(settings);
             tabControl1.Controls.Add(help);
             tabControl1.Location = new Point(1, 1);
+            tabControl1.Margin = new Padding(3, 4, 3, 4);
+            tabControl1.MinimumSize = new Size(1047, 697);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(799, 448);
+            tabControl1.Size = new Size(1047, 697);
             tabControl1.TabIndex = 0;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
             // buhTorrent
             // 
+            buhTorrent.Controls.Add(tableLayoutPanel5);
             buhTorrent.Controls.Add(button5);
             buhTorrent.Controls.Add(button4);
-            buhTorrent.Controls.Add(label3);
-            buhTorrent.Controls.Add(label2);
-            buhTorrent.Controls.Add(label1);
             buhTorrent.Controls.Add(tableLayoutPanel1);
-            buhTorrent.Location = new Point(4, 24);
+            buhTorrent.Location = new Point(4, 29);
+            buhTorrent.Margin = new Padding(3, 4, 3, 4);
             buhTorrent.Name = "buhTorrent";
-            buhTorrent.Padding = new Padding(3);
-            buhTorrent.Size = new Size(791, 420);
+            buhTorrent.Padding = new Padding(3, 4, 3, 4);
+            buhTorrent.Size = new Size(1039, 664);
             buhTorrent.TabIndex = 0;
             buhTorrent.Text = "BuhTorrent";
             buhTorrent.UseVisualStyleBackColor = true;
+            buhTorrent.Click += buhTorrent_Click;
+            // 
+            // tableLayoutPanel5
+            // 
+            tableLayoutPanel5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel5.ColumnCount = 3;
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84.26573F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.7342653F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 158F));
+            tableLayoutPanel5.Controls.Add(label3, 2, 0);
+            tableLayoutPanel5.Controls.Add(label1, 0, 0);
+            tableLayoutPanel5.Controls.Add(label2, 1, 0);
+            tableLayoutPanel5.Location = new Point(10, 71);
+            tableLayoutPanel5.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel5.Name = "tableLayoutPanel5";
+            tableLayoutPanel5.RowCount = 1;
+            tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel5.Size = new Size(785, 32);
+            tableLayoutPanel5.TabIndex = 12;
+            // 
+            // label3
+            // 
+            label3.Anchor = AnchorStyles.Left;
+            label3.AutoSize = true;
+            label3.Location = new Point(629, 6);
+            label3.Name = "label3";
+            label3.Size = new Size(138, 20);
+            label3.TabIndex = 3;
+            label3.Text = "Download Progress";
+            // 
+            // label1
+            // 
+            label1.Anchor = AnchorStyles.Left;
+            label1.AutoSize = true;
+            label1.Location = new Point(3, 6);
+            label1.Name = "label1";
+            label1.Size = new Size(49, 20);
+            label1.TabIndex = 8;
+            label1.Text = "Name";
+            // 
+            // label2
+            // 
+            label2.Anchor = AnchorStyles.Left;
+            label2.AutoSize = true;
+            label2.Location = new Point(531, 6);
+            label2.Name = "label2";
+            label2.Size = new Size(36, 20);
+            label2.TabIndex = 9;
+            label2.Text = "Size";
             // 
             // button5
             // 
-            button5.Location = new Point(627, 25);
+            button5.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button5.Location = new Point(904, 64);
+            button5.Margin = new Padding(3, 4, 3, 4);
             button5.Name = "button5";
-            button5.Size = new Size(75, 23);
+            button5.Size = new Size(86, 31);
             button5.TabIndex = 11;
             button5.Text = "Resume All";
             button5.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            button4.Location = new Point(708, 25);
+            button4.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button4.Location = new Point(904, 25);
+            button4.Margin = new Padding(3, 4, 3, 4);
             button4.Name = "button4";
-            button4.Size = new Size(75, 23);
+            button4.Size = new Size(86, 31);
             button4.TabIndex = 10;
             button4.Text = "Pause All";
             button4.UseVisualStyleBackColor = true;
             // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(473, 43);
-            label3.Name = "label3";
-            label3.Size = new Size(109, 15);
-            label3.TabIndex = 3;
-            label3.Text = "Download Progress";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(402, 43);
-            label2.Name = "label2";
-            label2.Size = new Size(27, 15);
-            label2.TabIndex = 9;
-            label2.Text = "Size";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(6, 43);
-            label1.Name = "label1";
-            label1.Size = new Size(39, 15);
-            label1.TabIndex = 8;
-            label1.Text = "Name";
-            // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.AutoScroll = true;
             tableLayoutPanel1.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel1.ColumnCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84.85523F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.1447659F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 238F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 70F));
-            tableLayoutPanel1.Location = new Point(7, 60);
-            tableLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 272F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 82F));
+            tableLayoutPanel1.Location = new Point(10, 104);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(778, 353);
+            tableLayoutPanel1.Size = new Size(979, 364);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // browes
@@ -168,53 +204,61 @@ namespace PeerSoftware
             browes.Controls.Add(refresh);
             browes.Controls.Add(search);
             browes.Controls.Add(searchBar);
-            browes.Location = new Point(4, 24);
+            browes.Controls.Add(tableLayoutPanel7);
+            browes.Location = new Point(4, 29);
+            browes.Margin = new Padding(3, 4, 3, 4);
             browes.Name = "browes";
-            browes.Padding = new Padding(3);
-            browes.Size = new Size(791, 420);
+            browes.Padding = new Padding(3, 4, 3, 4);
+            browes.Size = new Size(1039, 664);
             browes.TabIndex = 1;
             browes.Text = "Browse";
             browes.UseVisualStyleBackColor = true;
             // 
             // pagelabel
             // 
+            pagelabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pagelabel.AutoSize = true;
-            pagelabel.Location = new Point(479, 59);
+            pagelabel.Location = new Point(703, 71);
             pagelabel.Name = "pagelabel";
-            pagelabel.Size = new Size(89, 15);
+            pagelabel.Size = new Size(111, 20);
             pagelabel.TabIndex = 11;
             pagelabel.Text = "Page Number 0";
             // 
             // button2
             // 
-            button2.Location = new Point(686, 55);
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button2.Location = new Point(904, 65);
+            button2.Margin = new Padding(3, 4, 3, 4);
             button2.Name = "button2";
-            button2.Size = new Size(75, 23);
+            button2.Size = new Size(86, 31);
             button2.TabIndex = 10;
-            button2.Text = "next";
+            button2.Text = "Next";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
             // button1
             // 
-            button1.Location = new Point(589, 55);
+            button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            button1.Location = new Point(811, 65);
+            button1.Margin = new Padding(3, 4, 3, 4);
             button1.Name = "button1";
-            button1.Size = new Size(75, 23);
+            button1.Size = new Size(86, 31);
             button1.TabIndex = 9;
-            button1.Text = "previos";
+            button1.Text = "Previos";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
             // 
             // tableLayoutPanel2
             // 
-            tableLayoutPanel2.Anchor = AnchorStyles.None;
+            tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel2.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel2.ColumnCount = 4;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.Location = new Point(3, 80);
+            tableLayoutPanel2.Location = new Point(3, 104);
+            tableLayoutPanel2.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 5;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
@@ -222,14 +266,16 @@ namespace PeerSoftware
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel2.Size = new Size(784, 334);
+            tableLayoutPanel2.Size = new Size(986, 356);
             tableLayoutPanel2.TabIndex = 8;
             // 
             // refresh
             // 
-            refresh.Location = new Point(707, 20);
+            refresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            refresh.Location = new Point(904, 27);
+            refresh.Margin = new Padding(3, 4, 3, 4);
             refresh.Name = "refresh";
-            refresh.Size = new Size(75, 23);
+            refresh.Size = new Size(86, 31);
             refresh.TabIndex = 2;
             refresh.Text = "Refresh";
             refresh.UseVisualStyleBackColor = true;
@@ -237,9 +283,11 @@ namespace PeerSoftware
             // 
             // search
             // 
-            search.Location = new Point(626, 20);
+            search.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            search.Location = new Point(811, 27);
+            search.Margin = new Padding(3, 4, 3, 4);
             search.Name = "search";
-            search.Size = new Size(75, 23);
+            search.Size = new Size(86, 31);
             search.TabIndex = 1;
             search.Text = "Search";
             search.UseVisualStyleBackColor = true;
@@ -247,28 +295,130 @@ namespace PeerSoftware
             // 
             // searchBar
             // 
-            searchBar.Location = new Point(15, 20);
+            searchBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            searchBar.Location = new Point(3, 27);
+            searchBar.Margin = new Padding(3, 4, 3, 4);
             searchBar.Name = "searchBar";
-            searchBar.Size = new Size(605, 23);
+            searchBar.Size = new Size(801, 27);
             searchBar.TabIndex = 0;
             searchBar.KeyDown += textBox1_KeyDown;
             // 
+            // tableLayoutPanel7
+            // 
+            tableLayoutPanel7.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel7.ColumnCount = 3;
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.6124039F));
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.3875961F));
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 691F));
+            tableLayoutPanel7.Controls.Add(browseTabTorrentName, 0, 0);
+            tableLayoutPanel7.Controls.Add(browseTabSizeLabel, 1, 0);
+            tableLayoutPanel7.Controls.Add(browseTabDescriptionLabel, 2, 0);
+            tableLayoutPanel7.Location = new Point(3, 71);
+            tableLayoutPanel7.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel7.Name = "tableLayoutPanel7";
+            tableLayoutPanel7.RowCount = 1;
+            tableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel7.Size = new Size(986, 32);
+            tableLayoutPanel7.TabIndex = 12;
+            // 
+            // browseTabTorrentName
+            // 
+            browseTabTorrentName.Anchor = AnchorStyles.Left;
+            browseTabTorrentName.AutoSize = true;
+            browseTabTorrentName.Location = new Point(3, 6);
+            browseTabTorrentName.Name = "browseTabTorrentName";
+            browseTabTorrentName.Size = new Size(49, 20);
+            browseTabTorrentName.TabIndex = 0;
+            browseTabTorrentName.Text = "Name";
+            // 
+            // browseTabSizeLabel
+            // 
+            browseTabSizeLabel.Anchor = AnchorStyles.Left;
+            browseTabSizeLabel.AutoSize = true;
+            browseTabSizeLabel.Location = new Point(149, 6);
+            browseTabSizeLabel.Name = "browseTabSizeLabel";
+            browseTabSizeLabel.Size = new Size(36, 20);
+            browseTabSizeLabel.TabIndex = 1;
+            browseTabSizeLabel.Text = "Size";
+            // 
+            // browseTabDescriptionLabel
+            // 
+            browseTabDescriptionLabel.Anchor = AnchorStyles.Left;
+            browseTabDescriptionLabel.AutoSize = true;
+            browseTabDescriptionLabel.Location = new Point(297, 6);
+            browseTabDescriptionLabel.Name = "browseTabDescriptionLabel";
+            browseTabDescriptionLabel.Size = new Size(85, 20);
+            browseTabDescriptionLabel.TabIndex = 2;
+            browseTabDescriptionLabel.Text = "Description";
+            // 
             // myTorrents
             // 
+            myTorrents.Controls.Add(tableLayoutPanel6);
             myTorrents.Controls.Add(createNewTorrent);
             myTorrents.Controls.Add(tableLayoutPanel4);
-            myTorrents.Location = new Point(4, 24);
+            myTorrents.Location = new Point(4, 29);
+            myTorrents.Margin = new Padding(3, 4, 3, 4);
             myTorrents.Name = "myTorrents";
-            myTorrents.Size = new Size(791, 420);
+            myTorrents.Size = new Size(1039, 664);
             myTorrents.TabIndex = 2;
             myTorrents.Text = "My Torrents";
             myTorrents.UseVisualStyleBackColor = true;
             // 
+            // tableLayoutPanel6
+            // 
+            tableLayoutPanel6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel6.ColumnCount = 3;
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55.15464F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.84536F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 96F));
+            tableLayoutPanel6.Controls.Add(label5, 0, 0);
+            tableLayoutPanel6.Controls.Add(myTorrentsTabActionLabel, 1, 0);
+            tableLayoutPanel6.Controls.Add(myTorrentsTabNameLabel, 0, 0);
+            tableLayoutPanel6.Location = new Point(8, 65);
+            tableLayoutPanel6.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel6.Name = "tableLayoutPanel6";
+            tableLayoutPanel6.RowCount = 1;
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
+            tableLayoutPanel6.Size = new Size(977, 32);
+            tableLayoutPanel6.TabIndex = 11;
+            // 
+            // label5
+            // 
+            label5.Anchor = AnchorStyles.Left;
+            label5.AutoSize = true;
+            label5.Location = new Point(488, 6);
+            label5.Name = "label5";
+            label5.Size = new Size(36, 20);
+            label5.TabIndex = 2;
+            label5.Text = "Size";
+            // 
+            // myTorrentsTabActionLabel
+            // 
+            myTorrentsTabActionLabel.Anchor = AnchorStyles.Left;
+            myTorrentsTabActionLabel.AutoSize = true;
+            myTorrentsTabActionLabel.Location = new Point(883, 6);
+            myTorrentsTabActionLabel.Name = "myTorrentsTabActionLabel";
+            myTorrentsTabActionLabel.Size = new Size(52, 20);
+            myTorrentsTabActionLabel.TabIndex = 1;
+            myTorrentsTabActionLabel.Text = "Action";
+            // 
+            // myTorrentsTabNameLabel
+            // 
+            myTorrentsTabNameLabel.Anchor = AnchorStyles.Left;
+            myTorrentsTabNameLabel.AutoSize = true;
+            myTorrentsTabNameLabel.Location = new Point(3, 6);
+            myTorrentsTabNameLabel.Name = "myTorrentsTabNameLabel";
+            myTorrentsTabNameLabel.Size = new Size(49, 20);
+            myTorrentsTabNameLabel.TabIndex = 0;
+            myTorrentsTabNameLabel.Text = "Name";
+            // 
             // createNewTorrent
             // 
-            createNewTorrent.Location = new Point(63, 18);
+            createNewTorrent.Location = new Point(3, 27);
+            createNewTorrent.Margin = new Padding(3, 4, 3, 4);
             createNewTorrent.Name = "createNewTorrent";
-            createNewTorrent.Size = new Size(124, 23);
+            createNewTorrent.Size = new Size(142, 31);
             createNewTorrent.TabIndex = 10;
             createNewTorrent.Text = "Create new Torrent";
             createNewTorrent.UseVisualStyleBackColor = true;
@@ -276,78 +426,49 @@ namespace PeerSoftware
             // 
             // tableLayoutPanel4
             // 
-            tableLayoutPanel4.Anchor = AnchorStyles.None;
+            tableLayoutPanel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel4.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel4.ColumnCount = 3;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55.61878F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 44.38122F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 81F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel4.Controls.Add(delete, 2, 0);
-            tableLayoutPanel4.Controls.Add(label8, 0, 0);
-            tableLayoutPanel4.Controls.Add(label9, 1, 0);
-            tableLayoutPanel4.Location = new Point(3, 57);
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 95F));
+            tableLayoutPanel4.Location = new Point(8, 105);
+            tableLayoutPanel4.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
-            tableLayoutPanel4.RowCount = 2;
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 12.5F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 87.5F));
-            tableLayoutPanel4.Size = new Size(784, 307);
+            tableLayoutPanel4.RowCount = 1;
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 353F));
+            tableLayoutPanel4.Size = new Size(977, 355);
             tableLayoutPanel4.TabIndex = 9;
-            // 
-            // delete
-            // 
-            delete.Location = new Point(704, 4);
-            delete.Name = "delete";
-            delete.Size = new Size(70, 23);
-            delete.TabIndex = 10;
-            delete.Text = "Delete";
-            delete.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            label8.Anchor = AnchorStyles.Left;
-            label8.AutoSize = true;
-            label8.Location = new Point(4, 12);
-            label8.Name = "label8";
-            label8.Size = new Size(42, 15);
-            label8.TabIndex = 9;
-            label8.Text = "Name ";
-            // 
-            // label9
-            // 
-            label9.Anchor = AnchorStyles.Left;
-            label9.AutoSize = true;
-            label9.Location = new Point(393, 12);
-            label9.Name = "label9";
-            label9.Size = new Size(27, 15);
-            label9.TabIndex = 11;
-            label9.Text = "Size";
             // 
             // settings
             // 
             settings.Controls.Add(trackerIP);
             settings.Controls.Add(save);
             settings.Controls.Add(label10);
-            settings.Location = new Point(4, 24);
+            settings.Location = new Point(4, 29);
+            settings.Margin = new Padding(3, 4, 3, 4);
             settings.Name = "settings";
-            settings.Size = new Size(791, 420);
+            settings.Size = new Size(1039, 664);
             settings.TabIndex = 3;
             settings.Text = "Settings";
             settings.UseVisualStyleBackColor = true;
             // 
             // trackerIP
             // 
-            trackerIP.Location = new Point(70, 28);
+            trackerIP.Location = new Point(80, 37);
+            trackerIP.Margin = new Padding(3, 4, 3, 4);
             trackerIP.Name = "trackerIP";
-            trackerIP.Size = new Size(174, 23);
+            trackerIP.Size = new Size(198, 27);
             trackerIP.TabIndex = 2;
             trackerIP.Text = "127.0.0.1:12345";
             // 
             // save
             // 
-            save.Location = new Point(169, 57);
+            save.Location = new Point(193, 76);
+            save.Margin = new Padding(3, 4, 3, 4);
             save.Name = "save";
-            save.Size = new Size(75, 23);
+            save.Size = new Size(86, 31);
             save.TabIndex = 1;
             save.Text = "Save";
             save.UseVisualStyleBackColor = true;
@@ -356,17 +477,18 @@ namespace PeerSoftware
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(13, 31);
+            label10.Location = new Point(15, 41);
             label10.Name = "label10";
-            label10.Size = new Size(51, 15);
+            label10.Size = new Size(65, 20);
             label10.TabIndex = 0;
             label10.Text = "Traker IP";
             // 
             // help
             // 
-            help.Location = new Point(4, 24);
+            help.Location = new Point(4, 29);
+            help.Margin = new Padding(3, 4, 3, 4);
             help.Name = "help";
-            help.Size = new Size(791, 420);
+            help.Size = new Size(1039, 664);
             help.TabIndex = 4;
             help.Text = "Help";
             help.UseVisualStyleBackColor = true;
@@ -406,21 +528,25 @@ namespace PeerSoftware
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(802, 449);
+            ClientSize = new Size(1009, 509);
             Controls.Add(tabControl1);
-            MaximizeBox = false;
+            Margin = new Padding(3, 4, 3, 4);
+            MinimumSize = new Size(1025, 546);
             Name = "Form1";
             Text = "BuhTorrent";
             tabControl1.ResumeLayout(false);
             buhTorrent.ResumeLayout(false);
-            buhTorrent.PerformLayout();
+            tableLayoutPanel5.ResumeLayout(false);
+            tableLayoutPanel5.PerformLayout();
             browes.ResumeLayout(false);
             browes.PerformLayout();
+            tableLayoutPanel7.ResumeLayout(false);
+            tableLayoutPanel7.PerformLayout();
             myTorrents.ResumeLayout(false);
-            tableLayoutPanel4.ResumeLayout(false);
-            tableLayoutPanel4.PerformLayout();
+            tableLayoutPanel6.ResumeLayout(false);
+            tableLayoutPanel6.PerformLayout();
             settings.ResumeLayout(false);
             settings.PerformLayout();
             tableLayoutPanel3.ResumeLayout(false);
@@ -445,9 +571,6 @@ namespace PeerSoftware
         private TableLayoutPanel tableLayoutPanel3;
         private Button createNewTorrent;
         private TableLayoutPanel tableLayoutPanel4;
-        private Button delete;
-        private Label label8;
-        private Label label9;
         private Button save;
         private Label label10;
         private TextBox trackerIP;
@@ -462,6 +585,15 @@ namespace PeerSoftware
         private TableLayoutPanel tableLayoutPanel1;
         private Button button5;
         private Button button4;
+        private TableLayoutPanel tableLayoutPanel5;
+        private TableLayoutPanel tableLayoutPanel6;
+        private Label label5;
+        private Label myTorrentsTabActionLabel;
+        private Label myTorrentsTabNameLabel;
+        private TableLayoutPanel tableLayoutPanel7;
+        private Label browseTabTorrentName;
+        private Label browseTabSizeLabel;
+        private Label browseTabDescriptionLabel;
     }
 }
 

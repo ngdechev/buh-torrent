@@ -4,13 +4,18 @@ namespace TorrentTracker.Controllers
 {
     public interface ITorrentManagementController
     {
-        public string CreateTorrent(string ip, string torrentFile);
+        public void CreateTorrent(string ip, string torrentFile);
 
-        public string DeleteTorrent(string ip, string checksum);
+        public void DeleteTorrent(string ip, string checksum);
 
-        public List<Torrent> ListTorrents();
 
-        public string SearchTorrent(string torrentName);
+        public List<TorrentFile> GetAllTorrents();
+
+        public void RemoveTorrentFromDictionary(string checksum);
+
+        public TorrentFile SearchTorrent(string torrentName);
+
+
         public void ReadTorrentFileFromFoulder();
     }
 }
