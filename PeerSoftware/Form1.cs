@@ -16,6 +16,7 @@ using PeerSoftware.Storage;
 using PeerSoftware.Utils;
 using PeerSoftware.Services;
 using System.Collections.Generic;
+using PeerSoftware.UDP;
 
 namespace PeerSoftware
 {
@@ -39,6 +40,7 @@ namespace PeerSoftware
         private TorrentFileServices _torrentFileServices;
         private CommonUtils _commonUtils;
         private NetworkUtils _networkUtils;
+        private UDPSender _udpSender;
 
         public Form1()
         {
@@ -49,6 +51,9 @@ namespace PeerSoftware
             _torrentFileServices = new TorrentFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _udpSender = new UDPSender();
+
+            _udpSender.Start(trackerIP.Text.Trim());
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
