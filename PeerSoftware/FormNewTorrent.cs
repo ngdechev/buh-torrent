@@ -138,8 +138,8 @@ namespace PeerSoftware
                 using (TcpClient client = new TcpClient())
                 {
                     await client.ConnectAsync(ipAddressString, port);
-                    string? myip = Dns.GetHostEntry(Dns.GetHostName()).AddressList
-                        .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork)?.ToString();
+                    string? myip = Form1.GetLocalIPAddress() +":"+ Form1.GetLocalPort().ToString();
+
                     // Send data asynchronously
                     PTTBlock block = new("0x02", myip+";"+JsonSerializer.Serialize(_newTorrent));
                     byte[] data = Encoding.UTF8.GetBytes(block.ToString());

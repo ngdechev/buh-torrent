@@ -26,13 +26,35 @@ namespace TorrentTracker.Controllers
 
         public string CreateTorrent(string ip, string torrentFile)
         {
-            throw new NotImplementedException();
-        }
+            TorrentFile NewTorrent = JsonSerializer.Deserialize<TorrentFile>(torrentFile);
+            string[] addres = ip.Split(':', 2);
+            int.TryParse(addres[1], out int int_port);
+            if (_dictionaryController.GetDictionary().Count == 0)
+            {
+                List<TorrentFile> torrents = new List<TorrentFile>
+                {
+                    NewTorrent
+                };
+                _dictionaryController.GetDictionary().Add(new Peer(1, addres[0], int_port), torrents);
+                string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName + ".json");
+                File.WriteAllText(filePath, torrentFile);
+                return;
+            }
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                if (ip == pair.Key.IPAddress)
+                {
+                    pair.Value.Add(NewTorrent);
+                    string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName+ ".json");
+                    File.WriteAllText(filePath, torrentFile);
+                }
+                else
+                {
+                    break;
+                }
+            }
 
-        public string DeleteTorrent(string ip, string checksum)
-        {
-            throw new NotImplementedException();
-        }
+        } 
 
         public List<Torrent> ListTorrents()
         {
