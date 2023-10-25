@@ -12,44 +12,43 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-
-
+using PeerSoftware.Storage;
+using PeerSoftware.Utils;
+using PeerSoftware.Services;
+using System.Collections.Generic;
 
 namespace PeerSoftware
 {
     public partial class Form1 : Form
     {
-
-        private TcpClient _client;
-        private NetworkStream _stream;
-        private string _currentIpAddress;
-        private bool _isConnected;
-        private string _trackerIpField;
-        private int _trackerPortField;
-
         private List<Control> _titleControls = new List<Control>();
         private List<Control> _sizeControls = new List<Control>();
         private List<Control> _descriptionControls = new List<Control>();
         private List<Control> _downloadControls = new List<Control>();
 
-        private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
+        private List<string> _torrentDownloadingNames = new List<string>();
         private int _allPage = 0;
         private int _allMaxPage = 0;
 
-        private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
 
-        private List<string> _torrentDownloadingNames = new List<string>();
+        private ITorrentStorage _storage;
+        private Connections _connections;
+        private TorrentFileServices _torrentFileServices;
+        private CommonUtils _commonUtils;
+        private NetworkUtils _networkUtils;
 
         public Form1()
         {
             InitializeComponent();
-            SplitIpAndPort();
 
-            _trackerIpField = trackerIP.Text;
-            _allTorrentFiles = new List<TorrentFile>();
+            _storage = new TorrentStorage();
+            _connections = new Connections(_storage);
+            _torrentFileServices = new TorrentFileServices();
+            _commonUtils = new CommonUtils();
+            _networkUtils = new NetworkUtils();
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -102,17 +101,18 @@ namespace PeerSoftware
 
         private void search_Click(object sender, EventArgs e)
         {
-            _resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
-            Show(_resultPage, _resultTorrentFiles);
-        }
+            List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+            Show(_resultPage, results);
 
+            _storage.GetResultTorrentFiles().Clear();
+            _storage.GetResultTorrentFiles().AddRange(results);
+        }
 
         private void refresh_Click(object sender, EventArgs e)
         {
             _searchOnFlag = false;
-            Show(_allPage, _allTorrentFiles);
+            Show(_allPage, _storage.GetAllTorrentFiles());
         }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -123,7 +123,7 @@ namespace PeerSoftware
                     _allPage--;
                     pagelabel.Text = "Page Number " + _allPage.ToString();
                 }
-                Show(_allPage, _allTorrentFiles);
+                Show(_allPage, _storage.GetAllTorrentFiles());
             }
             else
             {
@@ -132,7 +132,7 @@ namespace PeerSoftware
                     _resultPage--;
                     pagelabel.Text = "Page Number " + _resultPage.ToString();
                 }
-                Show(_resultPage, _resultTorrentFiles);
+                Show(_resultPage, _storage.GetResultTorrentFiles());
             }
 
         }
@@ -146,7 +146,7 @@ namespace PeerSoftware
                     _allPage++;
                     pagelabel.Text = "Page Number " + _allPage.ToString();
                 }
-                Show(_allPage, _allTorrentFiles);
+                Show(_allPage, _storage.GetAllTorrentFiles());
             }
             else
             {
@@ -155,7 +155,7 @@ namespace PeerSoftware
                     _resultPage++;
                     pagelabel.Text = "Page Number " + _resultPage.ToString();
                 }
-                Show(_resultPage, _resultTorrentFiles);
+                Show(_resultPage, _storage.GetResultTorrentFiles());
             }
 
         }
@@ -180,7 +180,7 @@ namespace PeerSoftware
 
                     if (sizeControl != null)
                     {
-                        sizeControl.Text = FormatFileSize(torrentFiles[index + row].info.length);
+                        sizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
                     }
 
                     if (descriptionControl != null)
@@ -248,11 +248,11 @@ namespace PeerSoftware
             List<TorrentFile> torrentFiles = new List<TorrentFile>();
             if (_searchOnFlag)
             {
-                torrentFiles = _resultTorrentFiles;
+                torrentFiles = _storage.GetResultTorrentFiles();
             }
             else
             {
-                torrentFiles = _allTorrentFiles;
+                torrentFiles = _storage.GetAllTorrentFiles();
             }
             for (int i = 0; i < tableLayoutPanel1.RowCount - 1; i++)
             {
@@ -269,129 +269,14 @@ namespace PeerSoftware
             }
             return downloading;
         }
-
-        private void LoadData()
-        {
-            _allTorrentFiles.Clear();
-
-            try
-            {
-
-                // Perform your TCP operations asynchronously
-                PTTBlock block = new PTTBlock(0x04, 0, null);
-                //SendDataAsync(block);
-                Thread thread = new Thread(SendDataAsync);
-                thread.Start(block);
-
-                // Main thread continues to execute here
-                Console.WriteLine("Main thread is running.");
-
-                // Wait for the created thread to finish
-                /*thread.Join();*/
-
-                Console.WriteLine("Main thread has completed.");
-
-
-                // Enable the UI controls after sending is done
-                tabControl1.Enabled = true;
-
-                // Enable other controls as needed
-
-            }
-            catch (Exception ex)
-            {
-
-                // Handle any exceptions that may occur during the TCP operation
-                MessageBox.Show("An error occurred: " + ex.Message);
-
-                // Make sure to re-enable the UI controls in case of an error
-                tabControl1.Enabled = true;
-                // Enable other controls as needed
-            }
-
-        }
-
-
-        public void SendDataAsync(object blockin)
-        {
-            try
-            {
-                // Create a TCP client and connect to the server
-                using (TcpClient client = new TcpClient())
-                {
-                    PTTBlock block = (PTTBlock)blockin;
-                    if(!_isConnected)
-                    {
-                        (_trackerIpField, _trackerPortField) = SplitIpAndPort();
-                    }
-                    client.Connect(_trackerIpField, _trackerPortField);
-                    
-                    // Send data asynchronously
-
-                    byte[] data = Encoding.ASCII.GetBytes(block.ToString());
-                    client.GetStream().Write(data, 0, data.Length);
-
-                    while (!client.GetStream().DataAvailable) ;
-                    while (client.GetStream().DataAvailable)
-                    {
-
-                        string payload;
-                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
-                        payload = receive.GetPayload();
-                        _allTorrentFiles.AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
-                        //_isConnected = false;
-                        
-                    }
-                    client.GetStream().Close();
-                    client.Close();
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                // Handle exceptions that may occur during the TCP operation
-                throw new Exception("Error sending data: " + ex.Message);
-
-
-            }
-            _allMaxPage = (int)Math.Ceiling(_allTorrentFiles.Count / 5.0);
-
-        }
-
+        
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                LoadData();
+                _torrentFileServices.LoadData(_storage, this, ref _allMaxPage);
             }
         }
-
-        private List<TorrentFile> SearchTorrentFiles(string searchTerm)
-        {
-            // Convert the search term to lowercase for case-insensitive search
-            searchTerm = searchTerm.ToLower();
-
-            // Use LINQ to filter torrentFiles based on the search term in filename or description
-            List<TorrentFile> searchResults = _allTorrentFiles
-                .Where(file =>
-                    file.info.fileName.ToLower().Contains(searchTerm) ||
-                    file.info.description.ToLower().Contains(searchTerm))
-                .ToList();
-            _resultMaxPage = (int)Math.Ceiling(searchResults.Count / 5.0);
-            _searchOnFlag = true;
-            return searchResults;
-        }
-
-        public void SendPTTMessage(byte command, string payload)
-        {
-            var pttBlock = new PTTBlock(command, payload.Length, payload);
-            string pttMessage = PTT.ParseToString(pttBlock);
-
-            byte[] messageBytes = Encoding.ASCII.GetBytes(pttMessage);
-            _stream.Write(messageBytes, 0, messageBytes.Length);
-        }
-
 
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
@@ -411,9 +296,9 @@ namespace PeerSoftware
 
             Label label1 = new Label();
             label1.Text = torrentNameLabel.Text;
-            List<TorrentFile> torrentFiles = SearchTorrentFiles(label1.Text);
+            List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
             Label label2 = new Label();
-            label2.Text = FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
+            label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
 
             ProgressBar progressBar = new ProgressBar();
 
@@ -442,158 +327,35 @@ namespace PeerSoftware
             _torrentDownloadingNames.Add(label1.Text);
         }
 
-        public string FormatFileSize(long sizeInBytes)
-        {
-            double sizeInKB = (double)sizeInBytes / 1024;
-            double sizeInMB = sizeInKB / 1024;
-            double sizeInGB = sizeInMB / 1024;
-
-            if (sizeInGB >= 1)
-            {
-                return $"{sizeInGB:0.00} GB";
-            }
-            else if (sizeInMB >= 1)
-            {
-                return $"{sizeInMB:0.00} MB";
-            }
-            else
-            {
-                return $"{sizeInKB:0.00} KB";
-            }
-        }
-
+        
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                // Call your function here
-                _resultTorrentFiles = SearchTorrentFiles(searchBar.Text);
-                Show(_resultPage, _resultTorrentFiles);
+                List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+                Show(_resultPage, results);
+
+                _storage.GetResultTorrentFiles().Clear();
+                _storage.GetResultTorrentFiles().AddRange(results);
 
                 // Optionally, you can prevent the "Enter" key from adding a newline to the TextBox
                 e.SuppressKeyPress = true;
             }
         }
 
-        public PTTBlock ReceivePTTMessage()
-        {
-            return PTT.ParseToBlock(_stream);
-        }
-
-        public void CloseConnection()
-        {
-            _stream.Close();
-            _client.Close();
-
-            _currentIpAddress = _trackerIpField;
-            _isConnected = false;
-        }
-
-        public (string, int) SplitIpAndPort()
-        {
-            if (_trackerIpField == null)
-            {
-                return (string.Empty, 0);
-            }
-
-            string[] parts = _trackerIpField.Split(':');
-
-            string ipAddressString=_trackerIpField;
-            int port=_trackerPortField;
-
-            if (parts.Length == 2)
-            {
-                ipAddressString = parts[0];
-
-                if (int.TryParse(parts[1], out int parsedPort))
-                {
-                    port = parsedPort;
-                }
-                else
-                {
-                    port = 12345;
-                }
-            }
-            _isConnected = true;
-            return (ipAddressString, port);
-        }
-
-        // For Unit Tests
-        public void SetTrackerIp(string ip)
-        {
-            trackerIP.Text = ip;
-        }
-
         private void save_Click(object sender, EventArgs e)
         {
-            if (_isConnected)
-            {
-                //CloseConnection();
-            }
+            string trackerIpField;
+            int trackerPortField;
 
-            (_trackerIpField, _trackerPortField) = SplitIpAndPort();
+            (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
-            if (IPAddress.TryParse(_trackerIpField, out IPAddress ipAddress))
-            {
-                try
-                {
-                    _client = new TcpClient(_trackerIpField, _trackerPortField);
-                    _stream = _client.GetStream();
-
-                    string localIpPort = $"{GetLocalIPAddress()}:{GetLocalPort()}";
-                    SendPTTMessage(0x00, localIpPort);
-
-                    MessageBox.Show($"Connected to {_trackerIpField}");
-                    //CloseConnection();
-                    _stream.Close();
-                    _client.Close();
-                    _isConnected = false;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error connecting to {_trackerIpField}: {ex.Message}");
-                }
-                
-            }
-            else
-            {
-                MessageBox.Show("Invalid IP address or port. Please enter a valid IP address and port.");
-            }
+            _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }
-
-        public static string GetLocalIPAddress()
-        {
-            string localIpAddress = string.Empty;
-
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            var ipAddresses = host.AddressList.Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
-
-            foreach (var ipAddress in ipAddresses)
-            {
-                localIpAddress = ipAddress.ToString();
-                break;
-            }
-
-            return localIpAddress;
-        }
-
-        public static int GetLocalPort()
-        {
-            int localPort = -1;
-
-            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
-            {
-                socket.Bind(new IPEndPoint(IPAddress.Any, 0));
-                localPort = ((IPEndPoint)socket.LocalEndPoint).Port;
-            }
-
-            return localPort;
-        }
-
 
         private void createNewTorrent_Click(object sender, EventArgs e)
         {
-            FormNewTorrent formNewTorrent = new FormNewTorrent(this);
+            FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
             formNewTorrent.ShowDialog();
         }
 
@@ -612,6 +374,10 @@ namespace PeerSoftware
         {
 
         }
-    }
 
+        public string GetIpFieldText()
+        {
+            return trackerIP.Text.Trim();
+        }
+    }
 }
