@@ -120,7 +120,7 @@ namespace PeerSoftware
                 {
 
                     await client.ConnectAsync(ipAddressString, port);
-                    string? myip = Form1.GetLocalIPAddress() +":"+ Form1.GetLocalPort().ToString();
+                    string? myip = _networkUtils.GetLocalIPAddress() +":"+ _networkUtils.GetLocalPort().ToString();
 
 
                     // Send data asynchronously
