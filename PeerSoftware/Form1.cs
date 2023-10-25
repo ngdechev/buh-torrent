@@ -355,7 +355,7 @@ namespace PeerSoftware
 
         private void createNewTorrent_Click(object sender, EventArgs e)
         {
-            FormNewTorrent formNewTorrent = new FormNewTorrent(this);
+            FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
             formNewTorrent.ShowDialog();
         }
 

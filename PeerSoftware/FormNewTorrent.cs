@@ -1,4 +1,5 @@
-﻿using PTT_Parser;
+﻿using PeerSoftware.Utils;
+using PTT_Parser;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
@@ -11,11 +12,16 @@ namespace PeerSoftware
     {
         Form1 _mainForm;
         TorrentFile _newTorrent;
-        public FormNewTorrent(Form1 mainForm)
+        NetworkUtils _networkUtils;
+        CommonUtils _commonUtils;
+
+        public FormNewTorrent(Form1 mainForm, NetworkUtils networkUtils, CommonUtils commonUtils)
         {
             InitializeComponent();
             _newTorrent = new TorrentFile();
             _mainForm = mainForm;
+            _networkUtils = networkUtils;
+            _commonUtils = commonUtils;
         }
 
         private void browseFile_Click(object sender, EventArgs e)
@@ -61,7 +67,7 @@ namespace PeerSoftware
                     // Update any other parts of your UI or data structures as needed
                     torrentName.Text = newTorrentFile.info.torrentName;
 
-                    fileSizeTextBox.Text = FormatFileSize(fileSizeInBytes);
+                    fileSizeTextBox.Text = _commonUtils.FormatFileSize(fileSizeInBytes);
                     // Now, you can use newTorrentFile as needed
                     _newTorrent = newTorrentFile;
                 }
@@ -101,63 +107,13 @@ namespace PeerSoftware
 
         }
 
-        public string FormatFileSize(long sizeInBytes)
-        {
-            double sizeInKB = (double)sizeInBytes / 1024;
-            double sizeInMB = sizeInKB / 1024;
-            double sizeInGB = sizeInMB / 1024;
-
-            if (sizeInGB >= 1)
-            {
-                return $"{sizeInGB:0.00} GB";
-            }
-            else if (sizeInMB >= 1)
-            {
-                return $"{sizeInMB:0.00} MB";
-            }
-            else
-            {
-                return $"{sizeInKB:0.00} KB";
-            }
-        }
-
-
-        public (string, int) SplitIpAndPort()
-        {
-            string trackerIpField = _mainForm.TextForAnnoncer();
-            if (trackerIpField == null)
-            {
-                return (string.Empty, 0);
-            }
-
-            string[] parts = trackerIpField.Split(':');
-
-            string ipAddressString = null;
-            int port = 0;
-
-            if (parts.Length == 2)
-            {
-                ipAddressString = parts[0];
-
-                if (int.TryParse(parts[1], out int parsedPort))
-                {
-                    port = parsedPort;
-                }
-                else
-                {
-                    port = 12345;
-                }
-            }
-
-            return (ipAddressString, port);
-        }
         private async Task SendDataAsync()
         {
             string ipAddressString;
             int port;
             try
             {
-                (ipAddressString, port) = SplitIpAndPort();
+                (ipAddressString, port) = _networkUtils.SplitIpAndPort(_mainForm);
 
                 // Create a TCP client and connect to the server
                 using (TcpClient client = new TcpClient())
