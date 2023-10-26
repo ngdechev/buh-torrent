@@ -45,7 +45,7 @@ namespace PeerSoftware
             InitializeComponent();
 
             _storage = new TorrentStorage();
-            _connections = new Connections(_storage);
+            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
@@ -276,6 +276,12 @@ namespace PeerSoftware
             {
                 _torrentFileServices.LoadData(_storage, this, ref _allMaxPage);
             }
+            if (tabControl1.SelectedIndex == 3)
+            {
+                MessageBox.Show("before");
+                _commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
+                MessageBox.Show("after");
+            }
         }
 
         // Downloading torrents tab..
@@ -299,6 +305,7 @@ namespace PeerSoftware
             List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
             Label label2 = new Label();
             label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
+            _storage.GetDownlodTorrentFiles().AddRange(torrentFiles);
 
             ProgressBar progressBar = new ProgressBar();
 
@@ -362,12 +369,6 @@ namespace PeerSoftware
         public string TextForAnnoncer()
         {
             return trackerIP.Text;
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-
         }
 
         private void buhTorrent_Click(object sender, EventArgs e)
