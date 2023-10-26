@@ -29,13 +29,15 @@ namespace TorrentTracker.Controllers
             TorrentFile NewTorrent = JsonSerializer.Deserialize<TorrentFile>(torrentFile);
             string[] addres = ip.Split(':', 2);
             int.TryParse(addres[1], out int int_port);
+
             if (_dictionaryController.GetDictionary().Count == 0)
             {
                 List<TorrentFile> torrents = new List<TorrentFile>
                 {
                     NewTorrent
                 };
-                _dictionaryController.GetDictionary().Add(new Peer(1, addres[0], int_port), torrents);
+
+                _dictionaryController.GetDictionary().Add(new Peer(1, addres[0], int_port, DateTime.Now), torrents);
                 string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName + ".json");
                 File.WriteAllText(filePath, torrentFile);
                 return;

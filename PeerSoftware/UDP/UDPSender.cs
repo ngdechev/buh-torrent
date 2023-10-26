@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PeerSoftware.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,9 +12,15 @@ namespace PeerSoftware.UDP
 {
     public class UDPSender
     {
+        private NetworkUtils _networkUtils;
         private UdpClient _udpClient;
         private IPEndPoint _serverEndPoint;
         private bool _disposed = false;
+
+        public UDPSender(NetworkUtils networkUtils)
+        {
+            _networkUtils = networkUtils;
+        }
 
         public void Start(string trackerIpPlusPort)
         {
@@ -49,7 +56,8 @@ namespace PeerSoftware.UDP
 
                     if (_udpClient != null)
                     {
-                        byte[] data = Encoding.ASCII.GetBytes("Keep-Alive");
+                        string peerIpPlusPort = _networkUtils.GetLocalIPAddress() + ":" + _networkUtils.GetLocalPort();
+                        byte[] data = Encoding.ASCII.GetBytes(peerIpPlusPort);
                         _udpClient.Send(data, data.Length, _serverEndPoint);
                     }
 

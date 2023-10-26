@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using TorrentTracker.Controllers;
 using TorrentTracker.Server;
 
@@ -42,8 +44,7 @@ namespace TorrentTracker
 
                     Console.WriteLine("Peer opened the app!");
 
-                    _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
-
+                    _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController, _dictionary);
 
                     Thread peerThread = new Thread(_peerHandler.HandlePeer);
 
@@ -67,11 +68,30 @@ namespace TorrentTracker
             try
             {
                 IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
                 byte[] udpData = _udpServer.Receive(ref udpEndPoint);
+                string peerIpPlusPort = Encoding.ASCII.GetString(udpData);
 
-                Console.WriteLine("keep alive accepted");
+                string[] parts = peerIpPlusPort.Split(":");
 
-                //TODO: add logic with date
+                int peerPort;
+                int.TryParse(parts[1], out peerPort);
+
+                DateTime dateTime = DateTime.Now;
+                Console.WriteLine(dateTime.ToString("MM/dd/yyyy HH:mm:ss"));
+
+                // Don't work due to Dictionary Problem
+
+                foreach (Peer peer in _dictionary.GetDictionary().Keys)
+                {
+                    if (peer.IPAddress == parts[0]/* && peer.Port == peerPort*/)
+                    {
+                        peer.Date = dateTime;
+                        break;
+                    }
+                }
+
+                //map
             }
             catch (Exception ex)
             {

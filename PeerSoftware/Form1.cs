@@ -51,7 +51,7 @@ namespace PeerSoftware
             _torrentFileServices = new TorrentFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
-            _udpSender = new UDPSender();
+            _udpSender = new UDPSender(_networkUtils);
 
             _udpSender.Start(trackerIP.Text.Trim());
 

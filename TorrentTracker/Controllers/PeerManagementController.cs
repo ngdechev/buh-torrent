@@ -15,7 +15,7 @@ namespace TorrentTracker.Controllers
 
         public void CreatePeer(string ip, int port)
         {
-            Peer peer = new Peer(_dictionaryController.GetDictionary().Count()+1, ip, port);
+            Peer peer = new Peer(_dictionaryController.GetDictionary().Count()+1, ip, port, DateTime.Now);
             _dictionaryController.GetDictionary().Add(peer, new List<TorrentFile>());
         }
 
