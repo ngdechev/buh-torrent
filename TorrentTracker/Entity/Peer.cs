@@ -3,7 +3,11 @@
     public int peerID { get; set; }
     public string IPAddress { get; set; }
     public int Port { get; set; }
-    
+
+    public string ToString()
+    {
+        return peerID+" "+IPAddress+" "+Port;
+    }
     public Peer(int peerId, string ipAddress, int port)
     {
         peerID = peerId;

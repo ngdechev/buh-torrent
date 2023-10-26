@@ -15,8 +15,32 @@ namespace TorrentTracker.Controllers
 
         public void CreatePeer(string ip, int port)
         {
-            Peer peer = new Peer(_dictionaryController.GetDictionary().Count()+1, ip, port);
-            _dictionaryController.GetDictionary().Add(peer, new List<TorrentFile>());
+            bool flag = true;
+            if (_dictionaryController.GetDictionary().Count() == 0)
+            {
+                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port);
+                _dictionaryController.GetDictionary().Add(peer, new List<string>());
+            }
+            else
+            {
+                foreach (var pear in _dictionaryController.GetDictionary())
+                {
+                    if (pear.Key.IPAddress == ip)
+                    {
+                        flag = false;
+                        pear.Key.Port= port;
+                        break;
+                    }
+                   
+                }
+               
+                if (flag == true)
+                { 
+                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port);
+                        _dictionaryController.GetDictionary().Add(peer, new List<string>());
+                }
+                flag = true;
+            }
         }
 
         public void DestroyPeer(string ip)
@@ -40,16 +64,16 @@ namespace TorrentTracker.Controllers
         public List<Peer> ListPeersWithTorrentFile(string checksum)
         {
             
-            foreach (var pair in _dictionaryController.GetDictionary())
-            {
-                foreach (TorrentFile torrent in pair.Value)
-                {
-                    if (checksum == torrent.info.checksum)
-                    {
-                        _peerWithTorrentFile.Add(pair.Key);
-                    }
-                }
-            }
+            //foreach (var pair in _dictionaryController.GetDictionary())
+            //{
+            //    foreach (TorrentFile torrent in pair.Value)
+            //    {
+            //        if (checksum == torrent.info.checksum)
+            //        {
+            //            _peerWithTorrentFile.Add(pair.Key);
+            //        }
+            //    }
+            //}
             return _peerWithTorrentFile;
         }
     }
