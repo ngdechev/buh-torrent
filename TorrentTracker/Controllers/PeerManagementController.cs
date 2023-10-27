@@ -7,7 +7,7 @@ namespace TorrentTracker.Controllers
     public class PeerManagementController : IPeerManagementController
     {
         private DictionaryController _dictionaryController;
-        private List<Peer> _peerWithTorrentFile;
+        private List<string> _peerWithTorrentFile;
         public PeerManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
@@ -37,10 +37,10 @@ namespace TorrentTracker.Controllers
             }
         }
 
-        public List<Peer> ListPeersWithTorrentFile(string checksum)
+        public List<string> ListPeersWithTorrentFile(string checksum)
         {
             
-            foreach (var pair in _dictionaryController.GetDictionary())
+            /*foreach (var pair in _dictionaryController.GetDictionary())
             {
                 foreach (TorrentFile torrent in pair.Value)
                 {
@@ -49,7 +49,7 @@ namespace TorrentTracker.Controllers
                         _peerWithTorrentFile.Add(pair.Key);
                     }
                 }
-            }
+            }*/
             return _peerWithTorrentFile;
         }
     }
