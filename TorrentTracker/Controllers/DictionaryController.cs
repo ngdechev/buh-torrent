@@ -45,7 +45,7 @@ namespace TorrentTracker.Controllers
                     {
                         string key = pair.Key;
                         string[] addres = key.Split(' ', 3);
-                        Peer peer = new Peer(int.Parse(addres[0]), addres[1], int.Parse(addres[2]));
+                        Peer peer = new Peer(int.Parse(addres[0]), addres[1], int.Parse(addres[2]), DateTime.UtcNow);
                         _torrentDictionary.Add(peer, pair.Value);
                     }
                 }

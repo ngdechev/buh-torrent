@@ -8,6 +8,6 @@ namespace TorrentTracker.Controllers
 
         public void DestroyPeer(string ip);
 
-        public List<Peer> ListPeersWithTorrentFile(string checksum);
+        public List<string> ListPeersWithTorrentFile(string checksum);
     }
 }
