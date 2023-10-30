@@ -14,13 +14,21 @@ namespace PeerSoftware.Services
         public Dictionary<string, List<int>> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile)
         {
             int numberOfPeers = peersIpPlusPort.Count();
-
+            int helperForFor = 0;
             if (numberOfPeers == 0)
             {
                 throw new Exception("There are no active peers.");
-            } 
+            }
+            if (numberOfPeers < 5)
+            {
+                helperForFor = numberOfPeers;
+            }
+            else
+            {
+                helperForFor = 5;
+            }
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < helperForFor; i++)
             {
                 _peersAndBlocks.Add(peersIpPlusPort[i], new List<int>());
             }
