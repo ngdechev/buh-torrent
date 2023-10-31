@@ -115,6 +115,7 @@ namespace TorrentTracker.Server
             {
                 _torrentManagementController.SearchTorrent(payload);
             }
+            _dictionaryController.WriteDictionaryToFile();
         }
 
     }
