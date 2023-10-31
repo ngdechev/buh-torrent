@@ -269,7 +269,7 @@ namespace PeerSoftware
             }
             return downloading;
         }
-        
+
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 1)
@@ -296,9 +296,13 @@ namespace PeerSoftware
 
             Label label1 = new Label();
             label1.Text = torrentNameLabel.Text;
+
             List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+
             Label label2 = new Label();
             label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
+
+            _storage.GetDownloadingTorrents().Add(torrentFiles[0]);
 
             ProgressBar progressBar = new ProgressBar();
 
@@ -326,7 +330,6 @@ namespace PeerSoftware
 
             _torrentDownloadingNames.Add(label1.Text);
         }
-
         
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {

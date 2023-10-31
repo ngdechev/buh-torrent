@@ -124,9 +124,9 @@ namespace PTP_Parser
             return response.ToPackage();
         }
 
-        public static byte[] StartPackage()
+        public static byte[] StartPackage(string data)
         {
-            string msg = "StartPackage";
+            string msg = $"StartPackage/{data}";
             PTPBlock response = new PTPBlock(0, msg.Length, Encoding.ASCII.GetBytes(msg));
             return response.ToPackage();
         }
