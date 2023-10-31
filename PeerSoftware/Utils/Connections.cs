@@ -1,6 +1,5 @@
 ﻿using PeerSoftware.Storage;
 using PTT_Parser;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -9,6 +8,7 @@ using System.Text.Json;
 namespace PeerSoftware.Utils
 {
     public class Connections
+
     {  
        
         private NetworkUtils _networkUtils = new NetworkUtils();
@@ -63,9 +63,9 @@ namespace PeerSoftware.Utils
             try
             {
                 using (TcpClient client = new TcpClient())
-                {   
+                {
                     PTTBlock block = (PTTBlock)blockin;
-                        
+
                     (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(form1);
                     client.Connect(trackerIpField, trackerPortField);
 
@@ -93,6 +93,44 @@ namespace PeerSoftware.Utils
             allMaxPage = (int)Math.Ceiling(torrentStorage.GetAllTorrentFiles().Count / 5.0);
         }
 
+        public List<string> SendAndRecieveData06(object blockin, Form1 form1)
+        {
+            string trackerIpField;
+            int trackerPortField;
+            List<string> receivedLivePeers = new List<string>();
+
+            try
+            {
+                using (TcpClient client = new TcpClient())
+                {
+                    PTTBlock block = (PTTBlock)blockin;
+
+                    (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(form1);
+                    client.Connect(trackerIpField, trackerPortField);
+
+                    byte[] data = Encoding.ASCII.GetBytes(block.ToString());
+                    client.GetStream().Write(data, 0, data.Length);
+
+                    while (!client.GetStream().DataAvailable) ;
+                    while (client.GetStream().DataAvailable)
+                    {
+                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                        string payload = receive.GetPayload();
+
+                        receivedLivePeers.Add(payload);
+                    }
+
+                    CloseConnection(client);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error sending data: " + ex.Message);
+            }
+
+            return receivedLivePeers;
+        }
         public void CloseConnection(TcpClient client)
         {
             client.GetStream().Close();
