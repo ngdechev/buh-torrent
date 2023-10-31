@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using TorrentTracker.Controllers;
 using TorrentTracker.Server;
 
@@ -10,6 +12,8 @@ namespace TorrentTracker
         public bool _isRunning { get; set; }
 
         private TcpListener? _listener;
+        private UdpClient _udpServer;
+
         private PeerHandler _peerHandler;
         private DictionaryController _dictionary;
         private ITorrentManagementController _torrentManagementController;
@@ -23,9 +27,11 @@ namespace TorrentTracker
             _isRunning = true;
         }
 
-        public void Start(int serverPort)
+        public void Start(int serverPort, int udpPort)
         {
             _listener = new(IPAddress.Any, serverPort);
+            _udpServer = new UdpClient(udpPort);
+
             _listener.Start();
 
             Console.WriteLine($"Tracker server started!");
@@ -40,11 +46,12 @@ namespace TorrentTracker
                     _dictionary.ReadDictionaryFromFile();
                     _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
 
-
                     Thread peerThread = new Thread(_peerHandler.HandlePeer);
 
                     peerThread.Start();
                 }
+
+                HandleUdpPackets();
 
                 Thread.Sleep(10);
             }
@@ -52,6 +59,43 @@ namespace TorrentTracker
             if (_listener != null)
             {
                 _listener?.Stop();
+                _udpServer.Close();
+            }
+        }
+
+        private void HandleUdpPackets()
+        {
+            try
+            {
+                IPEndPoint udpEndPoint = new IPEndPoint(IPAddress.Any, 0);
+
+                byte[] udpData = _udpServer.Receive(ref udpEndPoint);
+                string peerIpPlusPort = Encoding.ASCII.GetString(udpData);
+
+                string[] parts = peerIpPlusPort.Split(":");
+
+                int peerPort;
+                int.TryParse(parts[1], out peerPort);
+
+                DateTime dateTime = DateTime.Now;
+                Console.WriteLine(dateTime.ToString("MM/dd/yyyy HH:mm:ss"));
+
+                // Don't work due to Dictionary Problem
+
+                foreach (Peer peer in _dictionary.GetDictionary().Keys)
+                {
+                    if (peer.IPAddress == parts[0]/* && peer.Port == peerPort*/)
+                    {
+                        peer.Date = dateTime;
+                        break;
+                    }
+                }
+
+                //map
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error handling UDP packets: " + ex.Message);
             }
         }
 
