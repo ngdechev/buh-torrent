@@ -37,7 +37,7 @@ namespace TorrentTracker
                     TcpClient clientSocket = _listener.AcceptTcpClient();
 
                     Console.WriteLine("Peer opened the app!");
-
+                    _dictionary.ReadDictionaryFromFile();
                     _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
 
 

@@ -286,9 +286,10 @@ namespace PeerSoftware
 
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
+        
         {
             Button downloadButton = (Button)sender;
-
+            _storage.GetPeerWithMyFaile();
             if (!(sender as Control).Enabled)
             {
                 return;
