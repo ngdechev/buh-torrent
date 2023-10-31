@@ -94,7 +94,22 @@ namespace TorrentTracker.Server
 
             else if (command == 54) //6
             {
-                _peerManagementController.ListPeersWithTorrentFile(payload);
+                List<string> peersIpAndPort = _peerManagementController.ListPeersWithTorrentFile(payload);
+
+                PTTBlock PTTBlock = new(0x07, peersIpAndPort.ToString().Length, peersIpAndPort.ToString());
+
+                byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
+
+                try
+                {
+                    _stream.Write(bytes, 0, bytes.Length);
+                    _stream.Flush(); 
+                    Console.WriteLine("Data sent successfully");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error sending data: " + ex.Message);
+                }
             }
             else if (command == 56) //8
             {
