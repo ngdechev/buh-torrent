@@ -8,14 +8,9 @@ using System.Text.Json;
 namespace PeerSoftware.Utils
 {
     public class Connections
-    {
-        private ITorrentStorage _torrentStorage;
 
-        public Connections(ITorrentStorage torrentStorage)
-        {
-            _torrentStorage = torrentStorage;
-        }
-
+    {  
+       
         private NetworkUtils _networkUtils = new NetworkUtils();
 
         public void SendPTTMessage(TcpClient client, byte command, string payload)
@@ -60,7 +55,7 @@ namespace PeerSoftware.Utils
             }
         }
 
-        public void SendAndRecieveData(object blockin, Form1 form1, ref int allMaxPage)
+        public void SendAndRecieveData(object blockin, Form1 form1, ref int allMaxPage, ITorrentStorage torrentStorage)
         {
             string trackerIpField;
             int trackerPortField;
@@ -83,7 +78,7 @@ namespace PeerSoftware.Utils
                         PTTBlock receive = PTT.ParseToBlock(client.GetStream());
                         string payload = receive.GetPayload();
 
-                        _torrentStorage.GetAllTorrentFiles().AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
+                        torrentStorage.GetAllTorrentFiles().AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(payload));
                     }
 
                     CloseConnection(client);
@@ -95,7 +90,7 @@ namespace PeerSoftware.Utils
                 throw new Exception("Error sending data: " + ex.Message);
             }
 
-            allMaxPage = (int)Math.Ceiling(_torrentStorage.GetAllTorrentFiles().Count / 5.0);
+            allMaxPage = (int)Math.Ceiling(torrentStorage.GetAllTorrentFiles().Count / 5.0);
         }
 
         public List<string> SendAndRecieveData06(object blockin, Form1 form1)

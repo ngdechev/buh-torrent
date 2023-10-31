@@ -40,8 +40,8 @@ namespace PeerSoftware.Services
 
                 int maxPage = allPageMax; 
 
-                Connections connections = new Connections(torrentStorage);
-                Thread thread = new Thread(() => connections.SendAndRecieveData(block, form1, ref maxPage));
+                Connections connections = new Connections();
+                Thread thread = new Thread(() => connections.SendAndRecieveData(block, form1, ref maxPage, torrentStorage));
 
                 thread.Start();
 

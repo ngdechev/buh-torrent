@@ -16,6 +16,7 @@ using PeerSoftware.Storage;
 using PeerSoftware.Utils;
 using PeerSoftware.Services;
 using System.Collections.Generic;
+using PeerSoftware.UDP;
 
 namespace PeerSoftware
 {
@@ -39,16 +40,20 @@ namespace PeerSoftware
         private TorrentFileServices _torrentFileServices;
         private CommonUtils _commonUtils;
         private NetworkUtils _networkUtils;
+        private UDPSender _udpSender;
 
         public Form1()
         {
             InitializeComponent();
 
             _storage = new TorrentStorage();
-            _connections = new Connections(_storage);
+            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _udpSender = new UDPSender(_networkUtils);
+
+            _udpSender.Start(trackerIP.Text.Trim());
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -276,13 +281,20 @@ namespace PeerSoftware
             {
                 _torrentFileServices.LoadData(_storage, this, ref _allMaxPage);
             }
+            if (tabControl1.SelectedIndex == 3)
+            {
+                MessageBox.Show("before");
+                _commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
+                MessageBox.Show("after");
+            }
         }
 
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
+        
         {
             Button downloadButton = (Button)sender;
-
+            _storage.GetPeerWithMyFaile();
             if (!(sender as Control).Enabled)
             {
                 return;
@@ -301,6 +313,7 @@ namespace PeerSoftware
 
             Label label2 = new Label();
             label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
+            _storage.GetDownlodTorrentFiles().AddRange(torrentFiles);
 
             _storage.GetDownloadingTorrents().Add(torrentFiles[0]);
 
@@ -365,12 +378,6 @@ namespace PeerSoftware
         public string TextForAnnoncer()
         {
             return trackerIP.Text;
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-
         }
 
         private void buhTorrent_Click(object sender, EventArgs e)

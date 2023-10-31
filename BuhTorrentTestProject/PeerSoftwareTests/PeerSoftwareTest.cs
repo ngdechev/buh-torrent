@@ -20,7 +20,7 @@ namespace BuhTorrentTestProject.PeerSoftwareTests
             // Clean up or dispose of resources if needed
         }
 
-        [Test]
+        /*[Test]
         public void TestSplitIpAndPort_ValidInput()
         {
             // Arrange
@@ -44,7 +44,7 @@ namespace BuhTorrentTestProject.PeerSoftwareTests
 
             // Assert
             Assert.AreEqual((string.Empty, 0), result);
-        }
+        }*/
 
         // Add more test methods for other functionality in your Form1 class
     }

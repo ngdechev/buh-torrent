@@ -7,12 +7,14 @@ namespace PeerSoftware.Storage
         private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
         private List<TorrentFile> _myTorrents = new List<TorrentFile>();
         private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
+        private List<string>_peerWithMyFaile=new List<string>();
+        private List<TorrentFile> _downloadTorrentFiles = new List<TorrentFile>();
 
-        public List<TorrentFile> GetDownloadingTorrents()
+
+        public List<string> GetPeerWithMyFaile()
         {
-            return _downloadingTorrents;
+            return _peerWithMyFaile;
         }
-
         public List<TorrentFile> GetAllTorrentFiles()
         {
             return _allTorrentFiles;
@@ -26,6 +28,10 @@ namespace PeerSoftware.Storage
         public List<TorrentFile> GetResultTorrentFiles()
         {
             return _resultTorrentFiles;
+        }
+        public List<TorrentFile> GetDownlodTorrentFiles()
+        {
+            return _downloadTorrentFiles;
         }
     }
 }
