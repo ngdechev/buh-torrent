@@ -37,7 +37,7 @@ namespace PeerSoftware.Upload
                         TcpClient clientSocket = _listener.AcceptTcpClient();
 
                         UploadPeerHandler uploadHandler = new UploadPeerHandler(_storage, clientSocket);
-
+                        _handlers.Add(uploadHandler);
                         Thread peerThread = new Thread(uploadHandler.Handle);
 
                         peerThread.Start();

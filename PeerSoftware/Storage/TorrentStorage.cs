@@ -29,9 +29,10 @@ namespace PeerSoftware.Storage
         {
             return _resultTorrentFiles;
         }
-        public List<TorrentFile> GetDownlodTorrentFiles()
+        public List<TorrentFile> GetDownloadTorrentFiles()
         {
             return _downloadTorrentFiles;
         }
+
     }
 }

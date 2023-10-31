@@ -98,15 +98,16 @@ namespace PTP_Parser
     {
         public static PTPBlock ParseToBlock(NetworkStream networkStream)
         {
-            byte[]? id = null;
-            byte[]? data = null;
-            byte[]? size = null;
+            byte[] id = new byte[4];
+            byte[] size = new byte[4];
+            
 
             networkStream.Read(id, 0, 4);
             int.TryParse(Encoding.ASCII.GetString(id), out int block_id);
-            networkStream.Read(size, 4, 4);
+            networkStream.Read(size, 0, 4);
             int.TryParse(Encoding.ASCII.GetString(size), out int block_size);
-            networkStream.Read(data, 8, block_size);
+            byte[] data = new byte[block_size];
+            networkStream.Read(data, 0, block_size);
             
             return new PTPBlock(block_id, block_size, data);
         }

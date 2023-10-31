@@ -34,11 +34,11 @@ namespace PeerSoftware.Utils
         public void ReceateTorrentFileForDownloadedFile(ITorrentStorage torrentStorage,  string checksum, Form1 mainForm)
         {
             TorrentFile newTorrent =new TorrentFile();
-            if(torrentStorage.GetDownlodTorrentFiles() == null )
+            if(torrentStorage.GetDownloadTorrentFiles() == null )
             {
                 return ;
             }
-            foreach (TorrentFile item in torrentStorage.GetDownlodTorrentFiles())
+            foreach (TorrentFile item in torrentStorage.GetDownloadTorrentFiles())
             {
                 if (item.info.checksum == checksum)
                 {

@@ -17,6 +17,7 @@ using PeerSoftware.Utils;
 using PeerSoftware.Services;
 using System.Collections.Generic;
 using PeerSoftware.UDP;
+using PeerSoftware.Upload;
 
 namespace PeerSoftware
 {
@@ -38,10 +39,11 @@ namespace PeerSoftware
         private ITorrentStorage _storage;
         private Connections _connections;
         private TorrentFileServices _torrentFileServices;
+        private SharedFileServices _sharedFileServices;
         private CommonUtils _commonUtils;
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -49,9 +51,15 @@ namespace PeerSoftware
             _storage = new TorrentStorage();
             _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
+            _sharedFileServices = new SharedFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
             _udpSender = new UDPSender(_networkUtils);
+            UploadPeerServer uploadserver = new UploadPeerServer(_storage);
+
+            Thread peerThread = new Thread(uploadserver.Start);
+
+            peerThread.Start();
 
             _udpSender.Start(trackerIP.Text.Trim());
 
@@ -291,7 +299,6 @@ namespace PeerSoftware
 
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
-        
         {
             Button downloadButton = (Button)sender;
             _storage.GetPeerWithMyFaile();
@@ -313,9 +320,9 @@ namespace PeerSoftware
 
             Label label2 = new Label();
             label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
-            _storage.GetDownlodTorrentFiles().AddRange(torrentFiles);
+            _storage.GetDownloadTorrentFiles().AddRange(torrentFiles);
 
-            _storage.GetDownloadingTorrents().Add(torrentFiles[0]);
+            _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
 
             ProgressBar progressBar = new ProgressBar();
 
@@ -341,6 +348,7 @@ namespace PeerSoftware
             // Increment the row count
             tableLayoutPanel1.RowCount++;
 
+            _torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
             _torrentDownloadingNames.Add(label1.Text);
         }
         

@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
 using System.Net.Sockets;
+using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -53,23 +54,23 @@ namespace PeerSoftware.Services
             }
         }
 
-        public void StartDownload(Connections connections, Form1 form1, TorrentStorage torrentStorage, NetworkUtils networkUtils)
+        public void StartDownload(Connections connections, Form1 form1, ITorrentStorage torrentStorage, SharedFileServices sharedFileServices , NetworkUtils networkUtils)
         {
             List<string> receivedLivePeers = new List<string>();
-            TorrentFile torrentFile = torrentStorage.GetDownloadingTorrents().First();
+            TorrentFile torrentFile = torrentStorage.GetDownloadTorrentFiles().First();
             TorrentFile newTorrent = new TorrentFile();
 
             PTTBlock block = new PTTBlock(0x06, 0, torrentFile.info.checksum);
             receivedLivePeers = connections.SendAndRecieveData06(block, form1);
             
             Dictionary<string, string> peersAndBlocks = new Dictionary<string, string>();
-            //..peersAndBlocks = CalculateParticions(receivedLivePeers);
+            peersAndBlocks = sharedFileServices.CalculateParticions(receivedLivePeers, (int)torrentFile.info.length);
 
             foreach (string peer in peersAndBlocks.Keys)
             {
                 string parts = peersAndBlocks[peer];
 
-                PTPParser.StartPackage($"{torrentFile.info.checksum}/{parts}");
+                byte[] data = PTPParser.StartPackage($"{torrentFile.info.checksum}/{parts}");
 
                 string fileExtension = Path.GetExtension(torrentFile.info.fileName);
 
@@ -79,21 +80,31 @@ namespace PeerSoftware.Services
                 }
 
                 string currentDirectory = Directory.GetCurrentDirectory();
-                string path = Path.Combine(currentDirectory, "Download", newTorrent.info.torrentName + "." + fileExtension);
+                string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
 
                 StreamWriter outputFile = new StreamWriter(Path.Combine(path, $"{torrentFile.info.fileName}.{fileExtension}"));
 
-                using (TcpClient client = new TcpClient(networkUtils.GetLocalIPAddress(), networkUtils.GetLocalPort()))
+                using (TcpClient client = new TcpClient("127.0.0.1",12346))
                 {
-                    if (File.Exists(path))
+                    client.GetStream().Write(data, 0, data.Length);
+                    
+                    while (!client.GetStream().DataAvailable) ;
+                    while (client.GetStream().DataAvailable)
                     {
-                        PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
+                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
+                        string payload = receive.GetPayload();
 
-                        outputFile.WriteLine(receivedBlock.GetData());
-                    }
-                    else
-                    {
-                        Console.WriteLine("File is not created.");
+
+                        if (File.Exists(path))
+                        {
+                            PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
+
+                            outputFile.WriteLine(receivedBlock.GetData());
+                        }
+                        else
+                        {
+                            Console.WriteLine("File is not created.");
+                        }
                     }
                 }
             }
