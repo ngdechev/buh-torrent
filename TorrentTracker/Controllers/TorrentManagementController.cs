@@ -39,10 +39,7 @@ namespace TorrentTracker.Controllers
                         string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName + ".json");
                         File.WriteAllText(filePath, torrentFile);
                     }
-                    else
-                    {
-                        break;
-                    }
+                   
                 }
         } 
 
