@@ -53,7 +53,6 @@ namespace PeerSoftware
             _networkUtils = new NetworkUtils();
             _udpSender = new UDPSender(_networkUtils);
 
-            _udpSender.Start(trackerIP.Text.Trim());
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -362,6 +361,8 @@ namespace PeerSoftware
             int trackerPortField;
 
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+            _udpSender.Start(trackerIP.Text.Trim());
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }

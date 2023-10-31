@@ -91,6 +91,9 @@ namespace TorrentTracker.Controllers
                     }
                 }
             }
+
+            Console.WriteLine(_peerWithTorrentFile.ToString());
+
             return _peerWithTorrentFile;
         }
     }
