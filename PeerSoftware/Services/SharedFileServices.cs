@@ -9,28 +9,25 @@ namespace PeerSoftware.Services
 {
     public class SharedFileServices
     {
-        public Dictionary<string, List<int>> _peersAndBlocks = new Dictionary<string, List<int>>();
+        public Dictionary<string, string> _peersAndBlocks = new Dictionary<string, string>();
 
-        public Dictionary<string, List<int>> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile)
+        public Dictionary<string, string> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile)
         {
             int numberOfPeers = peersIpPlusPort.Count();
-            int helperForFor = 0;
+
             if (numberOfPeers == 0)
             {
                 throw new Exception("There are no active peers.");
             }
-            if (numberOfPeers < 5)
+
+            if (numberOfPeers > 5) 
             {
-                helperForFor = numberOfPeers;
-            }
-            else
-            {
-                helperForFor = 5;
+                numberOfPeers = 5;
             }
 
-            for (int i = 0; i < helperForFor; i++)
+            for (int i = 0; i < numberOfPeers; i++)
             {
-                _peersAndBlocks.Add(peersIpPlusPort[i], new List<int>());
+                _peersAndBlocks.Add(peersIpPlusPort[i], "");
             }
 
             int numberOfBlocks = (int)Math.Ceiling((double)sizeOfSharedFile / 1016);
@@ -38,28 +35,22 @@ namespace PeerSoftware.Services
             int sortBlocks = numberOfBlocks / _peersAndBlocks.Count();
             int remainderBlocks = numberOfBlocks % _peersAndBlocks.Count();
 
-            int counter = 1;
-            List<int> tempList = new List<int>();
+            int startBlock = 1;
+            int endBlock = sortBlocks;
 
-            foreach (string peers in _peersAndBlocks.Keys)
+            foreach (string peer in _peersAndBlocks.Keys)
             {
-                tempList.Clear();
-
-                for (int j = 1; j <= sortBlocks; j++)
+                if (peer == _peersAndBlocks.Keys.Last())
                 {
-                    tempList.Add(counter);
-                    counter++;
+                    endBlock += remainderBlocks;
+                    _peersAndBlocks[peer] = startBlock + "-" + endBlock;
+                    break;
                 }
 
-                _peersAndBlocks[peers] = tempList;
-            }
+                _peersAndBlocks[peer] = startBlock + "-" + endBlock;
 
-            if (remainderBlocks > 0) 
-            {
-                for(int i = 0; i < remainderBlocks; i++)
-                {
-                    _peersAndBlocks.First().Value.Add(counter);
-                }
+                startBlock = endBlock + 1;
+                endBlock += sortBlocks;
             }
 
             return _peersAndBlocks;
