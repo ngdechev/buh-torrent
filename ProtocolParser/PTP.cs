@@ -100,7 +100,6 @@ namespace PTP_Parser
         {
             byte[] id = new byte[4];
             byte[] size = new byte[4];
-            
 
             networkStream.Read(id, 0, 4);
             networkStream.Read(size, 0, 4);

@@ -97,19 +97,19 @@ namespace PeerSoftware.Services
                 using (TcpClient client = new TcpClient(peerIp,12346))
                 {
                     client.GetStream().Write(data, 0, data.Length);
-                    
+
                     while (!client.GetStream().DataAvailable) ;
                     while (client.GetStream().DataAvailable)
                     {
-                        PTTBlock receive = PTT.ParseToBlock(client.GetStream());
-                        string payload = receive.GetPayload();
-
-
                         if (File.Exists(path))
                         {
                             PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
 
+                            MessageBox.Show(receivedBlock.GetData());
+
                             outputFile.WriteLine(receivedBlock.GetData());
+                            outputFile.Flush();
+                            outputFile.Dispose();
                         }
                         else
                         {
@@ -119,6 +119,5 @@ namespace PeerSoftware.Services
                 }
             }
         }
-
     }
 }
