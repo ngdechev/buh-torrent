@@ -61,7 +61,7 @@ namespace PeerSoftware
 
             peerThread.Start();
 
-            _udpSender.Start(trackerIP.Text.Trim());
+            
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -291,9 +291,7 @@ namespace PeerSoftware
             }
             if (tabControl1.SelectedIndex == 3)
             {
-                MessageBox.Show("before");
                 _commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
-                MessageBox.Show("after");
             }
         }
 
@@ -373,6 +371,8 @@ namespace PeerSoftware
             int trackerPortField;
 
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+            _udpSender.Start(trackerIP.Text.Trim());
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }

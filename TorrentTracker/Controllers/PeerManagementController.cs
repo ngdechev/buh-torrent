@@ -8,10 +8,11 @@ namespace TorrentTracker.Controllers
     {
         private DictionaryController _dictionaryController;
         private TorrentManagementController _torrentController;
-        private List<string> _peerWithTorrentFile;
+        private List<string> _peerWithTorrentFile = new();
         public PeerManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
+            _torrentController = new TorrentManagementController(_dictionaryController);
         }
 
         public void CreatePeer(string ip, int port)
@@ -79,13 +80,20 @@ namespace TorrentTracker.Controllers
                 {
                     if (torrernt == torrentName)
                     {
-                        TimeSpan lastActive = pair.Key.Date - DateTime.Now;
-                        double secendLastActive = lastActive.TotalSeconds;
-                        if(secendLastActive <= 20)
+                        DateTime currentTime = DateTime.Now;
+                        DateTime targetDate = pair.Key.Date;
+
+                        TimeSpan timeDifference = currentTime - targetDate;
+                        TimeSpan twentySeconds = TimeSpan.FromSeconds(20);
+
+                        //TimeSpan lastActive = pair.Key.Date - DateTime.Now;
+                        //double secendLastActive = lastActive.TotalSeconds;
+
+                        if (timeDifference < twentySeconds)
                         {
                             
                             _peerWithTorrentFile.Add(pair.Key.StringIPAndPort());
-                            break;
+                            //break;
                         }
                         
                     }

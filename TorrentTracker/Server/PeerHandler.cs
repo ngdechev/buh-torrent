@@ -94,8 +94,8 @@ namespace TorrentTracker.Server
 
             else if (command == 54) //6
             {
-                //List<string> peersIpAndPort = _peerManagementController.ListPeersWithTorrentFile(payload);
-                List<string> peersIpAndPort = new List<string>();
+                List<string> peersIpAndPort = _peerManagementController.ListPeersWithTorrentFile(payload);
+                //List<string> peersIpAndPort = new List<string>();
 
                 PTTBlock PTTBlock = new(0x07, peersIpAndPort.ToString().Length, peersIpAndPort.ToString());
 
