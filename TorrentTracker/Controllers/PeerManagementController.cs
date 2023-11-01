@@ -89,7 +89,7 @@ namespace TorrentTracker.Controllers
                         //TimeSpan lastActive = pair.Key.Date - DateTime.Now;
                         //double secendLastActive = lastActive.TotalSeconds;
 
-                        if (timeDifference < twentySeconds)
+                        if (timeDifference > twentySeconds)
                         {
                             
                             _peerWithTorrentFile.Add(pair.Key.StringIPAndPort());

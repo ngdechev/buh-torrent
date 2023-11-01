@@ -97,9 +97,19 @@ namespace TorrentTracker.Server
                 List<string> peersIpAndPort = _peerManagementController.ListPeersWithTorrentFile(payload);
                 //List<string> peersIpAndPort = new List<string>();
 
-                PTTBlock PTTBlock = new(0x07, peersIpAndPort.ToString().Length, peersIpAndPort.ToString());
+
+                //PTTBlock PTTBlock = new(0x07, peersIpAndPort.ToString().Length, peersIpAndPort.ToString());
+
+                string[] parts;
+                string json = JsonSerializer.Serialize(peersIpAndPort);
+                string result = json.Trim('[', ']', '"');
+
+                PTTBlock PTTBlock = new(0x07, result.Length, result);
 
                 byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
+
+
+
 
                 try
                 {

@@ -61,10 +61,9 @@ namespace PeerSoftware.Services
             TorrentFile newTorrent = new TorrentFile();
 
             PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length , torrentFile.info.checksum);
-            receivedLivePeers = connections.SendAndRecieveData06(block, form1);
+            receivedLivePeers = connections.SendAndRecieveData06(block, form1).ToList();
             
-            Dictionary<string, string> peersAndBlocks = new Dictionary<string, string>();
-            peersAndBlocks = sharedFileServices.CalculateParticions(receivedLivePeers, (int)torrentFile.info.length);
+            Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(receivedLivePeers, (int)torrentFile.info.length);
 
             foreach (string peer in peersAndBlocks.Keys)
             {
@@ -80,11 +79,22 @@ namespace PeerSoftware.Services
                 }
 
                 string currentDirectory = Directory.GetCurrentDirectory();
-                string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
+                string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName /*+ "." + fileExtension*/);
 
-                StreamWriter outputFile = new StreamWriter(Path.Combine(path, $"{torrentFile.info.fileName}.{fileExtension}"));
+                StreamWriter outputFile = new StreamWriter(path);
 
-                using (TcpClient client = new TcpClient("127.0.0.1",12346))
+                string[] peerIpAndPort;
+                string peerIp = null;
+                int peerPort = 0;
+
+                foreach (var part in peersAndBlocks)
+                {
+                    peerIpAndPort = part.Key.Split(":");
+                    peerIp = peerIpAndPort[0];
+                    peerPort= int.Parse(peerIpAndPort[1]);
+                }
+
+                using (TcpClient client = new TcpClient(peerIp,12346))
                 {
                     client.GetStream().Write(data, 0, data.Length);
                     
