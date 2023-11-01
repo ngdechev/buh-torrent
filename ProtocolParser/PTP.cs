@@ -103,9 +103,10 @@ namespace PTP_Parser
             
 
             networkStream.Read(id, 0, 4);
-            int.TryParse(Encoding.ASCII.GetString(id), out int block_id);
             networkStream.Read(size, 0, 4);
-            int.TryParse(Encoding.ASCII.GetString(size), out int block_size);
+            
+            int block_id = BitConverter.ToInt32(id, 0);
+            int block_size = BitConverter.ToInt32(size, 0);
             byte[] data = new byte[block_size];
             networkStream.Read(data, 0, block_size);
             

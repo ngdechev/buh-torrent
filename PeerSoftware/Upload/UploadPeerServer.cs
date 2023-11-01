@@ -19,7 +19,7 @@ namespace PeerSoftware.Upload
         public UploadPeerServer(ITorrentStorage storage)
         {
             _handlers = new List<UploadPeerHandler>();
-            _listener = new(IPAddress.Any, 12340);
+            _listener = new(IPAddress.Any, 12346);
             _isRunning = true;
             _storage = storage;
         }

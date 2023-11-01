@@ -25,8 +25,8 @@ namespace PeerSoftware.Upload
 
         public void Handle()
         {
-            while (_isRunning)
-            {
+           /* while (_isRunning)
+            {*/
                 NetworkStream stream = _tcpClient.GetStream();
                 PTPBlock block = PTPParser.ParseToBlock(stream);
                 if (block.IsType("StartPackage"))
@@ -37,14 +37,15 @@ namespace PeerSoftware.Upload
                     {
                         stream.Write(PTPParser.ParseToPackage(pTPBlock));
                     }
-                    stream.Write(PTPParser.UnavailablePackage());
+                
+                    //stream.Write(PTPParser.UnavailablePackage());
                 }
-            }
+            /*}*/
         }
 
         public void Disasemble(string cheksum, string blocks)
         {
-            TorrentFile torrentFile = _storage.GetMyTorrentFiles().Find(r => r.info.checksum == cheksum);
+            TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
             if (torrentFile != null)
             {
                 _blocks = new List<PTPBlock>();
@@ -55,14 +56,14 @@ namespace PeerSoftware.Upload
                 int startPosition = (firstBlock-1) * 1016 ; // Start position in the file
                 int lengthToRead = 0;
                 bool isFull = false;
-                if (((lastBlock - firstBlock) * 1016 + startPosition) <= torrentFile.info.length)
+                if (((lastBlock - firstBlock) * 1016 + startPosition) >= torrentFile.info.length)
                 {
-                     lengthToRead = (lastBlock - firstBlock) * 1016; // Number of bytes to read
+                     lengthToRead = ((lastBlock - firstBlock)+1) * 1016; // Number of bytes to read
                      isFull= true;
                 }
                 else
                 {
-                    lengthToRead = (lastBlock - 1 - firstBlock) * 1016;
+                    lengthToRead = /*(lastBlock - 1 - firstBlock)*/ 0* 1016;
                     lengthToRead = lengthToRead + (int)(torrentFile.info.length - ((lastBlock-1)*1016));
                     isFull = false;
                 }
@@ -91,9 +92,9 @@ namespace PeerSoftware.Upload
                                 Array.Copy(buffer, ((i - 1) * 1016), bytes, 0, 1016);
                                 _blocks.Add(new PTPBlock(i, bytes.Length, bytes));
                             }
-                            int size = buffer.Length - ((lastBlock- firstBlock- 1)*1016);
+                            int size = buffer.Length - ((lastBlock- firstBlock)*1016);
                             byte[] lastBytes = new byte[size];
-                            Array.Copy(buffer, ((lastBlock - firstBlock - 1) * 1016), lastBytes, 0, size);
+                            Array.Copy(buffer, ((lastBlock - firstBlock ) * 1016), lastBytes, 0, size);
                             _blocks.Add(new PTPBlock(lastBlock, lastBytes.Length, lastBytes));
                         }
                     }
