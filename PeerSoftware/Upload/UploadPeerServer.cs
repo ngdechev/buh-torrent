@@ -36,7 +36,7 @@ namespace PeerSoftware.Upload
                     {
                         TcpClient clientSocket = _listener.AcceptTcpClient();
 
-                        UploadPeerHandler uploadHandler = new UploadPeerHandler(_storage, clientSocket);
+                        UploadPeerHandler uploadHandler = new UploadPeerHandler(_storage, clientSocket, this);
                         _handlers.Add(uploadHandler);
                         Thread peerThread = new Thread(uploadHandler.Handle);
 
@@ -45,6 +45,11 @@ namespace PeerSoftware.Upload
                 }
                 Thread.Sleep(10);
             }
+        }
+
+        public void Disconect(UploadPeerHandler upload)
+        {
+           _handlers.Remove(upload);
         }
 
         public void Stop()

@@ -18,6 +18,7 @@ using PeerSoftware.Services;
 using System.Collections.Generic;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
+using PeerSoftware.Download;
 
 namespace PeerSoftware
 {
@@ -43,6 +44,7 @@ namespace PeerSoftware
         private CommonUtils _commonUtils;
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
+        private Downloader _downloader;
         
         public Form1()
         {
@@ -55,13 +57,14 @@ namespace PeerSoftware
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
             _udpSender = new UDPSender(_networkUtils);
+
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
 
             Thread peerThread = new Thread(uploadserver.Start);
 
             peerThread.Start();
 
-            
+            _downloader = new Downloader();
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();

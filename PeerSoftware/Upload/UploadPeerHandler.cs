@@ -15,11 +15,14 @@ namespace PeerSoftware.Upload
         TcpClient _tcpClient;
         bool _isRunning;
         List<PTPBlock> _blocks;
-        public UploadPeerHandler(ITorrentStorage storage, TcpClient client) 
+        UploadPeerServer _server;
+
+        public UploadPeerHandler(ITorrentStorage storage, TcpClient client, UploadPeerServer server) 
         {
             _isRunning = true;
             _storage = storage;
             _tcpClient = client;
+            _server = server;
         }
 
 
@@ -37,7 +40,7 @@ namespace PeerSoftware.Upload
                     {
                         stream.Write(PTPParser.ParseToPackage(pTPBlock));
                     }
-                
+                _server.Disconect(this);
                     //stream.Write(PTPParser.UnavailablePackage());
                 }
             /*}*/
