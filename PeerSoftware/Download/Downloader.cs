@@ -11,7 +11,7 @@ namespace PeerSoftware.Download
             _index = 0;
         }
 
-        void Download(TorrentFile torrentFile, List<string> peers)
+        public void Download(TorrentFile torrentFile, List<string> peers)
         {
             ThreadManager threadManager = new ThreadManager();
 
@@ -41,7 +41,7 @@ namespace PeerSoftware.Download
             _index++;
         }
 
-        void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks)
+        public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks)
         {
             string fileExtension = Path.GetExtension(torrentFile.info.fileName);
 
@@ -66,8 +66,8 @@ namespace PeerSoftware.Download
             {
                 Console.WriteLine("File is not created.");
             }
-            
-            
+
+
         }
 
     }
