@@ -14,9 +14,9 @@ namespace PeerSoftware.Download
         public void Download(TorrentFile torrentFile, List<string> peers)
         {
             ThreadManager threadManager = new ThreadManager();
-
+/*
             threadManager.CreateThread(() =>
-            {
+            {*/
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 SharedFileServices sharedFileServices = new SharedFileServices();
                 Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
@@ -29,16 +29,16 @@ namespace PeerSoftware.Download
 
                 // Receive data from all connected servers
                 connectionManager.ReceiveData();
-
+                connectionManager.DisconnectAll();
                 Reassemble(torrentFile, connectionManager.GetPTPBlocks());
 
                 // Disconnect from all servers
-                connectionManager.DisconnectAll();
-            });
+                
+           /* });
 
-            threadManager.StartThread(_index);
+            threadManager.StartThread(_index);*/
 
-            _index++;
+            //_index++;
         }
 
         public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks)
@@ -52,15 +52,16 @@ namespace PeerSoftware.Download
 
             string currentDirectory = Directory.GetCurrentDirectory();
             string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
+            StreamWriter outputFile = new StreamWriter(path);
             if (File.Exists(path))
             {
-                StreamWriter outputFile = new StreamWriter(path);
+                
                 foreach (PTPBlock block in ptpBlocks)
                 {
-                    outputFile.WriteLine(block.GetData());
+                    outputFile.Write(block.GetData());
                 }
                 outputFile.Flush();
-                outputFile.Close();
+                //outputFile.Close();
             }
             else
             {

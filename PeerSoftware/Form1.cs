@@ -317,7 +317,7 @@ namespace PeerSoftware
             Label label1 = new Label();
             label1.Text = torrentNameLabel.Text;
 
-            List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+            List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(label1.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
 
             Label label2 = new Label();
             label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
