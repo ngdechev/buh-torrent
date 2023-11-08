@@ -38,6 +38,7 @@ namespace PeerSoftware.Upload
                     Disasemble(data[1], data[2]);
                     foreach(PTPBlock pTPBlock in _blocks)
                     {
+                        Thread.Sleep(10);
                         stream.Write(PTPParser.ParseToPackage(pTPBlock));
                     }
                 _server.Disconect(this);
