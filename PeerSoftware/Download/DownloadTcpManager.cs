@@ -37,11 +37,12 @@ namespace PeerSoftware.Download
                 {
                     Console.WriteLine($"Failed to connect to {serverIp}:{_serverPort}: {ex.Message}");
                 }
-            }
+
             string[] idBlocks = peersAndBlocks.Last().Value.Split('-', 2);
             //int.TryParse(idBlocks[0], out int firstBlock);
             int.TryParse(idBlocks[1], out int lastBlock);
             _numberOfBlocks = lastBlock;
+            }
         }
 
         public void SendDataOnce(string data)
