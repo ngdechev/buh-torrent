@@ -102,9 +102,9 @@ namespace TorrentTracker.Server
 
                 string[] parts;
                 string json = JsonSerializer.Serialize(peersIpAndPort);
-                string result = json.Trim('[', ']', '"');
+                //string result = json.Trim('[', ']', '"');
 
-                PTTBlock PTTBlock = new(0x07, result.Length, result);
+                PTTBlock PTTBlock = new(0x07, json.Length, json);
 
                 byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
 
