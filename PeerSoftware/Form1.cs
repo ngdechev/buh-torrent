@@ -349,7 +349,7 @@ namespace PeerSoftware
             // Increment the row count
             tableLayoutPanel1.RowCount++;
             PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
-            List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this).ToList();
+            string receivedLivePeers = _connections.SendAndRecieveData06(block, this);
 
             _downloader.Download(torrentFiles.First(), receivedLivePeers);
             //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);

@@ -93,11 +93,11 @@ namespace PeerSoftware.Utils
             allMaxPage = (int)Math.Ceiling(torrentStorage.GetAllTorrentFiles().Count / 5.0);
         }
 
-        public List<string> SendAndRecieveData06(object blockin, Form1 form1)
+        public string SendAndRecieveData06(object blockin, Form1 form1)
         {
             string trackerIpField;
             int trackerPortField;
-            List<string> receivedLivePeers = new List<string>();
+            string receivedLivePeers = "";
 
             try
             {
@@ -116,8 +116,8 @@ namespace PeerSoftware.Utils
                     {
                         PTTBlock receive = PTT.ParseToBlock(client.GetStream());
                         string payload = receive.GetPayload();
-
-                        receivedLivePeers.Add(payload);
+                        receivedLivePeers = payload;
+                        //receivedLivePeers.Add(payload);
                     }
 
                     CloseConnection(client);
