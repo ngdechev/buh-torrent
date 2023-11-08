@@ -64,7 +64,7 @@ namespace PeerSoftware.Download
             {
                 foreach (var client in _clients)
                 {
-                    if (client.Connected && client.GetStream().DataAvailable == true)
+                    if (client.Connected && client.GetStream().DataAvailable)
                     {
                         PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
                         _pTPBlocks.Add(receivedBlock);

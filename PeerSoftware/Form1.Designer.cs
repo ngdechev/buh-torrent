@@ -461,7 +461,7 @@ namespace PeerSoftware
             trackerIP.Name = "trackerIP";
             trackerIP.Size = new Size(198, 27);
             trackerIP.TabIndex = 2;
-            trackerIP.Text = "127.0.0.1:12345";
+            trackerIP.Text = "172.20.60.22:12345";
             // 
             // save
             // 

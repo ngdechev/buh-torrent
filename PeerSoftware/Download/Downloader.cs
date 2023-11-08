@@ -14,9 +14,9 @@ namespace PeerSoftware.Download
         public void Download(TorrentFile torrentFile, List<string> peers)
         {
             ThreadManager threadManager = new ThreadManager();
-/*
+
             threadManager.CreateThread(() =>
-            {*/
+            {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 SharedFileServices sharedFileServices = new SharedFileServices();
                 Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
@@ -34,11 +34,11 @@ namespace PeerSoftware.Download
 
                 // Disconnect from all servers
                 
-           /* });
+           });
 
-            threadManager.StartThread(_index);*/
+            threadManager.StartThread(_index);
 
-            //_index++;
+            _index++;
         }
 
         public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks)
@@ -68,7 +68,7 @@ namespace PeerSoftware.Download
                 Console.WriteLine("File is not created.");
             }
 
-
+            outputFile.Close();
         }
 
     }
