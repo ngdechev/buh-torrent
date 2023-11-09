@@ -65,7 +65,9 @@ namespace TorrentTracker.Controllers
 
         public List<string> ListPeersWithTorrentFile(string checksum)
         {
+            _peerWithTorrentFile.Clear();
             string torrernt="";
+
             foreach (TorrentFile torrentFile in _torrentController.GetAllTorrents())
             {
                 if (torrentFile.info.checksum == checksum)

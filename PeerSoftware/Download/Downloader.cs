@@ -19,6 +19,13 @@ namespace PeerSoftware.Download
         {
             ThreadManager threadManager = new ThreadManager();
             List<string>peersList= JsonSerializer.Deserialize<List<string>>(peers);
+
+            if (peersList.Count == 0)
+            {
+                MessageBox.Show("There are no available peers who has the file.");
+                return;
+            }
+
             threadManager.CreateThread(() =>
             {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
@@ -35,10 +42,7 @@ namespace PeerSoftware.Download
                 connectionManager.ReceiveData();
                 connectionManager.DisconnectAll();
                 Reassemble(torrentFile, connectionManager.GetPTPBlocks());
-
-                // Disconnect from all servers
-                
-           });
+            });
 
             threadManager.StartThread(_index);
 
