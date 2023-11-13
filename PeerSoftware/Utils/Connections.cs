@@ -91,7 +91,7 @@ namespace PeerSoftware.Utils
             }
         }
 
-        public string SendAndRecieveData06(object blockin, Form1 form1)
+        public List<string> SendAndRecieveData06(object blockin, Form1 form1)
         {
             string trackerIpField;
             int trackerPortField;
@@ -127,7 +127,7 @@ namespace PeerSoftware.Utils
                 throw new Exception("Error sending data: " + ex.Message);
             }
 
-            return receivedLivePeers;
+            return JsonSerializer.Deserialize<List<string>>(receivedLivePeers);
         }
         public void CloseConnection(TcpClient client)
         {
