@@ -358,7 +358,7 @@ namespace PeerSoftware
             // Increment the row count
             tableLayoutPanel1.RowCount++;
             PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
-            string receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
+            List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
 
             _downloader.Download(torrentFiles.First(), receivedLivePeers, progressBar);
 

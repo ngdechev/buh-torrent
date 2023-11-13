@@ -20,7 +20,7 @@ namespace PeerSoftware.Download
         public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar)
         {
             ThreadManager threadManager = new ThreadManager();
-            List<string>peersList= JsonSerializer.Deserialize<List<string>>(peers);
+            List<string> peersList = peers;//JsonSerializer.Deserialize<List<string>>(peers);
 
             if (peersList.Count == 0)
             {
