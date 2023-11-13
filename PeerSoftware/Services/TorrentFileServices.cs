@@ -60,7 +60,7 @@ namespace PeerSoftware.Services
             TorrentFile newTorrent = new TorrentFile();
 
             PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length , torrentFile.info.checksum);
-            receivedLivePeers = connections.SendAndRecieveData06(block, form1).ToList();
+            //receivedLivePeers = connections.SendAndRecieveData06(block, form1).ToList();
             
             Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(receivedLivePeers, (int)torrentFile.info.length);
 

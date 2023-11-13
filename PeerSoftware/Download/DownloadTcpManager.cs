@@ -80,7 +80,7 @@ namespace PeerSoftware.Download
                         PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
                         _pTPBlocks.Add(receivedBlock);
                     }
-                    else if(client.Connected && _pTPBlocks.Count == _numberOfBlocks - 1)
+                    else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks - 1)
                     {
                         return;
                     }

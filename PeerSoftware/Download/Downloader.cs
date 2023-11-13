@@ -1,5 +1,9 @@
 ﻿using PeerSoftware.Services;
 using PTP_Parser;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
 
 namespace PeerSoftware.Download
 {
@@ -15,13 +19,21 @@ namespace PeerSoftware.Download
 
         public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar)
         {
+            ThreadManager threadManager = new ThreadManager();
+            List<string>peersList= JsonSerializer.Deserialize<List<string>>(peers);
+
+            if (peersList.Count == 0)
+            {
+                MessageBox.Show("There are no available peers who has the file.");
+                return;
+            }
 
             _threadManager.CreateThread(() =>
             {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 SharedFileServices sharedFileServices = new SharedFileServices();
                 Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
-                    peers,
+                    peersList,
                     (int)torrentFile.info.length);
 
 
