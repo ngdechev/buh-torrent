@@ -50,7 +50,7 @@ namespace PeerSoftware.Download
             //int.TryParse(idBlocks[0], out int firstBlock);
             int.TryParse(idBlocks[1], out int lastBlock);
             _progressBar.Maximum = lastBlock ;
-            _numberOfBlocks = lastBlock - 1;
+            _numberOfBlocks = lastBlock;
         }
 
         
@@ -71,7 +71,7 @@ namespace PeerSoftware.Download
 
         public void ReceiveData()
         {
-            while (_pTPBlocks.Count <= _numberOfBlocks)
+            while (_pTPBlocks.Count < _numberOfBlocks)
             {
                 foreach (var client in _clients)
                 {
@@ -85,7 +85,7 @@ namespace PeerSoftware.Download
                         return;
                     }
                 }
-                Thread.Sleep(5000);
+                Thread.Sleep(50);
             }
         }
 
