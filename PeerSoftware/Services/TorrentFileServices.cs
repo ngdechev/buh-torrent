@@ -31,22 +31,21 @@ namespace PeerSoftware.Services
             return searchResults;
         }
 
-        public void LoadData(ITorrentStorage torrentStorage, Form1 form1, ref int allPageMax)
+        public void LoadData(ITorrentStorage torrentStorage, Form1 form1 )
         {
             torrentStorage.GetAllTorrentFiles().Clear();
 
             try
             {
                 PTTBlock block = new PTTBlock(0x04, 0, null);
-
-                int maxPage = allPageMax; 
+ 
 
                 Connections connections = new Connections();
-                Thread thread = new Thread(() => connections.SendAndRecieveData(block, form1, ref maxPage, torrentStorage));
+                Thread thread = new Thread(() => connections.SendAndRecieveData(block, form1, torrentStorage));
 
                 thread.Start();
 
-                allPageMax = maxPage;
+                
             }
             catch (Exception ex)
             {

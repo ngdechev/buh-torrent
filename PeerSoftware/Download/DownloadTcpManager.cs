@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PTP_Parser;
 using System.IO;
+using System.Timers;
 
 namespace PeerSoftware.Download
 {
@@ -16,9 +17,16 @@ namespace PeerSoftware.Download
         private List<TcpClient> _clients = new List<TcpClient>();
         private int _serverPort = 12346;
         private int _numberOfBlocks;
+        private ProgressBar _progressBar;
 
-        public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile)
+        public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile, ProgressBar progressBar)
         {
+            _progressBar = progressBar;
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 1000;
+            timer.Elapsed += (sender, e) =>  UpdateProgressBar();
+            timer.Start();
+            
             foreach (var serverIp in peersAndBlocks)
             {
                 TcpClient client = new TcpClient();
@@ -41,8 +49,11 @@ namespace PeerSoftware.Download
             string[] idBlocks = peersAndBlocks.Last().Value.Split('-', 2);
             //int.TryParse(idBlocks[0], out int firstBlock);
             int.TryParse(idBlocks[1], out int lastBlock);
-            _numberOfBlocks = lastBlock;
+            _progressBar.Maximum = lastBlock ;
+            _numberOfBlocks = lastBlock - 1;
         }
+
+        
 
         public void SendDataOnce(string data)
         {
@@ -60,7 +71,7 @@ namespace PeerSoftware.Download
 
         public void ReceiveData()
         {
-            while (_pTPBlocks.Count < _numberOfBlocks)
+            while (_pTPBlocks.Count <= _numberOfBlocks)
             {
                 foreach (var client in _clients)
                 {
@@ -69,11 +80,12 @@ namespace PeerSoftware.Download
                         PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
                         _pTPBlocks.Add(receivedBlock);
                     }
-                    else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks - 1)
+                    else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks)
                     {
                         return;
                     }
                 }
+                Thread.Sleep(5000);
             }
         }
 
@@ -88,6 +100,21 @@ namespace PeerSoftware.Download
         public List<PTPBlock> GetPTPBlocks() 
         {
             return _pTPBlocks;
+        }
+
+        public void UpdateProgressBar()
+        {
+            if (_progressBar.InvokeRequired)
+            {
+                _progressBar.BeginInvoke(new Action(() =>
+                {
+                    Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count );
+                }));
+            }
+            else
+            {
+                Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count );
+            }
         }
     }
 }
