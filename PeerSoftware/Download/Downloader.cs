@@ -31,21 +31,34 @@ namespace PeerSoftware.Download
             _threadManager.CreateThread(() =>
             {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
-                SharedFileServices sharedFileServices = new SharedFileServices();
-                Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
-                    peersList,
-                    (int)torrentFile.info.length);
+                try
+                {
+                   
+                    SharedFileServices sharedFileServices = new SharedFileServices();
+                    Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
+                        peersList,
+                        (int)torrentFile.info.length);
 
+                    // Connect to multiple servers synchronously
+                    connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);
 
-                // Connect to multiple servers synchronously
-                connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);
+                    // Receive data from all connected servers
+                    connectionManager.ReceiveData();
+                    connectionManager.DisconnectAll();
+                    Reassemble(torrentFile, connectionManager.GetPTPBlocks());
 
-                // Receive data from all connected servers
-                connectionManager.ReceiveData();
-                connectionManager.DisconnectAll();
-                Reassemble(torrentFile, connectionManager.GetPTPBlocks());
-
-                // Disconnect from all servers
+                    // Disconnect from all servers
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Download failed: {ex.Message}");
+                    // Handle or log the exception as needed
+                }
+                finally
+                {
+                    // Ensure progress bar is updated even if an exception occurs
+                    connectionManager.UpdateProgressBar();
+                }
 
             });
 

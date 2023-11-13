@@ -24,7 +24,7 @@ namespace PeerSoftware.Download
             _progressBar = progressBar;
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 1000;
-            timer.Elapsed += async (sender, e) => await UpdateProgresBar();
+            timer.Elapsed += (sender, e) =>  UpdateProgressBar();
             timer.Start();
             
             foreach (var serverIp in peersAndBlocks)
@@ -101,10 +101,19 @@ namespace PeerSoftware.Download
             return _pTPBlocks;
         }
 
-        private  Task UpdateProgresBar()
+        public void UpdateProgressBar()
         {
-            Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count + 1); 
-            return Task.CompletedTask;
+            if (_progressBar.InvokeRequired)
+            {
+                _progressBar.BeginInvoke(new Action(() =>
+                {
+                    Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count + 1);
+                }));
+            }
+            else
+            {
+                Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count + 1);
+            }
         }
     }
 }

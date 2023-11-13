@@ -1,11 +1,6 @@
 ﻿using PeerSoftware.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
 using PTP_Parser;
+using System.Net.Sockets;
 
 namespace PeerSoftware.Upload
 {
@@ -49,86 +44,152 @@ namespace PeerSoftware.Upload
 
         public void Disasemble(string cheksum, string blocks)
         {
-            bool lastBlockOfAll = false;
-            bool isFull = false;
-            int lengthToRead = 0;
-            int SizeOfDownload = 0;
-            int lastBlock = 0;
-            int sizeOfLastBlock = 0;
-            int sizeOfFullBlocks = 0;
-            _blocks = new List<PTPBlock>();
-
             TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
             if (torrentFile != null)
             {
+                _blocks = new List<PTPBlock>();
+
                 string filePath = torrentFile.info.fileName; // Replace with the path to your file
+
                 string[] idBlocks = blocks.Split('-', 2);
                 int.TryParse(idBlocks[0], out int firstBlock);
-                int.TryParse(idBlocks[1], out int LastBlock);
-                int startPosition = (firstBlock - 1) * 1016; // Start position in the file
-                int allBlocksFile = (int)Math.Ceiling((double)torrentFile.info.length / 1016); 
-                if (allBlocksFile==LastBlock)// Мaybe here it can break;
+                int.TryParse(idBlocks[1], out int lastBlock);
+
+                long startPos = (firstBlock - 1) * 1016;
+                long lastPos = (lastBlock ) * 1016;
+
+                if (torrentFile.info.length > lastPos)
                 {
-                    lastBlockOfAll = false;
-                    lastBlock = LastBlock;
-                    sizeOfFullBlocks = (lastBlock - 1) * (int)(torrentFile.info.length -(lastBlock-firstBlock)*1016);
-                    sizeOfLastBlock = (int)(torrentFile.info.length - ((lastBlock - 1) * 1016));
-                    if (((lastBlock - firstBlock) * 1016 + startPosition) >= sizeOfFullBlocks)
+                    int startIndex = firstBlock;
+                    
+                    while (startIndex <= lastBlock)
                     {
-                        lengthToRead = (lastBlock - firstBlock + 1) * 1016; // Number of bytes to read
-                        isFull = true;
-                    }
-                    else
-                    {
-                        lengthToRead = (sizeOfFullBlocks - startPosition) - sizeOfLastBlock;
-                        isFull = false;
+
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        {
+
+                            fs.Seek(startPos, SeekOrigin.Begin);
+                            byte[] bytes = new byte[1016];
+                            fs.Read(bytes, 0, 1016);
+                            _blocks.Add(new PTPBlock(startIndex, bytes.Length, bytes));
+
+                            startIndex++;
+                            startPos = startPos + 1016;
+
+                        }
                     }
                 }
                 else
                 {
-                    lastBlockOfAll = true;
-                    lastBlock = int.Parse(idBlocks[1]);
-                    sizeOfFullBlocks = (lastBlock - 1) * 1016 - startPosition;
-                    lengthToRead = (lastBlock - firstBlock + 1) * 1016; // Number of bytes to read
-                    isFull = true;
-                }
+                    int startIndex = firstBlock;
 
-                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                {
-                    fs.Seek(startPosition, SeekOrigin.Begin);
-
-                    using (BinaryReader br = new BinaryReader(fs))
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                     {
-                        byte[] buffer = br.ReadBytes(lengthToRead);
-                        _blocks.Clear();
-
-                        if (lastBlockOfAll && isFull)
+                        while (startIndex <= lastBlock - 1)
                         {
-                            for (int i = 0; i <= (lastBlock - firstBlock); i++)
-                            {
-                                byte[] bytes = new byte[1016];
-                                Array.Copy(buffer, (i) * 1016, bytes, 0, 1016);
-                                _blocks.Add(new PTPBlock(i, bytes.Length, bytes));
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i <= (lastBlock - firstBlock - 1); i++)
-                            {
-                                byte[] bytes = new byte[1016];
-                                Array.Copy(buffer, (i) * 1016, bytes, 0, 1016);
-                                _blocks.Add(new PTPBlock(i, bytes.Length, bytes));
-                            }
 
-                            //int size = buffer.Length - ((lastBlock - firstBlock) * 1016);
-                            byte[] lastBytes = new byte[sizeOfLastBlock];
-                            Array.Copy(buffer, (lastBlock - firstBlock) * 1016, lastBytes, 0, sizeOfLastBlock);
-                            _blocks.Add(new PTPBlock(lastBlock, lastBytes.Length, lastBytes));
+                            fs.Seek(startPos, SeekOrigin.Begin);
+                            byte[] bytes = new byte[1016];
+                            fs.Read(bytes, 0, 1016);
+                            _blocks.Add(new PTPBlock(startIndex, bytes.Length, bytes));
+
+                            startIndex++;
+                            startPos = startPos + 1016;
+
                         }
+
+                        int lastBlockSize = (int)(torrentFile.info.length - (lastPos - 1016));
+
+                        byte[] lastBytes = new byte[lastBlockSize];
+                        fs.Read(lastBytes, 0, lastBlockSize);
+                        _blocks.Add(new PTPBlock(startIndex, lastBytes.Length, lastBytes));
                     }
+
                 }
 
             }
+            /*{
+                bool lastBlockOfAll = false;
+                bool isFull = false;
+                int lengthToRead = 0;
+                int SizeOfDownload = 0;
+                int lastBlock = 0;
+                int sizeOfLastBlock = 0;
+                int sizeOfFullBlocks = 0;
+                _blocks = new List<PTPBlock>();
+
+                TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
+                if (torrentFile != null)
+                {
+                    string filePath = torrentFile.info.fileName; // Replace with the path to your file
+                    string[] idBlocks = blocks.Split('-', 2);
+                    int.TryParse(idBlocks[0], out int firstBlock);
+                    int.TryParse(idBlocks[1], out int LastBlock);
+                    int startPosition = (firstBlock - 1) * 1016; // Start position in the file
+                    int allBlocksFile = (int)Math.Ceiling((double)torrentFile.info.length / 1016); 
+                    if (allBlocksFile==LastBlock)// Мaybe here it can break;
+                    {
+                        lastBlockOfAll = false;
+                        lastBlock = LastBlock;
+                        sizeOfFullBlocks = (lastBlock - 1) * (int)(torrentFile.info.length -(lastBlock-firstBlock)*1016);
+                        sizeOfLastBlock = (int)(torrentFile.info.length - ((lastBlock - 1) * 1016));
+                        if (((lastBlock - firstBlock) * 1016 + startPosition) >= sizeOfFullBlocks)
+                        {
+                            lengthToRead = (lastBlock - firstBlock + 1) * 1016; // Number of bytes to read
+                            isFull = true;
+                        }
+                        else
+                        {
+                            lengthToRead = (sizeOfFullBlocks - startPosition) - sizeOfLastBlock;
+                            isFull = false;
+                        }
+                    }
+                    else
+                    {
+                        lastBlockOfAll = true;
+                        lastBlock = int.Parse(idBlocks[1]);
+                        sizeOfFullBlocks = (lastBlock - 1) * 1016 - startPosition;
+                        lengthToRead = (lastBlock - firstBlock + 1) * 1016; // Number of bytes to read
+                        isFull = true;
+                    }
+
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        fs.Seek(startPosition, SeekOrigin.Begin);
+
+                        using (BinaryReader br = new BinaryReader(fs))
+                        {
+                            byte[] buffer = br.ReadBytes(lengthToRead);
+                            _blocks.Clear();
+
+                            if (lastBlockOfAll && isFull)
+                            {
+                                for (int i = 0; i <= (lastBlock - firstBlock); i++)
+                                {
+                                    byte[] bytes = new byte[1016];
+                                    Array.Copy(buffer, (i) * 1016, bytes, 0, 1016);
+                                    _blocks.Add(new PTPBlock(i, bytes.Length, bytes));
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i <= (lastBlock - firstBlock - 1); i++)
+                                {
+                                    byte[] bytes = new byte[1016];
+                                    Array.Copy(buffer, (i) * 1016, bytes, 0, 1016);
+                                    _blocks.Add(new PTPBlock(i, bytes.Length, bytes));
+                                }
+
+                                //int size = buffer.Length - ((lastBlock - firstBlock) * 1016);
+                                byte[] lastBytes = new byte[sizeOfLastBlock];
+                                Array.Copy(buffer, (lastBlock - firstBlock) * 1016, lastBytes, 0, sizeOfLastBlock);
+                                _blocks.Add(new PTPBlock(lastBlock, lastBytes.Length, lastBytes));
+                            }
+                        }
+                    }
+
+                }
+            }*/
         }
     }
 }
