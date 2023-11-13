@@ -299,10 +299,41 @@ namespace PeerSoftware
                 _torrentFileServices.LoadData(_storage, this );
                 
             }
-            if (tabControl1.SelectedIndex == 3)
+            if (tabControl1.SelectedIndex == 2)
             {
-                _commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
+                //_commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
+                _commonUtils.LoadMyTorrents(_storage);
+                ShowMyTorrents();
             }
+        }
+
+        private void ShowMyTorrents()
+        {
+            foreach(TorrentFile torrentFile in _storage.GetMyTorrentFiles())
+            {
+                Label myTorrentName = new Label();
+                myTorrentName.Text = torrentFile.info.torrentName;
+                
+                Label myTorrentSize = new Label();
+                myTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
+                
+                Button delete = new Button();
+                delete.Text = "Delete";
+                tableLayoutPanel4.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+
+                // Move the existing controls to the next row
+                foreach (Control control in tableLayoutPanel4.Controls)
+                {
+                    int row = tableLayoutPanel4.GetRow(control);
+                    tableLayoutPanel4.SetRow(control, row + 1);
+                }
+
+                tableLayoutPanel4.Controls.Add(myTorrentName, 0, 0); 
+                tableLayoutPanel4.Controls.Add(myTorrentSize, 1, 0);  
+                tableLayoutPanel4.Controls.Add(delete, 2, 0);
+            }
+            
+            
         }
 
         // Downloading torrents tab..
@@ -333,7 +364,7 @@ namespace PeerSoftware
             _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
 
             ProgressBar progressBar = new ProgressBar();
-            progressBar.Minimum = 1 ;
+            progressBar.Minimum = 0 ;
             progressBar.Maximum = 100 ;
             
             Button button = new Button();
@@ -357,6 +388,7 @@ namespace PeerSoftware
 
             // Increment the row count
             tableLayoutPanel1.RowCount++;
+
             PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
             List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
 

@@ -49,7 +49,7 @@ namespace PeerSoftware.Download
             string[] idBlocks = peersAndBlocks.Last().Value.Split('-', 2);
             //int.TryParse(idBlocks[0], out int firstBlock);
             int.TryParse(idBlocks[1], out int lastBlock);
-            _progressBar.Maximum = lastBlock - 1;
+            _progressBar.Maximum = lastBlock ;
             _numberOfBlocks = lastBlock - 1;
         }
 
@@ -71,7 +71,7 @@ namespace PeerSoftware.Download
 
         public void ReceiveData()
         {
-            while (_pTPBlocks.Count < _numberOfBlocks)
+            while (_pTPBlocks.Count <= _numberOfBlocks)
             {
                 foreach (var client in _clients)
                 {
@@ -80,11 +80,12 @@ namespace PeerSoftware.Download
                         PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
                         _pTPBlocks.Add(receivedBlock);
                     }
-                    else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks - 1)
+                    else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks)
                     {
                         return;
                     }
                 }
+                Thread.Sleep(5000);
             }
         }
 
@@ -107,12 +108,12 @@ namespace PeerSoftware.Download
             {
                 _progressBar.BeginInvoke(new Action(() =>
                 {
-                    Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count + 1);
+                    Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count );
                 }));
             }
             else
             {
-                Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count + 1);
+                Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count );
             }
         }
     }
