@@ -6,16 +6,17 @@ namespace PeerSoftware.Download
     public class Downloader
     {
         private int _index;
+        private ThreadManager _threadManager;
         public Downloader()
         {
             _index = 0;
+            _threadManager = new ThreadManager();
         }
 
-        public void Download(TorrentFile torrentFile, List<string> peers)
+        public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar)
         {
-            ThreadManager threadManager = new ThreadManager();
 
-            threadManager.CreateThread(() =>
+            _threadManager.CreateThread(() =>
             {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 SharedFileServices sharedFileServices = new SharedFileServices();
@@ -25,7 +26,7 @@ namespace PeerSoftware.Download
 
 
                 // Connect to multiple servers synchronously
-                connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile);
+                connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);
 
                 // Receive data from all connected servers
                 connectionManager.ReceiveData();
@@ -33,10 +34,10 @@ namespace PeerSoftware.Download
                 Reassemble(torrentFile, connectionManager.GetPTPBlocks());
 
                 // Disconnect from all servers
-                
-           });
 
-            threadManager.StartThread(_index);
+            });
+
+            _threadManager.StartThread(_index);
 
             _index++;
         }
@@ -55,7 +56,7 @@ namespace PeerSoftware.Download
             StreamWriter outputFile = new StreamWriter(path);
             if (File.Exists(path))
             {
-                
+
                 foreach (PTPBlock block in ptpBlocks)
                 {
                     outputFile.Write(block.GetData());

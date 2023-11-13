@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PTP_Parser;
 using System.IO;
+using System.Timers;
 
 namespace PeerSoftware.Download
 {
@@ -16,9 +17,16 @@ namespace PeerSoftware.Download
         private List<TcpClient> _clients = new List<TcpClient>();
         private int _serverPort = 12346;
         private int _numberOfBlocks;
+        private ProgressBar _progressBar;
 
-        public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile)
+        public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile, ProgressBar progressBar)
         {
+            _progressBar = progressBar;
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 1000;
+            timer.Elapsed += async (sender, e) => await UpdateProgresBar();
+            timer.Start();
+            
             foreach (var serverIp in peersAndBlocks)
             {
                 TcpClient client = new TcpClient();
@@ -41,8 +49,11 @@ namespace PeerSoftware.Download
             string[] idBlocks = peersAndBlocks.Last().Value.Split('-', 2);
             //int.TryParse(idBlocks[0], out int firstBlock);
             int.TryParse(idBlocks[1], out int lastBlock);
-            _numberOfBlocks = lastBlock;
+            _progressBar.Maximum = lastBlock - 1;
+            _numberOfBlocks = lastBlock - 1;
         }
+
+        
 
         public void SendDataOnce(string data)
         {
@@ -88,6 +99,12 @@ namespace PeerSoftware.Download
         public List<PTPBlock> GetPTPBlocks() 
         {
             return _pTPBlocks;
+        }
+
+        private  Task UpdateProgresBar()
+        {
+            Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count + 1); 
+            return Task.CompletedTask;
         }
     }
 }

@@ -19,6 +19,9 @@ using System.Collections.Generic;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
 using PeerSoftware.Download;
+using System.Drawing;
+using Microsoft.VisualBasic;
+using Timer = System.Windows.Forms.Timer;
 
 namespace PeerSoftware
 {
@@ -65,6 +68,8 @@ namespace PeerSoftware
             peerThread.Start();
 
             _downloader = new Downloader();
+
+            
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -127,6 +132,7 @@ namespace PeerSoftware
         private void refresh_Click(object sender, EventArgs e)
         {
             _searchOnFlag = false;
+            _allMaxPage = (int)Math.Ceiling(_storage.GetAllTorrentFiles().Count / 5.0);
             Show(_allPage, _storage.GetAllTorrentFiles());
         }
 
@@ -290,7 +296,8 @@ namespace PeerSoftware
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                _torrentFileServices.LoadData(_storage, this, ref _allMaxPage);
+                _torrentFileServices.LoadData(_storage, this );
+                
             }
             if (tabControl1.SelectedIndex == 3)
             {
@@ -326,7 +333,9 @@ namespace PeerSoftware
             _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
 
             ProgressBar progressBar = new ProgressBar();
-
+            progressBar.Minimum = 1 ;
+            progressBar.Maximum = 100 ;
+            
             Button button = new Button();
             button.Text = "Pause";
 
@@ -351,7 +360,8 @@ namespace PeerSoftware
             PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
             List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this).ToList();
 
-            _downloader.Download(torrentFiles.First(), receivedLivePeers);
+            _downloader.Download(torrentFiles.First(), receivedLivePeers, progressBar);
+
             //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
             _torrentDownloadingNames.Add(label1.Text);
         }
@@ -402,6 +412,11 @@ namespace PeerSoftware
         public string GetIpFieldText()
         {
             return trackerIP.Text.Trim();
+        }
+
+        public static void SetProgressBarValue(ProgressBar progressBar, int count)
+        {
+            progressBar.Value = count;
         }
     }
 }
