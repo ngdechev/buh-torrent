@@ -66,6 +66,7 @@ namespace TorrentTracker.Controllers
         public List<string> ListPeersWithTorrentFile(string checksum)
         {
             _peerWithTorrentFile.Clear();
+
             string torrernt="";
 
             foreach (TorrentFile torrentFile in _torrentController.GetAllTorrents())
@@ -85,15 +86,11 @@ namespace TorrentTracker.Controllers
                         DateTime currentTime = DateTime.Now;
                         DateTime targetDate = pair.Key.Date;
 
-                        TimeSpan timeDifference = currentTime - targetDate;
-                        TimeSpan twentySeconds = TimeSpan.FromSeconds(20);
+                        double timeDifferenceInSeconds = (currentTime - targetDate).TotalSeconds;
+                        double twentySeconds = 20.0;
 
-                        //TimeSpan lastActive = pair.Key.Date - DateTime.Now;
-                        //double secendLastActive = lastActive.TotalSeconds;
-
-                        if (timeDifference > twentySeconds)
+                        if (timeDifferenceInSeconds < twentySeconds)
                         {
-                            
                             _peerWithTorrentFile.Add(pair.Key.StringIPAndPort());
                             //break;
                         }
@@ -101,6 +98,7 @@ namespace TorrentTracker.Controllers
                     }
                 }
             }
+
             return _peerWithTorrentFile;
         }
     }
