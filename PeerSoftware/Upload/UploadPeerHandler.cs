@@ -119,7 +119,7 @@ namespace PeerSoftware.Upload
             _blocks = new List<PTPBlock>();
 
 
-           TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
+            TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
             if (torrentFile != null)
             {
                 string filePath = torrentFile.info.fileName; // Replace with the path to your file
@@ -130,24 +130,24 @@ namespace PeerSoftware.Upload
                 int allBlocksFile = (int)Math.Ceiling((double)torrentFile.info.length / 1016);
 
 
-               sizeOfFullBlocks = (lastBlock) * 1016;
+                sizeOfFullBlocks = (lastBlock) * 1016;
                 sizeOfLastBlock = (int)(torrentFile.info.length - sizeOfFullBlocks);
 
 
-               if (firstBlock == 1 && sizeOfLastBlock < 1016)
+                if (firstBlock == 1 && sizeOfLastBlock < 1016)
                 {
                     startPosition = (firstBlock - 1) * 1016; // Start position in the file
 
 
-                   lengthToRead = 0;
+                    lengthToRead = 0;
                     isFull = false;
 
 
-                   sizeOfFullBlocks = (lastBlock - 1) * 1016;
+                    sizeOfFullBlocks = (lastBlock - 1) * 1016;
                     sizeOfLastBlock = (int)(torrentFile.info.length - sizeOfFullBlocks);
 
 
-                   if (((lastBlock - firstBlock) * 1016 + startPosition) >= torrentFile.info.length)
+                    if (((lastBlock - firstBlock) * 1016 + startPosition) >= torrentFile.info.length)
                     {
                         lengthToRead = (lastBlock - firstBlock + 1) * 1016; // Number of bytes to read
                         isFull = true;
@@ -165,7 +165,7 @@ namespace PeerSoftware.Upload
                     sizeOfLastBlock = (int)(torrentFile.info.length - ((lastBlock - 1) * 1016));
 
 
-                   if (((lastBlock - firstBlock) * 1016 + startPosition) >= sizeOfFullBlocks)
+                    if (((lastBlock - firstBlock) * 1016 + startPosition) >= sizeOfFullBlocks)
                     {
                         lengthToRead = (lastBlock - firstBlock + 1) * 1016; // Number of bytes to read
                         isFull = true;
@@ -190,13 +190,13 @@ namespace PeerSoftware.Upload
                     fs.Seek(startPosition, SeekOrigin.Begin);
 
 
-                   using (BinaryReader br = new BinaryReader(fs))
+                    using (BinaryReader br = new BinaryReader(fs))
                     {
                         byte[] buffer = br.ReadBytes(lengthToRead);
                         _blocks.Clear();
 
 
-                       if (lastBlockOfAll && isFull)
+                        if (lastBlockOfAll && isFull)
                         {
                             for (int i = 0; i <= (lastBlock - firstBlock); i++)
                             {
@@ -215,18 +215,83 @@ namespace PeerSoftware.Upload
                             }
 
 
-                           //int size = buffer.Length - ((lastBlock - firstBlock) * 1016);
+                            //int size = buffer.Length - ((lastBlock - firstBlock) * 1016);
                             byte[] lastBytes = new byte[sizeOfLastBlock];
                             Array.Copy(buffer, (lastBlock - firstBlock) * 1016, lastBytes, 0, sizeOfLastBlock);
                             _blocks.Add(new PTPBlock(lastBlock, lastBytes.Length, lastBytes));
                         }
                     }
                 }
+            }
+        }
 
+        /*public void Disasemble(string cheksum, string blocks)
+        {
+            TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
+            if (torrentFile != null)
+            {
+                _blocks = new List<PTPBlock>();
 
-           }
-        }//*/
-        
+                string filePath = torrentFile.info.fileName; // Replace with the path to your file
+
+                string[] idBlocks = blocks.Split('-', 2);
+                int.TryParse(idBlocks[0], out int firstBlock);
+                int.TryParse(idBlocks[1], out int lastBlock);
+
+                long startPos = (firstBlock - 1) * 1016;
+                long lastPos = (lastBlock - 1) * 1016;
+
+                if (torrentFile.info.length > lastPos)
+                {
+                    int startIndex = firstBlock;
+                    
+                    while (startIndex <= lastBlock)
+                    {
+
+                        using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                        {
+
+                            fs.Seek(startPos, SeekOrigin.Begin);
+                            byte[] bytes = new byte[1016];
+                            fs.Read(bytes, 0, 1016);
+                            _blocks.Add(new PTPBlock(startIndex, bytes.Length, bytes));
+
+                            startIndex++;
+                            startPos = startPos + 1016;
+
+                        }
+                    }
+                }
+                else
+                {
+                    int startIndex = firstBlock;
+
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        while (startIndex <= lastBlock - 1)
+                        {
+
+                            fs.Seek(startPos, SeekOrigin.Begin);
+                            byte[] bytes = new byte[1016];
+                            fs.Read(bytes, 0, 1016);
+                            _blocks.Add(new PTPBlock(startIndex, bytes.Length, bytes));
+
+                            startIndex++;
+                            startPos = startPos + 1016;
+
+                        }
+
+                        int lastBlockSize = (int)(torrentFile.info.length - (lastPos - 1016));
+
+                        byte[] lastBytes = new byte[lastBlockSize];
+                        fs.Read(lastBytes, 0, lastBlockSize);
+                        _blocks.Add(new PTPBlock(startIndex, lastBytes.Length, lastBytes));
+                    }
+
+                }
+            }
+        }*/
+
     }
 }
 
