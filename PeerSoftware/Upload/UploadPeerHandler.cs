@@ -42,7 +42,7 @@ namespace PeerSoftware.Upload
             /*}*/
         }
 
-        public void Disasemble(string cheksum, string blocks)
+        /*public void Disasemble(string cheksum, string blocks)
         {
             TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
             if (torrentFile != null)
@@ -56,7 +56,7 @@ namespace PeerSoftware.Upload
                 int.TryParse(idBlocks[1], out int lastBlock);
 
                 long startPos = (firstBlock - 1) * 1016;
-                long lastPos = (lastBlock - 1) * 1016;
+                long lastPos = (lastBlock ) * 1016;
 
                 if (torrentFile.info.length > lastPos)
                 {
@@ -108,7 +108,7 @@ namespace PeerSoftware.Upload
                 }
 
             }
-            /*/
+            */
         public void Disasemble(string cheksum, string blocks)
         {
             bool lastBlockOfAll = false;
@@ -225,8 +225,8 @@ namespace PeerSoftware.Upload
 
 
            }
-        }*/
-        }
+        }//*/
+        
     }
 }
 

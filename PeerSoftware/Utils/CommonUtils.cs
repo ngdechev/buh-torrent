@@ -81,6 +81,8 @@ namespace PeerSoftware.Utils
             if (Directory.Exists(folderPath))
             {
                 string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
+                
+                storage.GetMyTorrentFiles().Clear();
 
                 foreach (string jsonFile in jsonFiles)
                 {
