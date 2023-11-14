@@ -85,7 +85,7 @@ namespace PeerSoftware.Download
                         return;
                     }
                 }
-                Thread.Sleep(5000);
+                Thread.Sleep(500);
             }
         }
 
