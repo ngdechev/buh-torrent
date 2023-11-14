@@ -85,8 +85,9 @@ namespace TorrentTracker.Controllers
                     {
                         DateTime currentTime = DateTime.Now;
                         DateTime targetDate = pair.Key.Date;
+                        DateTime newDate = targetDate.AddHours(2);
 
-                        double timeDifferenceInSeconds = (currentTime - targetDate).TotalSeconds;
+                        double timeDifferenceInSeconds = (currentTime - newDate).TotalSeconds;
                         double twentySeconds = 20.0;
 
                         if (timeDifferenceInSeconds < twentySeconds)
