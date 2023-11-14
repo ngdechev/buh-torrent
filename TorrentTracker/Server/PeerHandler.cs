@@ -31,9 +31,7 @@ namespace TorrentTracker.Server
         public void HandlePeer()
         {
             PTTBlock _block;
-           // _dictionaryController.ReadDictionaryFromFile();
             _stream = _peerSocket.GetStream();
-
 
             _block = PTT.ParseToBlock(_stream);
 

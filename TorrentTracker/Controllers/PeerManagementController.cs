@@ -20,7 +20,7 @@ namespace TorrentTracker.Controllers
             bool flag = true;
             if (_dictionaryController.GetDictionary().Count() == 0)
             {
-                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.UtcNow);
+                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.Now);
                 _dictionaryController.GetDictionary().Add(peer, new List<string>());
             }
             else
@@ -38,7 +38,7 @@ namespace TorrentTracker.Controllers
                
                 if (flag == true)
                 { 
-                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.UtcNow);
+                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.Now);
                         _dictionaryController.GetDictionary().Add(peer, new List<string>());
                 }
                 flag = true;
@@ -79,15 +79,17 @@ namespace TorrentTracker.Controllers
 
             foreach (var pair in _dictionaryController.GetDictionary())
             {
+                /*Console.WriteLine(pair.Key.Date + "   IP: " + pair.Key.IPAddress);*/
+
                 foreach (string torrentName in pair.Value)
                 {
                     if (torrernt == torrentName)
                     {
-                        DateTime currentTime = DateTime.Now;
-                        DateTime targetDate = pair.Key.Date;
-                        DateTime newDate = targetDate.AddHours(2);
 
-                        double timeDifferenceInSeconds = (currentTime - newDate).TotalSeconds;
+                        DateTime targetDate = pair.Key.Date;
+                        DateTime currentTime = DateTime.Now;
+
+                        double timeDifferenceInSeconds = (currentTime - targetDate).TotalSeconds;
                         double twentySeconds = 20.0;
 
                         if (timeDifferenceInSeconds < twentySeconds)
