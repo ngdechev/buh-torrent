@@ -318,7 +318,9 @@ namespace PeerSoftware
             }
 
             temp = await Task.Run(() => _commonUtils.LoadMyTorrents(_storage));
+
             Thread.Sleep(100);
+
             foreach (TorrentFile torrentFile in temp)
             {
                 Label myTorrentName = new Label();
@@ -330,6 +332,7 @@ namespace PeerSoftware
                 Button delete = new Button();
                 delete.Text = "Delete";
                 delete.Click += DeleteMyTorrentButton_Click;
+
                 tableLayoutPanel4.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
 
                 foreach (Control control in tableLayoutPanel4.Controls)
@@ -349,17 +352,27 @@ namespace PeerSoftware
         {
             Button deleteButton = (Button)sender;
             int rowIndex = tableLayoutPanel4.GetRow(deleteButton);
-            Label torrentName = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
+            Label torrentName = (Label)tableLayoutPanel4.GetControlFromPosition(0, rowIndex);
             List<TorrentFile> torrentFiles = _torrentFileServices
-                .SearchTorrentFiles(torrentName.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+                .SearchTorrentFiles(torrentName.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetMyTorrentFiles());
 
             string payload = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}|{torrentFiles.First().info.checksum}";
-            PTTBlock block = new PTTBlock(0x03, payload.Length, payload);
             string trackerIp;
             int trackerPort;
-            (trackerIp, trackerPort) = new NetworkUtils().SplitIpAndPort(this);
+            (trackerIp, trackerPort) = _networkUtils.SplitIpAndPort(this);
+            //TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
+            //_connections.SendPTTMessage(tcpClient, 0x03, payload);
 
-            _connections.SendPTTMessage(new TcpClient(trackerIP.Text, trackerPort), 0x03, payload);
+            string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
+
+            DialogResult result = MessageBox.Show($"Do you want to delete {torrentName.Text}.json?", "Confirmation", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                File.Delete(folderPath);
+
+                ShowMyTorrents();
+            }
         }
 
         // Downloading torrents tab..
@@ -455,6 +468,8 @@ namespace PeerSoftware
         {
             FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
             formNewTorrent.ShowDialog();
+
+            ShowMyTorrents();
         }
 
         public string TextForAnnoncer()

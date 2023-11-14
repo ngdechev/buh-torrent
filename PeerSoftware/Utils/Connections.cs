@@ -21,6 +21,7 @@ namespace PeerSoftware.Utils
             byte[] messageBytes = Encoding.ASCII.GetBytes(pttMessage);
 
             client.GetStream().Write(messageBytes, 0, messageBytes.Length);
+            client.GetStream().Flush();
         }
 
         public void AnnounceNewPeer(string trackerIpField, int trackerPortField)

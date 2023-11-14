@@ -90,7 +90,7 @@ namespace PeerSoftware.Utils
                 {
                     TorrentFile torrentFile = TorrentReader.ReadFromJSON(jsonFile);
                     temp.Add(torrentFile);
-                    //storage.GetMyTorrentFiles().Add(torrentFile);
+                    storage.GetMyTorrentFiles().Add(torrentFile);
                 }
             }
 

@@ -11,7 +11,7 @@ namespace TorrentTracker.Controllers
 
         public List<TorrentFile> GetAllTorrents();
 
-        public void RemoveTorrentFromDictionary(string checksum);
+        public void RemoveTorrentFromDictionary(string ip, string checksum);
 
         public TorrentFile SearchTorrent(string torrentName);
 
