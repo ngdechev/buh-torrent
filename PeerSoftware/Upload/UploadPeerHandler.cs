@@ -71,11 +71,14 @@ namespace PeerSoftware.Upload
         }
 
         public void CheckBlocks(int startPosition, int firstBlock, int lastBlock, int allBlocksFile, double fileLength)
-        {
-            if (firstBlock == 1 && _sizeOfLastBlock < 1016)
+        {   
+            if (lastBlock == 1)
+            {
+                _lengthToRead = (int)fileLength;
+            }
+            else if (firstBlock == 1 && _sizeOfLastBlock < 1016)
             {
                 startPosition = (firstBlock - 1) * 1016;
-                _lengthToRead = 0;
                 _isFull = false;
 
                 _sizeOfFullBlocks = (lastBlock - 1) * 1016;
