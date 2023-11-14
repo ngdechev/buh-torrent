@@ -62,18 +62,15 @@ namespace PeerSoftware.Upload
             int startPosition = (firstBlock - 1) * 1016;
             int allBlocksFile = (int)Math.Ceiling((double)fileLength / 1016);
 
-            _sizeOfFullBlocks = lastBlock * 1016;
+            _sizeOfFullBlocks = (lastBlock - 1) * 1016;
             _sizeOfLastBlock = (int)(fileLength - _sizeOfFullBlocks);
 
-            CheckBlocks(ref startPosition, firstBlock, lastBlock, allBlocksFile, fileLength);
+            CheckBlocks(startPosition, firstBlock, lastBlock, allBlocksFile, fileLength);
 
             UploadFilePackets(filePath, startPosition, firstBlock, lastBlock);
         }
 
-
-
-
-        public void CheckBlocks(ref int startPosition, int firstBlock, int lastBlock, int allBlocksFile, double fileLength)
+        public void CheckBlocks(int startPosition, int firstBlock, int lastBlock, int allBlocksFile, double fileLength)
         {
             if (firstBlock == 1 && _sizeOfLastBlock < 1016)
             {
