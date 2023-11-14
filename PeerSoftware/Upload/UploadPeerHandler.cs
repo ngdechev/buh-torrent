@@ -4,15 +4,15 @@ using System.Net.Sockets;
 
 namespace PeerSoftware.Upload
 {
-    internal class UploadPeerHandler
+    public class UploadPeerHandler
     {
-        ITorrentStorage _storage;
-        TcpClient _tcpClient;
-        List<PTPBlock> _blocks;
-        UploadPeerServer _server;
+        private ITorrentStorage _storage;
+        private TcpClient _tcpClient;
+        private List<PTPBlock> _blocks;
+        private UploadPeerServer _server;
 
-        bool _lastBlockOfAll = false, _isFull = false;
-        int _lengthToRead = 0, _sizeOfLastBlock = 0, _sizeOfFullBlocks = 0;
+        private bool _lastBlockOfAll = false, _isFull = false;
+        private int _lengthToRead = 0, _sizeOfLastBlock = 0, _sizeOfFullBlocks = 0;
 
         public UploadPeerHandler(ITorrentStorage storage, TcpClient client, UploadPeerServer server)
         {
@@ -69,6 +69,9 @@ namespace PeerSoftware.Upload
 
             UploadFilePackets(filePath, startPosition, firstBlock, lastBlock);
         }
+
+
+
 
         public void CheckBlocks(ref int startPosition, int firstBlock, int lastBlock, int allBlocksFile, double fileLength)
         {
