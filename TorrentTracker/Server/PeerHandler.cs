@@ -44,10 +44,12 @@ namespace TorrentTracker.Server
                 string[] ip = payload.Split(':', 2);
                 int.TryParse(ip[1], out int int_port);
                 _peerManagementController.CreatePeer(ip[0],int_port);
+
             } 
             else if (command == 49) //1
             {
                 _peerManagementController.DestroyPeer(payload);
+
             }
             else if (command == 50) //2
             {
@@ -87,7 +89,6 @@ namespace TorrentTracker.Server
                 {
                     Console.WriteLine("Error sending data: " + ex.Message);
                 }
-
             }
 
             else if (command == 54) //6

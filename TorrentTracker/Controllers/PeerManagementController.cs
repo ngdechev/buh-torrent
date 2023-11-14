@@ -85,7 +85,7 @@ namespace TorrentTracker.Controllers
                 {
                     if (torrernt == torrentName)
                     {
-
+                        string raw = pair.ToString();
                         DateTime targetDate = pair.Key.Date;
                         DateTime currentTime = DateTime.Now;
 

@@ -38,6 +38,8 @@ namespace TorrentTracker
 
             while (_isRunning)
             {
+
+
                 if (_listener.Pending())
                 {
                     TcpClient clientSocket = _listener.AcceptTcpClient();
@@ -89,7 +91,11 @@ namespace TorrentTracker
                         peer.Date = dateTime;
                         break;
                     }
+
                 }
+
+                _dictionary.ReadDictionaryFromFile();
+                _dictionary.WriteDictionaryToFile();
 
                 //map
             }
