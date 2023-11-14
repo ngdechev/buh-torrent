@@ -45,34 +45,40 @@ namespace TorrentTracker.Controllers
 
         public void DeleteTorrent(string ip, string checksum)
         {
-            //foreach (var pair in _dictionaryController.GetDictionary())
-            //{
-            //    foreach (TorrentFile torrent in pair.Value)
+            TorrentFile torrent = _AllTorrents.Find(t => t.info.checksum == checksum);
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                foreach (string torrentNane in pair.Value)
+                {
+                    if (torrentNane == torrent.info.torrentName)
+                    {
+                        pair.Value.Remove(torrentNane);
+                        RemoveTorrentFromDictionary(ip, torrent.info.torrentName);
 
-            //    {
-            //        if (checksum == torrent.info.checksum)
-            //        {
-            //            pair.Value.Remove(torrent);
-            //            RemoveTorrentFromDictionary(checksum);
-            //        }
-            //        else
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
+                        return;
+                    }
+                }
+            }
         }
-        public void RemoveTorrentFromDictionary(string checksum)
+        public void RemoveTorrentFromDictionary(string ip, string torrentNameToDelete)
         {
-                //string jsonContent = File.ReadAllText("Dictionary.json");
-                //List<TorrentFile> torrents = JsonConvert.DeserializeObject<List<TorrentFile>>(jsonContent);
-                //TorrentFile torrentToRemove = torrents.FirstOrDefault(t => t.info.checksum == checksum);
-                //if (torrentToRemove != null)
-                //{
-                //    torrents.Remove(torrentToRemove);
-                //}
-                //string updatedJsonContent = JsonConvert.SerializeObject(torrents, Formatting.Indented);
-                //File.WriteAllText("Dictionary.json", updatedJsonContent);            
+            _dictionaryController.ReadDictionaryFromFile();
+            foreach(var pair in _dictionaryController.GetDictionary())
+            {
+               if(ip == pair.Key.IPAddress)
+               {
+                    foreach (var torrentName in pair.Value)
+                    {
+                        if(torrentName == torrentNameToDelete)
+                        {
+                            pair.Value.Remove(torrentNameToDelete);
+                            break;
+                        }
+                    }
+                    break;
+               }
+            }
+            _dictionaryController.WriteDictionaryToFile();
         }
 
         public TorrentFile SearchTorrent(string torrentName)

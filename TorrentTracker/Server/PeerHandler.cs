@@ -62,11 +62,12 @@ namespace TorrentTracker.Server
             }
             else if (command == 51) //3
             {
-                string[] payloadArray = payload.Split(";", 2);
+                string[] payloadArray = payload.Split("|", 2);
 
-                string ip = payloadArray[0];
+                string[] ipAmdPort = payloadArray[0].Split(':',2);
                 string checksum = payloadArray[1];
-
+                string ip = ipAmdPort[0];
+                string port = ipAmdPort[1];
                 _torrentManagementController.DeleteTorrent(ip, checksum);
             }
             else if (command == 52) //4
