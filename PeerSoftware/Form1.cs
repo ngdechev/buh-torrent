@@ -48,7 +48,7 @@ namespace PeerSoftware
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
         private Downloader _downloader;
-        
+
         public Form1()
         {
             InitializeComponent();
@@ -69,7 +69,7 @@ namespace PeerSoftware
 
             _downloader = new Downloader();
 
-            
+
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -292,48 +292,87 @@ namespace PeerSoftware
             return downloading;
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                _torrentFileServices.LoadData(_storage, this );
-                
+                _torrentFileServices.LoadData(_storage, this);
             }
             if (tabControl1.SelectedIndex == 2)
             {
-                //_commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
-                _commonUtils.LoadMyTorrents(_storage);
+                Thread.Sleep(100);
+                await Task.Yield();
                 ShowMyTorrents();
             }
         }
 
-        private void ShowMyTorrents()
+        private async void ShowMyTorrents()
         {
-            foreach(TorrentFile torrentFile in _storage.GetMyTorrentFiles())
+            List<TorrentFile> temp = new List<TorrentFile>();
+            
+            while (tableLayoutPanel4.Controls.Count > 0)
+            {
+                tableLayoutPanel4.Controls[0].Dispose();
+
+                temp.Clear();
+            }
+
+            temp = await Task.Run(() => _commonUtils.LoadMyTorrents(_storage));
+
+            Thread.Sleep(100);
+
+            foreach (TorrentFile torrentFile in temp)
             {
                 Label myTorrentName = new Label();
                 myTorrentName.Text = torrentFile.info.torrentName;
-                
+
                 Label myTorrentSize = new Label();
                 myTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
-                
+
                 Button delete = new Button();
                 delete.Text = "Delete";
+                delete.Click += DeleteMyTorrentButton_Click;
+
                 tableLayoutPanel4.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
 
-                // Move the existing controls to the next row
                 foreach (Control control in tableLayoutPanel4.Controls)
                 {
                     int row = tableLayoutPanel4.GetRow(control);
                     tableLayoutPanel4.SetRow(control, row + 1);
                 }
 
-                tableLayoutPanel4.Controls.Add(myTorrentName, 0, 0); 
-                tableLayoutPanel4.Controls.Add(myTorrentSize, 1, 0);  
+                tableLayoutPanel4.Controls.Add(myTorrentName, 0, 0);
+                tableLayoutPanel4.Controls.Add(myTorrentSize, 1, 0);
                 tableLayoutPanel4.Controls.Add(delete, 2, 0);
             }
-            
-            
+        }
+
+
+        public void DeleteMyTorrentButton_Click(object sender, EventArgs e)
+        {
+            Button deleteButton = (Button)sender;
+            int rowIndex = tableLayoutPanel4.GetRow(deleteButton);
+            Label torrentName = (Label)tableLayoutPanel4.GetControlFromPosition(0, rowIndex);
+            List<TorrentFile> torrentFiles = _torrentFileServices
+                .SearchTorrentFiles(torrentName.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetMyTorrentFiles());
+
+            string payload = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}|{torrentFiles.First().info.checksum}";
+            string trackerIp;
+            int trackerPort;
+            (trackerIp, trackerPort) = _networkUtils.SplitIpAndPort(this);
+            //TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
+            //_connections.SendPTTMessage(tcpClient, 0x03, payload);
+
+            string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
+
+            DialogResult result = MessageBox.Show($"Do you want to delete {torrentName.Text}.json?", "Confirmation", MessageBoxButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                File.Delete(folderPath);
+
+                ShowMyTorrents();
+            }
         }
 
         // Downloading torrents tab..
@@ -364,9 +403,9 @@ namespace PeerSoftware
             _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
 
             ProgressBar progressBar = new ProgressBar();
-            progressBar.Minimum = 0 ;
-            progressBar.Maximum = 100 ;
-            
+            progressBar.Minimum = 0;
+            progressBar.Maximum = 100;
+
             Button button = new Button();
             button.Text = "Pause";
 
@@ -397,7 +436,7 @@ namespace PeerSoftware
             //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
             _torrentDownloadingNames.Add(label1.Text);
         }
-        
+
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -429,6 +468,8 @@ namespace PeerSoftware
         {
             FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
             formNewTorrent.ShowDialog();
+
+            ShowMyTorrents();
         }
 
         public string TextForAnnoncer()

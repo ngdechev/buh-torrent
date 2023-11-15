@@ -38,12 +38,14 @@ namespace TorrentTracker
 
             while (_isRunning)
             {
+
+
                 if (_listener.Pending())
                 {
                     TcpClient clientSocket = _listener.AcceptTcpClient();
+                    _dictionary.ReadDictionaryFromFile();
 
                     Console.WriteLine("Peer opened the app!");
-                    _dictionary.ReadDictionaryFromFile();
                     _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
 
                     Thread peerThread = new Thread(_peerHandler.HandlePeer);
@@ -78,7 +80,7 @@ namespace TorrentTracker
                 int.TryParse(parts[1], out peerPort);
 
                 DateTime dateTime = DateTime.Now;
-                Console.WriteLine(dateTime.ToString("MM/dd/yyyy HH:mm:ss"));
+                Console.WriteLine(dateTime.ToString("MM/dd/yyyy HH:mm:ss") + " IP: "+parts[0]);
 
                 // Don't work due to Dictionary Problem
 
@@ -89,7 +91,11 @@ namespace TorrentTracker
                         peer.Date = dateTime;
                         break;
                     }
+
                 }
+
+                _dictionary.ReadDictionaryFromFile();
+                _dictionary.WriteDictionaryToFile();
 
                 //map
             }

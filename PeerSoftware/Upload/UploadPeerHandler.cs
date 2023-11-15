@@ -40,7 +40,7 @@ namespace PeerSoftware.Upload
                 _server.Disconect(this);
             }
         }
-            
+
         public void Disasemble(string cheksum, string blocks)
         {
             _blocks = new List<PTPBlock>();

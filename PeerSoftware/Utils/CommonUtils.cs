@@ -74,20 +74,27 @@ namespace PeerSoftware.Utils
         }
 
 
-        public void LoadMyTorrents(ITorrentStorage storage)
+        public List<TorrentFile> LoadMyTorrents(ITorrentStorage storage)
         {
             string folderPath = Directory.GetCurrentDirectory();
             folderPath = folderPath + "\\MyTorrent";
+            List<TorrentFile> temp = new List<TorrentFile>();
+
             if (Directory.Exists(folderPath))
             {
                 string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
+                
+                storage.GetMyTorrentFiles().Clear();
 
                 foreach (string jsonFile in jsonFiles)
                 {
                     TorrentFile torrentFile = TorrentReader.ReadFromJSON(jsonFile);
+                    temp.Add(torrentFile);
                     storage.GetMyTorrentFiles().Add(torrentFile);
                 }
             }
+
+            return temp;
         }
 
     }

@@ -22,7 +22,7 @@ namespace PeerSoftware.Services
             // Use LINQ to filter torrentFiles based on the search term in filename or description
             List<TorrentFile> searchResults = allTorrentFiles
                 .Where(file =>
-                    file.info.fileName.ToLower().Contains(searchTerm) ||
+                    file.info.torrentName.ToLower().Contains(searchTerm) ||
                     file.info.description.ToLower().Contains(searchTerm))
                 .ToList();
             resultMaxPage = (int)Math.Ceiling(searchResults.Count / 5.0);
