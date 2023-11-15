@@ -20,7 +20,7 @@ namespace TorrentTracker.Controllers
             bool flag = true;
             if (_dictionaryController.GetDictionary().Count() == 0)
             {
-                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.UtcNow);
+                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.Now);
                 _dictionaryController.GetDictionary().Add(peer, new List<string>());
             }
             else
@@ -38,7 +38,7 @@ namespace TorrentTracker.Controllers
                
                 if (flag == true)
                 { 
-                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.UtcNow);
+                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.Now);
                         _dictionaryController.GetDictionary().Add(peer, new List<string>());
                 }
                 flag = true;
@@ -66,6 +66,7 @@ namespace TorrentTracker.Controllers
         public List<string> ListPeersWithTorrentFile(string checksum)
         {
             _peerWithTorrentFile.Clear();
+
             string torrernt="";
 
             foreach (TorrentFile torrentFile in _torrentController.GetAllTorrents())
@@ -78,22 +79,21 @@ namespace TorrentTracker.Controllers
 
             foreach (var pair in _dictionaryController.GetDictionary())
             {
+                /*Console.WriteLine(pair.Key.Date + "   IP: " + pair.Key.IPAddress);*/
+
                 foreach (string torrentName in pair.Value)
                 {
                     if (torrernt == torrentName)
                     {
-                        DateTime currentTime = DateTime.Now;
+                        string raw = pair.ToString();
                         DateTime targetDate = pair.Key.Date;
+                        DateTime currentTime = DateTime.Now;
 
-                        TimeSpan timeDifference = currentTime - targetDate;
-                        TimeSpan twentySeconds = TimeSpan.FromSeconds(20);
+                        double timeDifferenceInSeconds = (currentTime - targetDate).TotalSeconds;
+                        double twentySeconds = 20.0;
 
-                        //TimeSpan lastActive = pair.Key.Date - DateTime.Now;
-                        //double secendLastActive = lastActive.TotalSeconds;
-
-                        if (timeDifference > twentySeconds)
+                        if (timeDifferenceInSeconds < twentySeconds)
                         {
-                            
                             _peerWithTorrentFile.Add(pair.Key.StringIPAndPort());
                             //break;
                         }
@@ -101,6 +101,7 @@ namespace TorrentTracker.Controllers
                     }
                 }
             }
+
             return _peerWithTorrentFile;
         }
     }
