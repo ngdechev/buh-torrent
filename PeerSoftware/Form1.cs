@@ -431,7 +431,7 @@ namespace PeerSoftware
             PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
             List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
 
-            _downloader.Download(torrentFiles.First(), receivedLivePeers, progressBar);
+            _downloader.Download(torrentFiles.First(), receivedLivePeers, progressBar, _networkUtils, this);
 
             //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
             _torrentDownloadingNames.Add(label1.Text);

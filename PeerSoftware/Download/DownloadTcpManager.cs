@@ -102,6 +102,8 @@ namespace PeerSoftware.Download
             return _pTPBlocks;
         }
 
+
+
         public void UpdateProgressBar()
         {
             if (_progressBar.InvokeRequired)

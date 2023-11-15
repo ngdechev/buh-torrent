@@ -1,6 +1,10 @@
 ﻿using PeerSoftware.Services;
+using PeerSoftware.Utils;
 using PTP_Parser;
+using PTT_Parser;
 using System.Net.Http.Json;
+using System.Net.Sockets;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -11,13 +15,14 @@ namespace PeerSoftware.Download
     {
         private int _index;
         private ThreadManager _threadManager;
+
         public Downloader()
         {
             _index = 0;
             _threadManager = new ThreadManager();
         }
 
-        public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar)
+        public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
         {
             ThreadManager threadManager = new ThreadManager();
             List<string> peersList = peers;//JsonSerializer.Deserialize<List<string>>(peers);
@@ -58,6 +63,25 @@ namespace PeerSoftware.Download
                 {
                     // Ensure progress bar is updated even if an exception occurs
                     connectionManager.UpdateProgressBar();
+
+                    (string ip, int port) = networkUtils.SplitIpAndPort(form);
+
+                    using (TcpClient client = new TcpClient())
+                    {
+                        client.Connect(ip, port);
+                        
+                        string? myip = networkUtils.GetLocalIPAddress() + ":" + networkUtils.GetLocalPort();
+
+                        string ipPlusJson = myip + ";" + JsonSerializer.Serialize(torrentFile);
+                        PTTBlock block = new(0x02, ipPlusJson.Length, ipPlusJson);
+
+                        byte[] data = Encoding.UTF8.GetBytes(block.ToString());
+                        client.GetStream().Write(data, 0, data.Length);
+
+                        // Handle any response from the server if needed
+                        // ...
+                        TorrentReader.WriteJSON("MyTorrent", torrentFile);
+                    }
                 }
 
             });
