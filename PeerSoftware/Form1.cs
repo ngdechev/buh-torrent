@@ -120,6 +120,11 @@ namespace PeerSoftware
 
         }
 
+        public ITorrentStorage GetTorrentStorage()
+        {
+            return _storage;
+        }
+
         private void search_Click(object sender, EventArgs e)
         {
             List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
