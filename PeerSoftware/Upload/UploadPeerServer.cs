@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PeerSoftware.Upload
 {
-    internal class UploadPeerServer
+    public class UploadPeerServer
     {
         TcpListener _listener;
         bool _isRunning;
