@@ -51,7 +51,6 @@ namespace PeerSoftware.Download
                     connectionManager.ReceiveData();
                     connectionManager.DisconnectAll();
                     Reassemble(torrentFile, connectionManager.GetPTPBlocks());
-                    new CommonUtils().ReceateTorrentFileForDownloadedFile(form.GetTorrentStorage(), torrentFile.info.checksum, form);
 
                     // Disconnect from all servers
                 }
@@ -65,12 +64,14 @@ namespace PeerSoftware.Download
                     // Ensure progress bar is updated even if an exception occurs
                     connectionManager.UpdateProgressBar();
 
-                    /*(string ip, int port) = networkUtils.SplitIpAndPort(form);
+                    new CommonUtils().ReceateTorrentFileForDownloadedFile(form.GetTorrentStorage(), torrentFile.info.checksum, form);
+
+                    (string ip, int port) = networkUtils.SplitIpAndPort(form);
 
                     using (TcpClient client = new TcpClient())
                     {
                         client.Connect(ip, port);
-                        
+
                         string? myip = networkUtils.GetLocalIPAddress() + ":" + networkUtils.GetLocalPort();
 
                         string ipPlusJson = myip + ";" + JsonSerializer.Serialize(torrentFile);
@@ -82,7 +83,7 @@ namespace PeerSoftware.Download
                         // Handle any response from the server if needed
                         // ...
                         TorrentReader.WriteJSON("MyTorrent", torrentFile);
-                    }*/
+                    }
                 }
 
             });
