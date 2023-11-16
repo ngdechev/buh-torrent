@@ -5,6 +5,7 @@ using PeerSoftware.UDP;
 using PeerSoftware.Upload;
 using PeerSoftware.Utils;
 using PTT_Parser;
+using System.Windows.Forms;
 
 namespace PeerSoftware
 {
@@ -32,17 +33,26 @@ namespace PeerSoftware
         private UDPSender _udpSender;
         private Downloader _downloader;
 
+        private ContextMenuStrip _systemTrayContextMenu;
+
         public Form1()
         {
             InitializeComponent();
 
             FormClosing += MainForm_FormClosing;
 
+            _systemTrayContextMenu = new ContextMenuStrip();
+
             notifyIcon1.Text = Application.ProductName;
             //notifyIcon1.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
             notifyIcon1.BalloonTipTitle = Application.ProductName;
             notifyIcon1.BalloonTipText = $"{Application.ProductName} is minimized";
+            notifyIcon1.ContextMenuStrip = _systemTrayContextMenu;
             notifyIcon1.MouseClick += NotifyIcon_MouseClick;
+
+
+            _systemTrayContextMenu.Items.Add("Settings", null, OnMenuItem1Clicked);
+            _systemTrayContextMenu.Items.Add("Close App", null, OnMenuItem2Clicked);
 
             _storage = new TorrentStorage();
             _connections = new Connections();
@@ -107,6 +117,20 @@ namespace PeerSoftware
 
             }
 
+        }
+
+        private void OnMenuItem1Clicked(object? sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+            tabControl1.SelectedIndex = 3;
+            Show();
+
+            notifyIcon1.Visible = false;
+        }
+
+        private void OnMenuItem2Clicked(object? sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         public ITorrentStorage GetTorrentStorage()
