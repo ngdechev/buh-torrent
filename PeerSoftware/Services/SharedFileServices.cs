@@ -11,7 +11,7 @@ namespace PeerSoftware.Services
     {
         public Dictionary<string, string> _peersAndBlocks = new Dictionary<string, string>();
 
-        public Dictionary<string, string> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile)
+        public Dictionary<string, string> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile, int nPeersUploading)
         {
             int numberOfPeers = peersIpPlusPort.Count();
 
@@ -20,12 +20,12 @@ namespace PeerSoftware.Services
                 throw new Exception("There are no active peers.");
             }
 
-            if (numberOfPeers > 5) 
+            if (nPeersUploading > numberOfPeers) 
             {
-                numberOfPeers = 5;
+                nPeersUploading = numberOfPeers;
             }
 
-            for (int i = 0; i < numberOfPeers; i++)
+            for (int i = 0; i < nPeersUploading; i++)
             {
                 _peersAndBlocks.Add(peersIpPlusPort[i], "");
             }

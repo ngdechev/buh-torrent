@@ -36,6 +36,7 @@ namespace PeerSoftware
         private int _allPage = 0;
         private int _allMaxPage = 0;
 
+        private int _nPeersUploading;
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -54,11 +55,11 @@ namespace PeerSoftware
             InitializeComponent();
 
             _storage = new TorrentStorage();
-            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
             _sharedFileServices = new SharedFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
@@ -69,7 +70,8 @@ namespace PeerSoftware
 
             _downloader = new Downloader();
 
-
+            nPeersComboBox.SelectedIndex = 1;
+            _nPeersUploading = nPeersComboBox.SelectedIndex + 1;
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -118,6 +120,11 @@ namespace PeerSoftware
 
             }
 
+        }
+
+        public int GetNPeersUploading()
+        {
+            return _nPeersUploading;
         }
 
         public ITorrentStorage GetTorrentStorage()
@@ -301,7 +308,7 @@ namespace PeerSoftware
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                _torrentFileServices.LoadData(_storage, this);
+                _torrentFileServices.LoadData(_storage, _networkUtils, this);
             }
             if (tabControl1.SelectedIndex == 2)
             {
@@ -314,7 +321,7 @@ namespace PeerSoftware
         private async void ShowMyTorrents()
         {
             List<TorrentFile> temp = new List<TorrentFile>();
-            
+
             while (tableLayoutPanel4.Controls.Count > 0)
             {
                 tableLayoutPanel4.Controls[0].Dispose();
@@ -495,6 +502,11 @@ namespace PeerSoftware
         public static void SetProgressBarValue(ProgressBar progressBar, int count)
         {
             progressBar.Value = count;
+        }
+
+        private void DownloadFromPeers_Click(object sender, EventArgs e)
+        {
+            _nPeersUploading = nPeersComboBox.SelectedIndex + 1;
         }
     }
 }

@@ -57,6 +57,10 @@ namespace PeerSoftware
             createNewTorrent = new Button();
             tableLayoutPanel4 = new TableLayoutPanel();
             settings = new TabPage();
+            label7 = new Label();
+            label6 = new Label();
+            DownloadFromPeers = new Button();
+            nPeersComboBox = new ComboBox();
             trackerIP = new TextBox();
             save = new Button();
             label10 = new Label();
@@ -427,6 +431,10 @@ namespace PeerSoftware
             // 
             // settings
             // 
+            settings.Controls.Add(label7);
+            settings.Controls.Add(label6);
+            settings.Controls.Add(DownloadFromPeers);
+            settings.Controls.Add(nPeersComboBox);
             settings.Controls.Add(trackerIP);
             settings.Controls.Add(save);
             settings.Controls.Add(label10);
@@ -436,6 +444,44 @@ namespace PeerSoftware
             settings.TabIndex = 3;
             settings.Text = "Settings";
             settings.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(146, 113);
+            label7.Name = "label7";
+            label7.Size = new Size(98, 15);
+            label7.TabIndex = 6;
+            label7.Text = "at the same time.";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(13, 113);
+            label6.Name = "label6";
+            label6.Size = new Size(90, 15);
+            label6.TabIndex = 5;
+            label6.Text = "Download from";
+            // 
+            // DownloadFromPeers
+            // 
+            DownloadFromPeers.Location = new Point(169, 134);
+            DownloadFromPeers.Name = "DownloadFromPeers";
+            DownloadFromPeers.Size = new Size(75, 23);
+            DownloadFromPeers.TabIndex = 4;
+            DownloadFromPeers.Text = "Save";
+            DownloadFromPeers.UseVisualStyleBackColor = true;
+            DownloadFromPeers.Click += DownloadFromPeers_Click;
+            // 
+            // nPeersComboBox
+            // 
+            nPeersComboBox.FormattingEnabled = true;
+            nPeersComboBox.ImeMode = ImeMode.NoControl;
+            nPeersComboBox.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
+            nPeersComboBox.Location = new Point(109, 105);
+            nPeersComboBox.Name = "nPeersComboBox";
+            nPeersComboBox.Size = new Size(31, 23);
+            nPeersComboBox.TabIndex = 3;
             // 
             // trackerIP
             // 
@@ -573,6 +619,12 @@ namespace PeerSoftware
         private Label browseTabTorrentName;
         private Label browseTabSizeLabel;
         private Label browseTabDescriptionLabel;
+        private Button DownloadFromPeersClick;
+        private ComboBox comboBox1;
+        private Label label7;
+        private Label label6;
+        private ComboBox nPeersComboBox;
+        private Button DownloadFromPeers;
     }
 }
 

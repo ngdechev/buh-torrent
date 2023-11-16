@@ -8,10 +8,13 @@ using System.Text.Json;
 namespace PeerSoftware.Utils
 {
     public class Connections
+    {
+        private NetworkUtils _networkUtils;
 
-    {  
-       
-        private NetworkUtils _networkUtils = new NetworkUtils();
+        public Connections(NetworkUtils networkUtils)
+        {
+            _networkUtils = networkUtils;
+        }
 
         public void SendPTTMessage(TcpClient client, byte command, string payload)
         {
