@@ -22,11 +22,14 @@ using PeerSoftware.Download;
 using System.Drawing;
 using Microsoft.VisualBasic;
 using Timer = System.Windows.Forms.Timer;
+using MaterialSkin.Controls;
 
 namespace PeerSoftware
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
+        private readonly MaterialSkin.MaterialSkinManager materialSkinManager;
+
         private List<Control> _titleControls = new List<Control>();
         private List<Control> _sizeControls = new List<Control>();
         private List<Control> _descriptionControls = new List<Control>();
@@ -39,7 +42,7 @@ namespace PeerSoftware
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
-
+         
         private ITorrentStorage _storage;
         private Connections _connections;
         private TorrentFileServices _torrentFileServices;
@@ -53,6 +56,17 @@ namespace PeerSoftware
         {
             InitializeComponent();
 
+            materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
+            materialSkinManager.EnforceBackcolorOnAllComponents = true;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+            materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.BlueGrey900, 
+                MaterialSkin.Primary.BlueGrey900, 
+                MaterialSkin.Primary.BlueGrey900, 
+                MaterialSkin.Accent.LightBlue700, 
+                MaterialSkin.TextShade.WHITE);
+            
             _storage = new TorrentStorage();
             _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
@@ -69,29 +83,38 @@ namespace PeerSoftware
 
             _downloader = new Downloader();
 
+            tableLayoutPanel1.BackColor = Color.White;
+            tableLayoutPanel2.BackColor = Color.White;
+            tableLayoutPanel4.BackColor = Color.White;
+            tableLayoutPanel5.BackColor = Color.White;
+            tableLayoutPanel6.BackColor = Color.White;
+            tableLayoutPanel7.BackColor = Color.White;
 
+            settingsTabTrackerGroupBox.BackColor = Color.White;
+            settingsTabClientGroupBox.BackColor = Color.White;
 
-            // Create the TableLayoutPanel for the heading row
-            TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
+            foreach (Control control in tableLayoutPanel7.Controls)
+            {
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.BackColor = Color.White;
+                }
+            }
 
-            headingTableLayoutPanel.ColumnCount = 3;
+            foreach (Control control in tableLayoutPanel6.Controls)
+            {
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.BackColor = Color.White;
+                }
+            }
 
-            // Create the heading labels
-            Label nameLabel = new Label();
-            nameLabel.Text = "Name1";
-
-            headingTableLayoutPanel.Controls.Add(nameLabel, 0, 0);
-
-            Label sizeLabel1 = new Label();
-            sizeLabel1.Text = "File Size1";
-            headingTableLayoutPanel.Controls.Add(sizeLabel1, 1, 0);
-
-            Label progressLabel = new Label();
-            progressLabel.Text = "Progress1";
-
-            headingTableLayoutPanel.Controls.Add(progressLabel, 2, 0);
-
-            this.Controls.Add(headingTableLayoutPanel);
+            foreach (TabPage tabPage in tabControl1.TabPages)
+            {
+                tabPage.BackColor = Color.White;
+            }
 
             for (int i = 0; i < 5; i++)
             {
@@ -495,6 +518,11 @@ namespace PeerSoftware
         public static void SetProgressBarValue(ProgressBar progressBar, int count)
         {
             progressBar.Value = count;
+        }
+
+        private void tableLayoutPanel7_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
