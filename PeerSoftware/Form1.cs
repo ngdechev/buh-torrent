@@ -354,6 +354,9 @@ namespace PeerSoftware
                 Label myTorrentName = new Label();
                 myTorrentName.Text = torrentFile.info.torrentName;
 
+                Label myTorrentDescription = new Label();
+                myTorrentDescription.Text = torrentFile.info.description;
+
                 Label myTorrentSize = new Label();
                 myTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
 
@@ -371,7 +374,8 @@ namespace PeerSoftware
 
                 tableLayoutPanel4.Controls.Add(myTorrentName, 0, 0);
                 tableLayoutPanel4.Controls.Add(myTorrentSize, 1, 0);
-                tableLayoutPanel4.Controls.Add(delete, 2, 0);
+                tableLayoutPanel4.Controls.Add(myTorrentDescription, 2, 0);
+                tableLayoutPanel4.Controls.Add(delete, 3, 0);
             }
         }
 

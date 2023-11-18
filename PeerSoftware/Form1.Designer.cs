@@ -55,9 +55,10 @@ namespace PeerSoftware
             this.myTorrents = new System.Windows.Forms.TabPage();
             this.createNewTorrent = new MaterialSkin.Controls.MaterialButton();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.myTorrentsTabNameLabel = new MaterialSkin.Controls.MaterialLabel();
+            this.myTorrentsTabDescriptionLabel = new MaterialSkin.Controls.MaterialLabel();
             this.myTorrentsTabActionLabel = new MaterialSkin.Controls.MaterialLabel();
             this.label5 = new MaterialSkin.Controls.MaterialLabel();
-            this.myTorrentsTabNameLabel = new MaterialSkin.Controls.MaterialLabel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.settings = new System.Windows.Forms.TabPage();
             this.settingsTabClientGroupBox = new System.Windows.Forms.GroupBox();
@@ -102,6 +103,7 @@ namespace PeerSoftware
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(892, 450);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // buhTorrent
             // 
@@ -227,8 +229,8 @@ namespace PeerSoftware
             this.tableLayoutPanel1.ColumnCount = 4;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 84.85523F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.14477F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 214F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 194F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 118F));
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 91);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -258,10 +260,11 @@ namespace PeerSoftware
             // 
             // pagelabel
             // 
+            this.pagelabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pagelabel.AutoSize = true;
             this.pagelabel.Depth = 0;
             this.pagelabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.pagelabel.Location = new System.Drawing.Point(771, 94);
+            this.pagelabel.Location = new System.Drawing.Point(778, 86);
             this.pagelabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.pagelabel.Name = "pagelabel";
             this.pagelabel.Size = new System.Drawing.Size(54, 19);
@@ -270,6 +273,8 @@ namespace PeerSoftware
             // 
             // searchBar
             // 
+            this.searchBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.searchBar.AnimateReadOnly = false;
             this.searchBar.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.searchBar.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
@@ -309,7 +314,7 @@ namespace PeerSoftware
             this.button2.Depth = 0;
             this.button2.HighEmphasis = true;
             this.button2.Icon = ((System.Drawing.Image)(resources.GetObject("button2.Icon")));
-            this.button2.Location = new System.Drawing.Point(832, 84);
+            this.button2.Location = new System.Drawing.Point(839, 76);
             this.button2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.button2.MouseState = MaterialSkin.MouseState.HOVER;
             this.button2.Name = "button2";
@@ -319,6 +324,7 @@ namespace PeerSoftware
             this.button2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             this.button2.UseAccentColor = false;
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
             // 
@@ -329,7 +335,7 @@ namespace PeerSoftware
             this.button1.Depth = 0;
             this.button1.HighEmphasis = true;
             this.button1.Icon = ((System.Drawing.Image)(resources.GetObject("button1.Icon")));
-            this.button1.Location = new System.Drawing.Point(724, 84);
+            this.button1.Location = new System.Drawing.Point(731, 76);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.button1.MouseState = MaterialSkin.MouseState.HOVER;
             this.button1.Name = "button1";
@@ -339,6 +345,7 @@ namespace PeerSoftware
             this.button1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             this.button1.UseAccentColor = false;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // refresh
             // 
@@ -360,6 +367,7 @@ namespace PeerSoftware
             this.refresh.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.refresh.UseAccentColor = false;
             this.refresh.UseVisualStyleBackColor = true;
+            this.refresh.Click += new System.EventHandler(this.refresh_Click);
             // 
             // search
             // 
@@ -394,7 +402,7 @@ namespace PeerSoftware
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(9, 147);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 139);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 5;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -402,7 +410,7 @@ namespace PeerSoftware
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(863, 252);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(876, 262);
             this.tableLayoutPanel2.TabIndex = 8;
             // 
             // tableLayoutPanel7
@@ -418,11 +426,11 @@ namespace PeerSoftware
             this.tableLayoutPanel7.Controls.Add(this.browseTabTorrentDescription, 2, 0);
             this.tableLayoutPanel7.Controls.Add(this.browseTabTorrentSize, 1, 0);
             this.tableLayoutPanel7.Controls.Add(this.browseTabTorrentName, 0, 0);
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(7, 122);
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 114);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(863, 24);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(874, 24);
             this.tableLayoutPanel7.TabIndex = 12;
             this.tableLayoutPanel7.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel7_Paint);
             // 
@@ -432,7 +440,7 @@ namespace PeerSoftware
             this.browseTabTorrentAction.AutoSize = true;
             this.browseTabTorrentAction.Depth = 0;
             this.browseTabTorrentAction.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.browseTabTorrentAction.Location = new System.Drawing.Point(733, 2);
+            this.browseTabTorrentAction.Location = new System.Drawing.Point(744, 2);
             this.browseTabTorrentAction.MouseState = MaterialSkin.MouseState.HOVER;
             this.browseTabTorrentAction.Name = "browseTabTorrentAction";
             this.browseTabTorrentAction.Size = new System.Drawing.Size(46, 19);
@@ -445,7 +453,7 @@ namespace PeerSoftware
             this.browseTabTorrentDescription.AutoSize = true;
             this.browseTabTorrentDescription.Depth = 0;
             this.browseTabTorrentDescription.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.browseTabTorrentDescription.Location = new System.Drawing.Point(262, 2);
+            this.browseTabTorrentDescription.Location = new System.Drawing.Point(273, 2);
             this.browseTabTorrentDescription.MouseState = MaterialSkin.MouseState.HOVER;
             this.browseTabTorrentDescription.Name = "browseTabTorrentDescription";
             this.browseTabTorrentDescription.Size = new System.Drawing.Size(81, 19);
@@ -458,7 +466,7 @@ namespace PeerSoftware
             this.browseTabTorrentSize.AutoSize = true;
             this.browseTabTorrentSize.Depth = 0;
             this.browseTabTorrentSize.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.browseTabTorrentSize.Location = new System.Drawing.Point(134, 2);
+            this.browseTabTorrentSize.Location = new System.Drawing.Point(140, 2);
             this.browseTabTorrentSize.MouseState = MaterialSkin.MouseState.HOVER;
             this.browseTabTorrentSize.Name = "browseTabTorrentSize";
             this.browseTabTorrentSize.Size = new System.Drawing.Size(31, 19);
@@ -516,13 +524,15 @@ namespace PeerSoftware
             // 
             this.tableLayoutPanel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel6.ColumnCount = 3;
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.15464F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.84536F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel6.ColumnCount = 4;
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.74799F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.25201F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 407F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.tableLayoutPanel6.Controls.Add(this.myTorrentsTabNameLabel, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.myTorrentsTabDescriptionLabel, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.myTorrentsTabActionLabel, 2, 0);
             this.tableLayoutPanel6.Controls.Add(this.label5, 1, 0);
-            this.tableLayoutPanel6.Controls.Add(this.myTorrentsTabNameLabel, 0, 0);
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 56);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
@@ -530,32 +540,6 @@ namespace PeerSoftware
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(878, 24);
             this.tableLayoutPanel6.TabIndex = 11;
-            // 
-            // myTorrentsTabActionLabel
-            // 
-            this.myTorrentsTabActionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.myTorrentsTabActionLabel.AutoSize = true;
-            this.myTorrentsTabActionLabel.Depth = 0;
-            this.myTorrentsTabActionLabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.myTorrentsTabActionLabel.Location = new System.Drawing.Point(795, 2);
-            this.myTorrentsTabActionLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.myTorrentsTabActionLabel.Name = "myTorrentsTabActionLabel";
-            this.myTorrentsTabActionLabel.Size = new System.Drawing.Size(46, 19);
-            this.myTorrentsTabActionLabel.TabIndex = 13;
-            this.myTorrentsTabActionLabel.Text = "Action";
-            // 
-            // label5
-            // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.label5.AutoSize = true;
-            this.label5.Depth = 0;
-            this.label5.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.label5.Location = new System.Drawing.Point(440, 2);
-            this.label5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(31, 19);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Size";
             // 
             // myTorrentsTabNameLabel
             // 
@@ -570,16 +554,56 @@ namespace PeerSoftware
             this.myTorrentsTabNameLabel.TabIndex = 13;
             this.myTorrentsTabNameLabel.Text = "Name";
             // 
+            // myTorrentsTabDescriptionLabel
+            // 
+            this.myTorrentsTabDescriptionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.myTorrentsTabDescriptionLabel.AutoSize = true;
+            this.myTorrentsTabDescriptionLabel.Depth = 0;
+            this.myTorrentsTabDescriptionLabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.myTorrentsTabDescriptionLabel.Location = new System.Drawing.Point(376, 2);
+            this.myTorrentsTabDescriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.myTorrentsTabDescriptionLabel.Name = "myTorrentsTabDescriptionLabel";
+            this.myTorrentsTabDescriptionLabel.Size = new System.Drawing.Size(81, 19);
+            this.myTorrentsTabDescriptionLabel.TabIndex = 14;
+            this.myTorrentsTabDescriptionLabel.Text = "Description";
+            // 
+            // myTorrentsTabActionLabel
+            // 
+            this.myTorrentsTabActionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.myTorrentsTabActionLabel.AutoSize = true;
+            this.myTorrentsTabActionLabel.Depth = 0;
+            this.myTorrentsTabActionLabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.myTorrentsTabActionLabel.Location = new System.Drawing.Point(783, 2);
+            this.myTorrentsTabActionLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.myTorrentsTabActionLabel.Name = "myTorrentsTabActionLabel";
+            this.myTorrentsTabActionLabel.Size = new System.Drawing.Size(46, 19);
+            this.myTorrentsTabActionLabel.TabIndex = 13;
+            this.myTorrentsTabActionLabel.Text = "Action";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label5.AutoSize = true;
+            this.label5.Depth = 0;
+            this.label5.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label5.Location = new System.Drawing.Point(293, 2);
+            this.label5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(31, 19);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Size";
+            // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
-            this.tableLayoutPanel4.ColumnCount = 3;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55.61878F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 44.38122F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+            this.tableLayoutPanel4.ColumnCount = 4;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.74799F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 22.25201F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 407F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 81);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
@@ -602,6 +626,8 @@ namespace PeerSoftware
             // 
             // settingsTabClientGroupBox
             // 
+            this.settingsTabClientGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTabClientGroupBox.Controls.Add(this.materialSlider1);
             this.settingsTabClientGroupBox.Controls.Add(this.darkModeSwitch);
             this.settingsTabClientGroupBox.Location = new System.Drawing.Point(3, 93);
@@ -642,6 +668,8 @@ namespace PeerSoftware
             // 
             // settingsTabTrackerGroupBox
             // 
+            this.settingsTabTrackerGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTabTrackerGroupBox.Controls.Add(this.trackerIP);
             this.settingsTabTrackerGroupBox.Controls.Add(this.save);
             this.settingsTabTrackerGroupBox.Location = new System.Drawing.Point(3, 9);
@@ -840,6 +868,7 @@ namespace PeerSoftware
         private GroupBox settingsTabClientGroupBox;
         private MaterialSkin.Controls.MaterialSlider materialSlider1;
         private MaterialSkin.Controls.MaterialSwitch darkModeSwitch;
+        private MaterialSkin.Controls.MaterialLabel myTorrentsTabDescriptionLabel;
     }
 }
 
