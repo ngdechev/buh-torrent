@@ -984,7 +984,6 @@ namespace PeerSoftware
         private GroupBox settingsTabTrackerGroupBox;
         private GroupBox settingsTabClientGroupBox;
         private MaterialSkin.Controls.MaterialSlider materialSlider1;
-        private MaterialSkin.Controls.MaterialSwitch darkModeSwitch;
         private MaterialSkin.Controls.MaterialLabel myTorrentsTabDescriptionLabel;
         private Panel panel1;
         private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
@@ -993,6 +992,7 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialCheckbox startMinimizedCheckbox;
         private MaterialSkin.Controls.MaterialCheckbox startupCheckbox;
         private GroupBox peerSettings;
+        public MaterialSkin.Controls.MaterialSwitch darkModeSwitch;
     }
 }
 

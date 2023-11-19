@@ -24,11 +24,14 @@ using Microsoft.VisualBasic;
 using Timer = System.Windows.Forms.Timer;
 using MaterialSkin.Controls;
 
+
 namespace PeerSoftware
 {
     public partial class Form1 : MaterialForm
     {
-        private readonly MaterialSkin.MaterialSkinManager materialSkinManager;
+        private readonly MaterialSkin.MaterialSkinManager _materialSkinManager;
+
+        private CustomMessageBox _customMessageBox;
 
         private List<MaterialLabel> _materialTitleControls = new List<MaterialLabel>();
         private List<MaterialLabel> _materialSizeControls = new List<MaterialLabel>();
@@ -57,12 +60,12 @@ namespace PeerSoftware
             InitializeComponent();
             
             // New UI Stuff
-            materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
+            _materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
 
-            materialSkinManager.EnforceBackcolorOnAllComponents = false;
-            materialSkinManager.AddFormToManage(this);
-            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
-            materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+            _materialSkinManager.EnforceBackcolorOnAllComponents = false;
+            _materialSkinManager.AddFormToManage(this);
+            _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
                 MaterialSkin.Primary.Green600, 
                 MaterialSkin.Primary.Green700, 
                 MaterialSkin.Primary.Blue900, 
@@ -78,6 +81,8 @@ namespace PeerSoftware
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
             _udpSender = new UDPSender(_networkUtils);
+
+            _customMessageBox = new CustomMessageBox(this);
 
             /*            comboBoxTheme.Items.Add("Lime with Blue Accent");
                         comboBoxTheme.Items.Add("Blue-Grey with Light Blue Accent");
@@ -429,14 +434,25 @@ namespace PeerSoftware
 
             string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
 
-            DialogResult result = MessageBox.Show($"Do you want to delete {torrentName.Text}.json?", "Confirmation", MessageBoxButtons.YesNo);
+            _customMessageBox.SetTitle("Delete Confirmation");
+            _customMessageBox.SetMessageText($"Do you want to delete {torrentName.Text}.json?");
 
+            if (_customMessageBox.ShowDialog() == DialogResult.Yes)
+            {
+                File.Delete(folderPath);
+
+                ShowMyTorrents();
+            }
+
+            //DialogResult result = MessageBox.Show($"Do you want to delete {torrentName.Text}.json?", "Confirmation", MessageBoxButtons.YesNo);
+            /*
             if (result == DialogResult.Yes)
             {
                 File.Delete(folderPath);
 
                 ShowMyTorrents();
             }
+            */
         }
 
         // Downloading torrents tab..
@@ -578,7 +594,7 @@ namespace PeerSoftware
                 {
                     MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedThemeKey);
 
-                    materialSkinManager.ColorScheme = selectedColorScheme;
+                    _materialSkinManager.ColorScheme = selectedColorScheme;
                     UILightMode();
 
                     Refresh();
@@ -600,7 +616,7 @@ namespace PeerSoftware
 
         private void UILightMode()
         {
-            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+            _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
 
             panel1.BackColor = Color.FromArgb(240, 240, 240);
 
@@ -658,7 +674,7 @@ namespace PeerSoftware
         }
 
         private void UIDarkMode() {
-            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
+            _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
 
             Color darkColor = Color.FromArgb(50, 50, 50);
 

@@ -294,7 +294,8 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.MaximizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(444, 410);
+            this.MaximumSize = new System.Drawing.Size(624, 585);
+            this.MinimumSize = new System.Drawing.Size(624, 585);
             this.Name = "FormNewTorrent";
             this.Text = "Create New Torrent";
             this.groupBox1.ResumeLayout(false);
