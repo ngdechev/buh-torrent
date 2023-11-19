@@ -62,8 +62,14 @@ namespace PeerSoftware
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.settings = new System.Windows.Forms.TabPage();
             this.settingsTabClientGroupBox = new System.Windows.Forms.GroupBox();
-            this.materialSlider1 = new MaterialSkin.Controls.MaterialSlider();
+            this.startupSettings = new System.Windows.Forms.GroupBox();
+            this.startMinimizedCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
+            this.startupCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
+            this.theme = new System.Windows.Forms.GroupBox();
+            this.comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             this.darkModeSwitch = new MaterialSkin.Controls.MaterialSwitch();
+            this.peerSettings = new System.Windows.Forms.GroupBox();
+            this.materialSlider1 = new MaterialSkin.Controls.MaterialSlider();
             this.settingsTabTrackerGroupBox = new System.Windows.Forms.GroupBox();
             this.trackerIP = new MaterialSkin.Controls.MaterialTextBox2();
             this.save = new MaterialSkin.Controls.MaterialButton();
@@ -83,6 +89,9 @@ namespace PeerSoftware
             this.tableLayoutPanel6.SuspendLayout();
             this.settings.SuspendLayout();
             this.settingsTabClientGroupBox.SuspendLayout();
+            this.startupSettings.SuspendLayout();
+            this.theme.SuspendLayout();
+            this.peerSettings.SuspendLayout();
             this.settingsTabTrackerGroupBox.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
@@ -630,34 +639,98 @@ namespace PeerSoftware
             // 
             this.settingsTabClientGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.settingsTabClientGroupBox.Controls.Add(this.materialSlider1);
-            this.settingsTabClientGroupBox.Controls.Add(this.darkModeSwitch);
-            this.settingsTabClientGroupBox.Location = new System.Drawing.Point(3, 93);
+            this.settingsTabClientGroupBox.Controls.Add(this.startupSettings);
+            this.settingsTabClientGroupBox.Controls.Add(this.theme);
+            this.settingsTabClientGroupBox.Controls.Add(this.peerSettings);
+            this.settingsTabClientGroupBox.Location = new System.Drawing.Point(481, 9);
             this.settingsTabClientGroupBox.Name = "settingsTabClientGroupBox";
-            this.settingsTabClientGroupBox.Size = new System.Drawing.Size(878, 126);
+            this.settingsTabClientGroupBox.Size = new System.Drawing.Size(400, 395);
             this.settingsTabClientGroupBox.TabIndex = 7;
             this.settingsTabClientGroupBox.TabStop = false;
             this.settingsTabClientGroupBox.Text = "Client Settings";
             // 
-            // materialSlider1
+            // startupSettings
             // 
-            this.materialSlider1.Depth = 0;
-            this.materialSlider1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialSlider1.Location = new System.Drawing.Point(6, 59);
-            this.materialSlider1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialSlider1.Name = "materialSlider1";
-            this.materialSlider1.RangeMax = 5;
-            this.materialSlider1.Size = new System.Drawing.Size(250, 40);
-            this.materialSlider1.TabIndex = 9;
-            this.materialSlider1.Text = "Download from";
-            this.materialSlider1.Value = 2;
-            this.materialSlider1.ValueSuffix = " Peers";
+            this.startupSettings.Controls.Add(this.startMinimizedCheckbox);
+            this.startupSettings.Controls.Add(this.startupCheckbox);
+            this.startupSettings.Location = new System.Drawing.Point(6, 22);
+            this.startupSettings.Name = "startupSettings";
+            this.startupSettings.Size = new System.Drawing.Size(388, 102);
+            this.startupSettings.TabIndex = 12;
+            this.startupSettings.TabStop = false;
+            this.startupSettings.Text = "Startup Settings";
+            // 
+            // startMinimizedCheckbox
+            // 
+            this.startMinimizedCheckbox.AutoSize = true;
+            this.startMinimizedCheckbox.Depth = 0;
+            this.startMinimizedCheckbox.Location = new System.Drawing.Point(6, 56);
+            this.startMinimizedCheckbox.Margin = new System.Windows.Forms.Padding(0);
+            this.startMinimizedCheckbox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.startMinimizedCheckbox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.startMinimizedCheckbox.Name = "startMinimizedCheckbox";
+            this.startMinimizedCheckbox.ReadOnly = false;
+            this.startMinimizedCheckbox.Ripple = true;
+            this.startMinimizedCheckbox.Size = new System.Drawing.Size(147, 37);
+            this.startMinimizedCheckbox.TabIndex = 1;
+            this.startMinimizedCheckbox.Text = "Start Minimized";
+            this.startMinimizedCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // startupCheckbox
+            // 
+            this.startupCheckbox.AutoSize = true;
+            this.startupCheckbox.Depth = 0;
+            this.startupCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.startupCheckbox.Margin = new System.Windows.Forms.Padding(0);
+            this.startupCheckbox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.startupCheckbox.MouseState = MaterialSkin.MouseState.HOVER;
+            this.startupCheckbox.Name = "startupCheckbox";
+            this.startupCheckbox.ReadOnly = false;
+            this.startupCheckbox.Ripple = true;
+            this.startupCheckbox.Size = new System.Drawing.Size(172, 37);
+            this.startupCheckbox.TabIndex = 0;
+            this.startupCheckbox.Text = "Start with Windows";
+            this.startupCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // theme
+            // 
+            this.theme.Controls.Add(this.comboBoxTheme);
+            this.theme.Controls.Add(this.darkModeSwitch);
+            this.theme.Location = new System.Drawing.Point(6, 130);
+            this.theme.Name = "theme";
+            this.theme.Size = new System.Drawing.Size(388, 125);
+            this.theme.TabIndex = 11;
+            this.theme.TabStop = false;
+            this.theme.Text = "Theme Settings";
+            // 
+            // comboBoxTheme
+            // 
+            this.comboBoxTheme.AutoResize = false;
+            this.comboBoxTheme.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.comboBoxTheme.Depth = 0;
+            this.comboBoxTheme.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.comboBoxTheme.DropDownHeight = 174;
+            this.comboBoxTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTheme.DropDownWidth = 121;
+            this.comboBoxTheme.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
+            this.comboBoxTheme.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.comboBoxTheme.FormattingEnabled = true;
+            this.comboBoxTheme.IntegralHeight = false;
+            this.comboBoxTheme.ItemHeight = 43;
+            this.comboBoxTheme.Location = new System.Drawing.Point(6, 59);
+            this.comboBoxTheme.MaxDropDownItems = 4;
+            this.comboBoxTheme.MouseState = MaterialSkin.MouseState.OUT;
+            this.comboBoxTheme.Name = "comboBoxTheme";
+            this.comboBoxTheme.Size = new System.Drawing.Size(221, 49);
+            this.comboBoxTheme.StartIndex = 0;
+            this.comboBoxTheme.TabIndex = 9;
+            this.comboBoxTheme.SelectedIndexChanged += new System.EventHandler(this.comboBoxTheme_SelectedIndexChanged);
             // 
             // darkModeSwitch
             // 
             this.darkModeSwitch.AutoSize = true;
             this.darkModeSwitch.Depth = 0;
-            this.darkModeSwitch.Location = new System.Drawing.Point(3, 19);
+            this.darkModeSwitch.Location = new System.Drawing.Point(6, 19);
             this.darkModeSwitch.Margin = new System.Windows.Forms.Padding(0);
             this.darkModeSwitch.MouseLocation = new System.Drawing.Point(-1, -1);
             this.darkModeSwitch.MouseState = MaterialSkin.MouseState.HOVER;
@@ -669,6 +742,30 @@ namespace PeerSoftware
             this.darkModeSwitch.UseVisualStyleBackColor = true;
             this.darkModeSwitch.CheckedChanged += new System.EventHandler(this.darkModeSwitch_CheckedChanged);
             // 
+            // peerSettings
+            // 
+            this.peerSettings.Controls.Add(this.materialSlider1);
+            this.peerSettings.Location = new System.Drawing.Point(6, 261);
+            this.peerSettings.Name = "peerSettings";
+            this.peerSettings.Size = new System.Drawing.Size(388, 67);
+            this.peerSettings.TabIndex = 6;
+            this.peerSettings.TabStop = false;
+            this.peerSettings.Text = "Peer Settings";
+            // 
+            // materialSlider1
+            // 
+            this.materialSlider1.Depth = 0;
+            this.materialSlider1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialSlider1.Location = new System.Drawing.Point(6, 22);
+            this.materialSlider1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialSlider1.Name = "materialSlider1";
+            this.materialSlider1.RangeMax = 5;
+            this.materialSlider1.Size = new System.Drawing.Size(376, 40);
+            this.materialSlider1.TabIndex = 9;
+            this.materialSlider1.Text = "Maximum Downloads from";
+            this.materialSlider1.Value = 2;
+            this.materialSlider1.ValueSuffix = " Peers";
+            // 
             // settingsTabTrackerGroupBox
             // 
             this.settingsTabTrackerGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -678,7 +775,7 @@ namespace PeerSoftware
             this.settingsTabTrackerGroupBox.ForeColor = System.Drawing.SystemColors.ControlText;
             this.settingsTabTrackerGroupBox.Location = new System.Drawing.Point(3, 9);
             this.settingsTabTrackerGroupBox.Name = "settingsTabTrackerGroupBox";
-            this.settingsTabTrackerGroupBox.Size = new System.Drawing.Size(878, 78);
+            this.settingsTabTrackerGroupBox.Size = new System.Drawing.Size(472, 395);
             this.settingsTabTrackerGroupBox.TabIndex = 6;
             this.settingsTabTrackerGroupBox.TabStop = false;
             this.settingsTabTrackerGroupBox.Text = "Tracker Settings";
@@ -707,7 +804,7 @@ namespace PeerSoftware
             this.trackerIP.SelectionLength = 0;
             this.trackerIP.SelectionStart = 0;
             this.trackerIP.ShortcutsEnabled = true;
-            this.trackerIP.Size = new System.Drawing.Size(250, 48);
+            this.trackerIP.Size = new System.Drawing.Size(265, 48);
             this.trackerIP.TabIndex = 5;
             this.trackerIP.TabStop = false;
             this.trackerIP.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -716,17 +813,18 @@ namespace PeerSoftware
             // 
             // save
             // 
+            this.save.AutoSize = false;
             this.save.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.save.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             this.save.Depth = 0;
             this.save.HighEmphasis = true;
-            this.save.Icon = null;
-            this.save.Location = new System.Drawing.Point(263, 34);
+            this.save.Icon = ((System.Drawing.Image)(resources.GetObject("save.Icon")));
+            this.save.Location = new System.Drawing.Point(278, 34);
             this.save.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.save.MouseState = MaterialSkin.MouseState.HOVER;
             this.save.Name = "save";
             this.save.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.save.Size = new System.Drawing.Size(89, 36);
+            this.save.Size = new System.Drawing.Size(116, 36);
             this.save.TabIndex = 3;
             this.save.Text = "Connect";
             this.save.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -830,9 +928,12 @@ namespace PeerSoftware
             this.tableLayoutPanel6.PerformLayout();
             this.settings.ResumeLayout(false);
             this.settingsTabClientGroupBox.ResumeLayout(false);
-            this.settingsTabClientGroupBox.PerformLayout();
+            this.startupSettings.ResumeLayout(false);
+            this.startupSettings.PerformLayout();
+            this.theme.ResumeLayout(false);
+            this.theme.PerformLayout();
+            this.peerSettings.ResumeLayout(false);
             this.settingsTabTrackerGroupBox.ResumeLayout(false);
-            this.settingsTabTrackerGroupBox.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -886,6 +987,12 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialSwitch darkModeSwitch;
         private MaterialSkin.Controls.MaterialLabel myTorrentsTabDescriptionLabel;
         private Panel panel1;
+        private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
+        private GroupBox theme;
+        private GroupBox startupSettings;
+        private MaterialSkin.Controls.MaterialCheckbox startMinimizedCheckbox;
+        private MaterialSkin.Controls.MaterialCheckbox startupCheckbox;
+        private GroupBox peerSettings;
     }
 }
 

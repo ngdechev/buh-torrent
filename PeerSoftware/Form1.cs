@@ -79,6 +79,21 @@ namespace PeerSoftware
             _networkUtils = new NetworkUtils();
             _udpSender = new UDPSender(_networkUtils);
 
+            /*            comboBoxTheme.Items.Add("Lime with Blue Accent");
+                        comboBoxTheme.Items.Add("Blue-Grey with Light Blue Accent");
+                        comboBoxTheme.Items.Add("Indigo with Pink Accent");
+                        comboBoxTheme.Items.Add("Teal with Amber Accent");
+                        comboBoxTheme.Items.Add("Deep Purple with Orange Accent");
+                        comboBoxTheme.Items.Add("Blue with Yellow Accent");
+                        comboBoxTheme.Items.Add("Green with Lime Accent");*/
+
+            foreach (var themeName in _commonUtils.themeKeyMapping.Keys)
+            {
+                comboBoxTheme.Items.Add(themeName);
+            }
+
+            comboBoxTheme.SelectedItem = "Lime with Blue Accent";
+
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
 
             Thread peerThread = new Thread(uploadserver.Start);
@@ -553,9 +568,27 @@ namespace PeerSoftware
 
         }
 
+        private void comboBoxTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxTheme.SelectedItem != null)
+            {
+                string selectedTheme = comboBoxTheme.SelectedItem.ToString();
+
+                if (_commonUtils.themeKeyMapping.TryGetValue(selectedTheme, out string selectedThemeKey))
+                {
+                    MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedThemeKey);
+
+                    materialSkinManager.ColorScheme = selectedColorScheme;
+                    UILightMode();
+
+                    Refresh();
+                }
+            }
+        }
+
         private void darkModeSwitch_CheckedChanged(object sender, EventArgs e)
         {
-            if (darkModeSwitch.Checked) // If the switch is checked (indicating dark mode)
+            if (darkModeSwitch.Checked)
             {
                 UIDarkMode();
             }
