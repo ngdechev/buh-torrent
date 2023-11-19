@@ -16,7 +16,7 @@ namespace TorrentTracker.Controllers
         }
 
         public void CreatePeer(string ip, int port)
-        {
+        { 
             bool flag = true;
             if (_dictionaryController.GetDictionary().Count() == 0)
             {

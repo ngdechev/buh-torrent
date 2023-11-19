@@ -73,6 +73,7 @@ namespace PeerSoftware
             this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.buttonIcons = new System.Windows.Forms.ImageList(this.components);
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.buhTorrent.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -264,12 +265,12 @@ namespace PeerSoftware
             this.pagelabel.AutoSize = true;
             this.pagelabel.Depth = 0;
             this.pagelabel.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.pagelabel.Location = new System.Drawing.Point(778, 86);
+            this.pagelabel.Location = new System.Drawing.Point(727, 86);
             this.pagelabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.pagelabel.Name = "pagelabel";
-            this.pagelabel.Size = new System.Drawing.Size(54, 19);
+            this.pagelabel.Size = new System.Drawing.Size(114, 19);
             this.pagelabel.TabIndex = 16;
-            this.pagelabel.Text = "Page: 0";
+            this.pagelabel.Text = "Page Number: 0";
             // 
             // searchBar
             // 
@@ -335,7 +336,7 @@ namespace PeerSoftware
             this.button1.Depth = 0;
             this.button1.HighEmphasis = true;
             this.button1.Icon = ((System.Drawing.Image)(resources.GetObject("button1.Icon")));
-            this.button1.Location = new System.Drawing.Point(731, 76);
+            this.button1.Location = new System.Drawing.Point(690, 76);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.button1.MouseState = MaterialSkin.MouseState.HOVER;
             this.button1.Name = "button1";
@@ -598,6 +599,7 @@ namespace PeerSoftware
             this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel4.AutoScroll = true;
             this.tableLayoutPanel4.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutPanel4.ColumnCount = 4;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 77.74799F));
@@ -665,6 +667,7 @@ namespace PeerSoftware
             this.darkModeSwitch.TabIndex = 8;
             this.darkModeSwitch.Text = "Dark Mode";
             this.darkModeSwitch.UseVisualStyleBackColor = true;
+            this.darkModeSwitch.CheckedChanged += new System.EventHandler(this.darkModeSwitch_CheckedChanged);
             // 
             // settingsTabTrackerGroupBox
             // 
@@ -672,6 +675,7 @@ namespace PeerSoftware
             | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTabTrackerGroupBox.Controls.Add(this.trackerIP);
             this.settingsTabTrackerGroupBox.Controls.Add(this.save);
+            this.settingsTabTrackerGroupBox.ForeColor = System.Drawing.SystemColors.ControlText;
             this.settingsTabTrackerGroupBox.Location = new System.Drawing.Point(3, 9);
             this.settingsTabTrackerGroupBox.Name = "settingsTabTrackerGroupBox";
             this.settingsTabTrackerGroupBox.Size = new System.Drawing.Size(878, 78);
@@ -790,12 +794,24 @@ namespace PeerSoftware
             this.buttonIcons.ImageSize = new System.Drawing.Size(32, 32);
             this.buttonIcons.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Location = new System.Drawing.Point(494, 67);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(403, 37);
+            this.panel1.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(899, 520);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
             this.MinimumSize = new System.Drawing.Size(899, 520);
             this.Name = "Form1";
@@ -869,6 +885,7 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialSlider materialSlider1;
         private MaterialSkin.Controls.MaterialSwitch darkModeSwitch;
         private MaterialSkin.Controls.MaterialLabel myTorrentsTabDescriptionLabel;
+        private Panel panel1;
     }
 }
 

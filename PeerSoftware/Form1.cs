@@ -55,18 +55,22 @@ namespace PeerSoftware
         public Form1()
         {
             InitializeComponent();
-
+            
+            // New UI Stuff
             materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
-            materialSkinManager.EnforceBackcolorOnAllComponents = true;
+            materialSkinManager.EnforceBackcolorOnAllComponents = false;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.BlueGrey900, 
-                MaterialSkin.Primary.BlueGrey900, 
-                MaterialSkin.Primary.BlueGrey900, 
-                MaterialSkin.Accent.LightBlue700, 
+                MaterialSkin.Primary.Green600, 
+                MaterialSkin.Primary.Green700, 
+                MaterialSkin.Primary.Blue900, 
+                MaterialSkin.Accent.Green700, 
                 MaterialSkin.TextShade.WHITE);
-            
+
+
+            UILightMode();
+
             _storage = new TorrentStorage();
             _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
@@ -82,39 +86,6 @@ namespace PeerSoftware
             peerThread.Start();
 
             _downloader = new Downloader();
-
-            tableLayoutPanel1.BackColor = Color.White;
-            tableLayoutPanel2.BackColor = Color.White;
-            tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel5.BackColor = Color.White;
-            tableLayoutPanel6.BackColor = Color.White;
-            tableLayoutPanel7.BackColor = Color.White;
-
-            settingsTabTrackerGroupBox.BackColor = Color.White;
-            settingsTabClientGroupBox.BackColor = Color.White;
-
-            foreach (Control control in tableLayoutPanel7.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = Color.White;
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel6.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = Color.White;
-                }
-            }
-
-            foreach (TabPage tabPage in tabControl1.TabPages)
-            {
-                tabPage.BackColor = Color.White;
-            }
 
             for (int i = 0; i < 5; i++)
             {
@@ -528,5 +499,156 @@ namespace PeerSoftware
         {
 
         }
+
+        private void darkModeSwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (darkModeSwitch.Checked) // If the switch is checked (indicating dark mode)
+            {
+                UIDarkMode();
+            }
+            else 
+            {
+                UILightMode();
+            }
+        }
+
+        private void UILightMode()
+        {
+            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+
+            panel1.BackColor = Color.FromArgb(240, 240, 240);
+
+            tableLayoutPanel1.BackColor = Color.White;
+            tableLayoutPanel2.BackColor = Color.White;
+            tableLayoutPanel4.BackColor = Color.White;
+            tableLayoutPanel5.BackColor = Color.White;
+            tableLayoutPanel6.BackColor = Color.White;
+            tableLayoutPanel7.BackColor = Color.White;
+
+            settingsTabTrackerGroupBox.ForeColor = Color.Black;
+            settingsTabClientGroupBox.ForeColor = Color.Black;
+            settingsTabTrackerGroupBox.BackColor = Color.White;
+            settingsTabClientGroupBox.BackColor = Color.White;
+
+            foreach (TabPage tabPage in tabControl1.TabPages)
+            {
+                tabPage.BackColor = Color.White;
+            }
+
+            /*
+             tableLayoutPanel1.BackColor = Color.White;
+            tableLayoutPanel2.BackColor = Color.White;
+            tableLayoutPanel4.BackColor = Color.White;
+            tableLayoutPanel5.BackColor = Color.White;
+            tableLayoutPanel6.BackColor = Color.White;
+            tableLayoutPanel7.BackColor = Color.White;
+
+            settingsTabTrackerGroupBox.BackColor = Color.White;
+            settingsTabClientGroupBox.BackColor = Color.White;
+
+            foreach (Control control in tableLayoutPanel7.Controls)
+            {
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.BackColor = Color.White;
+                }
+            }
+
+            foreach (Control control in tableLayoutPanel6.Controls)
+            {
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.BackColor = Color.White;
+                }
+            }
+
+            foreach (TabPage tabPage in tabControl1.TabPages)
+            {
+                tabPage.BackColor = Color.White;
+            }
+             */
+        }
+
+        private void UIDarkMode() {
+            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
+
+            Color darkColor = Color.FromArgb(50, 50, 50);
+
+            panel1.BackColor = Color.FromArgb(240, 240, 240);
+            panel1.Location = new Point(492, 67);
+            panel1.Size = new Size(404, 37);
+
+            tableLayoutPanel1.BackColor = darkColor;
+            tableLayoutPanel2.BackColor = darkColor;
+            tableLayoutPanel4.BackColor = darkColor;
+            tableLayoutPanel5.BackColor = darkColor;
+            tableLayoutPanel6.BackColor = darkColor;
+            tableLayoutPanel7.BackColor = darkColor;
+
+            settingsTabTrackerGroupBox.ForeColor = Color.White;
+            settingsTabClientGroupBox.ForeColor = Color.White;
+
+            settingsTabTrackerGroupBox.BackColor = darkColor;
+            settingsTabClientGroupBox.BackColor = darkColor;
+
+            //UpdateBackgroundColors
+        }
+        /*
+        private void UpdateBackgroundColors()
+        {
+            Color darkBackground = Color.FromArgb(38, 50, 56); // Your desired background colo
+
+            settingsTabTrackerGroupBox.BackColor = darkBackground;
+            settingsTabClientGroupBox.BackColor = darkBackground;
+
+            tableLayoutPanel1.BackColor = darkBackground;
+            tableLayoutPanel2.BackColor = darkBackground;
+            tableLayoutPanel4.BackColor = darkBackground;
+            tableLayoutPanel5.BackColor = darkBackground;
+            tableLayoutPanel6.BackColor = darkBackground;
+            tableLayoutPanel7.BackColor = darkBackground;
+
+            // Iterate through controls and set their background color
+            foreach (Control control in this.Controls)
+            {
+                control.BackColor = darkBackground;
+
+                // Check for nested controls
+                if (control.HasChildren)
+                {
+                    foreach (Control nestedControl in control.Controls)
+                    {
+                        nestedControl.BackColor = darkBackground;
+                        // You might need further checks or customization depending on your control hierarchy
+                    }
+                }
+            }
+
+            foreach (Control control in tableLayoutPanel7.Controls)
+            {
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.BackColor = darkBackground;
+                }
+            }
+
+            foreach (Control control in tableLayoutPanel6.Controls)
+            {
+                if (control is Label)
+                {
+                    Label label = (Label)control;
+                    label.BackColor = darkBackground;
+                }
+            }
+
+            foreach (TabPage tabPage in tabControl1.TabPages)
+            {
+                tabPage.BackColor = darkBackground;
+            }
+        }
+        */
     }
 }
