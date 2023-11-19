@@ -1,4 +1,5 @@
-﻿using PeerSoftware.Utils;
+﻿using MaterialSkin.Controls;
+using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Net;
 using System.Net.Sockets;
@@ -8,7 +9,7 @@ using System.Text.Json;
 
 namespace PeerSoftware
 {
-    public partial class FormNewTorrent : Form
+    public partial class FormNewTorrent : MaterialForm
     {
         Form1 _mainForm;
         TorrentFile _newTorrent;
@@ -18,6 +19,7 @@ namespace PeerSoftware
         public FormNewTorrent(Form1 mainForm, NetworkUtils networkUtils, CommonUtils commonUtils)
         {
             InitializeComponent();
+
             _newTorrent = new TorrentFile();
             _mainForm = mainForm;
             _networkUtils = networkUtils;
@@ -146,6 +148,11 @@ namespace PeerSoftware
                 throw new Exception("Error sending data: " + ex.Message);
 
             }
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
