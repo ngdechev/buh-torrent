@@ -8,7 +8,6 @@ using System.Text.Json;
 namespace PeerSoftware.Utils
 {
     public class Connections
-
     {  
        
         private NetworkUtils _networkUtils = new NetworkUtils();

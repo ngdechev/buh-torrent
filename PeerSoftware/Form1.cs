@@ -30,10 +30,10 @@ namespace PeerSoftware
     {
         private readonly MaterialSkin.MaterialSkinManager materialSkinManager;
 
-        private List<Control> _titleControls = new List<Control>();
-        private List<Control> _sizeControls = new List<Control>();
-        private List<Control> _descriptionControls = new List<Control>();
-        private List<Control> _downloadControls = new List<Control>();
+        private List<MaterialLabel> _materialTitleControls = new List<MaterialLabel>();
+        private List<MaterialLabel> _materialSizeControls = new List<MaterialLabel>();
+        private List<MaterialLabel> _materialDescriptionControls = new List<MaterialLabel>();
+        private List<MaterialButton> _materialDownloadControls = new List<MaterialButton>();
 
         private List<string> _torrentDownloadingNames = new List<string>();
         private int _allPage = 0;
@@ -58,6 +58,7 @@ namespace PeerSoftware
             
             // New UI Stuff
             materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
+
             materialSkinManager.EnforceBackcolorOnAllComponents = false;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
@@ -67,8 +68,7 @@ namespace PeerSoftware
                 MaterialSkin.Primary.Blue900, 
                 MaterialSkin.Accent.Green700, 
                 MaterialSkin.TextShade.WHITE);
-
-
+            
             UILightMode();
 
             _storage = new TorrentStorage();
@@ -86,30 +86,29 @@ namespace PeerSoftware
             peerThread.Start();
 
             _downloader = new Downloader();
-
+            
             for (int i = 0; i < 5; i++)
             {
-                Label titleLabel = new Label();
-                Label sizeLabel = new Label();
-                Label descriptionLabel = new Label(); // Corrected the variable name
-                Button downloadButton = new Button();
+                MaterialLabel materialTitleLabel = new MaterialLabel();
+                MaterialLabel materialSizeLabel = new MaterialLabel();
+                MaterialLabel materialDescriptionLabel = new MaterialLabel(); 
+                MaterialButton materialDownloadButton = new MaterialButton();
 
-                downloadButton.Text = "Download";
-                downloadButton.Click += DownloadButton_Click;
-                downloadButton.Visible = false;
+                materialDownloadButton.Visible = false;
+                materialDownloadButton.Text = "Download";
+                materialDownloadButton.Click += DownloadButton_Click;
+                materialDownloadButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\download.png");
+                materialDownloadButton.Anchor = AnchorStyles.None;
 
-                tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
-                tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
-                tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
-                tableLayoutPanel2.Controls.Add(downloadButton, 3, i);
+                tableLayoutPanel2.Controls.Add(materialTitleLabel, 0, i);
+                tableLayoutPanel2.Controls.Add(materialSizeLabel, 1, i);
+                tableLayoutPanel2.Controls.Add(materialDescriptionLabel, 2, i);
+                tableLayoutPanel2.Controls.Add(materialDownloadButton, 3, i);
 
-
-                _titleControls.Add(titleLabel);
-                _sizeControls.Add(sizeLabel);
-                _descriptionControls.Add(descriptionLabel);
-                _downloadControls.Add(downloadButton);
-
-
+                //_materialTitleControls.Add(materialTitleLabel);
+                _materialSizeControls.Add(materialSizeLabel);
+                _materialDescriptionControls.Add(materialDescriptionLabel);
+                _materialDownloadControls.Add(materialDownloadButton);
             }
 
         }
@@ -181,76 +180,73 @@ namespace PeerSoftware
 
         }
 
-        void Show(int i, List<TorrentFile> torrentFiles)
+        private void Show(int i, List<TorrentFile> torrentFiles)
         {
-            List<TorrentFile> disable = StatusDownloadButton();
             int row = i * 5;
-            for (int index = 0; index < _titleControls.Count; index++)
+
+            for (int index = 0; index < _materialTitleControls.Count; index++)
             {
-                Control titleControl = _titleControls[index];
-                Control sizeControl = _sizeControls[index];
-                Control descriptionControl = _descriptionControls[index];
-                Control downloadButtonControl = _downloadControls[index];
+                MaterialLabel materialTitleControl = _materialTitleControls[index];
+                MaterialLabel materialSizeControl = _materialSizeControls[index];
+                MaterialLabel materialDescriptionControl = _materialDescriptionControls[index];
+                MaterialButton materialButtonControl = _materialDownloadControls[index];
 
                 if (index + row < torrentFiles.Count)
                 {
-                    if (titleControl != null)
+                    if (materialTitleControl != null)
                     {
-                        titleControl.Text = torrentFiles[index + row].info.torrentName;
+                        materialTitleControl.Text = torrentFiles[index + row].info.torrentName;
                     }
 
-                    if (sizeControl != null)
+                    if (materialSizeControl != null)
                     {
-                        sizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
+                        materialSizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
                     }
 
-                    if (descriptionControl != null)
+                    if (materialDescriptionControl != null)
                     {
-                        descriptionControl.Text = torrentFiles[index + row].info.description;
+                        materialDescriptionControl.Text = torrentFiles[index + row].info.description;
                     }
 
-                    if (downloadButtonControl != null)
+                    if (materialButtonControl != null)
                     {
-                        downloadButtonControl.Visible = true;
+                        materialButtonControl.Visible = true;
                     }
                 }
                 else
                 {
-                    // If there are no more items in torrentFiles, clear the text of the controls
-
-
-                    if (titleControl != null)
+                    if (materialTitleControl != null)
                     {
-                        titleControl.Text = "";
+                        materialTitleControl.Text = "";
                     }
 
-                    if (sizeControl != null)
+                    if (materialSizeControl != null)
                     {
-                        sizeControl.Text = "";
+                        materialSizeControl.Text = "";
                     }
 
-                    if (descriptionControl != null)
+                    if (materialDescriptionControl != null)
                     {
-                        descriptionControl.Text = "";
+                        materialDescriptionControl.Text = "";
                     }
 
-                    if (downloadButtonControl != null)
+                    if (materialButtonControl != null)
                     {
-                        downloadButtonControl.Visible = false;
+                        materialButtonControl.Visible = false;
                     }
                 }
                 if (_torrentDownloadingNames.Count != 0)
                 {
                     foreach (string name in _torrentDownloadingNames)
                     {
-                        if (titleControl.Text == name)
+                        if (materialTitleControl.Text == name)
                         {
-                            _downloadControls[index].Enabled = false;
+                            _materialDownloadControls[index].Enabled = false;
                             break;
                         }
-                        if (titleControl.Text != name)
+                        if (materialTitleControl.Text != name)
                         {
-                            _downloadControls[index].Enabled = true;
+                            _materialDownloadControls[index].Enabled = true;
                         }
 
                     }
@@ -258,38 +254,86 @@ namespace PeerSoftware
 
             }
         }
-        private List<TorrentFile> StatusDownloadButton()
 
-        {
-            if (tableLayoutPanel1.RowCount == 1)
-            {
-                return null;
-            }
-            List<string> downloadingTorrentsNames = new List<string>();
-            List<TorrentFile> torrentFiles = new List<TorrentFile>();
-            if (_searchOnFlag)
-            {
-                torrentFiles = _storage.GetResultTorrentFiles();
-            }
-            else
-            {
-                torrentFiles = _storage.GetAllTorrentFiles();
-            }
-            for (int i = 0; i < tableLayoutPanel1.RowCount - 1; i++)
-            {
-                downloadingTorrentsNames.Add(tableLayoutPanel1.GetControlFromPosition(0, i).Text);
-            }
-            List<TorrentFile> downloading = new List<TorrentFile>();
-            foreach (TorrentFile torrent in torrentFiles)
-            {
-                foreach (string s in downloadingTorrentsNames)
-                    if (torrent.info.fileName == s)
-                    {
-                        downloading.Add(torrent);
-                    }
-            }
-            return downloading;
-        }
+        /*
+          private void Show(int i, List<TorrentFile> torrentFiles)
+         {
+             List<TorrentFile> disable = StatusDownloadButton();
+             int row = i * 5;
+             for (int index = 0; index < _titleControls.Count; index++)
+             {
+                 Control titleControl = _titleControls[index];
+                 Control sizeControl = _sizeControls[index];
+                 Control descriptionControl = _descriptionControls[index];
+                 Control downloadButtonControl = _downloadControls[index];
+
+                 if (index + row < torrentFiles.Count)
+                 {
+                     if (titleControl != null)
+                     {
+                         titleControl.Text = torrentFiles[index + row].info.torrentName;
+                     }
+
+                     if (sizeControl != null)
+                     {
+                         sizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
+                     }
+
+                     if (descriptionControl != null)
+                     {
+                         descriptionControl.Text = torrentFiles[index + row].info.description;
+                     }
+
+                     if (downloadButtonControl != null)
+                     {
+                         downloadButtonControl.Visible = true;
+                     }
+                 }
+                 else
+                 {
+                     // If there are no more items in torrentFiles, clear the text of the controls
+
+
+                     if (titleControl != null)
+                     {
+                         titleControl.Text = "";
+                     }
+
+                     if (sizeControl != null)
+                     {
+                         sizeControl.Text = "";
+                     }
+
+                     if (descriptionControl != null)
+                     {
+                         descriptionControl.Text = "";
+                     }
+
+                     if (downloadButtonControl != null)
+                     {
+                         downloadButtonControl.Visible = false;
+                     }
+                 }
+                 if (_torrentDownloadingNames.Count != 0)
+                 {
+                     foreach (string name in _torrentDownloadingNames)
+                     {
+                         if (titleControl.Text == name)
+                         {
+                             _downloadControls[index].Enabled = false;
+                             break;
+                         }
+                         if (titleControl.Text != name)
+                         {
+                             _downloadControls[index].Enabled = true;
+                         }
+
+                     }
+                 }
+
+             }
+         }
+         */
 
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -322,18 +366,20 @@ namespace PeerSoftware
 
             foreach (TorrentFile torrentFile in temp)
             {
-                Label myTorrentName = new Label();
-                myTorrentName.Text = torrentFile.info.torrentName;
+                MaterialLabel materialMyTorrentName = new MaterialLabel();
+                materialMyTorrentName.Text = torrentFile.info.torrentName;
 
-                Label myTorrentDescription = new Label();
-                myTorrentDescription.Text = torrentFile.info.description;
+                MaterialLabel materialMyTorrentDescription = new MaterialLabel();
+                materialMyTorrentDescription.Text = torrentFile.info.description;
 
-                Label myTorrentSize = new Label();
-                myTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
+                MaterialLabel materialMyTorrentSize = new MaterialLabel();
+                materialMyTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
 
-                Button delete = new Button();
-                delete.Text = "Delete";
-                delete.Click += DeleteMyTorrentButton_Click;
+                MaterialButton materialMyTorrentDownloadButton = new MaterialButton();
+                materialMyTorrentDownloadButton.Text = "Delete";
+                materialMyTorrentDownloadButton.Anchor = AnchorStyles.Top;
+                materialMyTorrentDownloadButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\delete.png");
+                materialMyTorrentDownloadButton.Click += DeleteMyTorrentButton_Click;
 
                 tableLayoutPanel4.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
 
@@ -343,10 +389,10 @@ namespace PeerSoftware
                     tableLayoutPanel4.SetRow(control, row + 1);
                 }
 
-                tableLayoutPanel4.Controls.Add(myTorrentName, 0, 0);
-                tableLayoutPanel4.Controls.Add(myTorrentSize, 1, 0);
-                tableLayoutPanel4.Controls.Add(myTorrentDescription, 2, 0);
-                tableLayoutPanel4.Controls.Add(delete, 3, 0);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, 0);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentSize, 1, 0);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentDescription, 2, 0);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentDownloadButton, 3, 0);
             }
         }
 
@@ -381,8 +427,10 @@ namespace PeerSoftware
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
         {
-            Button downloadButton = (Button)sender;
+            MaterialButton downloadButton = (MaterialButton)sender;
+
             _storage.GetPeerWithMyFaile();
+
             if (!(sender as Control).Enabled)
             {
                 return;
@@ -391,26 +439,32 @@ namespace PeerSoftware
             downloadButton.Enabled = false;
 
             int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
-            Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
-            Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
+            MaterialLabel torrentNameLabel = (MaterialLabel)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
+            MaterialLabel sizeLabel = (MaterialLabel)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
 
-            Label label1 = new Label();
+            MaterialLabel label1 = new MaterialLabel();
             label1.Text = torrentNameLabel.Text;
 
             List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(label1.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
 
-            Label label2 = new Label();
+            MaterialLabel label2 = new MaterialLabel();
             label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
             _storage.GetDownloadTorrentFiles().AddRange(torrentFiles);
 
             _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
 
-            ProgressBar progressBar = new ProgressBar();
+            MaterialProgressBar progressBar = new MaterialProgressBar();
             progressBar.Minimum = 0;
             progressBar.Maximum = 100;
+            progressBar.Height = 100;
+            progressBar.Style = ProgressBarStyle.Marquee;
+            progressBar.Anchor = AnchorStyles.Left | AnchorStyles.Right;
 
-            Button button = new Button();
+            MaterialButton button = new MaterialButton();
             button.Text = "Pause";
+            button.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
+            button.Size = new Size(200, 200);
+            button.Anchor = AnchorStyles.None;
 
             // Create a new row
             tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
@@ -450,7 +504,6 @@ namespace PeerSoftware
                 _storage.GetResultTorrentFiles().Clear();
                 _storage.GetResultTorrentFiles().AddRange(results);
 
-                // Optionally, you can prevent the "Enter" key from adding a newline to the TextBox
                 e.SuppressKeyPress = true;
             }
         }
@@ -490,7 +543,7 @@ namespace PeerSoftware
             return trackerIP.Text.Trim();
         }
 
-        public static void SetProgressBarValue(ProgressBar progressBar, int count)
+        public static void SetProgressBarValue(MaterialProgressBar progressBar, int count)
         {
             progressBar.Value = count;
         }
