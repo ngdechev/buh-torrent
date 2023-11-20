@@ -28,7 +28,9 @@ namespace PeerSoftware
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
+
+            //components = new System.ComponentModel.Container();
+
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             tabControl1 = new TabControl();
             buhTorrent = new TabPage();
@@ -523,7 +525,7 @@ namespace PeerSoftware
             ClientSize = new Size(883, 382);
             Controls.Add(tabControl1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(899, 417);
+            MinimumSize = new Size(899, 419);
             Name = "Form1";
             Text = "BuhTorrent";
             tabControl1.ResumeLayout(false);

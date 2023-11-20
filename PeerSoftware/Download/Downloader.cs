@@ -1,4 +1,5 @@
-﻿using PeerSoftware.Services;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using PeerSoftware.Services;
 using PeerSoftware.Utils;
 using PTP_Parser;
 using PTT_Parser;
@@ -83,6 +84,10 @@ namespace PeerSoftware.Download
                         // Handle any response from the server if needed
                         // ...
                         TorrentReader.WriteJSON("MyTorrent", torrentFile);
+
+                        new ToastContentBuilder()
+                            .AddText($"{torrentFile.info.torrentName} has been downloaded!")
+                            .Show();
                     }
                 }
 
