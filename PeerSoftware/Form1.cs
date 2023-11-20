@@ -1,21 +1,6 @@
-using PeerSoftware;
-using PTT_Parser;
-using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Windows.Forms.VisualStyles;
-using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Text.Json;
-using PeerSoftware.Storage;
-using PeerSoftware.Utils;
+using PeerSoftware.Download;
 using PeerSoftware.Services;
-using System.Collections.Generic;
+using PeerSoftware.Storage;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
 using PeerSoftware.Download;
@@ -24,6 +9,9 @@ using Microsoft.VisualBasic;
 using Timer = System.Windows.Forms.Timer;
 using MaterialSkin.Controls;
 
+using PeerSoftware.Utils;
+using PTT_Parser;
+using System.Windows.Forms;
 
 namespace PeerSoftware
 {
@@ -55,9 +43,12 @@ namespace PeerSoftware
         private UDPSender _udpSender;
         private Downloader _downloader;
 
+        private ContextMenuStrip _systemTrayContextMenu;
+
         public Form1()
         {
             InitializeComponent();
+
 
             // New UI Stuff
             _materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
@@ -73,6 +64,22 @@ namespace PeerSoftware
                 MaterialSkin.TextShade.WHITE);
 
             UILightMode();
+
+            FormClosing += MainForm_FormClosing;
+
+            _systemTrayContextMenu = new ContextMenuStrip();
+
+            notifyIcon1.Text = Application.ProductName;
+            //notifyIcon1.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+            notifyIcon1.BalloonTipTitle = Application.ProductName;
+            notifyIcon1.BalloonTipText = $"{Application.ProductName} is minimized";
+            notifyIcon1.ContextMenuStrip = _systemTrayContextMenu;
+            notifyIcon1.MouseClick += NotifyIcon_MouseClick;
+
+
+            _systemTrayContextMenu.Items.Add("Settings", null, OnMenuItem1Clicked);
+            _systemTrayContextMenu.Items.Add("Close App", null, OnMenuItem2Clicked);
+
 
             _storage = new TorrentStorage();
             _connections = new Connections();
@@ -92,10 +99,25 @@ namespace PeerSoftware
                         comboBoxTheme.Items.Add("Blue with Yellow Accent");
                         comboBoxTheme.Items.Add("Green with Lime Accent");*/
 
+
             foreach (var themeName in _commonUtils.themeKeyMapping.Keys)
             {
                 comboBoxTheme.Items.Add(themeName);
             }
+
+            peerThread.Start();
+
+            _downloader = new Downloader();
+
+            // Create the TableLayoutPanel for the heading row
+            TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
+
+            headingTableLayoutPanel.ColumnCount = 3;
+
+            // Create the heading labels
+            Label nameLabel = new Label();
+            nameLabel.Text = "Name1";
+
 
             comboBoxTheme.SelectedItem = "Lime with Purple Accent";
 
@@ -131,6 +153,20 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
+        }
+
+        private void OnMenuItem1Clicked(object? sender, EventArgs e)
+        {
+            WindowState = FormWindowState.Normal;
+            tabControl1.SelectedIndex = 3;
+            Show();
+
+            notifyIcon1.Visible = false;
+        }
+
+        private void OnMenuItem2Clicked(object? sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         public ITorrentStorage GetTorrentStorage()
@@ -753,5 +789,28 @@ namespace PeerSoftware
             }
         }
         */
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                e.Cancel = true;
+
+                WindowState = FormWindowState.Minimized;
+                ShowInTaskbar = false;
+                notifyIcon1.Visible = true;
+            }
+        }
+
+        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                WindowState = FormWindowState.Normal;
+                Show();
+
+                notifyIcon1.Visible = false;
+            }
+        }
     }
 }
