@@ -45,7 +45,7 @@ namespace PeerSoftware
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
-         
+
         private ITorrentStorage _storage;
         private Connections _connections;
         private TorrentFileServices _torrentFileServices;
@@ -58,7 +58,7 @@ namespace PeerSoftware
         public Form1()
         {
             InitializeComponent();
-            
+
             // New UI Stuff
             _materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
 
@@ -66,12 +66,12 @@ namespace PeerSoftware
             _materialSkinManager.AddFormToManage(this);
             _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
             _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Green600, 
-                MaterialSkin.Primary.Green700, 
-                MaterialSkin.Primary.Blue900, 
-                MaterialSkin.Accent.Green700, 
+                MaterialSkin.Primary.Green600,
+                MaterialSkin.Primary.Green700,
+                MaterialSkin.Primary.Blue900,
+                MaterialSkin.Accent.Purple700,
                 MaterialSkin.TextShade.WHITE);
-            
+
             UILightMode();
 
             _storage = new TorrentStorage();
@@ -97,7 +97,7 @@ namespace PeerSoftware
                 comboBoxTheme.Items.Add(themeName);
             }
 
-            comboBoxTheme.SelectedItem = "Lime with Blue Accent";
+            comboBoxTheme.SelectedItem = "Lime with Purple Accent";
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
 
@@ -106,12 +106,12 @@ namespace PeerSoftware
             peerThread.Start();
 
             _downloader = new Downloader();
-            
+
             for (int i = 0; i < 5; i++)
             {
                 MaterialLabel materialTitleLabel = new MaterialLabel();
                 MaterialLabel materialSizeLabel = new MaterialLabel();
-                MaterialLabel materialDescriptionLabel = new MaterialLabel(); 
+                MaterialLabel materialDescriptionLabel = new MaterialLabel();
                 MaterialButton materialDownloadButton = new MaterialButton();
 
                 materialDownloadButton.Visible = false;
@@ -372,7 +372,7 @@ namespace PeerSoftware
         private async void ShowMyTorrents()
         {
             List<TorrentFile> temp = new List<TorrentFile>();
-            
+
             while (tableLayoutPanel4.Controls.Count > 0)
             {
                 tableLayoutPanel4.Controls[0].Dispose();
@@ -608,7 +608,7 @@ namespace PeerSoftware
             {
                 UIDarkMode();
             }
-            else 
+            else
             {
                 UILightMode();
             }
@@ -673,7 +673,8 @@ namespace PeerSoftware
              */
         }
 
-        private void UIDarkMode() {
+        private void UIDarkMode()
+        {
             _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
 
             Color darkColor = Color.FromArgb(50, 50, 50);

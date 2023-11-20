@@ -99,7 +99,7 @@ namespace PeerSoftware.Utils
 
         public Dictionary<string, string> themeKeyMapping = new Dictionary<string, string>
         {
-            { "Lime with Blue Accent", "limewithblueaccentscheme" },
+            { "Lime with Purple Accent", "limewithpurpleaccentscheme" },
             { "Blue-Grey with Light Blue Accent", "bluegreywithlightblueaccentscheme" },
             { "Indigo with Pink Accent", "indigowithpinkaccentscheme" },
             { "Teal with Amber Accent", "tealwithamberaccentscheme" },
@@ -112,11 +112,11 @@ namespace PeerSoftware.Utils
         {
             MaterialSkin.ColorScheme colorScheme = new MaterialSkin.ColorScheme();
 
-            var limeBlueScheme = new MaterialSkin.ColorScheme(
+            var limePurpleScheme = new MaterialSkin.ColorScheme(
                 MaterialSkin.Primary.Green600,
                 MaterialSkin.Primary.Green700,
                 MaterialSkin.Primary.Blue900,
-                MaterialSkin.Accent.Green700,
+                MaterialSkin.Accent.Purple700,
                 MaterialSkin.TextShade.WHITE);
 
             var blueGreyScheme = new MaterialSkin.ColorScheme(
@@ -163,8 +163,8 @@ namespace PeerSoftware.Utils
 
             switch (themeName)
             {
-                case "limewithblueaccentscheme":
-                    colorScheme = limeBlueScheme;
+                case "limewithpurpleaccentscheme":
+                    colorScheme = limePurpleScheme;
                     break;
                 case "bluegreywithlightblueaccentscheme":
                     colorScheme = blueGreyScheme;
