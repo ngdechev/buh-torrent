@@ -152,7 +152,9 @@ namespace PeerSoftware
                 _materialDescriptionControls.Add(materialDescriptionLabel);
                 _materialDownloadControls.Add(materialDownloadButton);
             }
-
+            _connections.AnnounceNewPeer("172.20.60.22", 12345);
+            _udpSender.Start("172.20.60.22:12345");
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils,this));
         }
 
         private void OnMenuItem1Clicked(object? sender, EventArgs e)
@@ -477,11 +479,11 @@ namespace PeerSoftware
             {
                 _customMessageBox.SetTitle("Delete Confirmation");
                 _customMessageBox.SetMessageText($"Do you want to delete shared file also?");
-                if ( File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
+                if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
                 {
                     File.Delete(torrentFiles.First().info.fileName);
                 }
-                if( File.Exists(folderPath))
+                if (File.Exists(folderPath))
                 {
                     File.Delete(folderPath);
                 }
