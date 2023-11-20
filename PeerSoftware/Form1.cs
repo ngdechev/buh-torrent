@@ -135,6 +135,8 @@ namespace PeerSoftware
                 MaterialLabel materialDescriptionLabel = new MaterialLabel();
                 MaterialButton materialDownloadButton = new MaterialButton();
 
+                materialTitleLabel.AutoSize = true;
+
                 materialDownloadButton.Visible = false;
                 materialDownloadButton.Text = "Download";
                 materialDownloadButton.Click += DownloadButton_Click;
@@ -423,6 +425,7 @@ namespace PeerSoftware
             {
                 MaterialLabel materialMyTorrentName = new MaterialLabel();
                 materialMyTorrentName.Text = torrentFile.info.torrentName;
+                materialMyTorrentName.AutoSize = true;
 
                 MaterialLabel materialMyTorrentDescription = new MaterialLabel();
                 materialMyTorrentDescription.Text = torrentFile.info.description;
