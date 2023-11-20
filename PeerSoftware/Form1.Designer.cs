@@ -68,6 +68,7 @@ namespace PeerSoftware
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
+            button3 = new Button();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
@@ -431,6 +432,7 @@ namespace PeerSoftware
             // 
             // settings
             // 
+            settings.Controls.Add(button3);
             settings.Controls.Add(label7);
             settings.Controls.Add(label6);
             settings.Controls.Add(DownloadFromPeers);
@@ -552,6 +554,16 @@ namespace PeerSoftware
             tableLayoutPanel3.Size = new Size(200, 100);
             tableLayoutPanel3.TabIndex = 0;
             // 
+            // button3
+            // 
+            button3.Location = new Point(664, 261);
+            button3.Name = "button3";
+            button3.Size = new Size(114, 46);
+            button3.TabIndex = 7;
+            button3.Text = "QUIT";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -625,6 +637,7 @@ namespace PeerSoftware
         private Label label6;
         private ComboBox nPeersComboBox;
         private Button DownloadFromPeers;
+        private Button button3;
     }
 }
 

@@ -508,5 +508,10 @@ namespace PeerSoftware
         {
             _nPeersUploading = nPeersComboBox.SelectedIndex + 1;
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
