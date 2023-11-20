@@ -62,7 +62,6 @@ namespace TorrentTracker.Controllers
         }
         public void RemoveTorrentFromDictionary(string ip, string torrentNameToDelete)
         {
-            _dictionaryController.ReadDictionaryFromFile();
             foreach(var pair in _dictionaryController.GetDictionary())
             {
                if(ip == pair.Key.IPAddress)

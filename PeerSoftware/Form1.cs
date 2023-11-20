@@ -12,6 +12,7 @@ using MaterialSkin.Controls;
 using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Windows.Forms;
+using System.Net.Sockets;
 
 namespace PeerSoftware
 {
@@ -464,8 +465,8 @@ namespace PeerSoftware
             string trackerIp;
             int trackerPort;
             (trackerIp, trackerPort) = _networkUtils.SplitIpAndPort(this);
-            //TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
-            //_connections.SendPTTMessage(tcpClient, 0x03, payload);
+            TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
+            _connections.SendPTTMessage(tcpClient, 0x03, payload);
 
             string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
 
@@ -474,8 +475,16 @@ namespace PeerSoftware
 
             if (_customMessageBox.ShowDialog() == DialogResult.Yes)
             {
-                File.Delete(folderPath);
-
+                _customMessageBox.SetTitle("Delete Confirmation");
+                _customMessageBox.SetMessageText($"Do you want to delete shared file also?");
+                if ( File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
+                {
+                    File.Delete(torrentFiles.First().info.fileName);
+                }
+                if( File.Exists(folderPath))
+                {
+                    File.Delete(folderPath);
+                }
                 ShowMyTorrents();
             }
 
