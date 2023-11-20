@@ -28,182 +28,298 @@
         /// </summary>
         private void InitializeComponent()
         {
-            upload = new Button();
-            label1 = new Label();
-            label2 = new Label();
-            torrentName = new TextBox();
-            browseFile = new Button();
-            groupBox1 = new GroupBox();
-            label3 = new Label();
-            filePathTextBox = new TextBox();
-            groupBox2 = new GroupBox();
-            fileSizeTextBox = new TextBox();
-            fileSize = new Label();
-            description = new TextBox();
-            groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
-            SuspendLayout();
-            // 
-            // upload
-            // 
-            upload.Location = new Point(8, 208);
-            upload.Name = "upload";
-            upload.Size = new Size(75, 23);
-            upload.TabIndex = 0;
-            upload.Text = "Create";
-            upload.UseVisualStyleBackColor = true;
-            upload.Click += upload_Click;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(6, 19);
-            label1.Name = "label1";
-            label1.Size = new Size(79, 15);
-            label1.TabIndex = 1;
-            label1.Text = "Torrent Name";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(6, 108);
-            label2.Name = "label2";
-            label2.Size = new Size(67, 15);
-            label2.TabIndex = 2;
-            label2.Text = "Description";
-            // 
-            // torrentName
-            // 
-            torrentName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            torrentName.Location = new Point(8, 37);
-            torrentName.Name = "torrentName";
-            torrentName.Size = new Size(581, 23);
-            torrentName.TabIndex = 3;
-            // 
-            // browseFile
-            // 
-            browseFile.Location = new Point(6, 65);
-            browseFile.Name = "browseFile";
-            browseFile.Size = new Size(77, 28);
-            browseFile.TabIndex = 5;
-            browseFile.Text = "Browse";
-            browseFile.UseVisualStyleBackColor = true;
-            browseFile.Click += browseFile_Click;
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormNewTorrent));
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.browseFile = new MaterialSkin.Controls.MaterialButton();
+            this.label3 = new MaterialSkin.Controls.MaterialLabel();
+            this.filePathTextBox = new MaterialSkin.Controls.MaterialTextBox2();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.upload = new MaterialSkin.Controls.MaterialButton();
+            this.description = new MaterialSkin.Controls.MaterialMultiLineTextBox2();
+            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.fileSizeTextBox = new MaterialSkin.Controls.MaterialTextBox2();
+            this.fileSize = new MaterialSkin.Controls.MaterialLabel();
+            this.torrentName = new MaterialSkin.Controls.MaterialTextBox2();
+            this.label1 = new MaterialSkin.Controls.MaterialLabel();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.SuspendLayout();
             // 
             // groupBox1
             // 
-            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox1.Controls.Add(label3);
-            groupBox1.Controls.Add(filePathTextBox);
-            groupBox1.Controls.Add(browseFile);
-            groupBox1.Location = new Point(12, 12);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(597, 102);
-            groupBox1.TabIndex = 6;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "Select Source";
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.browseFile);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.filePathTextBox);
+            this.groupBox1.Location = new System.Drawing.Point(6, 70);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(612, 151);
+            this.groupBox1.TabIndex = 6;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Select Source";
+            // 
+            // browseFile
+            // 
+            this.browseFile.AutoSize = false;
+            this.browseFile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.browseFile.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.browseFile.Depth = 0;
+            this.browseFile.HighEmphasis = true;
+            this.browseFile.Icon = ((System.Drawing.Image)(resources.GetObject("browseFile.Icon")));
+            this.browseFile.Location = new System.Drawing.Point(6, 98);
+            this.browseFile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.browseFile.MouseState = MaterialSkin.MouseState.HOVER;
+            this.browseFile.Name = "browseFile";
+            this.browseFile.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.browseFile.Size = new System.Drawing.Size(112, 36);
+            this.browseFile.TabIndex = 10;
+            this.browseFile.Text = "Browse";
+            this.browseFile.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.browseFile.UseAccentColor = false;
+            this.browseFile.UseVisualStyleBackColor = true;
+            this.browseFile.Click += new System.EventHandler(this.browseFile_Click);
             // 
             // label3
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(6, 18);
-            label3.Name = "label3";
-            label3.Size = new Size(52, 15);
-            label3.TabIndex = 7;
-            label3.Text = "File Path";
+            this.label3.AutoSize = true;
+            this.label3.Depth = 0;
+            this.label3.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label3.Location = new System.Drawing.Point(6, 19);
+            this.label3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(63, 19);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "File Path";
             // 
             // filePathTextBox
             // 
-            filePathTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            filePathTextBox.BackColor = Color.White;
-            filePathTextBox.Enabled = false;
-            filePathTextBox.Location = new Point(8, 36);
-            filePathTextBox.Name = "filePathTextBox";
-            filePathTextBox.ReadOnly = true;
-            filePathTextBox.Size = new Size(583, 23);
-            filePathTextBox.TabIndex = 6;
+            this.filePathTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.filePathTextBox.AnimateReadOnly = false;
+            this.filePathTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.filePathTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.filePathTextBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.filePathTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.filePathTextBox.Depth = 0;
+            this.filePathTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.filePathTextBox.HideSelection = true;
+            this.filePathTextBox.LeadingIcon = null;
+            this.filePathTextBox.Location = new System.Drawing.Point(6, 41);
+            this.filePathTextBox.MaxLength = 32767;
+            this.filePathTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            this.filePathTextBox.Name = "filePathTextBox";
+            this.filePathTextBox.PasswordChar = '\0';
+            this.filePathTextBox.PrefixSuffixText = null;
+            this.filePathTextBox.ReadOnly = true;
+            this.filePathTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.filePathTextBox.SelectedText = "";
+            this.filePathTextBox.SelectionLength = 0;
+            this.filePathTextBox.SelectionStart = 0;
+            this.filePathTextBox.ShortcutsEnabled = true;
+            this.filePathTextBox.Size = new System.Drawing.Size(598, 48);
+            this.filePathTextBox.TabIndex = 8;
+            this.filePathTextBox.TabStop = false;
+            this.filePathTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.filePathTextBox.TrailingIcon = null;
+            this.filePathTextBox.UseSystemPasswordChar = false;
             // 
             // groupBox2
             // 
-            groupBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox2.Controls.Add(fileSizeTextBox);
-            groupBox2.Controls.Add(fileSize);
-            groupBox2.Controls.Add(description);
-            groupBox2.Controls.Add(upload);
-            groupBox2.Controls.Add(label1);
-            groupBox2.Controls.Add(torrentName);
-            groupBox2.Controls.Add(label2);
-            groupBox2.Location = new Point(12, 120);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(597, 238);
-            groupBox2.TabIndex = 7;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Torrent Properties";
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.upload);
+            this.groupBox2.Controls.Add(this.description);
+            this.groupBox2.Controls.Add(this.materialLabel1);
+            this.groupBox2.Controls.Add(this.fileSizeTextBox);
+            this.groupBox2.Controls.Add(this.fileSize);
+            this.groupBox2.Controls.Add(this.torrentName);
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Location = new System.Drawing.Point(6, 227);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(612, 349);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Torrent Properties";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
-            // fileSizeTextBox
+            // upload
             // 
-            fileSizeTextBox.BackColor = Color.White;
-            fileSizeTextBox.Enabled = false;
-            fileSizeTextBox.Location = new Point(8, 81);
-            fileSizeTextBox.Name = "fileSizeTextBox";
-            fileSizeTextBox.ReadOnly = true;
-            fileSizeTextBox.Size = new Size(65, 23);
-            fileSizeTextBox.TabIndex = 8;
-            // 
-            // fileSize
-            // 
-            fileSize.AutoSize = true;
-            fileSize.Location = new Point(6, 63);
-            fileSize.Name = "fileSize";
-            fileSize.Size = new Size(48, 15);
-            fileSize.TabIndex = 7;
-            fileSize.Text = "File Size";
+            this.upload.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.upload.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.upload.Depth = 0;
+            this.upload.HighEmphasis = true;
+            this.upload.Icon = ((System.Drawing.Image)(resources.GetObject("upload.Icon")));
+            this.upload.Location = new System.Drawing.Point(7, 296);
+            this.upload.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.upload.MouseState = MaterialSkin.MouseState.HOVER;
+            this.upload.Name = "upload";
+            this.upload.NoAccentTextColor = System.Drawing.Color.Empty;
+            this.upload.Size = new System.Drawing.Size(104, 36);
+            this.upload.TabIndex = 15;
+            this.upload.Text = "Create";
+            this.upload.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.upload.UseAccentColor = false;
+            this.upload.UseVisualStyleBackColor = true;
+            this.upload.Click += new System.EventHandler(this.upload_Click);
             // 
             // description
             // 
-            description.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            description.Location = new Point(8, 126);
-            description.Multiline = true;
-            description.Name = "description";
-            description.PlaceholderText = "Add description..";
-            description.ScrollBars = ScrollBars.Horizontal;
-            description.Size = new Size(583, 76);
-            description.TabIndex = 6;
+            this.description.AnimateReadOnly = false;
+            this.description.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.description.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.description.Depth = 0;
+            this.description.HideSelection = true;
+            this.description.Hint = "Add description..";
+            this.description.Location = new System.Drawing.Point(6, 187);
+            this.description.MaxLength = 32767;
+            this.description.MouseState = MaterialSkin.MouseState.OUT;
+            this.description.Name = "description";
+            this.description.PasswordChar = '\0';
+            this.description.ReadOnly = false;
+            this.description.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.description.SelectedText = "";
+            this.description.SelectionLength = 0;
+            this.description.SelectionStart = 0;
+            this.description.ShortcutsEnabled = true;
+            this.description.Size = new System.Drawing.Size(583, 100);
+            this.description.TabIndex = 14;
+            this.description.TabStop = false;
+            this.description.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.description.UseSystemPasswordChar = false;
+            // 
+            // materialLabel1
+            // 
+            this.materialLabel1.AutoSize = true;
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.materialLabel1.Location = new System.Drawing.Point(6, 165);
+            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(81, 19);
+            this.materialLabel1.TabIndex = 13;
+            this.materialLabel1.Text = "Description";
+            // 
+            // fileSizeTextBox
+            // 
+            this.fileSizeTextBox.AnimateReadOnly = false;
+            this.fileSizeTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.fileSizeTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.fileSizeTextBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.fileSizeTextBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.fileSizeTextBox.Depth = 0;
+            this.fileSizeTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fileSizeTextBox.HideSelection = true;
+            this.fileSizeTextBox.LeadingIcon = null;
+            this.fileSizeTextBox.Location = new System.Drawing.Point(6, 114);
+            this.fileSizeTextBox.MaxLength = 32767;
+            this.fileSizeTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            this.fileSizeTextBox.Name = "fileSizeTextBox";
+            this.fileSizeTextBox.PasswordChar = '\0';
+            this.fileSizeTextBox.PrefixSuffixText = null;
+            this.fileSizeTextBox.ReadOnly = true;
+            this.fileSizeTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.fileSizeTextBox.SelectedText = "";
+            this.fileSizeTextBox.SelectionLength = 0;
+            this.fileSizeTextBox.SelectionStart = 0;
+            this.fileSizeTextBox.ShortcutsEnabled = true;
+            this.fileSizeTextBox.Size = new System.Drawing.Size(86, 48);
+            this.fileSizeTextBox.TabIndex = 12;
+            this.fileSizeTextBox.TabStop = false;
+            this.fileSizeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.fileSizeTextBox.TrailingIcon = null;
+            this.fileSizeTextBox.UseSystemPasswordChar = false;
+            // 
+            // fileSize
+            // 
+            this.fileSize.AutoSize = true;
+            this.fileSize.Depth = 0;
+            this.fileSize.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.fileSize.Location = new System.Drawing.Point(6, 92);
+            this.fileSize.MouseState = MaterialSkin.MouseState.HOVER;
+            this.fileSize.Name = "fileSize";
+            this.fileSize.Size = new System.Drawing.Size(60, 19);
+            this.fileSize.TabIndex = 11;
+            this.fileSize.Text = "File Size";
+            // 
+            // torrentName
+            // 
+            this.torrentName.AnimateReadOnly = false;
+            this.torrentName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.torrentName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.torrentName.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.torrentName.CharacterCasing = System.Windows.Forms.CharacterCasing.Normal;
+            this.torrentName.Depth = 0;
+            this.torrentName.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.torrentName.HideSelection = true;
+            this.torrentName.LeadingIcon = null;
+            this.torrentName.Location = new System.Drawing.Point(6, 41);
+            this.torrentName.MaxLength = 32767;
+            this.torrentName.MouseState = MaterialSkin.MouseState.OUT;
+            this.torrentName.Name = "torrentName";
+            this.torrentName.PasswordChar = '\0';
+            this.torrentName.PrefixSuffixText = null;
+            this.torrentName.ReadOnly = false;
+            this.torrentName.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.torrentName.SelectedText = "";
+            this.torrentName.SelectionLength = 0;
+            this.torrentName.SelectionStart = 0;
+            this.torrentName.ShortcutsEnabled = true;
+            this.torrentName.Size = new System.Drawing.Size(583, 48);
+            this.torrentName.TabIndex = 10;
+            this.torrentName.TabStop = false;
+            this.torrentName.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.torrentName.TrailingIcon = null;
+            this.torrentName.UseSystemPasswordChar = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Depth = 0;
+            this.label1.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.label1.Location = new System.Drawing.Point(6, 19);
+            this.label1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(98, 19);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Torrent Name";
             // 
             // FormNewTorrent
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(624, 371);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            MaximizeBox = false;
-            MaximumSize = new Size(959, 410);
-            MinimumSize = new Size(444, 410);
-            Name = "FormNewTorrent";
-            Text = "Create New Torrent";
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
-            groupBox2.ResumeLayout(false);
-            groupBox2.PerformLayout();
-            ResumeLayout(false);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(624, 585);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(624, 585);
+            this.MinimumSize = new System.Drawing.Size(624, 585);
+            this.Name = "FormNewTorrent";
+            this.Text = "Create New Torrent";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
-
-        private Button upload;
-        private Label label1;
-        private Label label2;
-        private TextBox torrentName;
-        private TextBox description;
-        private Button browseFile;
         private GroupBox groupBox1;
         private GroupBox groupBox2;
-        private TextBox filePathTextBox;
-        private Label label3;
         private Panel panel1;
         private TextBox textBox1;
-        private TextBox fileSizeTextBox;
-        private Label fileSize;
+        private MaterialSkin.Controls.MaterialButton browseFile;
+        private MaterialSkin.Controls.MaterialLabel label3;
+        private MaterialSkin.Controls.MaterialTextBox2 filePathTextBox;
+        private MaterialSkin.Controls.MaterialLabel fileSize;
+        private MaterialSkin.Controls.MaterialTextBox2 torrentName;
+        private MaterialSkin.Controls.MaterialLabel label1;
+        private MaterialSkin.Controls.MaterialButton upload;
+        private MaterialSkin.Controls.MaterialMultiLineTextBox2 description;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialTextBox2 fileSizeTextBox;
     }
 }

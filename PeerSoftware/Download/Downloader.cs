@@ -1,3 +1,4 @@
+﻿using MaterialSkin.Controls;
 ﻿using Microsoft.Toolkit.Uwp.Notifications;
 using PeerSoftware.Services;
 using PeerSoftware.Utils;
@@ -23,7 +24,7 @@ namespace PeerSoftware.Download
             _threadManager = new ThreadManager();
         }
 
-        public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
+        public void Download(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
         {
             ThreadManager threadManager = new ThreadManager();
             List<string> peersList = peers;//JsonSerializer.Deserialize<List<string>>(peers);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using PTP_Parser;
 using System.IO;
 using System.Timers;
+using MaterialSkin.Controls;
 
 namespace PeerSoftware.Download
 {
@@ -17,9 +18,9 @@ namespace PeerSoftware.Download
         private List<TcpClient> _clients = new List<TcpClient>();
         private int _serverPort = 12346;
         private int _numberOfBlocks;
-        private ProgressBar _progressBar;
+        private MaterialProgressBar _progressBar;
 
-        public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile, ProgressBar progressBar)
+        public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile, MaterialProgressBar progressBar)
         {
             _progressBar = progressBar;
             System.Timers.Timer timer = new System.Timers.Timer();
