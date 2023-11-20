@@ -105,9 +105,8 @@ namespace PeerSoftware
                 comboBoxTheme.Items.Add(themeName);
             }
 
-            peerThread.Start();
 
-            _downloader = new Downloader();
+
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -147,7 +146,7 @@ namespace PeerSoftware
                 tableLayoutPanel2.Controls.Add(materialDescriptionLabel, 2, i);
                 tableLayoutPanel2.Controls.Add(materialDownloadButton, 3, i);
 
-                //_materialTitleControls.Add(materialTitleLabel);
+                _materialTitleControls.Add(materialTitleLabel);
                 _materialSizeControls.Add(materialSizeLabel);
                 _materialDescriptionControls.Add(materialDescriptionLabel);
                 _materialDownloadControls.Add(materialDownloadButton);
