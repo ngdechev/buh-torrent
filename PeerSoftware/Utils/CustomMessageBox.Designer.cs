@@ -28,86 +28,83 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnYes = new MaterialSkin.Controls.MaterialButton();
-            this.btnNo = new MaterialSkin.Controls.MaterialButton();
-            this.msg = new MaterialSkin.Controls.MaterialLabel();
-            this.SuspendLayout();
+            btnYes = new MaterialSkin.Controls.MaterialButton();
+            btnNo = new MaterialSkin.Controls.MaterialButton();
+            msg = new MaterialSkin.Controls.MaterialLabel();
+            SuspendLayout();
             // 
             // btnYes
             // 
-            this.btnYes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnYes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnYes.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnYes.Depth = 0;
-            this.btnYes.HighEmphasis = true;
-            this.btnYes.Icon = null;
-            this.btnYes.Location = new System.Drawing.Point(147, 230);
-            this.btnYes.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnYes.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnYes.Name = "btnYes";
-            this.btnYes.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnYes.Size = new System.Drawing.Size(64, 36);
-            this.btnYes.TabIndex = 0;
-            this.btnYes.Text = "Yes";
-            this.btnYes.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnYes.UseAccentColor = false;
-            this.btnYes.UseVisualStyleBackColor = true;
-            this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
+            btnYes.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnYes.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnYes.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnYes.Depth = 0;
+            btnYes.HighEmphasis = true;
+            btnYes.Icon = null;
+            btnYes.Location = new Point(143, 188);
+            btnYes.Margin = new Padding(4, 6, 4, 6);
+            btnYes.MouseState = MaterialSkin.MouseState.HOVER;
+            btnYes.Name = "btnYes";
+            btnYes.NoAccentTextColor = Color.Empty;
+            btnYes.Size = new Size(64, 36);
+            btnYes.TabIndex = 0;
+            btnYes.Text = "Yes";
+            btnYes.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnYes.UseAccentColor = false;
+            btnYes.UseVisualStyleBackColor = true;
+            btnYes.Click += btnYes_Click;
             // 
             // btnNo
             // 
-            this.btnNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnNo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnNo.Depth = 0;
-            this.btnNo.HighEmphasis = true;
-            this.btnNo.Icon = null;
-            this.btnNo.Location = new System.Drawing.Point(219, 230);
-            this.btnNo.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnNo.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnNo.Name = "btnNo";
-            this.btnNo.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.btnNo.Size = new System.Drawing.Size(64, 36);
-            this.btnNo.TabIndex = 1;
-            this.btnNo.Text = "No";
-            this.btnNo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnNo.UseAccentColor = false;
-            this.btnNo.UseVisualStyleBackColor = true;
-            this.btnNo.Click += new System.EventHandler(this.btnNo_Click);
+            btnNo.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            btnNo.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnNo.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnNo.Depth = 0;
+            btnNo.HighEmphasis = true;
+            btnNo.Icon = null;
+            btnNo.Location = new Point(215, 188);
+            btnNo.Margin = new Padding(4, 6, 4, 6);
+            btnNo.MouseState = MaterialSkin.MouseState.HOVER;
+            btnNo.Name = "btnNo";
+            btnNo.NoAccentTextColor = Color.Empty;
+            btnNo.Size = new Size(64, 36);
+            btnNo.TabIndex = 1;
+            btnNo.Text = "No";
+            btnNo.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnNo.UseAccentColor = false;
+            btnNo.UseVisualStyleBackColor = true;
+            btnNo.Click += btnNo_Click;
             // 
             // msg
             // 
-            this.msg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.msg.Depth = 0;
-            this.msg.Font = new System.Drawing.Font("Roboto", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.msg.Location = new System.Drawing.Point(-1, 64);
-            this.msg.MouseState = MaterialSkin.MouseState.HOVER;
-            this.msg.Name = "msg";
-            this.msg.Size = new System.Drawing.Size(413, 217);
-            this.msg.TabIndex = 2;
-            this.msg.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            msg.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            msg.Depth = 0;
+            msg.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            msg.Location = new Point(6, 64);
+            msg.MaximumSize = new Size(414, 181);
+            msg.MouseState = MaterialSkin.MouseState.HOVER;
+            msg.Name = "msg";
+            msg.Size = new Size(400, 173);
+            msg.TabIndex = 2;
+            msg.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // CustomMessageBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(412, 275);
-            this.Controls.Add(this.btnNo);
-            this.Controls.Add(this.btnYes);
-            this.Controls.Add(this.msg);
-            this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(412, 275);
-            this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(412, 275);
-            this.Name = "CustomMessageBox";
-            this.Text = "CustomMessageBox";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            ClientSize = new Size(412, 245);
+            Controls.Add(btnNo);
+            Controls.Add(btnYes);
+            Controls.Add(msg);
+            MaximizeBox = false;
+            MaximumSize = new Size(412, 245);
+            MinimizeBox = false;
+            MinimumSize = new Size(412, 245);
+            Name = "CustomMessageBox";
+            Text = "CustomMessageBox";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

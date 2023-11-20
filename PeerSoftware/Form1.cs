@@ -733,61 +733,7 @@ namespace PeerSoftware
 
             //UpdateBackgroundColors
         }
-        /*
-        private void UpdateBackgroundColors()
-        {
-            Color darkBackground = Color.FromArgb(38, 50, 56); // Your desired background colo
 
-            settingsTabTrackerGroupBox.BackColor = darkBackground;
-            settingsTabClientGroupBox.BackColor = darkBackground;
-
-            tableLayoutPanel1.BackColor = darkBackground;
-            tableLayoutPanel2.BackColor = darkBackground;
-            tableLayoutPanel4.BackColor = darkBackground;
-            tableLayoutPanel5.BackColor = darkBackground;
-            tableLayoutPanel6.BackColor = darkBackground;
-            tableLayoutPanel7.BackColor = darkBackground;
-
-            // Iterate through controls and set their background color
-            foreach (Control control in this.Controls)
-            {
-                control.BackColor = darkBackground;
-
-                // Check for nested controls
-                if (control.HasChildren)
-                {
-                    foreach (Control nestedControl in control.Controls)
-                    {
-                        nestedControl.BackColor = darkBackground;
-                        // You might need further checks or customization depending on your control hierarchy
-                    }
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel7.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = darkBackground;
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel6.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = darkBackground;
-                }
-            }
-
-            foreach (TabPage tabPage in tabControl1.TabPages)
-            {
-                tabPage.BackColor = darkBackground;
-            }
-        }
-        */
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
