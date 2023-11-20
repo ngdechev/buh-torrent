@@ -629,7 +629,7 @@ namespace PeerSoftware
             // 
             // settingsTabClientGroupBox
             // 
-            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             settingsTabClientGroupBox.Controls.Add(startupSettings);
             settingsTabClientGroupBox.Controls.Add(theme);
             settingsTabClientGroupBox.Controls.Add(peerSettings);
@@ -642,6 +642,7 @@ namespace PeerSoftware
             // 
             // startupSettings
             // 
+            startupSettings.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             startupSettings.Controls.Add(startMinimizedCheckbox);
             startupSettings.Controls.Add(startupCheckbox);
             startupSettings.Location = new Point(6, 22);
@@ -685,6 +686,7 @@ namespace PeerSoftware
             // 
             // theme
             // 
+            theme.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             theme.Controls.Add(comboBoxTheme);
             theme.Controls.Add(darkModeSwitch);
             theme.Location = new Point(6, 90);
@@ -735,6 +737,7 @@ namespace PeerSoftware
             // 
             // peerSettings
             // 
+            peerSettings.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             peerSettings.Controls.Add(browseDownloadsLocationLabel);
             peerSettings.Controls.Add(btnBrowseDownloadLocation);
             peerSettings.Controls.Add(browseDownloadLocationTextBox);
@@ -838,7 +841,7 @@ namespace PeerSoftware
             // 
             // settingsTabTrackerGroupBox
             // 
-            settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             settingsTabTrackerGroupBox.Controls.Add(trackerIP);
             settingsTabTrackerGroupBox.Controls.Add(save);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
@@ -988,7 +991,7 @@ namespace PeerSoftware
             Controls.Add(panel1);
             Controls.Add(tabControl1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(899, 419);
+            MinimumSize = new Size(899, 520);
             Name = "Form1";
             Padding = new Padding(0, 64, 0, 500);
             Text = "BuhTorrent";
