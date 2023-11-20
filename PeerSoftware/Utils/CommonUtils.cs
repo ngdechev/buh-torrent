@@ -55,19 +55,8 @@ namespace PeerSoftware.Utils
                     string currentDirectory = Directory.GetCurrentDirectory();
                     string folderPath = Path.Combine(currentDirectory, "Download", newTorrent.info.torrentName + "." + fileExtension);
                     newTorrent.info.fileName = folderPath;
-                   // TorrentReader.WriteJSON("MyTorrent", newTorrent);
+                    TorrentReader.WriteJSON("MyTorrent", newTorrent);
 
-                    /*string trackerIpField;
-                    int trackerPortField;
-
-                    (trackerIpField, trackerPortField) = new NetworkUtils().SplitIpAndPort(mainForm);
-
-                    *//*new Connections().AnnounceNewPeer(trackerIpField, trackerPortField);*//*
-                    TcpClient client = new TcpClient(trackerIpField,trackerPortField);
-                    string? myip = new NetworkUtils().GetLocalIPAddress() + ":" + new NetworkUtils().GetLocalPort().ToString();
-
-                    string ipPlusJson = myip + ";" + JsonSerializer.Serialize(newTorrent);
-                    new Connections().SendPTTMessage(client, 0x02,ipPlusJson);*/
                 }
             }
 

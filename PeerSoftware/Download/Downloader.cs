@@ -84,7 +84,7 @@ namespace PeerSoftware.Download
 
                         // Handle any response from the server if needed
                         // ...
-                        TorrentReader.WriteJSON("MyTorrent", torrentFile);
+                        //TorrentReader.WriteJSON("MyTorrent", torrentFile);
 
                         new ToastContentBuilder()
                             .AddText($"{torrentFile.info.torrentName} has been downloaded!")

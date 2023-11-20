@@ -166,6 +166,7 @@ namespace PeerSoftware
 
         private void OnMenuItem2Clicked(object? sender, EventArgs e)
         {
+            
             Application.Exit();
         }
 
@@ -311,85 +312,6 @@ namespace PeerSoftware
             }
         }
 
-        /*
-          private void Show(int i, List<TorrentFile> torrentFiles)
-         {
-             List<TorrentFile> disable = StatusDownloadButton();
-             int row = i * 5;
-             for (int index = 0; index < _titleControls.Count; index++)
-             {
-                 Control titleControl = _titleControls[index];
-                 Control sizeControl = _sizeControls[index];
-                 Control descriptionControl = _descriptionControls[index];
-                 Control downloadButtonControl = _downloadControls[index];
-
-                 if (index + row < torrentFiles.Count)
-                 {
-                     if (titleControl != null)
-                     {
-                         titleControl.Text = torrentFiles[index + row].info.torrentName;
-                     }
-
-                     if (sizeControl != null)
-                     {
-                         sizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
-                     }
-
-                     if (descriptionControl != null)
-                     {
-                         descriptionControl.Text = torrentFiles[index + row].info.description;
-                     }
-
-                     if (downloadButtonControl != null)
-                     {
-                         downloadButtonControl.Visible = true;
-                     }
-                 }
-                 else
-                 {
-                     // If there are no more items in torrentFiles, clear the text of the controls
-
-
-                     if (titleControl != null)
-                     {
-                         titleControl.Text = "";
-                     }
-
-                     if (sizeControl != null)
-                     {
-                         sizeControl.Text = "";
-                     }
-
-                     if (descriptionControl != null)
-                     {
-                         descriptionControl.Text = "";
-                     }
-
-                     if (downloadButtonControl != null)
-                     {
-                         downloadButtonControl.Visible = false;
-                     }
-                 }
-                 if (_torrentDownloadingNames.Count != 0)
-                 {
-                     foreach (string name in _torrentDownloadingNames)
-                     {
-                         if (titleControl.Text == name)
-                         {
-                             _downloadControls[index].Enabled = false;
-                             break;
-                         }
-                         if (titleControl.Text != name)
-                         {
-                             _downloadControls[index].Enabled = true;
-                         }
-
-                     }
-                 }
-
-             }
-         }
-         */
 
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -488,15 +410,6 @@ namespace PeerSoftware
                 ShowMyTorrents();
             }
 
-            //DialogResult result = MessageBox.Show($"Do you want to delete {torrentName.Text}.json?", "Confirmation", MessageBoxButtons.YesNo);
-            /*
-            if (result == DialogResult.Yes)
-            {
-                File.Delete(folderPath);
-
-                ShowMyTorrents();
-            }
-            */
         }
 
         // Downloading torrents tab..
@@ -540,6 +453,7 @@ namespace PeerSoftware
             button.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
             button.Size = new Size(200, 200);
             button.Anchor = AnchorStyles.None;
+            button.Click += PauseResume_Click;
 
             // Create a new row
             tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
@@ -567,6 +481,11 @@ namespace PeerSoftware
 
             //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
             _torrentDownloadingNames.Add(label1.Text);
+        }
+
+        private void PauseResume_Click(object? sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
@@ -608,10 +527,6 @@ namespace PeerSoftware
             return trackerIP.Text;
         }
 
-        private void buhTorrent_Click(object sender, EventArgs e)
-        {
-
-        }
 
         public string GetIpFieldText()
         {
@@ -623,10 +538,6 @@ namespace PeerSoftware
             progressBar.Value = count;
         }
 
-        private void tableLayoutPanel7_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void comboBoxTheme_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -681,40 +592,7 @@ namespace PeerSoftware
                 tabPage.BackColor = Color.White;
             }
 
-            /*
-             tableLayoutPanel1.BackColor = Color.White;
-            tableLayoutPanel2.BackColor = Color.White;
-            tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel5.BackColor = Color.White;
-            tableLayoutPanel6.BackColor = Color.White;
-            tableLayoutPanel7.BackColor = Color.White;
-
-            settingsTabTrackerGroupBox.BackColor = Color.White;
-            settingsTabClientGroupBox.BackColor = Color.White;
-
-            foreach (Control control in tableLayoutPanel7.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = Color.White;
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel6.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = Color.White;
-                }
-            }
-
-            foreach (TabPage tabPage in tabControl1.TabPages)
-            {
-                tabPage.BackColor = Color.White;
-            }
-             */
+            
         }
 
         private void UIDarkMode()
@@ -742,61 +620,7 @@ namespace PeerSoftware
 
             //UpdateBackgroundColors
         }
-        /*
-        private void UpdateBackgroundColors()
-        {
-            Color darkBackground = Color.FromArgb(38, 50, 56); // Your desired background colo
-
-            settingsTabTrackerGroupBox.BackColor = darkBackground;
-            settingsTabClientGroupBox.BackColor = darkBackground;
-
-            tableLayoutPanel1.BackColor = darkBackground;
-            tableLayoutPanel2.BackColor = darkBackground;
-            tableLayoutPanel4.BackColor = darkBackground;
-            tableLayoutPanel5.BackColor = darkBackground;
-            tableLayoutPanel6.BackColor = darkBackground;
-            tableLayoutPanel7.BackColor = darkBackground;
-
-            // Iterate through controls and set their background color
-            foreach (Control control in this.Controls)
-            {
-                control.BackColor = darkBackground;
-
-                // Check for nested controls
-                if (control.HasChildren)
-                {
-                    foreach (Control nestedControl in control.Controls)
-                    {
-                        nestedControl.BackColor = darkBackground;
-                        // You might need further checks or customization depending on your control hierarchy
-                    }
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel7.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = darkBackground;
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel6.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = darkBackground;
-                }
-            }
-
-            foreach (TabPage tabPage in tabControl1.TabPages)
-            {
-                tabPage.BackColor = darkBackground;
-            }
-        }
-        */
+       
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -818,6 +642,10 @@ namespace PeerSoftware
                 Show();
 
                 notifyIcon1.Visible = false;
+            }
+            if (e.Button == MouseButtons.Right)
+            {
+
             }
         }
     }
