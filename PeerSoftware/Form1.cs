@@ -108,8 +108,7 @@ namespace PeerSoftware
             }
 
 
-            nPeersComboBox.SelectedIndex = 1;
-            _nPeersUploading = nPeersComboBox.SelectedIndex + 1;
+            _nPeersUploading = maxDownloadsFromPeersSlider.Value;
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -168,7 +167,7 @@ namespace PeerSoftware
 
         private void OnMenuItem2Clicked(object? sender, EventArgs e)
         {
-            
+
             Application.Exit();
         }
 
@@ -406,11 +405,11 @@ namespace PeerSoftware
             {
                 _customMessageBox.SetTitle("Delete Confirmation");
                 _customMessageBox.SetMessageText($"Do you want to delete shared file also?");
-                if ( File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
+                if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
                 {
                     File.Delete(torrentFiles.First().info.fileName);
                 }
-                if( File.Exists(folderPath))
+                if (File.Exists(folderPath))
                 {
                     File.Delete(folderPath);
                 }
@@ -599,7 +598,7 @@ namespace PeerSoftware
                 tabPage.BackColor = Color.White;
             }
 
-            
+
         }
 
         private void UIDarkMode()
@@ -627,7 +626,7 @@ namespace PeerSoftware
 
             //UpdateBackgroundColors
         }
-       
+
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
