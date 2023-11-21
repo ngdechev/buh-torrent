@@ -1,4 +1,6 @@
-﻿using PeerSoftware.Services;
+﻿using MaterialSkin.Controls;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using PeerSoftware.Services;
 using PeerSoftware.Utils;
 using PTP_Parser;
 using PTT_Parser;
@@ -22,7 +24,7 @@ namespace PeerSoftware.Download
             _threadManager = new ThreadManager();
         }
 
-        public void Download(TorrentFile torrentFile, List<string> peers, ProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
+        public void Download(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
         {
             ThreadManager threadManager = new ThreadManager();
             List<string> peersList = peers;//JsonSerializer.Deserialize<List<string>>(peers);
@@ -80,7 +82,11 @@ namespace PeerSoftware.Download
 
                         // Handle any response from the server if needed
                         // ...
-                        TorrentReader.WriteJSON("MyTorrent", torrentFile);
+                        //TorrentReader.WriteJSON("MyTorrent", torrentFile);
+
+                        new ToastContentBuilder()
+                            .AddText($"{torrentFile.info.torrentName} has been downloaded!")
+                            .Show();
                     }
                 }
 

@@ -55,19 +55,8 @@ namespace PeerSoftware.Utils
                     string currentDirectory = Directory.GetCurrentDirectory();
                     string folderPath = Path.Combine(currentDirectory, "Download", newTorrent.info.torrentName + "." + fileExtension);
                     newTorrent.info.fileName = folderPath;
-                   // TorrentReader.WriteJSON("MyTorrent", newTorrent);
+                    TorrentReader.WriteJSON("MyTorrent", newTorrent);
 
-                    /*string trackerIpField;
-                    int trackerPortField;
-
-                    (trackerIpField, trackerPortField) = new NetworkUtils().SplitIpAndPort(mainForm);
-
-                    *//*new Connections().AnnounceNewPeer(trackerIpField, trackerPortField);*//*
-                    TcpClient client = new TcpClient(trackerIpField,trackerPortField);
-                    string? myip = new NetworkUtils().GetLocalIPAddress() + ":" + new NetworkUtils().GetLocalPort().ToString();
-
-                    string ipPlusJson = myip + ";" + JsonSerializer.Serialize(newTorrent);
-                    new Connections().SendPTTMessage(client, 0x02,ipPlusJson);*/
                 }
             }
 
@@ -95,6 +84,98 @@ namespace PeerSoftware.Utils
             }
 
             return temp;
+        }
+
+        public Dictionary<string, string> themeKeyMapping = new Dictionary<string, string>
+        {
+            { "Lime with Purple Accent", "limewithpurpleaccentscheme" },
+            { "Blue-Grey with Light Blue Accent", "bluegreywithlightblueaccentscheme" },
+            { "Indigo with Pink Accent", "indigowithpinkaccentscheme" },
+            { "Teal with Amber Accent", "tealwithamberaccentscheme" },
+            { "Deep Purple with Orange Accent", "deeppurplewithorangeaccentscheme" },
+            { "Blue with Yellow Accent", "bluewithyellowaccentscheme" },
+            { "Green with Lime Accent", "greenwithlimeaccentscheme" },
+        };
+
+        public MaterialSkin.ColorScheme LoadTheme(string themeName)
+        {
+            MaterialSkin.ColorScheme colorScheme = new MaterialSkin.ColorScheme();
+
+            var limePurpleScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Green600,
+                MaterialSkin.Primary.Green700,
+                MaterialSkin.Primary.Blue900,
+                MaterialSkin.Accent.Purple700,
+                MaterialSkin.TextShade.WHITE);
+
+            var blueGreyScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.BlueGrey900,
+                MaterialSkin.Primary.BlueGrey900,
+                MaterialSkin.Primary.BlueGrey900,
+                MaterialSkin.Accent.LightBlue700,
+                MaterialSkin.TextShade.WHITE);
+
+            var indigoPinkScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Indigo500,
+                MaterialSkin.Primary.Indigo500,
+                MaterialSkin.Primary.Indigo500,
+                MaterialSkin.Accent.Pink200,
+                MaterialSkin.TextShade.WHITE);
+
+            var tealAmberScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Teal500,
+                MaterialSkin.Primary.Teal500,
+                MaterialSkin.Primary.Teal500,
+                MaterialSkin.Accent.Amber200,
+                MaterialSkin.TextShade.WHITE);
+
+            var deepPurpleOrangeScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.DeepPurple500,
+                MaterialSkin.Primary.DeepPurple500,
+                MaterialSkin.Primary.DeepPurple500,
+                MaterialSkin.Accent.Orange200,
+                MaterialSkin.TextShade.WHITE);
+
+            var blueYellowScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Blue500,
+                MaterialSkin.Primary.Blue500,
+                MaterialSkin.Primary.Blue500,
+                MaterialSkin.Accent.Yellow200,
+                MaterialSkin.TextShade.WHITE);
+
+            var greenLimeScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Green500,
+                MaterialSkin.Primary.Green500,
+                MaterialSkin.Primary.Green500,
+                MaterialSkin.Accent.Lime200,
+                MaterialSkin.TextShade.WHITE);
+
+            switch (themeName)
+            {
+                case "limewithpurpleaccentscheme":
+                    colorScheme = limePurpleScheme;
+                    break;
+                case "bluegreywithlightblueaccentscheme":
+                    colorScheme = blueGreyScheme;
+                    break;
+                case "indigowithpinkaccentscheme":
+                    colorScheme = indigoPinkScheme;
+                    break;
+                case "tealwithamberaccentscheme":
+                    colorScheme = tealAmberScheme;
+                    break;
+                case "deeppurplewithorangeaccentscheme":
+                    colorScheme = deepPurpleOrangeScheme;
+                    break;
+                case "bluewithyellowaccentscheme":
+                    colorScheme = blueYellowScheme;
+                    break;
+                case "greenwithlimeaccentscheme":
+                    colorScheme = greenLimeScheme;
+                    break;
+            }
+
+            return colorScheme;
         }
 
     }
