@@ -9,6 +9,8 @@ using PTP_Parser;
 using System.IO;
 using System.Timers;
 using MaterialSkin.Controls;
+using System.Text.Json;
+using PTT_Parser;
 
 namespace PeerSoftware.Download
 {
@@ -19,10 +21,15 @@ namespace PeerSoftware.Download
         private int _serverPort = 12346;
         private int _numberOfBlocks;
         private MaterialProgressBar _progressBar;
+        private TorrentFile _torrentFile;
+        public bool isRunnig;
+        private ManualResetEvent _flagEvent = new ManualResetEvent(false);
 
         public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile, MaterialProgressBar progressBar)
         {
+            isRunnig = true;
             _progressBar = progressBar;
+            _torrentFile = torrentFile;
             System.Timers.Timer timer = new System.Timers.Timer();
             timer.Interval = 1000;
             timer.Elapsed += (sender, e) =>  UpdateProgressBar();
@@ -76,6 +83,12 @@ namespace PeerSoftware.Download
             {
                 foreach (var client in _clients)
                 {
+                    if (!isRunnig)
+                    {
+                        SaveToTemp();
+                        DisconnectAll();
+                        return;
+                    }
                     if (client.Connected && client.GetStream().DataAvailable)
                     {
                         PTPBlock receivedBlock = PTPParser.ParseToBlock(client.GetStream());
@@ -85,6 +98,7 @@ namespace PeerSoftware.Download
                     {
                         return;
                     }
+                    
                 }
                 Thread.Sleep(50);
             }
@@ -103,7 +117,27 @@ namespace PeerSoftware.Download
             return _pTPBlocks;
         }
 
+        public void SaveToTemp()
+        {
+            string json = JsonSerializer.Serialize(_pTPBlocks);
+            string path = _torrentFile.info.torrentName + ".json";
+            StreamWriter tempFile = new StreamWriter(path);
+            if (File.Exists(path))
+            {
+                tempFile.Write(json);
+                tempFile.Flush();
+                //outputFile.Close();
+            }
+        }
 
+        public void SetDownloadingFlag(bool value)
+        {
+            isRunnig = value;
+            if (isRunnig)
+            {
+                _flagEvent.Set(); // Signal the event if downloading
+            }
+        }
 
         public void UpdateProgressBar()
         {

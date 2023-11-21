@@ -1,14 +1,12 @@
 ﻿using MaterialSkin.Controls;
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 using PeerSoftware.Services;
 using PeerSoftware.Utils;
 using PTP_Parser;
 using PTT_Parser;
-using System.Net.Http.Json;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 
 namespace PeerSoftware.Download
@@ -40,7 +38,8 @@ namespace PeerSoftware.Download
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 try
                 {
-                   
+                    _threadManager.AddDownloadTCPManeger(connectionManager);
+
                     SharedFileServices sharedFileServices = new SharedFileServices();
                     Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
                         peersList,
@@ -53,44 +52,18 @@ namespace PeerSoftware.Download
                     connectionManager.ReceiveData();
                     connectionManager.DisconnectAll();
                     Reassemble(torrentFile, connectionManager.GetPTPBlocks());
+                    Finally(connectionManager,form,torrentFile,networkUtils);
+                    _threadManager.StopThread(_index);
+                    _index--;
 
                     // Disconnect from all servers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Download failed: {ex.Message}");
+                    //Console.WriteLine($"Download failed: {ex.Message}");
                     // Handle or log the exception as needed
                 }
-                finally
-                {
-                    // Ensure progress bar is updated even if an exception occurs
-                    connectionManager.UpdateProgressBar();
-
-                    new CommonUtils().ReceateTorrentFileForDownloadedFile(form.GetTorrentStorage(), torrentFile.info.checksum, form);
-
-                    (string ip, int port) = networkUtils.SplitIpAndPort(form);
-
-                    using (TcpClient client = new TcpClient())
-                    {
-                        client.Connect(ip, port);
-
-                        string? myip = networkUtils.GetLocalIPAddress() + ":" + networkUtils.GetLocalPort();
-
-                        string ipPlusJson = myip + ";" + JsonSerializer.Serialize(torrentFile);
-                        PTTBlock block = new(0x02, ipPlusJson.Length, ipPlusJson);
-
-                        byte[] data = Encoding.UTF8.GetBytes(block.ToString());
-                        client.GetStream().Write(data, 0, data.Length);
-
-                        // Handle any response from the server if needed
-                        // ...
-                        //TorrentReader.WriteJSON("MyTorrent", torrentFile);
-
-                        new ToastContentBuilder()
-                            .AddText($"{torrentFile.info.torrentName} has been downloaded!")
-                            .Show();
-                    }
-                }
+                
 
             });
 
@@ -98,6 +71,37 @@ namespace PeerSoftware.Download
 
             _index++;
         }
+
+        public void Finally(DownloadTcpManager connectionManager,Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils)
+        {
+            // Ensure progress bar is updated even if an exception occurs
+            connectionManager.UpdateProgressBar();
+            _threadManager.RemoveDownloadTCPManeger(_index);
+            new CommonUtils().ReceateTorrentFileForDownloadedFile(form.GetTorrentStorage(), torrentFile.info.checksum, form);
+            (string ip, int port) = networkUtils.SplitIpAndPort(form);
+
+            using (TcpClient client = new TcpClient())
+            {
+                client.Connect(ip, port);
+
+                string? myip = networkUtils.GetLocalIPAddress() + ":" + networkUtils.GetLocalPort();
+
+                string ipPlusJson = myip + ";" + JsonSerializer.Serialize(torrentFile);
+                PTTBlock block = new(0x02, ipPlusJson.Length, ipPlusJson);
+
+                byte[] data = Encoding.UTF8.GetBytes(block.ToString());
+                client.GetStream().Write(data, 0, data.Length);
+
+                // Handle any response from the server if needed
+                // ...
+                //TorrentReader.WriteJSON("MyTorrent", torrentFile);
+
+                new ToastContentBuilder()
+                    .AddText($"{torrentFile.info.torrentName} has been downloaded!")
+                    .Show();
+            }
+        }
+
 
         public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks)
         {
@@ -127,6 +131,11 @@ namespace PeerSoftware.Download
             }
 
             outputFile.Close();
+        }
+
+        public void Pause(int index)
+        {
+            _threadManager.GerDownloadTCPManeger(index).isRunnig = false;
         }
 
     }
