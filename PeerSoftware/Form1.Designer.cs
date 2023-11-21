@@ -849,6 +849,44 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.TabStop = false;
             settingsTabTrackerGroupBox.Text = "Tracker Settings";
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(146, 113);
+            label7.Name = "label7";
+            label7.Size = new Size(98, 15);
+            label7.TabIndex = 6;
+            label7.Text = "at the same time.";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(13, 113);
+            label6.Name = "label6";
+            label6.Size = new Size(90, 15);
+            label6.TabIndex = 5;
+            label6.Text = "Download from";
+            // 
+            // DownloadFromPeers
+            // 
+            DownloadFromPeers.Location = new Point(169, 134);
+            DownloadFromPeers.Name = "DownloadFromPeers";
+            DownloadFromPeers.Size = new Size(75, 23);
+            DownloadFromPeers.TabIndex = 4;
+            DownloadFromPeers.Text = "Save";
+            DownloadFromPeers.UseVisualStyleBackColor = true;
+            DownloadFromPeers.Click += DownloadFromPeers_Click;
+            // 
+            // nPeersComboBox
+            // 
+            nPeersComboBox.FormattingEnabled = true;
+            nPeersComboBox.ImeMode = ImeMode.NoControl;
+            nPeersComboBox.Items.AddRange(new object[] { "1", "2", "3", "4", "5" });
+            nPeersComboBox.Location = new Point(109, 105);
+            nPeersComboBox.Name = "nPeersComboBox";
+            nPeersComboBox.Size = new Size(31, 23);
+            nPeersComboBox.TabIndex = 3;
+            // 
             // trackerIP
             // 
             trackerIP.AnimateReadOnly = false;
@@ -1081,7 +1119,6 @@ namespace PeerSoftware
         private Label browseTabSizeLabel;
         private Label browseTabDescriptionLabel;
         private NotifyIcon notifyIcon1;
-
     }
 }
 

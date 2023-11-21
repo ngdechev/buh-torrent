@@ -42,9 +42,7 @@ namespace PeerSoftware.Download
                 {
                    
                     SharedFileServices sharedFileServices = new SharedFileServices();
-                    Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(
-                        peersList,
-                        (int)torrentFile.info.length);
+                    Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(peersList, (int)torrentFile.info.length, form.GetNPeersUploading());
 
                     // Connect to multiple servers synchronously
                     connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);

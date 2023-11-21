@@ -31,6 +31,7 @@ namespace PeerSoftware
         private int _allPage = 0;
         private int _allMaxPage = 0;
 
+        private int _nPeersUploading;
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -83,11 +84,11 @@ namespace PeerSoftware
 
 
             _storage = new TorrentStorage();
-            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
             _sharedFileServices = new SharedFileServices();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
 
             _customMessageBox = new CustomMessageBox(this);
@@ -107,7 +108,8 @@ namespace PeerSoftware
             }
 
 
-
+            nPeersComboBox.SelectedIndex = 1;
+            _nPeersUploading = nPeersComboBox.SelectedIndex + 1;
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -168,6 +170,11 @@ namespace PeerSoftware
         {
             
             Application.Exit();
+        }
+
+        public int GetNPeersUploading()
+        {
+            return _nPeersUploading;
         }
 
         public ITorrentStorage GetTorrentStorage()
@@ -317,7 +324,7 @@ namespace PeerSoftware
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                _torrentFileServices.LoadData(_storage, this);
+                _torrentFileServices.LoadData(_storage, _networkUtils, this);
             }
             if (tabControl1.SelectedIndex == 2)
             {
