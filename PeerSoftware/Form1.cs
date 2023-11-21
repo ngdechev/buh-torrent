@@ -31,6 +31,7 @@ namespace PeerSoftware
         private int _allPage = 0;
         private int _allMaxPage = 0;
 
+        private int _nPeersUploading;
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -83,12 +84,12 @@ namespace PeerSoftware
 
 
             _storage = new TorrentStorage();
-            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
             _sharedFileServices = new SharedFileServices();
             _commonUtils = new CommonUtils();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
 
             _customMessageBox = new CustomMessageBox(this);
@@ -108,7 +109,7 @@ namespace PeerSoftware
             }
 
 
-
+            _nPeersUploading = maxDownloadsFromPeersSlider.Value;
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -167,8 +168,13 @@ namespace PeerSoftware
 
         private void OnMenuItem2Clicked(object? sender, EventArgs e)
         {
-            
+
             Application.Exit();
+        }
+
+        public int GetNPeersUploading()
+        {
+            return _nPeersUploading;
         }
 
         public ITorrentStorage GetTorrentStorage()
@@ -318,7 +324,7 @@ namespace PeerSoftware
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                _torrentFileServices.LoadData(_storage, this);
+                _torrentFileServices.LoadData(_storage, _networkUtils, this);
             }
             if (tabControl1.SelectedIndex == 2)
             {
@@ -400,11 +406,11 @@ namespace PeerSoftware
             {
                 _customMessageBox.SetTitle("Delete Confirmation");
                 _customMessageBox.SetMessageText($"Do you want to delete shared file also?");
-                if ( File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
+                if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
                 {
                     File.Delete(torrentFiles.First().info.fileName);
                 }
-                if( File.Exists(folderPath))
+                if (File.Exists(folderPath))
                 {
                     File.Delete(folderPath);
                 }
@@ -596,7 +602,7 @@ namespace PeerSoftware
                 tabPage.BackColor = Color.White;
             }
 
-            
+
         }
 
         private void UIDarkMode()
@@ -624,7 +630,7 @@ namespace PeerSoftware
 
             //UpdateBackgroundColors
         }
-       
+
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
