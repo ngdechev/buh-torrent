@@ -72,7 +72,7 @@ namespace PeerSoftware
                             MaterialSkin.Accent.Purple700,
                             MaterialSkin.TextShade.WHITE);*/
 
-            UILightMode();
+            //UILightMode();
 
             FormClosing += MainForm_FormClosing;
 
@@ -117,22 +117,31 @@ namespace PeerSoftware
 
             //settings
 
-            int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
             _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
 
-            //string path = Path.Combine(Directory.GetCurrentDirectory(), "Download");
             materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
 
+            int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
+            maxDownloadsFromPeersSlider.Value = _nPeersUploading;
 
+            string isDarkModeChecked = ConfigurationManager.AppSettings["darkMode"];
 
+            if(isDarkModeChecked == "true")
+            {
+                darkModeSwitch.Checked = true;
+                UIDarkMode();
+            }
 
             string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
-
             MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
-
             _materialSkinManager.ColorScheme = selectedColorScheme;
-            UILightMode();
+            comboBoxTheme.SelectedItem = selectedTheme;
+
+
+
+            //UILightMode();
+
 
             Refresh();
 
@@ -150,10 +159,8 @@ namespace PeerSoftware
             nameLabel.Text = "Name1";
 
 
-            comboBoxTheme.SelectedItem = selectedTheme;
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
-
             Thread peerThread = new Thread(uploadserver.Start);
 
             peerThread.Start();
@@ -184,6 +191,12 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
+
+            if (isDarkModeChecked == "true")
+            {
+                darkModeSwitch.Checked = true;
+                UIDarkMode();
+            }
         }
 
         public string GetSharedFileDownloadFolder()
@@ -609,10 +622,12 @@ namespace PeerSoftware
             if (darkModeSwitch.Checked)
             {
                 UIDarkMode();
+                _configuration.AppSettings.Settings["darkMode"].Value = "true";
             }
             else
             {
                 UILightMode();
+                _configuration.AppSettings.Settings["darkMode"].Value = "false";
             }
         }
 
