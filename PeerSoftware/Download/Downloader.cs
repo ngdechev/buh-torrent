@@ -50,7 +50,7 @@ namespace PeerSoftware.Download
                     // Receive data from all connected servers
                     connectionManager.ReceiveData();
                     connectionManager.DisconnectAll();
-                    Reassemble(torrentFile, connectionManager.GetPTPBlocks());
+                    Reassemble(torrentFile, connectionManager.GetPTPBlocks(), form.GetSharedFileDownloadFolder());
 
                     // Disconnect from all servers
                 }
@@ -97,7 +97,7 @@ namespace PeerSoftware.Download
             _index++;
         }
 
-        public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks)
+        public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks, string sharedFileDownloadFolder)
         {
             string fileExtension = Path.GetExtension(torrentFile.info.fileName);
 
@@ -106,8 +106,7 @@ namespace PeerSoftware.Download
                 fileExtension = fileExtension.TrimStart('.');
             }
 
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
+            string path = Path.Combine(sharedFileDownloadFolder, torrentFile.info.torrentName + "." + fileExtension);
             StreamWriter outputFile = new StreamWriter(path);
             if (File.Exists(path))
             {

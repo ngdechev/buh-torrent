@@ -52,8 +52,9 @@ namespace PeerSoftware.Utils
                     {
                         fileExtension = fileExtension.TrimStart('.');
                     }
-                    string currentDirectory = Directory.GetCurrentDirectory();
-                    string folderPath = Path.Combine(currentDirectory, "Download", newTorrent.info.torrentName + "." + fileExtension);
+
+                    string sharedFileDownloadFolder = mainForm.GetSharedFileDownloadFolder();
+                    string folderPath = Path.Combine(sharedFileDownloadFolder, newTorrent.info.torrentName + "." + fileExtension);
                     newTorrent.info.fileName = folderPath;
                     TorrentReader.WriteJSON("MyTorrent", newTorrent);
 

@@ -56,8 +56,8 @@ namespace PeerSoftware
             comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             darkModeSwitch = new MaterialSkin.Controls.MaterialSwitch();
             peerSettings = new GroupBox();
+            materialButton1 = new MaterialSkin.Controls.MaterialButton();
             materialTextBox22 = new MaterialSkin.Controls.MaterialTextBox2();
-            btnBrowseDownloadLocation = new MaterialSkin.Controls.MaterialButton();
             maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
             maxDownloadsFromPeersSlider = new MaterialSkin.Controls.MaterialSlider();
             settingsTabTrackerGroupBox = new GroupBox();
@@ -535,8 +535,8 @@ namespace PeerSoftware
             // 
             // peerSettings
             // 
+            peerSettings.Controls.Add(materialButton1);
             peerSettings.Controls.Add(materialTextBox22);
-            peerSettings.Controls.Add(btnBrowseDownloadLocation);
             peerSettings.Controls.Add(maxActiveDownloadsSlider);
             peerSettings.Controls.Add(maxDownloadsFromPeersSlider);
             peerSettings.Location = new Point(6, 182);
@@ -545,6 +545,26 @@ namespace PeerSoftware
             peerSettings.TabIndex = 6;
             peerSettings.TabStop = false;
             peerSettings.Text = "Peer Settings";
+            // 
+            // materialButton1
+            // 
+            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            materialButton1.Depth = 0;
+            materialButton1.HighEmphasis = true;
+            materialButton1.Icon = null;
+            materialButton1.Location = new Point(305, 67);
+            materialButton1.Margin = new Padding(4, 6, 4, 6);
+            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            materialButton1.Name = "materialButton1";
+            materialButton1.NoAccentTextColor = Color.Empty;
+            materialButton1.Size = new Size(80, 36);
+            materialButton1.TabIndex = 11;
+            materialButton1.Text = "Browse";
+            materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            materialButton1.UseAccentColor = false;
+            materialButton1.UseVisualStyleBackColor = true;
+            materialButton1.Click += materialButton1_Click;
             // 
             // materialTextBox22
             // 
@@ -569,32 +589,12 @@ namespace PeerSoftware
             materialTextBox22.SelectionLength = 0;
             materialTextBox22.SelectionStart = 0;
             materialTextBox22.ShortcutsEnabled = true;
-            materialTextBox22.Size = new Size(235, 48);
+            materialTextBox22.Size = new Size(292, 48);
             materialTextBox22.TabIndex = 5;
             materialTextBox22.TabStop = false;
             materialTextBox22.TextAlign = HorizontalAlignment.Left;
             materialTextBox22.TrailingIcon = null;
             materialTextBox22.UseSystemPasswordChar = false;
-            // 
-            // btnBrowseDownloadLocation
-            // 
-            btnBrowseDownloadLocation.AutoSize = false;
-            btnBrowseDownloadLocation.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnBrowseDownloadLocation.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnBrowseDownloadLocation.Depth = 0;
-            btnBrowseDownloadLocation.HighEmphasis = true;
-            btnBrowseDownloadLocation.Icon = (Image)resources.GetObject("btnBrowseDownloadLocation.Icon");
-            btnBrowseDownloadLocation.Location = new Point(250, 67);
-            btnBrowseDownloadLocation.Margin = new Padding(4, 6, 4, 6);
-            btnBrowseDownloadLocation.MouseState = MaterialSkin.MouseState.HOVER;
-            btnBrowseDownloadLocation.Name = "btnBrowseDownloadLocation";
-            btnBrowseDownloadLocation.NoAccentTextColor = Color.Empty;
-            btnBrowseDownloadLocation.Size = new Size(116, 36);
-            btnBrowseDownloadLocation.TabIndex = 6;
-            btnBrowseDownloadLocation.Text = "Browse";
-            btnBrowseDownloadLocation.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnBrowseDownloadLocation.UseAccentColor = false;
-            btnBrowseDownloadLocation.UseVisualStyleBackColor = true;
             // 
             // maxActiveDownloadsSlider
             // 
@@ -664,7 +664,6 @@ namespace PeerSoftware
             materialTextBox21.Size = new Size(265, 48);
             materialTextBox21.TabIndex = 4;
             materialTextBox21.TabStop = false;
-            materialTextBox21.Text = "materialTextBox21";
             materialTextBox21.TextAlign = HorizontalAlignment.Left;
             materialTextBox21.TrailingIcon = null;
             materialTextBox21.UseSystemPasswordChar = false;
@@ -1036,6 +1035,7 @@ namespace PeerSoftware
             theme.ResumeLayout(false);
             theme.PerformLayout();
             peerSettings.ResumeLayout(false);
+            peerSettings.PerformLayout();
             settingsTabTrackerGroupBox.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -1098,7 +1098,6 @@ namespace PeerSoftware
         private GroupBox peerSettings;
         public MaterialSkin.Controls.MaterialSwitch darkModeSwitch;
         private MaterialSkin.Controls.MaterialSlider maxActiveDownloadsSlider;
-        private MaterialSkin.Controls.MaterialButton btnBrowseDownloadLocation;
         private MaterialSkin.Controls.MaterialTextBox2 browseDownloadLocationTextBox;
         private MaterialSkin.Controls.MaterialLabel browseDownloadsLocationLabel;
 
@@ -1109,6 +1108,8 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialButton btnDisconnect;
         private MaterialSkin.Controls.MaterialTextBox2 materialTextBox22;
         private MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
+        private MaterialSkin.Controls.MaterialButton browseFile;
+        private MaterialSkin.Controls.MaterialButton materialButton1;
     }
 }
 

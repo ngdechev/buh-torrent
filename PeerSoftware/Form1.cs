@@ -14,6 +14,7 @@ using PTT_Parser;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Configuration;
+using System.Text;
 
 namespace PeerSoftware
 {
@@ -33,7 +34,9 @@ namespace PeerSoftware
         private int _allMaxPage = 0;
 
         private int _nPeersUploading;
+        private string _sharedFileDownloadFolder;
         private string _serverSocket;
+
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -117,8 +120,10 @@ namespace PeerSoftware
             int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
             _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
 
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Download");
-            materialTextBox22.Text = path;
+            //string path = Path.Combine(Directory.GetCurrentDirectory(), "Download");
+            materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
+            materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
+
 
 
 
@@ -179,6 +184,11 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
+        }
+
+        public string GetSharedFileDownloadFolder()
+        {
+            return _sharedFileDownloadFolder;
         }
 
         private void OnMenuItem1Clicked(object? sender, EventArgs e)
@@ -540,9 +550,9 @@ namespace PeerSoftware
 
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
-            _udpSender.Start(trackerIP.Text.Trim());
+            _udpSender.Start(materialTextBox21.Text.Trim());
 
-            _configuration.AppSettings.Settings["serverSocket"].Value = trackerIP.Text.Trim();
+            _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }
@@ -698,6 +708,21 @@ namespace PeerSoftware
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog())
+            {
+                if (openBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _sharedFileDownloadFolder = openBrowserDialog.SelectedPath;
+
+                    materialTextBox22.Text = _sharedFileDownloadFolder;
+
+                    _configuration.AppSettings.Settings["downloadSharedFileLocation"].Value = _sharedFileDownloadFolder;
+                }
+            }
         }
     }
 }
