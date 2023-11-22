@@ -154,7 +154,9 @@ namespace PeerSoftware
                 _materialDescriptionControls.Add(materialDescriptionLabel);
                 _materialDownloadControls.Add(materialDownloadButton);
             }
-
+            _connections.AnnounceNewPeer("172.20.60.22", 12345);
+            _udpSender.Start("172.20.60.22:12345");
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils,this));
         }
 
         private void OnMenuItem1Clicked(object? sender, EventArgs e)
