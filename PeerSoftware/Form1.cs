@@ -94,6 +94,7 @@ namespace PeerSoftware
             _torrentFileServices = new TorrentFileServices();
             _sharedFileServices = new SharedFileServices();
             _commonUtils = new CommonUtils();
+            _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
             _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
@@ -190,6 +191,8 @@ namespace PeerSoftware
                 _materialDescriptionControls.Add(materialDescriptionLabel);
                 _materialDownloadControls.Add(materialDownloadButton);
             }
+
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils,this));
 
 
             if (isDarkModeChecked == "true")
@@ -537,9 +540,12 @@ namespace PeerSoftware
             _torrentDownloadingNames.Add(label1.Text);
         }
 
-        private void PauseResume_Click(object? sender, EventArgs e)
+        private void PauseResume_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            MaterialButton pauseButton = (MaterialButton)sender;
+
+            int rowIndex = tableLayoutPanel1.GetRow(pauseButton);
+            _downloader.Pause(rowIndex);
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)

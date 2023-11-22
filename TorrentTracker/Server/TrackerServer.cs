@@ -35,6 +35,7 @@ namespace TorrentTracker
             _listener.Start();
 
             Console.WriteLine($"Tracker server started!");
+            _dictionary.ReadDictionaryFromFile();
 
             while (_isRunning)
             {
@@ -43,7 +44,7 @@ namespace TorrentTracker
                 if (_listener.Pending())
                 {
                     TcpClient clientSocket = _listener.AcceptTcpClient();
-                    _dictionary.ReadDictionaryFromFile();
+                   
 
                     Console.WriteLine("Peer opened the app!");
                     _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
@@ -94,8 +95,8 @@ namespace TorrentTracker
 
                 }
 
-                _dictionary.ReadDictionaryFromFile();
-                _dictionary.WriteDictionaryToFile();
+               // _dictionary.ReadDictionaryFromFile();
+               // _dictionary.WriteDictionaryToFile();
 
                 //map
             }
@@ -107,6 +108,7 @@ namespace TorrentTracker
 
         public void Stop()
         {
+            _dictionary.WriteDictionaryToFile();
             _isRunning = false;
         }
     }
