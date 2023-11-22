@@ -13,6 +13,7 @@ using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Windows.Forms;
 using System.Net.Sockets;
+using System.Configuration;
 
 namespace PeerSoftware
 {
@@ -32,6 +33,7 @@ namespace PeerSoftware
         private int _allMaxPage = 0;
 
         private int _nPeersUploading;
+        private string _serverSocket;
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -44,6 +46,8 @@ namespace PeerSoftware
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
         private Downloader _downloader;
+
+        private Configuration _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
         private ContextMenuStrip _systemTrayContextMenu;
 
@@ -58,12 +62,12 @@ namespace PeerSoftware
             _materialSkinManager.EnforceBackcolorOnAllComponents = false;
             _materialSkinManager.AddFormToManage(this);
             _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
-            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Green600,
-                MaterialSkin.Primary.Green700,
-                MaterialSkin.Primary.Blue900,
-                MaterialSkin.Accent.Purple700,
-                MaterialSkin.TextShade.WHITE);
+            /*            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                            MaterialSkin.Primary.Green600,
+                            MaterialSkin.Primary.Green700,
+                            MaterialSkin.Primary.Blue900,
+                            MaterialSkin.Accent.Purple700,
+                            MaterialSkin.TextShade.WHITE);*/
 
             UILightMode();
 
@@ -108,7 +112,28 @@ namespace PeerSoftware
             }
 
 
-            _nPeersUploading = maxDownloadsFromPeersSlider.Value;
+            //settings
+
+            int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
+            _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Download");
+            materialTextBox22.Text = path;
+
+
+
+            string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
+
+            MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
+
+            _materialSkinManager.ColorScheme = selectedColorScheme;
+            UILightMode();
+
+            Refresh();
+
+
+            //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
+
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -120,7 +145,7 @@ namespace PeerSoftware
             nameLabel.Text = "Name1";
 
 
-            comboBoxTheme.SelectedItem = "Lime with Purple Accent";
+            comboBoxTheme.SelectedItem = selectedTheme;
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
 
@@ -517,6 +542,8 @@ namespace PeerSoftware
 
             _udpSender.Start(trackerIP.Text.Trim());
 
+            _configuration.AppSettings.Settings["serverSocket"].Value = trackerIP.Text.Trim();
+
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }
 
@@ -560,6 +587,10 @@ namespace PeerSoftware
 
                     Refresh();
                 }
+
+
+                //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
+                _configuration.AppSettings.Settings["theme"].Value = selectedTheme;
             }
         }
 
@@ -632,6 +663,9 @@ namespace PeerSoftware
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
+                _configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("configuration");
+
                 e.Cancel = true;
 
                 WindowState = FormWindowState.Minimized;
@@ -653,6 +687,17 @@ namespace PeerSoftware
             {
 
             }
+        }
+
+        private void maxDownloadsFromPeersSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            string temp = maxDownloadsFromPeersSlider.Value.ToString();
+            _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

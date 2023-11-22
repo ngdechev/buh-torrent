@@ -76,6 +76,8 @@ namespace PeerSoftware.Services
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
 
+
+
                 StreamWriter outputFile = new StreamWriter(path);
 
                 string[] peerIpAndPort;

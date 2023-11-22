@@ -35,30 +35,17 @@ namespace PeerSoftware
             button5 = new MaterialSkin.Controls.MaterialButton();
             button4 = new MaterialSkin.Controls.MaterialButton();
             tableLayoutPanel5 = new TableLayoutPanel();
-            label3 = new MaterialSkin.Controls.MaterialLabel();
-            label2 = new MaterialSkin.Controls.MaterialLabel();
-            label1 = new MaterialSkin.Controls.MaterialLabel();
             tableLayoutPanel1 = new TableLayoutPanel();
             browes = new TabPage();
             tableLayoutPanel2 = new TableLayoutPanel();
-            pagelabel = new MaterialSkin.Controls.MaterialLabel();
-            searchBar = new MaterialSkin.Controls.MaterialTextBox2();
             button2 = new MaterialSkin.Controls.MaterialButton();
             button1 = new MaterialSkin.Controls.MaterialButton();
             refresh = new MaterialSkin.Controls.MaterialButton();
             search = new MaterialSkin.Controls.MaterialButton();
             tableLayoutPanel7 = new TableLayoutPanel();
-            browseTabTorrentAction = new MaterialSkin.Controls.MaterialLabel();
-            browseTabTorrentDescription = new MaterialSkin.Controls.MaterialLabel();
-            browseTabTorrentSize = new MaterialSkin.Controls.MaterialLabel();
-            browseTabTorrentName = new MaterialSkin.Controls.MaterialLabel();
             myTorrents = new TabPage();
             createNewTorrent = new MaterialSkin.Controls.MaterialButton();
             tableLayoutPanel6 = new TableLayoutPanel();
-            myTorrentsTabNameLabel = new MaterialSkin.Controls.MaterialLabel();
-            myTorrentsTabDescriptionLabel = new MaterialSkin.Controls.MaterialLabel();
-            myTorrentsTabActionLabel = new MaterialSkin.Controls.MaterialLabel();
-            label5 = new MaterialSkin.Controls.MaterialLabel();
             tableLayoutPanel4 = new TableLayoutPanel();
             settings = new TabPage();
             settingsTabClientGroupBox = new GroupBox();
@@ -69,29 +56,42 @@ namespace PeerSoftware
             comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             darkModeSwitch = new MaterialSkin.Controls.MaterialSwitch();
             peerSettings = new GroupBox();
-            browseDownloadsLocationLabel = new MaterialSkin.Controls.MaterialLabel();
+            materialTextBox22 = new MaterialSkin.Controls.MaterialTextBox2();
             btnBrowseDownloadLocation = new MaterialSkin.Controls.MaterialButton();
-            browseDownloadLocationTextBox = new MaterialSkin.Controls.MaterialTextBox2();
             maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
             maxDownloadsFromPeersSlider = new MaterialSkin.Controls.MaterialSlider();
             settingsTabTrackerGroupBox = new GroupBox();
-            trackerIP = new MaterialSkin.Controls.MaterialTextBox2();
+            materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
             save = new MaterialSkin.Controls.MaterialButton();
             help = new TabPage();
             tabControlIcons = new ImageList(components);
+            label3 = new MaterialSkin.Controls.MaterialLabel();
+            label2 = new MaterialSkin.Controls.MaterialLabel();
+            label1 = new MaterialSkin.Controls.MaterialLabel();
+            pagelabel = new MaterialSkin.Controls.MaterialLabel();
+            searchBar = new MaterialSkin.Controls.MaterialTextBox2();
+            browseTabTorrentAction = new MaterialSkin.Controls.MaterialLabel();
+            browseTabTorrentDescription = new MaterialSkin.Controls.MaterialLabel();
+            browseTabTorrentSize = new MaterialSkin.Controls.MaterialLabel();
+            browseTabTorrentName = new MaterialSkin.Controls.MaterialLabel();
+            myTorrentsTabNameLabel = new MaterialSkin.Controls.MaterialLabel();
+            myTorrentsTabDescriptionLabel = new MaterialSkin.Controls.MaterialLabel();
+            myTorrentsTabActionLabel = new MaterialSkin.Controls.MaterialLabel();
+            label5 = new MaterialSkin.Controls.MaterialLabel();
+            browseDownloadsLocationLabel = new MaterialSkin.Controls.MaterialLabel();
+            browseDownloadLocationTextBox = new MaterialSkin.Controls.MaterialTextBox2();
+            trackerIP = new MaterialSkin.Controls.MaterialTextBox2();
             progressBar2 = new ProgressBar();
             label4 = new Label();
             tableLayoutPanel3 = new TableLayoutPanel();
             buttonIcons = new ImageList(components);
             panel1 = new Panel();
+            btnDisconnect = new MaterialSkin.Controls.MaterialButton();
             notifyIcon1 = new NotifyIcon(components);
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
-            tableLayoutPanel5.SuspendLayout();
             browes.SuspendLayout();
-            tableLayoutPanel7.SuspendLayout();
             myTorrents.SuspendLayout();
-            tableLayoutPanel6.SuspendLayout();
             settings.SuspendLayout();
             settingsTabClientGroupBox.SuspendLayout();
             startupSettings.SuspendLayout();
@@ -99,6 +99,7 @@ namespace PeerSoftware
             peerSettings.SuspendLayout();
             settingsTabTrackerGroupBox.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // tabControl1
@@ -182,54 +183,12 @@ namespace PeerSoftware
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84.21986F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.78014F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 180F));
-            tableLayoutPanel5.Controls.Add(label3, 2, 0);
-            tableLayoutPanel5.Controls.Add(label2, 1, 0);
-            tableLayoutPanel5.Controls.Add(label1, 0, 0);
             tableLayoutPanel5.Location = new Point(3, 66);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 1;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel5.Size = new Size(744, 24);
             tableLayoutPanel5.TabIndex = 12;
-            // 
-            // label3
-            // 
-            label3.Anchor = AnchorStyles.Left;
-            label3.AutoSize = true;
-            label3.Depth = 0;
-            label3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label3.Location = new Point(566, 2);
-            label3.MouseState = MaterialSkin.MouseState.HOVER;
-            label3.Name = "label3";
-            label3.Size = new Size(139, 19);
-            label3.TabIndex = 15;
-            label3.Text = "Download Progress";
-            // 
-            // label2
-            // 
-            label2.Anchor = AnchorStyles.Left;
-            label2.AutoSize = true;
-            label2.Depth = 0;
-            label2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label2.Location = new Point(478, 2);
-            label2.MouseState = MaterialSkin.MouseState.HOVER;
-            label2.Name = "label2";
-            label2.Size = new Size(31, 19);
-            label2.TabIndex = 15;
-            label2.Text = "Size";
-            // 
-            // label1
-            // 
-            label1.Anchor = AnchorStyles.Left;
-            label1.AutoSize = true;
-            label1.Depth = 0;
-            label1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label1.Location = new Point(3, 2);
-            label1.MouseState = MaterialSkin.MouseState.HOVER;
-            label1.Name = "label1";
-            label1.Size = new Size(43, 19);
-            label1.TabIndex = 15;
-            label1.Text = "Name";
             // 
             // tableLayoutPanel1
             // 
@@ -253,8 +212,6 @@ namespace PeerSoftware
             // 
             browes.BackColor = Color.White;
             browes.Controls.Add(tableLayoutPanel2);
-            browes.Controls.Add(pagelabel);
-            browes.Controls.Add(searchBar);
             browes.Controls.Add(button2);
             browes.Controls.Add(button1);
             browes.Controls.Add(refresh);
@@ -287,51 +244,6 @@ namespace PeerSoftware
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.Size = new Size(876, 262);
             tableLayoutPanel2.TabIndex = 8;
-            // 
-            // pagelabel
-            // 
-            pagelabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pagelabel.AutoSize = true;
-            pagelabel.Depth = 0;
-            pagelabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            pagelabel.Location = new Point(727, 86);
-            pagelabel.MouseState = MaterialSkin.MouseState.HOVER;
-            pagelabel.Name = "pagelabel";
-            pagelabel.Size = new Size(114, 19);
-            pagelabel.TabIndex = 16;
-            pagelabel.Text = "Page Number: 0";
-            // 
-            // searchBar
-            // 
-            searchBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            searchBar.AnimateReadOnly = false;
-            searchBar.AutoCompleteMode = AutoCompleteMode.None;
-            searchBar.AutoCompleteSource = AutoCompleteSource.None;
-            searchBar.BackgroundImageLayout = ImageLayout.None;
-            searchBar.CharacterCasing = CharacterCasing.Normal;
-            searchBar.Depth = 0;
-            searchBar.Font = new Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            searchBar.HideSelection = true;
-            searchBar.Hint = "Search for torrent file...";
-            searchBar.LeadingIcon = null;
-            searchBar.Location = new Point(9, 16);
-            searchBar.MaxLength = 32767;
-            searchBar.MouseState = MaterialSkin.MouseState.OUT;
-            searchBar.Name = "searchBar";
-            searchBar.PasswordChar = '\0';
-            searchBar.PrefixSuffixText = null;
-            searchBar.ReadOnly = false;
-            searchBar.RightToLeft = RightToLeft.No;
-            searchBar.SelectedText = "";
-            searchBar.SelectionLength = 0;
-            searchBar.SelectionStart = 0;
-            searchBar.ShortcutsEnabled = true;
-            searchBar.Size = new Size(617, 48);
-            searchBar.TabIndex = 15;
-            searchBar.TabStop = false;
-            searchBar.TextAlign = HorizontalAlignment.Left;
-            searchBar.TrailingIcon = null;
-            searchBar.UseSystemPasswordChar = false;
             // 
             // button2
             // 
@@ -428,68 +340,12 @@ namespace PeerSoftware
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.42085F));
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 471F));
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 132F));
-            tableLayoutPanel7.Controls.Add(browseTabTorrentAction, 3, 0);
-            tableLayoutPanel7.Controls.Add(browseTabTorrentDescription, 2, 0);
-            tableLayoutPanel7.Controls.Add(browseTabTorrentSize, 1, 0);
-            tableLayoutPanel7.Controls.Add(browseTabTorrentName, 0, 0);
             tableLayoutPanel7.Location = new Point(3, 114);
             tableLayoutPanel7.Name = "tableLayoutPanel7";
             tableLayoutPanel7.RowCount = 1;
             tableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel7.Size = new Size(874, 24);
             tableLayoutPanel7.TabIndex = 12;
-            // 
-            // browseTabTorrentAction
-            // 
-            browseTabTorrentAction.Anchor = AnchorStyles.Left;
-            browseTabTorrentAction.AutoSize = true;
-            browseTabTorrentAction.Depth = 0;
-            browseTabTorrentAction.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentAction.Location = new Point(744, 2);
-            browseTabTorrentAction.MouseState = MaterialSkin.MouseState.HOVER;
-            browseTabTorrentAction.Name = "browseTabTorrentAction";
-            browseTabTorrentAction.Size = new Size(46, 19);
-            browseTabTorrentAction.TabIndex = 19;
-            browseTabTorrentAction.Text = "Action";
-            // 
-            // browseTabTorrentDescription
-            // 
-            browseTabTorrentDescription.Anchor = AnchorStyles.Left;
-            browseTabTorrentDescription.AutoSize = true;
-            browseTabTorrentDescription.Depth = 0;
-            browseTabTorrentDescription.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentDescription.Location = new Point(273, 2);
-            browseTabTorrentDescription.MouseState = MaterialSkin.MouseState.HOVER;
-            browseTabTorrentDescription.Name = "browseTabTorrentDescription";
-            browseTabTorrentDescription.Size = new Size(81, 19);
-            browseTabTorrentDescription.TabIndex = 18;
-            browseTabTorrentDescription.Text = "Description";
-            // 
-            // browseTabTorrentSize
-            // 
-            browseTabTorrentSize.Anchor = AnchorStyles.Left;
-            browseTabTorrentSize.AutoSize = true;
-            browseTabTorrentSize.Depth = 0;
-            browseTabTorrentSize.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentSize.Location = new Point(140, 2);
-            browseTabTorrentSize.MouseState = MaterialSkin.MouseState.HOVER;
-            browseTabTorrentSize.Name = "browseTabTorrentSize";
-            browseTabTorrentSize.Size = new Size(31, 19);
-            browseTabTorrentSize.TabIndex = 1;
-            browseTabTorrentSize.Text = "Size";
-            // 
-            // browseTabTorrentName
-            // 
-            browseTabTorrentName.Anchor = AnchorStyles.Left;
-            browseTabTorrentName.AutoSize = true;
-            browseTabTorrentName.Depth = 0;
-            browseTabTorrentName.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentName.Location = new Point(3, 2);
-            browseTabTorrentName.MouseState = MaterialSkin.MouseState.HOVER;
-            browseTabTorrentName.Name = "browseTabTorrentName";
-            browseTabTorrentName.Size = new Size(43, 19);
-            browseTabTorrentName.TabIndex = 0;
-            browseTabTorrentName.Text = "Name";
             // 
             // myTorrents
             // 
@@ -533,10 +389,6 @@ namespace PeerSoftware
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 124F));
-            tableLayoutPanel6.Controls.Add(myTorrentsTabNameLabel, 0, 0);
-            tableLayoutPanel6.Controls.Add(myTorrentsTabDescriptionLabel, 2, 0);
-            tableLayoutPanel6.Controls.Add(myTorrentsTabActionLabel, 2, 0);
-            tableLayoutPanel6.Controls.Add(label5, 1, 0);
             tableLayoutPanel6.Location = new Point(3, 56);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
             tableLayoutPanel6.RowCount = 1;
@@ -544,58 +396,6 @@ namespace PeerSoftware
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
             tableLayoutPanel6.Size = new Size(878, 24);
             tableLayoutPanel6.TabIndex = 11;
-            // 
-            // myTorrentsTabNameLabel
-            // 
-            myTorrentsTabNameLabel.Anchor = AnchorStyles.Left;
-            myTorrentsTabNameLabel.AutoSize = true;
-            myTorrentsTabNameLabel.Depth = 0;
-            myTorrentsTabNameLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabNameLabel.Location = new Point(3, 2);
-            myTorrentsTabNameLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            myTorrentsTabNameLabel.Name = "myTorrentsTabNameLabel";
-            myTorrentsTabNameLabel.Size = new Size(43, 19);
-            myTorrentsTabNameLabel.TabIndex = 13;
-            myTorrentsTabNameLabel.Text = "Name";
-            // 
-            // myTorrentsTabDescriptionLabel
-            // 
-            myTorrentsTabDescriptionLabel.Anchor = AnchorStyles.Left;
-            myTorrentsTabDescriptionLabel.AutoSize = true;
-            myTorrentsTabDescriptionLabel.Depth = 0;
-            myTorrentsTabDescriptionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabDescriptionLabel.Location = new Point(376, 2);
-            myTorrentsTabDescriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            myTorrentsTabDescriptionLabel.Name = "myTorrentsTabDescriptionLabel";
-            myTorrentsTabDescriptionLabel.Size = new Size(81, 19);
-            myTorrentsTabDescriptionLabel.TabIndex = 14;
-            myTorrentsTabDescriptionLabel.Text = "Description";
-            // 
-            // myTorrentsTabActionLabel
-            // 
-            myTorrentsTabActionLabel.Anchor = AnchorStyles.Left;
-            myTorrentsTabActionLabel.AutoSize = true;
-            myTorrentsTabActionLabel.Depth = 0;
-            myTorrentsTabActionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabActionLabel.Location = new Point(756, 2);
-            myTorrentsTabActionLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            myTorrentsTabActionLabel.Name = "myTorrentsTabActionLabel";
-            myTorrentsTabActionLabel.Size = new Size(46, 19);
-            myTorrentsTabActionLabel.TabIndex = 13;
-            myTorrentsTabActionLabel.Text = "Action";
-            // 
-            // label5
-            // 
-            label5.Anchor = AnchorStyles.Left;
-            label5.AutoSize = true;
-            label5.Depth = 0;
-            label5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label5.Location = new Point(293, 2);
-            label5.MouseState = MaterialSkin.MouseState.HOVER;
-            label5.Name = "label5";
-            label5.Size = new Size(31, 19);
-            label5.TabIndex = 13;
-            label5.Text = "Size";
             // 
             // tableLayoutPanel4
             // 
@@ -735,9 +535,8 @@ namespace PeerSoftware
             // 
             // peerSettings
             // 
-            peerSettings.Controls.Add(browseDownloadsLocationLabel);
+            peerSettings.Controls.Add(materialTextBox22);
             peerSettings.Controls.Add(btnBrowseDownloadLocation);
-            peerSettings.Controls.Add(browseDownloadLocationTextBox);
             peerSettings.Controls.Add(maxActiveDownloadsSlider);
             peerSettings.Controls.Add(maxDownloadsFromPeersSlider);
             peerSettings.Location = new Point(6, 182);
@@ -747,17 +546,35 @@ namespace PeerSoftware
             peerSettings.TabStop = false;
             peerSettings.Text = "Peer Settings";
             // 
-            // browseDownloadsLocationLabel
+            // materialTextBox22
             // 
-            browseDownloadsLocationLabel.AutoSize = true;
-            browseDownloadsLocationLabel.Depth = 0;
-            browseDownloadsLocationLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseDownloadsLocationLabel.Location = new Point(6, 28);
-            browseDownloadsLocationLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            browseDownloadsLocationLabel.Name = "browseDownloadsLocationLabel";
-            browseDownloadsLocationLabel.Size = new Size(147, 19);
-            browseDownloadsLocationLabel.TabIndex = 12;
-            browseDownloadsLocationLabel.Text = "Downloads Location";
+            materialTextBox22.AnimateReadOnly = false;
+            materialTextBox22.AutoCompleteMode = AutoCompleteMode.None;
+            materialTextBox22.AutoCompleteSource = AutoCompleteSource.None;
+            materialTextBox22.BackgroundImageLayout = ImageLayout.None;
+            materialTextBox22.CharacterCasing = CharacterCasing.Normal;
+            materialTextBox22.Depth = 0;
+            materialTextBox22.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox22.HideSelection = true;
+            materialTextBox22.LeadingIcon = null;
+            materialTextBox22.Location = new Point(6, 55);
+            materialTextBox22.MaxLength = 32767;
+            materialTextBox22.MouseState = MaterialSkin.MouseState.OUT;
+            materialTextBox22.Name = "materialTextBox22";
+            materialTextBox22.PasswordChar = '\0';
+            materialTextBox22.PrefixSuffixText = null;
+            materialTextBox22.ReadOnly = true;
+            materialTextBox22.RightToLeft = RightToLeft.No;
+            materialTextBox22.SelectedText = "";
+            materialTextBox22.SelectionLength = 0;
+            materialTextBox22.SelectionStart = 0;
+            materialTextBox22.ShortcutsEnabled = true;
+            materialTextBox22.Size = new Size(235, 48);
+            materialTextBox22.TabIndex = 5;
+            materialTextBox22.TabStop = false;
+            materialTextBox22.TextAlign = HorizontalAlignment.Left;
+            materialTextBox22.TrailingIcon = null;
+            materialTextBox22.UseSystemPasswordChar = false;
             // 
             // btnBrowseDownloadLocation
             // 
@@ -778,36 +595,6 @@ namespace PeerSoftware
             btnBrowseDownloadLocation.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             btnBrowseDownloadLocation.UseAccentColor = false;
             btnBrowseDownloadLocation.UseVisualStyleBackColor = true;
-            // 
-            // browseDownloadLocationTextBox
-            // 
-            browseDownloadLocationTextBox.AnimateReadOnly = false;
-            browseDownloadLocationTextBox.AutoCompleteMode = AutoCompleteMode.None;
-            browseDownloadLocationTextBox.AutoCompleteSource = AutoCompleteSource.None;
-            browseDownloadLocationTextBox.BackgroundImageLayout = ImageLayout.None;
-            browseDownloadLocationTextBox.CharacterCasing = CharacterCasing.Normal;
-            browseDownloadLocationTextBox.Depth = 0;
-            browseDownloadLocationTextBox.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            browseDownloadLocationTextBox.HideSelection = true;
-            browseDownloadLocationTextBox.LeadingIcon = null;
-            browseDownloadLocationTextBox.Location = new Point(6, 59);
-            browseDownloadLocationTextBox.MaxLength = 32767;
-            browseDownloadLocationTextBox.MouseState = MaterialSkin.MouseState.OUT;
-            browseDownloadLocationTextBox.Name = "browseDownloadLocationTextBox";
-            browseDownloadLocationTextBox.PasswordChar = '\0';
-            browseDownloadLocationTextBox.PrefixSuffixText = null;
-            browseDownloadLocationTextBox.ReadOnly = true;
-            browseDownloadLocationTextBox.RightToLeft = RightToLeft.No;
-            browseDownloadLocationTextBox.SelectedText = "";
-            browseDownloadLocationTextBox.SelectionLength = 0;
-            browseDownloadLocationTextBox.SelectionStart = 0;
-            browseDownloadLocationTextBox.ShortcutsEnabled = true;
-            browseDownloadLocationTextBox.Size = new Size(235, 48);
-            browseDownloadLocationTextBox.TabIndex = 11;
-            browseDownloadLocationTextBox.TabStop = false;
-            browseDownloadLocationTextBox.TextAlign = HorizontalAlignment.Left;
-            browseDownloadLocationTextBox.TrailingIcon = null;
-            browseDownloadLocationTextBox.UseSystemPasswordChar = false;
             // 
             // maxActiveDownloadsSlider
             // 
@@ -836,11 +623,12 @@ namespace PeerSoftware
             maxDownloadsFromPeersSlider.Text = "Maximum Downloads from";
             maxDownloadsFromPeersSlider.Value = 2;
             maxDownloadsFromPeersSlider.ValueSuffix = " Peers";
+            maxDownloadsFromPeersSlider.MouseUp += maxDownloadsFromPeersSlider_MouseUp;
             // 
             // settingsTabTrackerGroupBox
             // 
             settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            settingsTabTrackerGroupBox.Controls.Add(trackerIP);
+            settingsTabTrackerGroupBox.Controls.Add(materialTextBox21);
             settingsTabTrackerGroupBox.Controls.Add(save);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
             settingsTabTrackerGroupBox.Location = new Point(3, 9);
@@ -850,36 +638,36 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.TabStop = false;
             settingsTabTrackerGroupBox.Text = "Tracker Settings";
             // 
-            // trackerIP
+            // materialTextBox21
             // 
-            trackerIP.AnimateReadOnly = false;
-            trackerIP.AutoCompleteMode = AutoCompleteMode.None;
-            trackerIP.AutoCompleteSource = AutoCompleteSource.None;
-            trackerIP.BackgroundImageLayout = ImageLayout.None;
-            trackerIP.CharacterCasing = CharacterCasing.Normal;
-            trackerIP.Depth = 0;
-            trackerIP.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            trackerIP.HideSelection = true;
-            trackerIP.Hint = "Enter tracker IP and port..";
-            trackerIP.LeadingIcon = null;
-            trackerIP.Location = new Point(6, 22);
-            trackerIP.MaxLength = 32767;
-            trackerIP.MouseState = MaterialSkin.MouseState.OUT;
-            trackerIP.Name = "trackerIP";
-            trackerIP.PasswordChar = '\0';
-            trackerIP.PrefixSuffixText = null;
-            trackerIP.ReadOnly = false;
-            trackerIP.RightToLeft = RightToLeft.No;
-            trackerIP.SelectedText = "";
-            trackerIP.SelectionLength = 0;
-            trackerIP.SelectionStart = 0;
-            trackerIP.ShortcutsEnabled = true;
-            trackerIP.Size = new Size(265, 48);
-            trackerIP.TabIndex = 5;
-            trackerIP.TabStop = false;
-            trackerIP.TextAlign = HorizontalAlignment.Left;
-            trackerIP.TrailingIcon = null;
-            trackerIP.UseSystemPasswordChar = false;
+            materialTextBox21.AnimateReadOnly = false;
+            materialTextBox21.AutoCompleteMode = AutoCompleteMode.None;
+            materialTextBox21.AutoCompleteSource = AutoCompleteSource.None;
+            materialTextBox21.BackgroundImageLayout = ImageLayout.None;
+            materialTextBox21.CharacterCasing = CharacterCasing.Normal;
+            materialTextBox21.Depth = 0;
+            materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox21.HideSelection = true;
+            materialTextBox21.LeadingIcon = null;
+            materialTextBox21.Location = new Point(6, 22);
+            materialTextBox21.MaxLength = 32767;
+            materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
+            materialTextBox21.Name = "materialTextBox21";
+            materialTextBox21.PasswordChar = '\0';
+            materialTextBox21.PrefixSuffixText = null;
+            materialTextBox21.ReadOnly = false;
+            materialTextBox21.RightToLeft = RightToLeft.No;
+            materialTextBox21.SelectedText = "";
+            materialTextBox21.SelectionLength = 0;
+            materialTextBox21.SelectionStart = 0;
+            materialTextBox21.ShortcutsEnabled = true;
+            materialTextBox21.Size = new Size(265, 48);
+            materialTextBox21.TabIndex = 4;
+            materialTextBox21.TabStop = false;
+            materialTextBox21.Text = "materialTextBox21";
+            materialTextBox21.TextAlign = HorizontalAlignment.Left;
+            materialTextBox21.TrailingIcon = null;
+            materialTextBox21.UseSystemPasswordChar = false;
             // 
             // save
             // 
@@ -922,6 +710,226 @@ namespace PeerSoftware
             tabControlIcons.Images.SetKeyName(2, "search.png");
             tabControlIcons.Images.SetKeyName(3, "settings.png");
             tabControlIcons.Images.SetKeyName(4, "help.png");
+            // 
+            // label3
+            // 
+            label3.Depth = 0;
+            label3.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label3.Location = new Point(0, 0);
+            label3.MouseState = MaterialSkin.MouseState.HOVER;
+            label3.Name = "label3";
+            label3.Size = new Size(100, 23);
+            label3.TabIndex = 0;
+            // 
+            // label2
+            // 
+            label2.Depth = 0;
+            label2.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label2.Location = new Point(0, 0);
+            label2.MouseState = MaterialSkin.MouseState.HOVER;
+            label2.Name = "label2";
+            label2.Size = new Size(100, 23);
+            label2.TabIndex = 0;
+            // 
+            // label1
+            // 
+            label1.Depth = 0;
+            label1.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label1.Location = new Point(0, 0);
+            label1.MouseState = MaterialSkin.MouseState.HOVER;
+            label1.Name = "label1";
+            label1.Size = new Size(100, 23);
+            label1.TabIndex = 0;
+            // 
+            // pagelabel
+            // 
+            pagelabel.Depth = 0;
+            pagelabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            pagelabel.Location = new Point(0, 0);
+            pagelabel.MouseState = MaterialSkin.MouseState.HOVER;
+            pagelabel.Name = "pagelabel";
+            pagelabel.Size = new Size(100, 23);
+            pagelabel.TabIndex = 0;
+            // 
+            // searchBar
+            // 
+            searchBar.AnimateReadOnly = false;
+            searchBar.AutoCompleteMode = AutoCompleteMode.None;
+            searchBar.AutoCompleteSource = AutoCompleteSource.None;
+            searchBar.BackgroundImageLayout = ImageLayout.None;
+            searchBar.CharacterCasing = CharacterCasing.Normal;
+            searchBar.Depth = 0;
+            searchBar.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            searchBar.HideSelection = true;
+            searchBar.LeadingIcon = null;
+            searchBar.Location = new Point(0, 0);
+            searchBar.MaxLength = 32767;
+            searchBar.MouseState = MaterialSkin.MouseState.OUT;
+            searchBar.Name = "searchBar";
+            searchBar.PasswordChar = '\0';
+            searchBar.PrefixSuffixText = null;
+            searchBar.ReadOnly = false;
+            searchBar.RightToLeft = RightToLeft.No;
+            searchBar.SelectedText = "";
+            searchBar.SelectionLength = 0;
+            searchBar.SelectionStart = 0;
+            searchBar.ShortcutsEnabled = true;
+            searchBar.Size = new Size(250, 48);
+            searchBar.TabIndex = 0;
+            searchBar.TabStop = false;
+            searchBar.TextAlign = HorizontalAlignment.Left;
+            searchBar.TrailingIcon = null;
+            searchBar.UseSystemPasswordChar = false;
+            // 
+            // browseTabTorrentAction
+            // 
+            browseTabTorrentAction.Depth = 0;
+            browseTabTorrentAction.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            browseTabTorrentAction.Location = new Point(0, 0);
+            browseTabTorrentAction.MouseState = MaterialSkin.MouseState.HOVER;
+            browseTabTorrentAction.Name = "browseTabTorrentAction";
+            browseTabTorrentAction.Size = new Size(100, 23);
+            browseTabTorrentAction.TabIndex = 0;
+            // 
+            // browseTabTorrentDescription
+            // 
+            browseTabTorrentDescription.Depth = 0;
+            browseTabTorrentDescription.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            browseTabTorrentDescription.Location = new Point(0, 0);
+            browseTabTorrentDescription.MouseState = MaterialSkin.MouseState.HOVER;
+            browseTabTorrentDescription.Name = "browseTabTorrentDescription";
+            browseTabTorrentDescription.Size = new Size(100, 23);
+            browseTabTorrentDescription.TabIndex = 0;
+            // 
+            // browseTabTorrentSize
+            // 
+            browseTabTorrentSize.Depth = 0;
+            browseTabTorrentSize.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            browseTabTorrentSize.Location = new Point(0, 0);
+            browseTabTorrentSize.MouseState = MaterialSkin.MouseState.HOVER;
+            browseTabTorrentSize.Name = "browseTabTorrentSize";
+            browseTabTorrentSize.Size = new Size(100, 23);
+            browseTabTorrentSize.TabIndex = 0;
+            // 
+            // browseTabTorrentName
+            // 
+            browseTabTorrentName.Depth = 0;
+            browseTabTorrentName.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            browseTabTorrentName.Location = new Point(0, 0);
+            browseTabTorrentName.MouseState = MaterialSkin.MouseState.HOVER;
+            browseTabTorrentName.Name = "browseTabTorrentName";
+            browseTabTorrentName.Size = new Size(100, 23);
+            browseTabTorrentName.TabIndex = 0;
+            // 
+            // myTorrentsTabNameLabel
+            // 
+            myTorrentsTabNameLabel.Depth = 0;
+            myTorrentsTabNameLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            myTorrentsTabNameLabel.Location = new Point(0, 0);
+            myTorrentsTabNameLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            myTorrentsTabNameLabel.Name = "myTorrentsTabNameLabel";
+            myTorrentsTabNameLabel.Size = new Size(100, 23);
+            myTorrentsTabNameLabel.TabIndex = 0;
+            // 
+            // myTorrentsTabDescriptionLabel
+            // 
+            myTorrentsTabDescriptionLabel.Depth = 0;
+            myTorrentsTabDescriptionLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            myTorrentsTabDescriptionLabel.Location = new Point(0, 0);
+            myTorrentsTabDescriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            myTorrentsTabDescriptionLabel.Name = "myTorrentsTabDescriptionLabel";
+            myTorrentsTabDescriptionLabel.Size = new Size(100, 23);
+            myTorrentsTabDescriptionLabel.TabIndex = 0;
+            // 
+            // myTorrentsTabActionLabel
+            // 
+            myTorrentsTabActionLabel.Depth = 0;
+            myTorrentsTabActionLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            myTorrentsTabActionLabel.Location = new Point(0, 0);
+            myTorrentsTabActionLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            myTorrentsTabActionLabel.Name = "myTorrentsTabActionLabel";
+            myTorrentsTabActionLabel.Size = new Size(100, 23);
+            myTorrentsTabActionLabel.TabIndex = 0;
+            // 
+            // label5
+            // 
+            label5.Depth = 0;
+            label5.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            label5.Location = new Point(0, 0);
+            label5.MouseState = MaterialSkin.MouseState.HOVER;
+            label5.Name = "label5";
+            label5.Size = new Size(100, 23);
+            label5.TabIndex = 0;
+            // 
+            // browseDownloadsLocationLabel
+            // 
+            browseDownloadsLocationLabel.Depth = 0;
+            browseDownloadsLocationLabel.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            browseDownloadsLocationLabel.Location = new Point(0, 0);
+            browseDownloadsLocationLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            browseDownloadsLocationLabel.Name = "browseDownloadsLocationLabel";
+            browseDownloadsLocationLabel.Size = new Size(100, 23);
+            browseDownloadsLocationLabel.TabIndex = 0;
+            // 
+            // browseDownloadLocationTextBox
+            // 
+            browseDownloadLocationTextBox.AnimateReadOnly = false;
+            browseDownloadLocationTextBox.AutoCompleteMode = AutoCompleteMode.None;
+            browseDownloadLocationTextBox.AutoCompleteSource = AutoCompleteSource.None;
+            browseDownloadLocationTextBox.BackgroundImageLayout = ImageLayout.None;
+            browseDownloadLocationTextBox.CharacterCasing = CharacterCasing.Normal;
+            browseDownloadLocationTextBox.Depth = 0;
+            browseDownloadLocationTextBox.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            browseDownloadLocationTextBox.HideSelection = true;
+            browseDownloadLocationTextBox.LeadingIcon = null;
+            browseDownloadLocationTextBox.Location = new Point(0, 0);
+            browseDownloadLocationTextBox.MaxLength = 32767;
+            browseDownloadLocationTextBox.MouseState = MaterialSkin.MouseState.OUT;
+            browseDownloadLocationTextBox.Name = "browseDownloadLocationTextBox";
+            browseDownloadLocationTextBox.PasswordChar = '\0';
+            browseDownloadLocationTextBox.PrefixSuffixText = null;
+            browseDownloadLocationTextBox.ReadOnly = false;
+            browseDownloadLocationTextBox.RightToLeft = RightToLeft.No;
+            browseDownloadLocationTextBox.SelectedText = "";
+            browseDownloadLocationTextBox.SelectionLength = 0;
+            browseDownloadLocationTextBox.SelectionStart = 0;
+            browseDownloadLocationTextBox.ShortcutsEnabled = true;
+            browseDownloadLocationTextBox.Size = new Size(250, 48);
+            browseDownloadLocationTextBox.TabIndex = 0;
+            browseDownloadLocationTextBox.TabStop = false;
+            browseDownloadLocationTextBox.TextAlign = HorizontalAlignment.Left;
+            browseDownloadLocationTextBox.TrailingIcon = null;
+            browseDownloadLocationTextBox.UseSystemPasswordChar = false;
+            // 
+            // trackerIP
+            // 
+            trackerIP.AnimateReadOnly = false;
+            trackerIP.AutoCompleteMode = AutoCompleteMode.None;
+            trackerIP.AutoCompleteSource = AutoCompleteSource.None;
+            trackerIP.BackgroundImageLayout = ImageLayout.None;
+            trackerIP.CharacterCasing = CharacterCasing.Normal;
+            trackerIP.Depth = 0;
+            trackerIP.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            trackerIP.HideSelection = true;
+            trackerIP.LeadingIcon = null;
+            trackerIP.Location = new Point(0, 0);
+            trackerIP.MaxLength = 32767;
+            trackerIP.MouseState = MaterialSkin.MouseState.OUT;
+            trackerIP.Name = "trackerIP";
+            trackerIP.PasswordChar = '\0';
+            trackerIP.PrefixSuffixText = null;
+            trackerIP.ReadOnly = false;
+            trackerIP.RightToLeft = RightToLeft.No;
+            trackerIP.SelectedText = "";
+            trackerIP.SelectionLength = 0;
+            trackerIP.SelectionStart = 0;
+            trackerIP.ShortcutsEnabled = true;
+            trackerIP.Size = new Size(250, 48);
+            trackerIP.TabIndex = 0;
+            trackerIP.TabStop = false;
+            trackerIP.TextAlign = HorizontalAlignment.Left;
+            trackerIP.TrailingIcon = null;
+            trackerIP.UseSystemPasswordChar = false;
             // 
             // progressBar2
             // 
@@ -966,11 +974,34 @@ namespace PeerSoftware
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.White;
+            panel1.Controls.Add(btnDisconnect);
             panel1.Location = new Point(494, 67);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
             panel1.Size = new Size(403, 37);
             panel1.TabIndex = 15;
+            panel1.Paint += panel1_Paint;
+            // 
+            // btnDisconnect
+            // 
+            btnDisconnect.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnDisconnect.AutoSize = false;
+            btnDisconnect.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnDisconnect.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnDisconnect.Depth = 0;
+            btnDisconnect.HighEmphasis = true;
+            btnDisconnect.Icon = null;
+            btnDisconnect.Location = new Point(280, -2);
+            btnDisconnect.Margin = new Padding(4, 6, 4, 6);
+            btnDisconnect.MouseState = MaterialSkin.MouseState.HOVER;
+            btnDisconnect.Name = "btnDisconnect";
+            btnDisconnect.NoAccentTextColor = Color.Empty;
+            btnDisconnect.Size = new Size(111, 36);
+            btnDisconnect.TabIndex = 0;
+            btnDisconnect.Text = "Disconnect";
+            btnDisconnect.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnDisconnect.UseAccentColor = false;
+            btnDisconnect.UseVisualStyleBackColor = true;
             // 
             // notifyIcon1
             // 
@@ -996,15 +1027,8 @@ namespace PeerSoftware
             FormClosing += MainForm_FormClosing;
             tabControl1.ResumeLayout(false);
             buhTorrent.ResumeLayout(false);
-            tableLayoutPanel5.ResumeLayout(false);
-            tableLayoutPanel5.PerformLayout();
             browes.ResumeLayout(false);
-            browes.PerformLayout();
-            tableLayoutPanel7.ResumeLayout(false);
-            tableLayoutPanel7.PerformLayout();
             myTorrents.ResumeLayout(false);
-            tableLayoutPanel6.ResumeLayout(false);
-            tableLayoutPanel6.PerformLayout();
             settings.ResumeLayout(false);
             settingsTabClientGroupBox.ResumeLayout(false);
             startupSettings.ResumeLayout(false);
@@ -1012,9 +1036,9 @@ namespace PeerSoftware
             theme.ResumeLayout(false);
             theme.PerformLayout();
             peerSettings.ResumeLayout(false);
-            peerSettings.PerformLayout();
             settingsTabTrackerGroupBox.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1082,6 +1106,9 @@ namespace PeerSoftware
         private Label browseTabSizeLabel;
         private Label browseTabDescriptionLabel;
         private NotifyIcon notifyIcon1;
+        private MaterialSkin.Controls.MaterialButton btnDisconnect;
+        private MaterialSkin.Controls.MaterialTextBox2 materialTextBox22;
+        private MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
     }
 }
 
