@@ -6,7 +6,6 @@ namespace PeerSoftware.Utils
 {
     public class NetworkUtils
     {
-
         public (string, int) SplitIpAndPort(Form1 form1)
         {
             if (form1.GetIpFieldText() == null)

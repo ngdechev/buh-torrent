@@ -1,8 +1,11 @@
-﻿namespace PeerSoftware.Download
+﻿using Windows.ApplicationModel.VoiceCommands;
+
+namespace PeerSoftware.Download
 {
     public class ThreadManager
     {
         private List<Thread> threads = new List<Thread>();
+        private List<DownloadTcpManager> downloadTcpManagers = new List<DownloadTcpManager>();
 
         public void CreateThread(Action threadAction)
         {
@@ -39,6 +42,7 @@
             if (index >= 0 && index < threads.Count && threads[index].IsAlive)
             {
                 threads[index].Abort();
+                threads.RemoveAt(index);
             }
         }
 
@@ -53,6 +57,21 @@
             }
 
             threads.Clear();
+        }
+
+        public void AddDownloadTCPManeger(DownloadTcpManager downloadTcpManager)
+        {
+            downloadTcpManagers.Add(downloadTcpManager);
+        }
+
+        public void RemoveDownloadTCPManeger(int index)
+        {
+            downloadTcpManagers.RemoveAt(index);
+        }
+        
+        public DownloadTcpManager GerDownloadTCPManeger(int index)
+        {
+            return downloadTcpManagers.ElementAt(index);
         }
     }
 }

@@ -852,7 +852,8 @@ namespace PeerSoftware
             maxDownloadsFromPeersSlider.MouseState = MaterialSkin.MouseState.HOVER;
             maxDownloadsFromPeersSlider.Name = "maxDownloadsFromPeersSlider";
             maxDownloadsFromPeersSlider.RangeMax = 5;
-            maxDownloadsFromPeersSlider.Size = new Size(430, 40);
+            maxDownloadsFromPeersSlider.RangeMin = 1;
+            maxDownloadsFromPeersSlider.Size = new Size(376, 40);
             maxDownloadsFromPeersSlider.TabIndex = 9;
             maxDownloadsFromPeersSlider.Text = "Maximum Downloads from";
             maxDownloadsFromPeersSlider.Value = 2;
@@ -1108,7 +1109,6 @@ namespace PeerSoftware
         private Label browseTabSizeLabel;
         private Label browseTabDescriptionLabel;
         private NotifyIcon notifyIcon1;
-
     }
 }
 
