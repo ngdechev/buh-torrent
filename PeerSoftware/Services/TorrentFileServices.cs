@@ -73,8 +73,10 @@ namespace PeerSoftware.Services
                     fileExtension = fileExtension.TrimStart('.');
                 }
 
-                string currentDirectory = Directory.GetCurrentDirectory();
-                string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
+                string sharedFileDownloadFolder = form1.GetSharedFileDownloadFolder();
+                string path = Path.Combine(sharedFileDownloadFolder, "Download", torrentFile.info.torrentName + "." + fileExtension);
+
+
 
                 StreamWriter outputFile = new StreamWriter(path);
 

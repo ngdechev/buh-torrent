@@ -54,7 +54,6 @@ namespace TorrentTracker.Controllers
                 {
                     PeerForRemove = pair.Key;
                     _dictionaryController.GetDictionary().Remove(PeerForRemove);
-
                 }
                 else
                 {

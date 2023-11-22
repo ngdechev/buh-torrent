@@ -13,6 +13,8 @@ using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Windows.Forms;
 using System.Net.Sockets;
+using System.Configuration;
+using System.Text;
 
 namespace PeerSoftware
 {
@@ -32,6 +34,9 @@ namespace PeerSoftware
         private int _allMaxPage = 0;
 
         private int _nPeersUploading;
+        private string _sharedFileDownloadFolder;
+        private string _serverSocket;
+
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -44,6 +49,8 @@ namespace PeerSoftware
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
         private Downloader _downloader;
+
+        private Configuration _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
         private ContextMenuStrip _systemTrayContextMenu;
 
@@ -58,14 +65,14 @@ namespace PeerSoftware
             _materialSkinManager.EnforceBackcolorOnAllComponents = false;
             _materialSkinManager.AddFormToManage(this);
             _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
-            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Green600,
-                MaterialSkin.Primary.Green700,
-                MaterialSkin.Primary.Blue900,
-                MaterialSkin.Accent.Purple700,
-                MaterialSkin.TextShade.WHITE);
+            /*            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                            MaterialSkin.Primary.Green600,
+                            MaterialSkin.Primary.Green700,
+                            MaterialSkin.Primary.Blue900,
+                            MaterialSkin.Accent.Purple700,
+                            MaterialSkin.TextShade.WHITE);*/
 
-            UILightMode();
+            //UILightMode();
 
             FormClosing += MainForm_FormClosing;
 
@@ -109,7 +116,39 @@ namespace PeerSoftware
             }
 
 
-            _nPeersUploading = maxDownloadsFromPeersSlider.Value;
+            //settings
+
+            _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
+
+            materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
+            materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
+
+            int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
+            maxDownloadsFromPeersSlider.Value = _nPeersUploading;
+
+            string isDarkModeChecked = ConfigurationManager.AppSettings["darkMode"];
+
+            if (isDarkModeChecked == "true")
+            {
+                darkModeSwitch.Checked = true;
+                UIDarkMode();
+            }
+
+            string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
+            MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
+            _materialSkinManager.ColorScheme = selectedColorScheme;
+            comboBoxTheme.SelectedItem = selectedTheme;
+
+
+
+            //UILightMode();
+
+
+            Refresh();
+
+
+            //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
+
 
             // Create the TableLayoutPanel for the heading row
             TableLayoutPanel headingTableLayoutPanel = new TableLayoutPanel();
@@ -121,10 +160,8 @@ namespace PeerSoftware
             nameLabel.Text = "Name1";
 
 
-            comboBoxTheme.SelectedItem = "Lime with Purple Accent";
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
-
             Thread peerThread = new Thread(uploadserver.Start);
 
             peerThread.Start();
@@ -154,9 +191,20 @@ namespace PeerSoftware
                 _materialDescriptionControls.Add(materialDescriptionLabel);
                 _materialDownloadControls.Add(materialDownloadButton);
             }
-            _connections.AnnounceNewPeer("172.20.60.22", 12345);
-            _udpSender.Start("172.20.60.22:12345");
+
             Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils,this));
+
+
+            if (isDarkModeChecked == "true")
+            {
+                darkModeSwitch.Checked = true;
+                UIDarkMode();
+            }
+        }
+
+        public string GetSharedFileDownloadFolder()
+        {
+            return _sharedFileDownloadFolder;
         }
 
         private void OnMenuItem1Clicked(object? sender, EventArgs e)
@@ -521,7 +569,9 @@ namespace PeerSoftware
 
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
-            _udpSender.Start(trackerIP.Text.Trim());
+            _udpSender.Start(materialTextBox21.Text.Trim());
+
+            _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }
@@ -566,6 +616,10 @@ namespace PeerSoftware
 
                     Refresh();
                 }
+
+
+                //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
+                _configuration.AppSettings.Settings["theme"].Value = selectedTheme;
             }
         }
 
@@ -574,10 +628,12 @@ namespace PeerSoftware
             if (darkModeSwitch.Checked)
             {
                 UIDarkMode();
+                _configuration.AppSettings.Settings["darkMode"].Value = "true";
             }
             else
             {
                 UILightMode();
+                _configuration.AppSettings.Settings["darkMode"].Value = "false";
             }
         }
 
@@ -638,6 +694,9 @@ namespace PeerSoftware
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
+                _configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("configuration");
+
                 e.Cancel = true;
 
                 WindowState = FormWindowState.Minimized;
@@ -659,6 +718,45 @@ namespace PeerSoftware
             {
 
             }
+        }
+
+        private void maxDownloadsFromPeersSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            string temp = maxDownloadsFromPeersSlider.Value.ToString();
+            _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog())
+            {
+                if (openBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _sharedFileDownloadFolder = openBrowserDialog.SelectedPath;
+
+                    materialTextBox22.Text = _sharedFileDownloadFolder;
+
+                    _configuration.AppSettings.Settings["downloadSharedFileLocation"].Value = _sharedFileDownloadFolder;
+                }
+            }
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialButton2_Click(object sender, EventArgs e)
+        {
+            string trackerIpField;
+            int trackerPortField;
+
+            (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+            _connections.DestroyPeer(trackerIpField, trackerPortField);
+
+            MessageBox.Show("yes");
+
         }
     }
 }

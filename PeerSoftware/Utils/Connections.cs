@@ -61,6 +61,29 @@ namespace PeerSoftware.Utils
             }
         }
 
+        public void DestroyPeer(string trackerIpField, int trackerPortField) 
+        {
+            using (TcpClient client = new TcpClient())
+            {
+                try
+                {
+                    client.Connect(trackerIpField, trackerPortField);
+                    NetworkStream stream = client.GetStream();
+
+                    string localIpPort = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}";
+                    SendPTTMessage(client, 0x01, localIpPort);
+
+                    MessageBox.Show($"Disconnected {trackerIpField}");
+
+                    CloseConnection(client);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error connecting to {trackerIpField}: {ex.Message}");
+                }
+            }
+        }
+
         public void SendAndRecieveData(object blockin, Form1 form1, ITorrentStorage torrentStorage)
         {
             string trackerIpField;
