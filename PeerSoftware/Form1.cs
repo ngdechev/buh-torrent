@@ -127,7 +127,7 @@ namespace PeerSoftware
 
             string isDarkModeChecked = ConfigurationManager.AppSettings["darkMode"];
 
-            if(isDarkModeChecked == "true")
+            if (isDarkModeChecked == "true")
             {
                 darkModeSwitch.Checked = true;
                 UIDarkMode();
@@ -720,11 +720,6 @@ namespace PeerSoftware
             _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void materialButton1_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog())
@@ -738,6 +733,24 @@ namespace PeerSoftware
                     _configuration.AppSettings.Settings["downloadSharedFileLocation"].Value = _sharedFileDownloadFolder;
                 }
             }
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialButton2_Click(object sender, EventArgs e)
+        {
+            string trackerIpField;
+            int trackerPortField;
+
+            (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+            _connections.DestroyPeer(trackerIpField, trackerPortField);
+
+            MessageBox.Show("yes");
+
         }
     }
 }

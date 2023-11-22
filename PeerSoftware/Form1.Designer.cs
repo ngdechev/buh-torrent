@@ -61,6 +61,7 @@ namespace PeerSoftware
             maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
             maxDownloadsFromPeersSlider = new MaterialSkin.Controls.MaterialSlider();
             settingsTabTrackerGroupBox = new GroupBox();
+            btnDisconnect = new MaterialSkin.Controls.MaterialButton();
             materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
             save = new MaterialSkin.Controls.MaterialButton();
             help = new TabPage();
@@ -86,7 +87,7 @@ namespace PeerSoftware
             tableLayoutPanel3 = new TableLayoutPanel();
             buttonIcons = new ImageList(components);
             panel1 = new Panel();
-            btnDisconnect = new MaterialSkin.Controls.MaterialButton();
+            materialButton2 = new MaterialSkin.Controls.MaterialButton();
             notifyIcon1 = new NotifyIcon(components);
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
@@ -628,6 +629,7 @@ namespace PeerSoftware
             // settingsTabTrackerGroupBox
             // 
             settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            settingsTabTrackerGroupBox.Controls.Add(btnDisconnect);
             settingsTabTrackerGroupBox.Controls.Add(materialTextBox21);
             settingsTabTrackerGroupBox.Controls.Add(save);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
@@ -637,6 +639,27 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.TabIndex = 6;
             settingsTabTrackerGroupBox.TabStop = false;
             settingsTabTrackerGroupBox.Text = "Tracker Settings";
+            // 
+            // btnDisconnect
+            // 
+            btnDisconnect.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnDisconnect.AutoSize = false;
+            btnDisconnect.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnDisconnect.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnDisconnect.Depth = 0;
+            btnDisconnect.HighEmphasis = true;
+            btnDisconnect.Icon = null;
+            btnDisconnect.Location = new Point(283, 90);
+            btnDisconnect.Margin = new Padding(4, 6, 4, 6);
+            btnDisconnect.MouseState = MaterialSkin.MouseState.HOVER;
+            btnDisconnect.Name = "btnDisconnect";
+            btnDisconnect.NoAccentTextColor = Color.Empty;
+            btnDisconnect.Size = new Size(111, 36);
+            btnDisconnect.TabIndex = 0;
+            btnDisconnect.Text = "fake button";
+            btnDisconnect.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnDisconnect.UseAccentColor = false;
+            btnDisconnect.UseVisualStyleBackColor = true;
             // 
             // materialTextBox21
             // 
@@ -973,34 +996,32 @@ namespace PeerSoftware
             // 
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.White;
-            panel1.Controls.Add(btnDisconnect);
+            panel1.Controls.Add(materialButton2);
             panel1.Location = new Point(494, 67);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
             panel1.Size = new Size(403, 37);
             panel1.TabIndex = 15;
-            panel1.Paint += panel1_Paint;
             // 
-            // btnDisconnect
+            // materialButton2
             // 
-            btnDisconnect.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnDisconnect.AutoSize = false;
-            btnDisconnect.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnDisconnect.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnDisconnect.Depth = 0;
-            btnDisconnect.HighEmphasis = true;
-            btnDisconnect.Icon = null;
-            btnDisconnect.Location = new Point(280, -2);
-            btnDisconnect.Margin = new Padding(4, 6, 4, 6);
-            btnDisconnect.MouseState = MaterialSkin.MouseState.HOVER;
-            btnDisconnect.Name = "btnDisconnect";
-            btnDisconnect.NoAccentTextColor = Color.Empty;
-            btnDisconnect.Size = new Size(111, 36);
-            btnDisconnect.TabIndex = 0;
-            btnDisconnect.Text = "Disconnect";
-            btnDisconnect.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnDisconnect.UseAccentColor = false;
-            btnDisconnect.UseVisualStyleBackColor = true;
+            materialButton2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            materialButton2.Depth = 0;
+            materialButton2.HighEmphasis = true;
+            materialButton2.Icon = null;
+            materialButton2.Location = new Point(282, 3);
+            materialButton2.Margin = new Padding(4, 6, 4, 6);
+            materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            materialButton2.Name = "materialButton2";
+            materialButton2.NoAccentTextColor = Color.Empty;
+            materialButton2.Size = new Size(112, 36);
+            materialButton2.TabIndex = 0;
+            materialButton2.Text = "Disconnect";
+            materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            materialButton2.UseAccentColor = false;
+            materialButton2.UseVisualStyleBackColor = true;
+            materialButton2.Click += materialButton2_Click;
             // 
             // notifyIcon1
             // 
@@ -1039,6 +1060,7 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1110,6 +1132,7 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
         private MaterialSkin.Controls.MaterialButton browseFile;
         private MaterialSkin.Controls.MaterialButton materialButton1;
+        private MaterialSkin.Controls.MaterialButton materialButton2;
     }
 }
 
