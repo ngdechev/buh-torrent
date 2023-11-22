@@ -56,12 +56,12 @@ namespace PeerSoftware.Services
 
             return _peersAndBlocks;
         }
-        public Dictionary<string, string> ReCalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile,List<int> downloadBlocks)
+        public Dictionary<string, string> ReCalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile,List<int> downloadBlocks, int nPeersUploading)
         {
             List<int> blocksForDownload=new List<int>();
             List<string> listWithFinalyBlocks = new List<string>();
             _peersAndBlocks.Clear();
-            _peersAndBlocks=CalculateParticions(peersIpPlusPort,sizeOfSharedFile);
+            _peersAndBlocks=CalculateParticions(peersIpPlusPort,sizeOfSharedFile, nPeersUploading);
 
             foreach (var pair in _peersAndBlocks)
             {
