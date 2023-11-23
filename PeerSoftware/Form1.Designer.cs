@@ -72,7 +72,6 @@ namespace PeerSoftware
             maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
             maxDownloadsFromPeersSlider = new MaterialSkin.Controls.MaterialSlider();
             settingsTabTrackerGroupBox = new GroupBox();
-            btnDisconnect = new MaterialSkin.Controls.MaterialButton();
             materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
             save = new MaterialSkin.Controls.MaterialButton();
             help = new TabPage();
@@ -133,7 +132,7 @@ namespace PeerSoftware
             buhTorrent.ImageKey = "downloading_torrents.png";
             buhTorrent.Location = new Point(4, 39);
             buhTorrent.Name = "buhTorrent";
-            buhTorrent.Padding = new Padding(3, 3, 3, 3);
+            buhTorrent.Padding = new Padding(3);
             buhTorrent.Size = new Size(884, 407);
             buhTorrent.TabIndex = 0;
             buhTorrent.Text = "Downloading";
@@ -266,7 +265,7 @@ namespace PeerSoftware
             browes.ImageKey = "search.png";
             browes.Location = new Point(4, 39);
             browes.Name = "browes";
-            browes.Padding = new Padding(3, 3, 3, 3);
+            browes.Padding = new Padding(3);
             browes.Size = new Size(884, 407);
             browes.TabIndex = 1;
             browes.Text = "Browse";
@@ -712,7 +711,7 @@ namespace PeerSoftware
             btnBrowseDownloadLocation.HighEmphasis = true;
             btnBrowseDownloadLocation.Icon = null;
             btnBrowseDownloadLocation.Location = new Point(267, 50);
-            btnBrowseDownloadLocation.Margin = new Padding(4, 4, 4, 4);
+            btnBrowseDownloadLocation.Margin = new Padding(4);
             btnBrowseDownloadLocation.MouseState = MaterialSkin.MouseState.HOVER;
             btnBrowseDownloadLocation.Name = "btnBrowseDownloadLocation";
             btnBrowseDownloadLocation.NoAccentTextColor = Color.Empty;
@@ -787,7 +786,6 @@ namespace PeerSoftware
             // settingsTabTrackerGroupBox
             // 
             settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            settingsTabTrackerGroupBox.Controls.Add(btnDisconnect);
             settingsTabTrackerGroupBox.Controls.Add(materialTextBox21);
             settingsTabTrackerGroupBox.Controls.Add(save);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
@@ -797,27 +795,6 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.TabIndex = 6;
             settingsTabTrackerGroupBox.TabStop = false;
             settingsTabTrackerGroupBox.Text = "Tracker Settings";
-            // 
-            // btnDisconnect
-            // 
-            btnDisconnect.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnDisconnect.AutoSize = false;
-            btnDisconnect.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnDisconnect.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnDisconnect.Depth = 0;
-            btnDisconnect.HighEmphasis = true;
-            btnDisconnect.Icon = null;
-            btnDisconnect.Location = new Point(248, 68);
-            btnDisconnect.Margin = new Padding(4, 4, 4, 4);
-            btnDisconnect.MouseState = MaterialSkin.MouseState.HOVER;
-            btnDisconnect.Name = "btnDisconnect";
-            btnDisconnect.NoAccentTextColor = Color.Empty;
-            btnDisconnect.Size = new Size(97, 27);
-            btnDisconnect.TabIndex = 0;
-            btnDisconnect.Text = "fake button";
-            btnDisconnect.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnDisconnect.UseAccentColor = false;
-            btnDisconnect.UseVisualStyleBackColor = true;
             // 
             // materialTextBox21
             // 
@@ -1071,7 +1048,7 @@ namespace PeerSoftware
             materialButton2.HighEmphasis = true;
             materialButton2.Icon = null;
             materialButton2.Location = new Point(247, 2);
-            materialButton2.Margin = new Padding(4, 4, 4, 4);
+            materialButton2.Margin = new Padding(4);
             materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
             materialButton2.Name = "materialButton2";
             materialButton2.NoAccentTextColor = Color.Empty;
@@ -1193,7 +1170,6 @@ namespace PeerSoftware
         private Label browseTabSizeLabel;
         private Label browseTabDescriptionLabel;
         private NotifyIcon notifyIcon1;
-        private MaterialSkin.Controls.MaterialButton btnDisconnect;
         private MaterialSkin.Controls.MaterialTextBox2 materialTextBox22;
         private MaterialSkin.Controls.MaterialTextBox2 materialTextBox21;
         private MaterialSkin.Controls.MaterialButton browseFile;
