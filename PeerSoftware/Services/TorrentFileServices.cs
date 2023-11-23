@@ -31,21 +31,18 @@ namespace PeerSoftware.Services
             return searchResults;
         }
 
-        public void LoadData(ITorrentStorage torrentStorage, Form1 form1 )
+        public void LoadData(ITorrentStorage torrentStorage, NetworkUtils networkUtils, Form1 form1 )
         {
             torrentStorage.GetAllTorrentFiles().Clear();
 
             try
             {
                 PTTBlock block = new PTTBlock(0x04, 0, null);
- 
 
-                Connections connections = new Connections();
+                Connections connections = new Connections(networkUtils);
                 Thread thread = new Thread(() => connections.SendAndRecieveData(block, form1, torrentStorage));
 
                 thread.Start();
-
-                
             }
             catch (Exception ex)
             {
@@ -59,10 +56,9 @@ namespace PeerSoftware.Services
             TorrentFile torrentFile = torrentStorage.GetDownloadTorrentFiles().First();
             TorrentFile newTorrent = new TorrentFile();
 
-            PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length , torrentFile.info.checksum);
-            //receivedLivePeers = connections.SendAndRecieveData06(block, form1).ToList();
-            
-            Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(receivedLivePeers, (int)torrentFile.info.length);
+            PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
+
+            Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(receivedLivePeers, (int)torrentFile.info.length, form1.GetNPeersUploading());
 
             foreach (string peer in peersAndBlocks.Keys)
             {
@@ -77,8 +73,10 @@ namespace PeerSoftware.Services
                     fileExtension = fileExtension.TrimStart('.');
                 }
 
-                string currentDirectory = Directory.GetCurrentDirectory();
-                string path = Path.Combine(currentDirectory, "Download", torrentFile.info.torrentName + "." + fileExtension);
+                string sharedFileDownloadFolder = form1.GetSharedFileDownloadFolder();
+                string path = Path.Combine(sharedFileDownloadFolder, "Download", torrentFile.info.torrentName + "." + fileExtension);
+
+
 
                 StreamWriter outputFile = new StreamWriter(path);
 

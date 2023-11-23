@@ -10,8 +10,9 @@ namespace PeerSoftware.Services
     public class SharedFileServices
     {
         public Dictionary<string, string> _peersAndBlocks = new Dictionary<string, string>();
+        public Dictionary<string, string> _newPeersAndBlocks = new Dictionary<string, string>();
 
-        public Dictionary<string, string> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile)
+        public Dictionary<string, string> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile, int nPeersUploading)
         {
             int numberOfPeers = peersIpPlusPort.Count();
 
@@ -20,12 +21,12 @@ namespace PeerSoftware.Services
                 throw new Exception("There are no active peers.");
             }
 
-            if (numberOfPeers > 5) 
+            if (nPeersUploading > numberOfPeers) 
             {
-                numberOfPeers = 5;
+                nPeersUploading = numberOfPeers;
             }
 
-            for (int i = 0; i < numberOfPeers; i++)
+            for (int i = 0; i < nPeersUploading; i++)
             {
                 _peersAndBlocks.Add(peersIpPlusPort[i], "");
             }
@@ -54,6 +55,70 @@ namespace PeerSoftware.Services
             }
 
             return _peersAndBlocks;
+        }
+        public Dictionary<string, string> ReCalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile,List<int> downloadBlocks, int nPeersUploading)
+        {
+            List<int> blocksForDownload=new List<int>();
+            List<string> listWithFinalyBlocks = new List<string>();
+            _peersAndBlocks.Clear();
+            _peersAndBlocks=CalculateParticions(peersIpPlusPort,sizeOfSharedFile, nPeersUploading);
+
+            foreach (var pair in _peersAndBlocks)
+            {
+                //Split blocks first and last from string
+                string[] blocks = pair.Value.Split("-", 2);
+                int firstBlocks = int.Parse(blocks[0]);
+                int LastBlocks = int.Parse(blocks[1]);
+                //Add Every block between first and last block and add first and last blocks
+                for (int i = firstBlocks; i < LastBlocks; i++)
+                {
+                    blocksForDownload.Add(i);
+                }
+                //Delete blocks we have
+                foreach (int delBlocks in downloadBlocks)
+                {
+                    for (int i = 0; i < blocksForDownload.Count; i++)
+                    {
+                        if (blocksForDownload[i] == delBlocks)
+                        {
+                            blocksForDownload.RemoveAt(i);
+                        }
+                    }
+                }
+                //Split blocks and make new blocks from to
+                listWithFinalyBlocks = SplitBlocks(blocksForDownload);
+                //Add in new dictionary 
+                foreach (var block in listWithFinalyBlocks)
+                {
+                    _newPeersAndBlocks.Add(pair.Key, block);
+                }
+            }
+            return _newPeersAndBlocks;
+        }
+        public List<string> SplitBlocks(List<int> inputList)
+        {
+            List<List<int>> result = new List<List<int>>();
+            List<int> sublist = new List<int> { inputList[0] };
+            List<string>list = new List<string>();
+            for (int i = 1; i < inputList.Count; i++)
+            {
+                if (inputList[i] - inputList[i - 1] > 1)
+                {
+                    result.Add(sublist);
+                    sublist = new List<int> { inputList[i] };
+                }
+                else
+                {
+                    sublist.Add(inputList[i]);
+                }
+            }
+            result.Add(sublist);
+            foreach (List<int> listWithBlocks in result)
+            {
+                string blocks = $"{listWithBlocks.First()}-{listWithBlocks.Last()}";
+                list.Add(blocks);
+            }
+            return list;
         }
     }
 }

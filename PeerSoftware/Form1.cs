@@ -12,6 +12,9 @@ using MaterialSkin.Controls;
 using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Windows.Forms;
+using System.Net.Sockets;
+using System.Configuration;
+using System.Text;
 
 namespace PeerSoftware
 {
@@ -30,6 +33,10 @@ namespace PeerSoftware
         private int _allPage = 0;
         private int _allMaxPage = 0;
 
+        private int _nPeersUploading;
+        private string _sharedFileDownloadFolder;
+        private string _serverSocket;
+
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
         private bool _searchOnFlag = false;
@@ -42,6 +49,8 @@ namespace PeerSoftware
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
         private Downloader _downloader;
+
+        private Configuration _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
         private ContextMenuStrip _systemTrayContextMenu;
 
@@ -56,14 +65,14 @@ namespace PeerSoftware
             _materialSkinManager.EnforceBackcolorOnAllComponents = false;
             _materialSkinManager.AddFormToManage(this);
             _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
-            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
-                MaterialSkin.Primary.Green600,
-                MaterialSkin.Primary.Green700,
-                MaterialSkin.Primary.Blue900,
-                MaterialSkin.Accent.Purple700,
-                MaterialSkin.TextShade.WHITE);
+            /*            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                            MaterialSkin.Primary.Green600,
+                            MaterialSkin.Primary.Green700,
+                            MaterialSkin.Primary.Blue900,
+                            MaterialSkin.Accent.Purple700,
+                            MaterialSkin.TextShade.WHITE);*/
 
-            UILightMode();
+            //UILightMode();
 
             FormClosing += MainForm_FormClosing;
 
@@ -82,11 +91,12 @@ namespace PeerSoftware
 
 
             _storage = new TorrentStorage();
-            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
             _sharedFileServices = new SharedFileServices();
             _commonUtils = new CommonUtils();
+            _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
 
             _customMessageBox = new CustomMessageBox(this);
@@ -106,6 +116,38 @@ namespace PeerSoftware
             }
 
 
+            //settings
+
+            _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
+
+            materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
+            materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
+
+            int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
+            maxDownloadsFromPeersSlider.Value = _nPeersUploading;
+
+            string isDarkModeChecked = ConfigurationManager.AppSettings["darkMode"];
+
+            if (isDarkModeChecked == "true")
+            {
+                darkModeSwitch.Checked = true;
+                UIDarkMode();
+            }
+
+            string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
+            MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
+            _materialSkinManager.ColorScheme = selectedColorScheme;
+            comboBoxTheme.SelectedItem = selectedTheme;
+
+
+
+            //UILightMode();
+
+
+            Refresh();
+
+
+            //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
 
 
             // Create the TableLayoutPanel for the heading row
@@ -118,10 +160,8 @@ namespace PeerSoftware
             nameLabel.Text = "Name1";
 
 
-            comboBoxTheme.SelectedItem = "Lime with Purple Accent";
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
-
             Thread peerThread = new Thread(uploadserver.Start);
 
             peerThread.Start();
@@ -154,6 +194,23 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
+            string[] ip = _serverSocket.Split(':', 2);
+            int.TryParse(ip[1], out int int_port);
+            _connections.AnnounceNewPeer(ip[0], int_port);
+            _udpSender.Start(_serverSocket);
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+
+
+            if (isDarkModeChecked == "true")
+            {
+                darkModeSwitch.Checked = true;
+                UIDarkMode();
+            }
+        }
+
+        public string GetSharedFileDownloadFolder()
+        {
+            return _sharedFileDownloadFolder;
         }
 
         private void OnMenuItem1Clicked(object? sender, EventArgs e)
@@ -167,7 +224,13 @@ namespace PeerSoftware
 
         private void OnMenuItem2Clicked(object? sender, EventArgs e)
         {
+
             Application.Exit();
+        }
+
+        public int GetNPeersUploading()
+        {
+            return _nPeersUploading;
         }
 
         public ITorrentStorage GetTorrentStorage()
@@ -312,91 +375,12 @@ namespace PeerSoftware
             }
         }
 
-        /*
-          private void Show(int i, List<TorrentFile> torrentFiles)
-         {
-             List<TorrentFile> disable = StatusDownloadButton();
-             int row = i * 5;
-             for (int index = 0; index < _titleControls.Count; index++)
-             {
-                 Control titleControl = _titleControls[index];
-                 Control sizeControl = _sizeControls[index];
-                 Control descriptionControl = _descriptionControls[index];
-                 Control downloadButtonControl = _downloadControls[index];
-
-                 if (index + row < torrentFiles.Count)
-                 {
-                     if (titleControl != null)
-                     {
-                         titleControl.Text = torrentFiles[index + row].info.torrentName;
-                     }
-
-                     if (sizeControl != null)
-                     {
-                         sizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
-                     }
-
-                     if (descriptionControl != null)
-                     {
-                         descriptionControl.Text = torrentFiles[index + row].info.description;
-                     }
-
-                     if (downloadButtonControl != null)
-                     {
-                         downloadButtonControl.Visible = true;
-                     }
-                 }
-                 else
-                 {
-                     // If there are no more items in torrentFiles, clear the text of the controls
-
-
-                     if (titleControl != null)
-                     {
-                         titleControl.Text = "";
-                     }
-
-                     if (sizeControl != null)
-                     {
-                         sizeControl.Text = "";
-                     }
-
-                     if (descriptionControl != null)
-                     {
-                         descriptionControl.Text = "";
-                     }
-
-                     if (downloadButtonControl != null)
-                     {
-                         downloadButtonControl.Visible = false;
-                     }
-                 }
-                 if (_torrentDownloadingNames.Count != 0)
-                 {
-                     foreach (string name in _torrentDownloadingNames)
-                     {
-                         if (titleControl.Text == name)
-                         {
-                             _downloadControls[index].Enabled = false;
-                             break;
-                         }
-                         if (titleControl.Text != name)
-                         {
-                             _downloadControls[index].Enabled = true;
-                         }
-
-                     }
-                 }
-
-             }
-         }
-         */
 
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 1)
             {
-                _torrentFileServices.LoadData(_storage, this);
+                _torrentFileServices.LoadData(_storage, _networkUtils, this);
             }
             if (tabControl1.SelectedIndex == 2)
             {
@@ -467,8 +451,8 @@ namespace PeerSoftware
             string trackerIp;
             int trackerPort;
             (trackerIp, trackerPort) = _networkUtils.SplitIpAndPort(this);
-            //TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
-            //_connections.SendPTTMessage(tcpClient, 0x03, payload);
+            TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
+            _connections.SendPTTMessage(tcpClient, 0x03, payload);
 
             string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
 
@@ -477,20 +461,19 @@ namespace PeerSoftware
 
             if (_customMessageBox.ShowDialog() == DialogResult.Yes)
             {
-                File.Delete(folderPath);
-
+                _customMessageBox.SetTitle("Delete Confirmation");
+                _customMessageBox.SetMessageText($"Do you want to delete shared file also?");
+                if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
+                {
+                    File.Delete(torrentFiles.First().info.fileName);
+                }
+                if (File.Exists(folderPath))
+                {
+                    File.Delete(folderPath);
+                }
                 ShowMyTorrents();
             }
 
-            //DialogResult result = MessageBox.Show($"Do you want to delete {torrentName.Text}.json?", "Confirmation", MessageBoxButtons.YesNo);
-            /*
-            if (result == DialogResult.Yes)
-            {
-                File.Delete(folderPath);
-
-                ShowMyTorrents();
-            }
-            */
         }
 
         // Downloading torrents tab..
@@ -534,6 +517,7 @@ namespace PeerSoftware
             button.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
             button.Size = new Size(200, 200);
             button.Anchor = AnchorStyles.None;
+            button.Click += PauseResume_Click;
 
             // Create a new row
             tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
@@ -563,6 +547,14 @@ namespace PeerSoftware
             _torrentDownloadingNames.Add(label1.Text);
         }
 
+        private void PauseResume_Click(object sender, EventArgs e)
+        {
+            MaterialButton pauseButton = (MaterialButton)sender;
+
+            int rowIndex = tableLayoutPanel1.GetRow(pauseButton);
+            _downloader.Pause(rowIndex);
+        }
+
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -584,7 +576,9 @@ namespace PeerSoftware
 
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
-            _udpSender.Start(trackerIP.Text.Trim());
+            _udpSender.Start(materialTextBox21.Text.Trim());
+
+            _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
         }
@@ -602,10 +596,6 @@ namespace PeerSoftware
             return trackerIP.Text;
         }
 
-        private void buhTorrent_Click(object sender, EventArgs e)
-        {
-
-        }
 
         public string GetIpFieldText()
         {
@@ -617,10 +607,6 @@ namespace PeerSoftware
             progressBar.Value = count;
         }
 
-        private void tableLayoutPanel7_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private void comboBoxTheme_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -637,6 +623,10 @@ namespace PeerSoftware
 
                     Refresh();
                 }
+
+
+                //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
+                _configuration.AppSettings.Settings["theme"].Value = selectedTheme;
             }
         }
 
@@ -645,10 +635,12 @@ namespace PeerSoftware
             if (darkModeSwitch.Checked)
             {
                 UIDarkMode();
+                _configuration.AppSettings.Settings["darkMode"].Value = "true";
             }
             else
             {
                 UILightMode();
+                _configuration.AppSettings.Settings["darkMode"].Value = "false";
             }
         }
 
@@ -675,40 +667,7 @@ namespace PeerSoftware
                 tabPage.BackColor = Color.White;
             }
 
-            /*
-             tableLayoutPanel1.BackColor = Color.White;
-            tableLayoutPanel2.BackColor = Color.White;
-            tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel5.BackColor = Color.White;
-            tableLayoutPanel6.BackColor = Color.White;
-            tableLayoutPanel7.BackColor = Color.White;
 
-            settingsTabTrackerGroupBox.BackColor = Color.White;
-            settingsTabClientGroupBox.BackColor = Color.White;
-
-            foreach (Control control in tableLayoutPanel7.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = Color.White;
-                }
-            }
-
-            foreach (Control control in tableLayoutPanel6.Controls)
-            {
-                if (control is Label)
-                {
-                    Label label = (Label)control;
-                    label.BackColor = Color.White;
-                }
-            }
-
-            foreach (TabPage tabPage in tabControl1.TabPages)
-            {
-                tabPage.BackColor = Color.White;
-            }
-             */
         }
 
         private void UIDarkMode()
@@ -742,6 +701,9 @@ namespace PeerSoftware
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
+                _configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("configuration");
+
                 e.Cancel = true;
 
                 WindowState = FormWindowState.Minimized;
@@ -759,6 +721,49 @@ namespace PeerSoftware
 
                 notifyIcon1.Visible = false;
             }
+            if (e.Button == MouseButtons.Right)
+            {
+
+            }
+        }
+
+        private void maxDownloadsFromPeersSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            string temp = maxDownloadsFromPeersSlider.Value.ToString();
+            _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
+        }
+
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog())
+            {
+                if (openBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _sharedFileDownloadFolder = openBrowserDialog.SelectedPath;
+
+                    materialTextBox22.Text = _sharedFileDownloadFolder;
+
+                    _configuration.AppSettings.Settings["downloadSharedFileLocation"].Value = _sharedFileDownloadFolder;
+                }
+            }
+        }
+
+        private void btnDisconnect_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialButton2_Click(object sender, EventArgs e)
+        {
+            string trackerIpField;
+            int trackerPortField;
+
+            (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+            _connections.DestroyPeer(trackerIpField, trackerPortField);
+
+            MessageBox.Show("yes");
+
         }
     }
 }

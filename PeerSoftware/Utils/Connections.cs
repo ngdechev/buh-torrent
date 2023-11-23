@@ -8,9 +8,13 @@ using System.Text.Json;
 namespace PeerSoftware.Utils
 {
     public class Connections
-    {  
-       
-        private NetworkUtils _networkUtils = new NetworkUtils();
+    {
+        private NetworkUtils _networkUtils;
+
+        public Connections(NetworkUtils networkUtils)
+        {
+            _networkUtils = networkUtils;
+        }
 
         public void SendPTTMessage(TcpClient client, byte command, string payload)
         {
@@ -38,19 +42,44 @@ namespace PeerSoftware.Utils
                         string localIpPort = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}";
                         SendPTTMessage(client, 0x00, localIpPort);
 
-                        MessageBox.Show($"Connected to {trackerIpField}");
-
+                       // MessageBox.Show($"Connected to {trackerIpField}");
+                       //Notification
                         CloseConnection(client);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show($"Error connecting to {trackerIpField}: {ex.Message}");
+                        //Notification
                     }
 
                 }
                 else
                 {
+                    //Notification
                     MessageBox.Show("Invalid IP address or port. Please enter a valid IP address and port.");
+                }
+            }
+        }
+
+        public void DestroyPeer(string trackerIpField, int trackerPortField) 
+        {
+            using (TcpClient client = new TcpClient())
+            {
+                try
+                {
+                    client.Connect(trackerIpField, trackerPortField);
+                    NetworkStream stream = client.GetStream();
+
+                    string localIpPort = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}";
+                    SendPTTMessage(client, 0x01, localIpPort);
+
+                    MessageBox.Show($"Disconnected {trackerIpField}");
+
+                    CloseConnection(client);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error connecting to {trackerIpField}: {ex.Message}");
                 }
             }
         }

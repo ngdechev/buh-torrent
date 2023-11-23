@@ -1,4 +1,5 @@
 ﻿using PeerSoftware.Storage;
+using PTT_Parser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,22 +53,12 @@ namespace PeerSoftware.Utils
                     {
                         fileExtension = fileExtension.TrimStart('.');
                     }
-                    string currentDirectory = Directory.GetCurrentDirectory();
-                    string folderPath = Path.Combine(currentDirectory, "Download", newTorrent.info.torrentName + "." + fileExtension);
+
+                    string sharedFileDownloadFolder = mainForm.GetSharedFileDownloadFolder();
+                    string folderPath = Path.Combine(sharedFileDownloadFolder, newTorrent.info.torrentName + "." + fileExtension);
                     newTorrent.info.fileName = folderPath;
-                   // TorrentReader.WriteJSON("MyTorrent", newTorrent);
+                    TorrentReader.WriteJSON("MyTorrent", newTorrent);
 
-                    /*string trackerIpField;
-                    int trackerPortField;
-
-                    (trackerIpField, trackerPortField) = new NetworkUtils().SplitIpAndPort(mainForm);
-
-                    *//*new Connections().AnnounceNewPeer(trackerIpField, trackerPortField);*//*
-                    TcpClient client = new TcpClient(trackerIpField,trackerPortField);
-                    string? myip = new NetworkUtils().GetLocalIPAddress() + ":" + new NetworkUtils().GetLocalPort().ToString();
-
-                    string ipPlusJson = myip + ";" + JsonSerializer.Serialize(newTorrent);
-                    new Connections().SendPTTMessage(client, 0x02,ipPlusJson);*/
                 }
             }
 
@@ -91,6 +82,49 @@ namespace PeerSoftware.Utils
                     TorrentFile torrentFile = TorrentReader.ReadFromJSON(jsonFile);
                     temp.Add(torrentFile);
                     storage.GetMyTorrentFiles().Add(torrentFile);
+                }
+            }
+
+            return temp;
+        }
+
+        public List<TorrentFile> LoadMyTorrentsStartUp(ITorrentStorage storage,NetworkUtils networkUtils,Form1 mainForm)
+        {
+            string folderPath = Directory.GetCurrentDirectory();
+            folderPath = folderPath + "\\MyTorrent";
+            List<TorrentFile> temp = new List<TorrentFile>();
+
+            if (Directory.Exists(folderPath))
+            {
+                string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
+
+                storage.GetMyTorrentFiles().Clear();
+
+                foreach (string jsonFile in jsonFiles)
+                {
+                    TorrentFile torrentFile = TorrentReader.ReadFromJSON(jsonFile);
+                    temp.Add(torrentFile);
+                    storage.GetMyTorrentFiles().Add(torrentFile);
+                    string ipAddressString;
+                    int port;
+                    try
+                    {
+                        (ipAddressString, port) = networkUtils.SplitIpAndPort(mainForm);
+                        using (TcpClient client = new TcpClient())
+                        {
+                            client.Connect(ipAddressString, port);
+                            string? myip = networkUtils.GetLocalIPAddress() + ":" + networkUtils.GetLocalPort().ToString();
+                            string ipPlusJson = myip + ";" + JsonSerializer.Serialize(torrentFile);
+                            PTTBlock block = new(0x02, ipPlusJson.Length, ipPlusJson);
+                            byte[] data = Encoding.UTF8.GetBytes(block.ToString());
+                            client.GetStream().Write(data, 0, data.Length);
+                            client.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Error sending data: " + ex.Message);
+                    }
                 }
             }
 
