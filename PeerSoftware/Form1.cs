@@ -22,7 +22,8 @@ namespace PeerSoftware
     {
         private readonly MaterialSkin.MaterialSkinManager _materialSkinManager;
 
-        private CustomMessageBox _customMessageBox;
+        private CustomMessageBoxYesNo _customMessageBoxYesNo;
+        private CustomMessageBoxOK _customMessageBoxOK;
 
         private List<MaterialLabel> _materialTitleControls = new List<MaterialLabel>();
         private List<MaterialLabel> _materialSizeControls = new List<MaterialLabel>();
@@ -99,7 +100,8 @@ namespace PeerSoftware
             _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
 
-            _customMessageBox = new CustomMessageBox(this);
+            _customMessageBoxYesNo = new CustomMessageBoxYesNo(this);
+            _customMessageBoxOK = new CustomMessageBoxOK();
 
             /*            comboBoxTheme.Items.Add("Lime with Blue Accent");
                         comboBoxTheme.Items.Add("Blue-Grey with Light Blue Accent");
@@ -479,14 +481,14 @@ namespace PeerSoftware
 
             string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
 
-            _customMessageBox.SetTitle("Delete Confirmation");
-            _customMessageBox.SetMessageText($"Do you want to delete {torrentName.Text}.json?");
-
-            if (_customMessageBox.ShowDialog() == DialogResult.Yes)
+            _customMessageBoxYesNo.SetTitle("Delete Confirmation");
+            _customMessageBoxYesNo.SetMessageText($"Do you want to delete {torrentName.Text}.json?");
+            
+            if (_customMessageBoxYesNo.ShowDialog() == DialogResult.Yes)
             {
-                _customMessageBox.SetTitle("Delete Confirmation");
-                _customMessageBox.SetMessageText($"Do you want to delete shared file also?");
-                if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBox.ShowDialog() == DialogResult.Yes)
+                _customMessageBoxYesNo.SetTitle("Delete Confirmation");
+                _customMessageBoxYesNo.SetMessageText($"Do you want to delete shared file also?");
+                if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBoxYesNo.ShowDialog() == DialogResult.Yes)
                 {
                     File.Delete(torrentFiles.First().info.fileName);
                 }
@@ -762,9 +764,6 @@ namespace PeerSoftware
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
             _connections.DestroyPeer(trackerIpField, trackerPortField);
-
-            MessageBox.Show("yes");
-
         }
     }
 }

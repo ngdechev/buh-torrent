@@ -10,10 +10,12 @@ namespace PeerSoftware.Utils
     public class Connections
     {
         private NetworkUtils _networkUtils;
+        private CustomMessageBoxOK _customMessageBoxOK;
 
         public Connections(NetworkUtils networkUtils)
         {
             _networkUtils = networkUtils;
+            _customMessageBoxOK = new CustomMessageBoxOK();
         }
 
         public void SendPTTMessage(TcpClient client, byte command, string payload)
@@ -73,7 +75,9 @@ namespace PeerSoftware.Utils
                     string localIpPort = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}";
                     SendPTTMessage(client, 0x01, localIpPort);
 
-                    MessageBox.Show($"Disconnected {trackerIpField}");
+                    _customMessageBoxOK.SetTitle($"Disconnected from {trackerIpField}");
+                    _customMessageBoxOK.SetMessageText("You are not a peer anymore.");
+                    _customMessageBoxOK.ShowDialog();
 
                     CloseConnection(client);
                 }

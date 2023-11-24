@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace PeerSoftware.Utils
 {
-    public partial class CustomMessageBox : MaterialForm
+    public partial class CustomMessageBoxYesNo : MaterialForm
     {
-        public CustomMessageBox(Form1 form1)
+        public CustomMessageBoxYesNo(Form1 form1)
         {
             InitializeComponent();
         }
@@ -29,7 +29,7 @@ namespace PeerSoftware.Utils
         private void btnNo_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.No;
-            Close(); 
+            Close();
         }
     }
 
