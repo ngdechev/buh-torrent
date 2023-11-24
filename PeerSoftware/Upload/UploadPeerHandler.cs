@@ -52,7 +52,7 @@ namespace PeerSoftware.Upload
                 return;
             }
 
-            string filePath = $"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentFile.info.fileName}";
+            string filePath = torrentFile.info.fileName;
             double fileLength = torrentFile.info.length;
 
             string[] idBlocks = blocks.Split('-', 2);

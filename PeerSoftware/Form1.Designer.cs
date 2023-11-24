@@ -40,6 +40,8 @@ namespace PeerSoftware
             label1 = new MaterialSkin.Controls.MaterialLabel();
             tableLayoutPanel1 = new TableLayoutPanel();
             browes = new TabPage();
+            newPageLabel = new MaterialSkin.Controls.MaterialLabel();
+            serachTorrentsBar = new MaterialSkin.Controls.MaterialTextBox2();
             tableLayoutPanel2 = new TableLayoutPanel();
             button2 = new MaterialSkin.Controls.MaterialButton();
             button1 = new MaterialSkin.Controls.MaterialButton();
@@ -64,9 +66,9 @@ namespace PeerSoftware
             startMinimizedCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
             startupCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
             theme = new GroupBox();
-            comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             darkModeSwitch = new MaterialSkin.Controls.MaterialSwitch();
             peerSettings = new GroupBox();
+            downloadLocationLabel = new MaterialSkin.Controls.MaterialLabel();
             btnBrowseDownloadLocation = new MaterialSkin.Controls.MaterialButton();
             materialTextBox22 = new MaterialSkin.Controls.MaterialTextBox2();
             maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
@@ -88,6 +90,7 @@ namespace PeerSoftware
             panel1 = new Panel();
             materialButton2 = new MaterialSkin.Controls.MaterialButton();
             notifyIcon1 = new NotifyIcon(components);
+            comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
@@ -256,6 +259,8 @@ namespace PeerSoftware
             // browes
             // 
             browes.BackColor = Color.White;
+            browes.Controls.Add(newPageLabel);
+            browes.Controls.Add(serachTorrentsBar);
             browes.Controls.Add(tableLayoutPanel2);
             browes.Controls.Add(button2);
             browes.Controls.Add(button1);
@@ -270,6 +275,51 @@ namespace PeerSoftware
             browes.TabIndex = 1;
             browes.Text = "Browse";
             // 
+            // newPageLabel
+            // 
+            newPageLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            newPageLabel.AutoSize = true;
+            newPageLabel.Depth = 0;
+            newPageLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            newPageLabel.Location = new Point(729, 85);
+            newPageLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            newPageLabel.Name = "newPageLabel";
+            newPageLabel.Size = new Size(112, 19);
+            newPageLabel.TabIndex = 16;
+            newPageLabel.Text = "Page number: 0";
+            // 
+            // serachTorrentsBar
+            // 
+            serachTorrentsBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            serachTorrentsBar.AnimateReadOnly = false;
+            serachTorrentsBar.AutoCompleteMode = AutoCompleteMode.None;
+            serachTorrentsBar.AutoCompleteSource = AutoCompleteSource.None;
+            serachTorrentsBar.BackgroundImageLayout = ImageLayout.None;
+            serachTorrentsBar.CharacterCasing = CharacterCasing.Normal;
+            serachTorrentsBar.Depth = 0;
+            serachTorrentsBar.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            serachTorrentsBar.HideSelection = true;
+            serachTorrentsBar.Hint = "Search for torrents..";
+            serachTorrentsBar.LeadingIcon = null;
+            serachTorrentsBar.Location = new Point(6, 16);
+            serachTorrentsBar.MaxLength = 32767;
+            serachTorrentsBar.MouseState = MaterialSkin.MouseState.OUT;
+            serachTorrentsBar.Name = "serachTorrentsBar";
+            serachTorrentsBar.PasswordChar = '\0';
+            serachTorrentsBar.PrefixSuffixText = null;
+            serachTorrentsBar.ReadOnly = false;
+            serachTorrentsBar.RightToLeft = RightToLeft.No;
+            serachTorrentsBar.SelectedText = "";
+            serachTorrentsBar.SelectionLength = 0;
+            serachTorrentsBar.SelectionStart = 0;
+            serachTorrentsBar.ShortcutsEnabled = true;
+            serachTorrentsBar.Size = new Size(629, 48);
+            serachTorrentsBar.TabIndex = 15;
+            serachTorrentsBar.TabStop = false;
+            serachTorrentsBar.TextAlign = HorizontalAlignment.Left;
+            serachTorrentsBar.TrailingIcon = null;
+            serachTorrentsBar.UseSystemPasswordChar = false;
+            // 
             // tableLayoutPanel2
             // 
             tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -279,7 +329,7 @@ namespace PeerSoftware
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.Location = new Point(3, 139);
+            tableLayoutPanel2.Location = new Point(4, 141);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 5;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
@@ -287,7 +337,7 @@ namespace PeerSoftware
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel2.Size = new Size(876, 262);
+            tableLayoutPanel2.Size = new Size(874, 263);
             tableLayoutPanel2.TabIndex = 8;
             // 
             // button2
@@ -586,7 +636,7 @@ namespace PeerSoftware
             // 
             // settingsTabClientGroupBox
             // 
-            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             settingsTabClientGroupBox.Controls.Add(startupSettings);
             settingsTabClientGroupBox.Controls.Add(theme);
             settingsTabClientGroupBox.Controls.Add(peerSettings);
@@ -599,6 +649,7 @@ namespace PeerSoftware
             // 
             // startupSettings
             // 
+            startupSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             startupSettings.Controls.Add(startMinimizedCheckbox);
             startupSettings.Controls.Add(startupCheckbox);
             startupSettings.Location = new Point(6, 22);
@@ -642,6 +693,7 @@ namespace PeerSoftware
             // 
             // theme
             // 
+            theme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             theme.Controls.Add(comboBoxTheme);
             theme.Controls.Add(darkModeSwitch);
             theme.Location = new Point(6, 90);
@@ -650,29 +702,6 @@ namespace PeerSoftware
             theme.TabIndex = 11;
             theme.TabStop = false;
             theme.Text = "Theme Settings";
-            // 
-            // comboBoxTheme
-            // 
-            comboBoxTheme.AutoResize = false;
-            comboBoxTheme.BackColor = Color.FromArgb(255, 255, 255);
-            comboBoxTheme.Depth = 0;
-            comboBoxTheme.DrawMode = DrawMode.OwnerDrawVariable;
-            comboBoxTheme.DropDownHeight = 174;
-            comboBoxTheme.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxTheme.DropDownWidth = 121;
-            comboBoxTheme.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
-            comboBoxTheme.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            comboBoxTheme.FormattingEnabled = true;
-            comboBoxTheme.IntegralHeight = false;
-            comboBoxTheme.ItemHeight = 43;
-            comboBoxTheme.Location = new Point(6, 22);
-            comboBoxTheme.MaxDropDownItems = 4;
-            comboBoxTheme.MouseState = MaterialSkin.MouseState.OUT;
-            comboBoxTheme.Name = "comboBoxTheme";
-            comboBoxTheme.Size = new Size(235, 49);
-            comboBoxTheme.StartIndex = 0;
-            comboBoxTheme.TabIndex = 9;
-            comboBoxTheme.SelectedIndexChanged += comboBoxTheme_SelectedIndexChanged;
             // 
             // darkModeSwitch
             // 
@@ -692,6 +721,8 @@ namespace PeerSoftware
             // 
             // peerSettings
             // 
+            peerSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            peerSettings.Controls.Add(downloadLocationLabel);
             peerSettings.Controls.Add(btnBrowseDownloadLocation);
             peerSettings.Controls.Add(materialTextBox22);
             peerSettings.Controls.Add(maxActiveDownloadsSlider);
@@ -703,19 +734,32 @@ namespace PeerSoftware
             peerSettings.TabStop = false;
             peerSettings.Text = "Peer Settings";
             // 
+            // downloadLocationLabel
+            // 
+            downloadLocationLabel.AutoSize = true;
+            downloadLocationLabel.Depth = 0;
+            downloadLocationLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            downloadLocationLabel.Location = new Point(6, 19);
+            downloadLocationLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            downloadLocationLabel.Name = "downloadLocationLabel";
+            downloadLocationLabel.Size = new Size(161, 19);
+            downloadLocationLabel.TabIndex = 12;
+            downloadLocationLabel.Text = "Put new downloads in:";
+            // 
             // btnBrowseDownloadLocation
             // 
+            btnBrowseDownloadLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnBrowseDownloadLocation.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             btnBrowseDownloadLocation.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             btnBrowseDownloadLocation.Depth = 0;
             btnBrowseDownloadLocation.HighEmphasis = true;
-            btnBrowseDownloadLocation.Icon = null;
-            btnBrowseDownloadLocation.Location = new Point(267, 50);
+            btnBrowseDownloadLocation.Icon = (Image)resources.GetObject("btnBrowseDownloadLocation.Icon");
+            btnBrowseDownloadLocation.Location = new Point(273, 94);
             btnBrowseDownloadLocation.Margin = new Padding(4);
             btnBrowseDownloadLocation.MouseState = MaterialSkin.MouseState.HOVER;
             btnBrowseDownloadLocation.Name = "btnBrowseDownloadLocation";
             btnBrowseDownloadLocation.NoAccentTextColor = Color.Empty;
-            btnBrowseDownloadLocation.Size = new Size(80, 36);
+            btnBrowseDownloadLocation.Size = new Size(108, 36);
             btnBrowseDownloadLocation.TabIndex = 11;
             btnBrowseDownloadLocation.Text = "Browse";
             btnBrowseDownloadLocation.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -734,7 +778,7 @@ namespace PeerSoftware
             materialTextBox22.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialTextBox22.HideSelection = true;
             materialTextBox22.LeadingIcon = null;
-            materialTextBox22.Location = new Point(6, 38);
+            materialTextBox22.Location = new Point(6, 40);
             materialTextBox22.Margin = new Padding(3, 2, 3, 2);
             materialTextBox22.MaxLength = 32767;
             materialTextBox22.MouseState = MaterialSkin.MouseState.OUT;
@@ -747,7 +791,7 @@ namespace PeerSoftware
             materialTextBox22.SelectionLength = 0;
             materialTextBox22.SelectionStart = 0;
             materialTextBox22.ShortcutsEnabled = true;
-            materialTextBox22.Size = new Size(256, 48);
+            materialTextBox22.Size = new Size(376, 48);
             materialTextBox22.TabIndex = 5;
             materialTextBox22.TabStop = false;
             materialTextBox22.TextAlign = HorizontalAlignment.Left;
@@ -771,12 +815,12 @@ namespace PeerSoftware
             // 
             maxDownloadsFromPeersSlider.Depth = 0;
             maxDownloadsFromPeersSlider.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            maxDownloadsFromPeersSlider.Location = new Point(6, 113);
+            maxDownloadsFromPeersSlider.Location = new Point(6, 126);
             maxDownloadsFromPeersSlider.MouseState = MaterialSkin.MouseState.HOVER;
             maxDownloadsFromPeersSlider.Name = "maxDownloadsFromPeersSlider";
             maxDownloadsFromPeersSlider.RangeMax = 5;
             maxDownloadsFromPeersSlider.RangeMin = 1;
-            maxDownloadsFromPeersSlider.Size = new Size(329, 40);
+            maxDownloadsFromPeersSlider.Size = new Size(376, 40);
             maxDownloadsFromPeersSlider.TabIndex = 9;
             maxDownloadsFromPeersSlider.Text = "Maximum Downloads from";
             maxDownloadsFromPeersSlider.Value = 2;
@@ -785,7 +829,6 @@ namespace PeerSoftware
             // 
             // settingsTabTrackerGroupBox
             // 
-            settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             settingsTabTrackerGroupBox.Controls.Add(materialTextBox21);
             settingsTabTrackerGroupBox.Controls.Add(save);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
@@ -820,7 +863,7 @@ namespace PeerSoftware
             materialTextBox21.SelectionLength = 0;
             materialTextBox21.SelectionStart = 0;
             materialTextBox21.ShortcutsEnabled = true;
-            materialTextBox21.Size = new Size(232, 48);
+            materialTextBox21.Size = new Size(337, 48);
             materialTextBox21.TabIndex = 4;
             materialTextBox21.TabStop = false;
             materialTextBox21.TextAlign = HorizontalAlignment.Left;
@@ -835,7 +878,7 @@ namespace PeerSoftware
             save.Depth = 0;
             save.HighEmphasis = true;
             save.Icon = (Image)resources.GetObject("save.Icon");
-            save.Location = new Point(278, 34);
+            save.Location = new Point(349, 28);
             save.Margin = new Padding(4, 6, 4, 6);
             save.MouseState = MaterialSkin.MouseState.HOVER;
             save.Name = "save";
@@ -1042,19 +1085,20 @@ namespace PeerSoftware
             // 
             // materialButton2
             // 
+            materialButton2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            materialButton2.AutoSize = false;
             materialButton2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
             materialButton2.Depth = 0;
             materialButton2.HighEmphasis = true;
-            materialButton2.Icon = null;
-            materialButton2.Location = new Point(247, 2);
+            materialButton2.Icon = (Image)resources.GetObject("materialButton2.Icon");
+            materialButton2.Location = new Point(340, 3);
             materialButton2.Margin = new Padding(4);
             materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
             materialButton2.Name = "materialButton2";
             materialButton2.NoAccentTextColor = Color.Empty;
-            materialButton2.Size = new Size(112, 36);
+            materialButton2.Size = new Size(44, 30);
             materialButton2.TabIndex = 0;
-            materialButton2.Text = "Disconnect";
             materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             materialButton2.UseAccentColor = false;
             materialButton2.UseVisualStyleBackColor = true;
@@ -1068,6 +1112,28 @@ namespace PeerSoftware
             notifyIcon1.Text = "notifyIcon1";
             notifyIcon1.MouseClick += NotifyIcon_MouseClick;
             // 
+            // comboBoxTheme
+            // 
+            comboBoxTheme.AutoResize = false;
+            comboBoxTheme.BackColor = Color.FromArgb(255, 255, 255);
+            comboBoxTheme.Depth = 0;
+            comboBoxTheme.DrawMode = DrawMode.OwnerDrawVariable;
+            comboBoxTheme.DropDownHeight = 174;
+            comboBoxTheme.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxTheme.DropDownWidth = 121;
+            comboBoxTheme.Font = new Font("Roboto Medium", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            comboBoxTheme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            comboBoxTheme.FormattingEnabled = true;
+            comboBoxTheme.IntegralHeight = false;
+            comboBoxTheme.ItemHeight = 43;
+            comboBoxTheme.Location = new Point(6, 22);
+            comboBoxTheme.MaxDropDownItems = 4;
+            comboBoxTheme.MouseState = MaterialSkin.MouseState.OUT;
+            comboBoxTheme.Name = "comboBoxTheme";
+            comboBoxTheme.Size = new Size(241, 49);
+            comboBoxTheme.StartIndex = 0;
+            comboBoxTheme.TabIndex = 9;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1077,7 +1143,8 @@ namespace PeerSoftware
             Controls.Add(panel1);
             Controls.Add(tabControl1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(899, 419);
+            MaximizeBox = false;
+            MinimumSize = new Size(899, 520);
             Name = "Form1";
             Padding = new Padding(0, 64, 0, 500);
             Text = "BuhTorrent";
@@ -1087,6 +1154,7 @@ namespace PeerSoftware
             tableLayoutPanel5.ResumeLayout(false);
             tableLayoutPanel5.PerformLayout();
             browes.ResumeLayout(false);
+            browes.PerformLayout();
             tableLayoutPanel7.ResumeLayout(false);
             tableLayoutPanel7.PerformLayout();
             myTorrents.ResumeLayout(false);
@@ -1103,7 +1171,6 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -1155,7 +1222,6 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialSlider maxDownloadsFromPeersSlider;
         private MaterialSkin.Controls.MaterialLabel myTorrentsTabDescriptionLabel;
         private Panel panel1;
-        private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
         private GroupBox theme;
         private GroupBox startupSettings;
         private MaterialSkin.Controls.MaterialCheckbox startMinimizedCheckbox;
@@ -1175,6 +1241,10 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialButton browseFile;
         private MaterialSkin.Controls.MaterialButton btnBrowseDownloadLocation;
         private MaterialSkin.Controls.MaterialButton materialButton2;
+        private MaterialSkin.Controls.MaterialTextBox2 serachTorrentsBar;
+        private MaterialSkin.Controls.MaterialLabel downloadLocationLabel;
+        private MaterialSkin.Controls.MaterialLabel newPageLabel;
+        private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
     }
 }
 

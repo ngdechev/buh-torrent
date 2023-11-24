@@ -109,6 +109,7 @@ namespace PeerSoftware
                         comboBoxTheme.Items.Add("Blue with Yellow Accent");
                         comboBoxTheme.Items.Add("Green with Lime Accent");*/
 
+            comboBoxTheme.SelectedIndexChanged += ComboBoxTheme_SelectedIndexChanged;
 
             foreach (var themeName in _commonUtils.themeKeyMapping.Keys)
             {
@@ -141,7 +142,7 @@ namespace PeerSoftware
 
 
 
-            //UILightMode();
+            UILightMode();
 
 
             Refresh();
@@ -181,6 +182,8 @@ namespace PeerSoftware
                 materialDownloadButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\download.png");
                 materialDownloadButton.Anchor = AnchorStyles.None;
 
+                materialTitleLabel.AutoSize = true;
+
                 tableLayoutPanel2.Controls.Add(materialTitleLabel, 0, i);
                 tableLayoutPanel2.Controls.Add(materialSizeLabel, 1, i);
                 tableLayoutPanel2.Controls.Add(materialDescriptionLabel, 2, i);
@@ -203,6 +206,28 @@ namespace PeerSoftware
             {
                 darkModeSwitch.Checked = true;
                 UIDarkMode();
+            }
+        }
+
+        private void ComboBoxTheme_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (comboBoxTheme.SelectedItem != null)
+            {
+                string selectedTheme = comboBoxTheme.SelectedItem.ToString();
+
+                if (_commonUtils.themeKeyMapping.TryGetValue(selectedTheme, out string selectedThemeKey))
+                {
+                    MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedThemeKey);
+
+                    _materialSkinManager.ColorScheme = selectedColorScheme;
+                    UILightMode();
+
+                    Refresh();
+                }
+
+
+                //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
+                _configuration.AppSettings.Settings["theme"].Value = selectedTheme;
             }
         }
 
@@ -259,7 +284,7 @@ namespace PeerSoftware
                 if (_allPage - 1 >= 0)
                 {
                     _allPage--;
-                    pagelabel.Text = "Page Number " + _allPage.ToString();
+                    newPageLabel.Text = "Page Number " + _allPage.ToString();
                 }
                 Show(_allPage, _storage.GetAllTorrentFiles());
             }
@@ -268,7 +293,7 @@ namespace PeerSoftware
                 if (_resultPage - 1 >= 0)
                 {
                     _resultPage--;
-                    pagelabel.Text = "Page Number " + _resultPage.ToString();
+                    newPageLabel.Text = "Page Number " + _resultPage.ToString();
                 }
                 Show(_resultPage, _storage.GetResultTorrentFiles());
             }
@@ -282,7 +307,7 @@ namespace PeerSoftware
                 if (_allPage + 1 < _allMaxPage)
                 {
                     _allPage++;
-                    pagelabel.Text = "Page Number " + _allPage.ToString();
+                    newPageLabel.Text = "Page Number " + _allPage.ToString();
                 }
                 Show(_allPage, _storage.GetAllTorrentFiles());
             }
@@ -291,7 +316,7 @@ namespace PeerSoftware
                 if (_resultPage + 1 < _resultMaxPage)
                 {
                     _resultPage++;
-                    pagelabel.Text = "Page Number " + _resultPage.ToString();
+                    newPageLabel.Text = "Page Number " + _resultPage.ToString();
                 }
                 Show(_resultPage, _storage.GetResultTorrentFiles());
             }
@@ -407,6 +432,7 @@ namespace PeerSoftware
             {
                 MaterialLabel materialMyTorrentName = new MaterialLabel();
                 materialMyTorrentName.Text = torrentFile.info.torrentName;
+                materialMyTorrentName.AutoSize = true;
 
                 MaterialLabel materialMyTorrentDescription = new MaterialLabel();
                 materialMyTorrentDescription.Text = torrentFile.info.description;
@@ -604,29 +630,6 @@ namespace PeerSoftware
             progressBar.Value = count;
         }
 
-
-        private void comboBoxTheme_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (comboBoxTheme.SelectedItem != null)
-            {
-                string selectedTheme = comboBoxTheme.SelectedItem.ToString();
-
-                if (_commonUtils.themeKeyMapping.TryGetValue(selectedTheme, out string selectedThemeKey))
-                {
-                    MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedThemeKey);
-
-                    _materialSkinManager.ColorScheme = selectedColorScheme;
-                    UILightMode();
-
-                    Refresh();
-                }
-
-
-                //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
-                _configuration.AppSettings.Settings["theme"].Value = selectedTheme;
-            }
-        }
-
         private void darkModeSwitch_CheckedChanged(object sender, EventArgs e)
         {
             if (darkModeSwitch.Checked)
@@ -696,6 +699,7 @@ namespace PeerSoftware
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _configuration.AppSettings.Settings["downloadSharedFileLocation"].Value = _sharedFileDownloadFolder;
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 _configuration.Save(ConfigurationSaveMode.Modified);
