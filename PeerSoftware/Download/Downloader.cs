@@ -60,7 +60,7 @@ namespace PeerSoftware.Download
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine($"Download failed: {ex.Message}");
+                    Console.WriteLine($"Download failed: {ex.Message}");
                     // Handle or log the exception as needed
                 }
                 

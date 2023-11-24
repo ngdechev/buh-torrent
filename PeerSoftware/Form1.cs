@@ -208,7 +208,7 @@ namespace PeerSoftware
 
         public string GetSharedFileDownloadFolder()
         {
-            return _sharedFileDownloadFolder;
+            return _sharedFileDownloadFolder = materialTextBox22.Text;
         }
 
         private void OnMenuItem1Clicked(object? sender, EventArgs e)
