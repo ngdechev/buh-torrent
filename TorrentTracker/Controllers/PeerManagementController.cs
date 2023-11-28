@@ -57,11 +57,9 @@ namespace TorrentTracker.Controllers
                 {
                     PeerForRemove = pair.Key;
                     _dictionaryController.GetDictionary().Remove(PeerForRemove);
+                    break;
                 }
-                else
-                {
-                    throw new Exception("This peer does not exist");
-                }
+               
             }
         }
 
