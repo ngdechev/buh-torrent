@@ -8,13 +8,14 @@ using System.Drawing;
 using Microsoft.VisualBasic;
 using Timer = System.Windows.Forms.Timer;
 using MaterialSkin.Controls;
-
+using System.Windows.Forms;
 using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Configuration;
 using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace PeerSoftware
 {
@@ -438,7 +439,7 @@ namespace PeerSoftware
 
         public void DeleteMyTorrentButton_Click(object sender, EventArgs e)
         {
-            Button deleteButton = (Button)sender;
+            MaterialButton deleteButton = (MaterialButton)sender;
             int rowIndex = tableLayoutPanel4.GetRow(deleteButton);
             Label torrentName = (Label)tableLayoutPanel4.GetControlFromPosition(0, rowIndex);
             List<TorrentFile> torrentFiles = _torrentFileServices
@@ -516,6 +517,8 @@ namespace PeerSoftware
             button.Anchor = AnchorStyles.None;
             button.Click += PauseResume_Click;
 
+            _storage.GetDownloadTorrentStatus().Add(_storage.GetDownloadTorrentStatus().Count,true);
+
             // Create a new row
             tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
 
@@ -549,7 +552,24 @@ namespace PeerSoftware
             MaterialButton pauseButton = (MaterialButton)sender;
 
             int rowIndex = tableLayoutPanel1.GetRow(pauseButton);
-            _downloader.Pause(rowIndex);
+
+            bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
+            if (state)
+            {
+                _downloader.Pause(rowIndex);
+                _storage.GetDownloadTorrentStatus()[rowIndex] = false;
+            }
+            else
+            {
+                TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
+                _storage.GetDownloadTorrentStatus()[rowIndex] = true;
+                MaterialProgressBar progressBar = (MaterialProgressBar)tableLayoutPanel1.GetControlFromPosition(3,rowIndex);
+
+                PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
+                List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
+                
+                _downloader.Download(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this);
+            }
         }
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
