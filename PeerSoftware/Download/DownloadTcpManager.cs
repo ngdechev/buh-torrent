@@ -153,5 +153,10 @@ namespace PeerSoftware.Download
                 Form1.SetProgressBarValue(_progressBar, _pTPBlocks.Count );
             }
         }
+
+        public void SetPTPBlocks(List<PTPBlock> pTPBlocks)
+        {
+            _pTPBlocks.AddRange(pTPBlocks);
+        }
     }
 }
