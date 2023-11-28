@@ -47,10 +47,13 @@ namespace TorrentTracker.Controllers
 
         public void DestroyPeer(string ip)
         {
+            string[] peerSocket = ip.Split(":");
+
             Peer PeerForRemove = new Peer();
+
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                if (pair.Key.IPAddress == ip)
+                if (pair.Key.IPAddress == peerSocket[0])
                 {
                     PeerForRemove = pair.Key;
                     _dictionaryController.GetDictionary().Remove(PeerForRemove);
