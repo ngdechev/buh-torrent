@@ -1,35 +1,36 @@
-using PeerSoftware;
-using PTT_Parser;
-using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Text;
-using System.Text.Json;
-using System.Windows.Forms.VisualStyles;
-using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Text.Json;
-using PeerSoftware.Storage;
-using PeerSoftware.Utils;
+using MaterialSkin.Controls;
+using Microsoft.Win32;
+using PeerSoftware.Download;
 using PeerSoftware.Services;
-using System.Collections.Generic;
+using PeerSoftware.Storage;
 using PeerSoftware.UDP;
+using PeerSoftware.Upload;
+using PeerSoftware.Utils;
+using PTT_Parser;
+using System.Configuration;
+using System.Net.Sockets;
 
 namespace PeerSoftware
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
-        private List<Control> _titleControls = new List<Control>();
-        private List<Control> _sizeControls = new List<Control>();
-        private List<Control> _descriptionControls = new List<Control>();
-        private List<Control> _downloadControls = new List<Control>();
+        private readonly MaterialSkin.MaterialSkinManager _materialSkinManager;
+
+        private CustomMessageBoxYesNo _customMessageBoxYesNo;
+        private CustomMessageBoxOK _customMessageBoxOK;
+
+        private List<MaterialLabel> _materialTitleControls = new List<MaterialLabel>();
+        private List<MaterialLabel> _materialSizeControls = new List<MaterialLabel>();
+        private List<MaterialLabel> _materialDescriptionControls = new List<MaterialLabel>();
+        private List<MaterialButton> _materialDownloadControls = new List<MaterialButton>();
 
         private List<string> _torrentDownloadingNames = new List<string>();
         private int _allPage = 0;
         private int _allMaxPage = 0;
+
+        private int _nPeersUploading;
+        private string _sharedFileDownloadFolder;
+        private string _serverSocket;
 
         private int _resultPage = 0;
         private int _resultMaxPage = 0;
@@ -38,20 +39,96 @@ namespace PeerSoftware
         private ITorrentStorage _storage;
         private Connections _connections;
         private TorrentFileServices _torrentFileServices;
+        private SharedFileServices _sharedFileServices;
         private CommonUtils _commonUtils;
         private NetworkUtils _networkUtils;
         private UDPSender _udpSender;
+        private Downloader _downloader;
+
+        private Configuration _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+        private ContextMenuStrip _systemTrayContextMenu;
 
         public Form1()
         {
             InitializeComponent();
+            MessageBox.Show("I AM ALIVEEEE!");
+
+            // New UI Stuff
+            _materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
+
+            _materialSkinManager.EnforceBackcolorOnAllComponents = false;
+            _materialSkinManager.AddFormToManage(this);
+            _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+            /*            _materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                            MaterialSkin.Primary.Green600,
+                            MaterialSkin.Primary.Green700,
+                            MaterialSkin.Primary.Blue900,
+                            MaterialSkin.Accent.Purple700,
+                            MaterialSkin.TextShade.WHITE);*/
+
+            //UILightMode();
+
+            _systemTrayContextMenu = new ContextMenuStrip();
+
+            notifyIcon1.Text = Application.ProductName;
+            //notifyIcon1.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+            notifyIcon1.BalloonTipTitle = Application.ProductName;
+            notifyIcon1.BalloonTipText = $"{Application.ProductName} is minimized";
+            notifyIcon1.ContextMenuStrip = _systemTrayContextMenu;
+            notifyIcon1.MouseClick += NotifyIcon_MouseClick;
+
+
+            _systemTrayContextMenu.Items.Add("Settings", null, OnMenuItem1Clicked);
+            _systemTrayContextMenu.Items.Add("Close App", null, OnMenuItem2Clicked);
+
 
             _storage = new TorrentStorage();
-            _connections = new Connections();
             _torrentFileServices = new TorrentFileServices();
+            _sharedFileServices = new SharedFileServices();
+            _commonUtils = new CommonUtils();
             _commonUtils = new CommonUtils();
             _networkUtils = new NetworkUtils();
+            _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
+            _customMessageBoxYesNo = new CustomMessageBoxYesNo(this);
+            _customMessageBoxOK = new CustomMessageBoxOK();
+
+            /*            comboBoxTheme.Items.Add("Lime with Blue Accent");
+                        comboBoxTheme.Items.Add("Blue-Grey with Light Blue Accent");
+                        comboBoxTheme.Items.Add("Indigo with Pink Accent");
+                        comboBoxTheme.Items.Add("Teal with Amber Accent");
+                        comboBoxTheme.Items.Add("Deep Purple with Orange Accent");
+                        comboBoxTheme.Items.Add("Blue with Yellow Accent");
+                        comboBoxTheme.Items.Add("Green with Lime Accent");*/
+
+            comboBoxTheme.SelectedIndexChanged += ComboBoxTheme_SelectedIndexChanged;
+
+            foreach (var themeName in _commonUtils.themeKeyMapping.Keys)
+            {
+                comboBoxTheme.Items.Add(themeName);
+            }
+
+
+            //settings
+
+            _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
+
+
+
+
+            materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
+            materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
+
+            int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
+            maxDownloadsFromPeersSlider.Value = _nPeersUploading;
+
+            string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
+            MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
+            _materialSkinManager.ColorScheme = selectedColorScheme;
+            comboBoxTheme.SelectedItem = selectedTheme;
+
+            //comboBoxTheme.SelectedValue = ConfigurationManager.AppSettings["theme"];
 
 
             // Create the TableLayoutPanel for the heading row
@@ -63,329 +140,713 @@ namespace PeerSoftware
             Label nameLabel = new Label();
             nameLabel.Text = "Name1";
 
-            headingTableLayoutPanel.Controls.Add(nameLabel, 0, 0);
 
-            Label sizeLabel1 = new Label();
-            sizeLabel1.Text = "File Size1";
-            headingTableLayoutPanel.Controls.Add(sizeLabel1, 1, 0);
 
-            Label progressLabel = new Label();
-            progressLabel.Text = "Progress1";
+            UploadPeerServer uploadserver = new UploadPeerServer(_storage);
+            Thread peerThread = new Thread(uploadserver.Start);
 
-            headingTableLayoutPanel.Controls.Add(progressLabel, 2, 0);
+            peerThread.Start();
 
-            this.Controls.Add(headingTableLayoutPanel);
+            _downloader = new Downloader();
 
             for (int i = 0; i < 5; i++)
             {
-                Label titleLabel = new Label();
-                Label sizeLabel = new Label();
-                Label descriptionLabel = new Label(); // Corrected the variable name
-                Button downloadButton = new Button();
+                MaterialLabel materialTitleLabel = new MaterialLabel();
+                MaterialLabel materialSizeLabel = new MaterialLabel();
+                MaterialLabel materialDescriptionLabel = new MaterialLabel();
+                MaterialButton materialDownloadButton = new MaterialButton();
 
-                downloadButton.Text = "Download";
-                downloadButton.Click += DownloadButton_Click;
-                downloadButton.Visible = false;
+                materialDownloadButton.Visible = false;
+                materialDownloadButton.Text = "Download";
+                materialDownloadButton.Click += DownloadButton_Click;
+                materialDownloadButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\download.png");
+                materialDownloadButton.Anchor = AnchorStyles.None;
 
-                tableLayoutPanel2.Controls.Add(titleLabel, 0, i);
-                tableLayoutPanel2.Controls.Add(sizeLabel, 1, i);
-                tableLayoutPanel2.Controls.Add(descriptionLabel, 2, i); // Corrected the index
-                tableLayoutPanel2.Controls.Add(downloadButton, 3, i);
+                materialTitleLabel.AutoSize = true;
+
+                tableLayoutPanel2.Controls.Add(materialTitleLabel, 0, i);
+                tableLayoutPanel2.Controls.Add(materialSizeLabel, 1, i);
+                tableLayoutPanel2.Controls.Add(materialDescriptionLabel, 2, i);
+                tableLayoutPanel2.Controls.Add(materialDownloadButton, 3, i);
+
+                _materialTitleControls.Add(materialTitleLabel);
+                _materialSizeControls.Add(materialSizeLabel);
+                _materialDescriptionControls.Add(materialDescriptionLabel);
+                _materialDownloadControls.Add(materialDownloadButton);
+            }
+
+            string[] ip = _serverSocket.Split(':', 2);
+            int.TryParse(ip[1], out int int_port);
+            //_connections.AnnounceNewPeer(ip[0], int_port);
+            //_udpSender.Start(_serverSocket);
+            //Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+
+            _configuration.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (ConfigurationManager.AppSettings["darkMode"] == "true")
+            {
+                darkModeSwitch.Checked = true;
+
+                UIDarkMode();
+                Refresh();
+            }
+            else
+            {
+                darkModeSwitch.Checked = false;
+
+                UILightMode();
+                Refresh();
+            }
+
+            if (ConfigurationManager.AppSettings["startMinimized"] == "true")
+            {
+                WindowState = FormWindowState.Minimized;
+                ShowInTaskbar = false;
+                notifyIcon1.Visible = true;
+
+                startMinimizedCheckbox.Checked = true;
+            }
+            else
+            {
+                startMinimizedCheckbox.Checked = false;
+            }
+
+            if (ConfigurationManager.AppSettings["startWithWindows"] == "true")
+            {
+                _configuration.AppSettings.Settings["startWithWindows"].Value = "true";
+                startupCheckbox.Checked = true;
+
+                SetStartup(true);
+            }
+            else
+            {
+                _configuration.AppSettings.Settings["startWithWindows"].Value = "false";
+                startupCheckbox.Checked = false;
+
+                SetStartup(false);
+            }
+        }
 
 
-                _titleControls.Add(titleLabel);
-                _sizeControls.Add(sizeLabel);
-                _descriptionControls.Add(descriptionLabel);
-                _downloadControls.Add(downloadButton);
+        public void SetStartup(bool isChecked)
+        {
+            string appName = Application.ProductName;
+            string executablePath = Application.ExecutablePath;
+
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+            if (isChecked)
+            {
+                rk.SetValue(appName, executablePath);
+
+                WindowState = FormWindowState.Minimized;
+                ShowInTaskbar = false;
+                notifyIcon1.Visible = true;
+            }
+            else
+            {
+                rk.DeleteValue(appName, false);
+            }
+        }
 
 
+    private void ComboBoxTheme_SelectedIndexChanged(object? sender, EventArgs e)
+    {
+        if (comboBoxTheme.SelectedItem != null)
+        {
+            string selectedTheme = comboBoxTheme.SelectedItem.ToString();
+
+            if (_commonUtils.themeKeyMapping.TryGetValue(selectedTheme, out string selectedThemeKey))
+            {
+                MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedThemeKey);
+
+                _materialSkinManager.ColorScheme = selectedColorScheme;
+
+                if (!darkModeSwitch.Checked)
+                {
+                    FixLightUIBackgrounds();
+                    Refresh();
+                }
+            }
+
+            _configuration.AppSettings.Settings["theme"].Value = selectedTheme;
+        }
+    }
+
+    public string GetSharedFileDownloadFolder()
+    {
+        return _sharedFileDownloadFolder = materialTextBox22.Text;
+    }
+
+    private void OnMenuItem1Clicked(object? sender, EventArgs e)
+    {
+        WindowState = FormWindowState.Normal;
+        tabControl1.SelectedIndex = 3;
+        Show();
+
+        notifyIcon1.Visible = false;
+    }
+
+    private void OnMenuItem2Clicked(object? sender, EventArgs e)
+    {
+
+        Application.Exit();
+    }
+
+    public int GetNPeersUploading()
+    {
+        return _nPeersUploading;
+    }
+
+    public ITorrentStorage GetTorrentStorage()
+    {
+        return _storage;
+    }
+
+    private void search_Click(object sender, EventArgs e)
+    {
+        List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+        Show(_resultPage, results);
+
+        _storage.GetResultTorrentFiles().Clear();
+        _storage.GetResultTorrentFiles().AddRange(results);
+    }
+
+    private void refresh_Click(object sender, EventArgs e)
+    {
+        _searchOnFlag = false;
+        _allMaxPage = (int)Math.Ceiling(_storage.GetAllTorrentFiles().Count / 5.0);
+        Show(_allPage, _storage.GetAllTorrentFiles());
+    }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+        if (!_searchOnFlag)
+        {
+            if (_allPage - 1 >= 0)
+            {
+                _allPage--;
+                newPageLabel.Text = "Page Number " + _allPage.ToString();
+            }
+            Show(_allPage, _storage.GetAllTorrentFiles());
+        }
+        else
+        {
+            if (_resultPage - 1 >= 0)
+            {
+                _resultPage--;
+                newPageLabel.Text = "Page Number " + _resultPage.ToString();
+            }
+            Show(_resultPage, _storage.GetResultTorrentFiles());
+        }
+
+    }
+
+    private void button2_Click(object sender, EventArgs e)
+    {
+        if (!_searchOnFlag)
+        {
+            if (_allPage + 1 < _allMaxPage)
+            {
+                _allPage++;
+                newPageLabel.Text = "Page Number " + _allPage.ToString();
+            }
+            Show(_allPage, _storage.GetAllTorrentFiles());
+        }
+        else
+        {
+            if (_resultPage + 1 < _resultMaxPage)
+            {
+                _resultPage++;
+                newPageLabel.Text = "Page Number " + _resultPage.ToString();
+            }
+            Show(_resultPage, _storage.GetResultTorrentFiles());
+        }
+
+    }
+
+    private void Show(int i, List<TorrentFile> torrentFiles)
+    {
+        int row = i * 5;
+
+        for (int index = 0; index < _materialTitleControls.Count; index++)
+        {
+            MaterialLabel materialTitleControl = _materialTitleControls[index];
+            MaterialLabel materialSizeControl = _materialSizeControls[index];
+            MaterialLabel materialDescriptionControl = _materialDescriptionControls[index];
+            MaterialButton materialButtonControl = _materialDownloadControls[index];
+
+            if (index + row < torrentFiles.Count)
+            {
+                if (materialTitleControl != null)
+                {
+                    materialTitleControl.Text = torrentFiles[index + row].info.torrentName;
+                }
+
+                if (materialSizeControl != null)
+                {
+                    materialSizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
+                }
+
+                if (materialDescriptionControl != null)
+                {
+                    materialDescriptionControl.Text = torrentFiles[index + row].info.description;
+                }
+
+                if (materialButtonControl != null)
+                {
+                    materialButtonControl.Visible = true;
+                }
+            }
+            else
+            {
+                if (materialTitleControl != null)
+                {
+                    materialTitleControl.Text = "";
+                }
+
+                if (materialSizeControl != null)
+                {
+                    materialSizeControl.Text = "";
+                }
+
+                if (materialDescriptionControl != null)
+                {
+                    materialDescriptionControl.Text = "";
+                }
+
+                if (materialButtonControl != null)
+                {
+                    materialButtonControl.Visible = false;
+                }
+            }
+            if (_torrentDownloadingNames.Count != 0)
+            {
+                foreach (string name in _torrentDownloadingNames)
+                {
+                    if (materialTitleControl.Text == name)
+                    {
+                        _materialDownloadControls[index].Enabled = false;
+                        break;
+                    }
+                    if (materialTitleControl.Text != name)
+                    {
+                        _materialDownloadControls[index].Enabled = true;
+                    }
+
+                }
             }
 
         }
+    }
 
-        private void search_Click(object sender, EventArgs e)
+
+    private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (tabControl1.SelectedIndex == 1)
+        {
+            _torrentFileServices.LoadData(_storage, _networkUtils, this);
+        }
+        if (tabControl1.SelectedIndex == 2)
+        {
+            Thread.Sleep(100);
+            await Task.Yield();
+            ShowMyTorrents();
+        }
+    }
+
+    private async void ShowMyTorrents()
+    {
+        List<TorrentFile> temp = new List<TorrentFile>();
+
+        while (tableLayoutPanel4.Controls.Count > 0)
+        {
+            tableLayoutPanel4.Controls[0].Dispose();
+
+            temp.Clear();
+        }
+
+        temp = await Task.Run(() => _commonUtils.LoadMyTorrents(_storage));
+
+        Thread.Sleep(100);
+
+        foreach (TorrentFile torrentFile in temp)
+        {
+            MaterialLabel materialMyTorrentName = new MaterialLabel();
+            materialMyTorrentName.Text = torrentFile.info.torrentName;
+            materialMyTorrentName.AutoSize = true;
+
+            MaterialLabel materialMyTorrentDescription = new MaterialLabel();
+            materialMyTorrentDescription.Text = torrentFile.info.description;
+
+            MaterialLabel materialMyTorrentSize = new MaterialLabel();
+            materialMyTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
+
+            MaterialButton materialMyTorrentDownloadButton = new MaterialButton();
+            materialMyTorrentDownloadButton.Text = "Delete";
+            materialMyTorrentDownloadButton.Anchor = AnchorStyles.Top;
+            materialMyTorrentDownloadButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\delete.png");
+            materialMyTorrentDownloadButton.Click += DeleteMyTorrentButton_Click;
+
+            tableLayoutPanel4.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+
+            foreach (Control control in tableLayoutPanel4.Controls)
+            {
+                int row = tableLayoutPanel4.GetRow(control);
+                tableLayoutPanel4.SetRow(control, row + 1);
+            }
+
+            tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, 0);
+            tableLayoutPanel4.Controls.Add(materialMyTorrentSize, 1, 0);
+            tableLayoutPanel4.Controls.Add(materialMyTorrentDescription, 2, 0);
+            tableLayoutPanel4.Controls.Add(materialMyTorrentDownloadButton, 3, 0);
+        }
+    }
+
+
+    public void DeleteMyTorrentButton_Click(object sender, EventArgs e)
+    {
+        Button deleteButton = (Button)sender;
+        int rowIndex = tableLayoutPanel4.GetRow(deleteButton);
+        Label torrentName = (Label)tableLayoutPanel4.GetControlFromPosition(0, rowIndex);
+        List<TorrentFile> torrentFiles = _torrentFileServices
+            .SearchTorrentFiles(torrentName.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetMyTorrentFiles());
+
+        string payload = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}|{torrentFiles.First().info.checksum}";
+        string trackerIp;
+        int trackerPort;
+        (trackerIp, trackerPort) = _networkUtils.SplitIpAndPort(this);
+        TcpClient tcpClient = new TcpClient(trackerIp, trackerPort);
+        _connections.SendPTTMessage(tcpClient, 0x03, payload);
+
+        string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
+
+        _customMessageBoxYesNo.SetTitle("Delete Confirmation");
+        _customMessageBoxYesNo.SetMessageText($"Do you want to delete {torrentName.Text}.json?");
+
+        if (_customMessageBoxYesNo.ShowDialog() == DialogResult.Yes)
+        {
+            _customMessageBoxYesNo.SetTitle("Delete Confirmation");
+            _customMessageBoxYesNo.SetMessageText($"Do you want to delete shared file also?");
+            if (File.Exists(torrentFiles.First().info.fileName) && _customMessageBoxYesNo.ShowDialog() == DialogResult.Yes)
+            {
+                File.Delete(torrentFiles.First().info.fileName);
+            }
+            if (File.Exists(folderPath))
+            {
+                File.Delete(folderPath);
+            }
+            ShowMyTorrents();
+        }
+
+    }
+
+    // Downloading torrents tab..
+    public void DownloadButton_Click(object sender, EventArgs e)
+    {
+        MaterialButton downloadButton = (MaterialButton)sender;
+
+        _storage.GetPeerWithMyFaile();
+
+        if (!(sender as Control).Enabled)
+        {
+            return;
+        }
+
+        downloadButton.Enabled = false;
+
+        int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
+        MaterialLabel torrentNameLabel = (MaterialLabel)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
+        MaterialLabel sizeLabel = (MaterialLabel)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
+
+        MaterialLabel label1 = new MaterialLabel();
+        label1.Text = torrentNameLabel.Text;
+
+        List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(label1.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+
+        MaterialLabel label2 = new MaterialLabel();
+        label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
+        _storage.GetDownloadTorrentFiles().AddRange(torrentFiles);
+
+        _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
+
+        MaterialProgressBar progressBar = new MaterialProgressBar();
+        progressBar.Minimum = 0;
+        progressBar.Maximum = 100;
+        progressBar.Height = 100;
+        progressBar.Style = ProgressBarStyle.Marquee;
+        progressBar.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+
+        MaterialButton button = new MaterialButton();
+        button.Text = "Pause";
+        button.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
+        button.Size = new Size(200, 200);
+        button.Anchor = AnchorStyles.None;
+        button.Click += PauseResume_Click;
+
+        // Create a new row
+        tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+
+        // Move the existing controls to the next row
+        foreach (Control control in tableLayoutPanel1.Controls)
+        {
+            int row = tableLayoutPanel1.GetRow(control);
+            tableLayoutPanel1.SetRow(control, row + 1);
+        }
+
+        // Insert the new controls into the first row
+        tableLayoutPanel1.Controls.Add(label1, 0, 0); // Add label1 to the first column of the first row
+        tableLayoutPanel1.Controls.Add(label2, 1, 0); // Add label2 to the second column of the first row
+        tableLayoutPanel1.Controls.Add(progressBar, 2, 0); // Add progressBar to the third column of the first row
+        tableLayoutPanel1.Controls.Add(button, 3, 0); // Add button to the fourth column of the first row
+
+        // Increment the row count
+        tableLayoutPanel1.RowCount++;
+
+        PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
+        List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
+
+        _downloader.Download(torrentFiles.First(), receivedLivePeers, progressBar, _networkUtils, this);
+
+        //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
+        _torrentDownloadingNames.Add(label1.Text);
+    }
+
+    private void PauseResume_Click(object sender, EventArgs e)
+    {
+        MaterialButton pauseButton = (MaterialButton)sender;
+
+        int rowIndex = tableLayoutPanel1.GetRow(pauseButton);
+        _downloader.Pause(rowIndex);
+    }
+
+    private void textBox1_KeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Enter)
         {
             List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
             Show(_resultPage, results);
 
             _storage.GetResultTorrentFiles().Clear();
             _storage.GetResultTorrentFiles().AddRange(results);
+
+            e.SuppressKeyPress = true;
+        }
+    }
+
+    private void save_Click(object sender, EventArgs e)
+    {
+        string trackerIpField;
+        int trackerPortField;
+
+        (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+        _udpSender.Start(materialTextBox21.Text.Trim());
+
+        _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
+
+        _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
+    }
+
+    private void createNewTorrent_Click(object sender, EventArgs e)
+    {
+        FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
+        formNewTorrent.ShowDialog();
+
+        ShowMyTorrents();
+    }
+
+    public string TextForAnnoncer()
+    {
+        return trackerIP.Text;
+    }
+
+
+    public string GetIpFieldText()
+    {
+        return trackerIP.Text.Trim();
+    }
+
+    public static void SetProgressBarValue(MaterialProgressBar progressBar, int count)
+    {
+        progressBar.Value = count;
+    }
+
+    private void darkModeSwitch_CheckedChanged(object sender, EventArgs e)
+    {
+        if (darkModeSwitch.Checked)
+        {
+            UIDarkMode();
+            _configuration.AppSettings.Settings["darkMode"].Value = "true";
+        }
+        else
+        {
+            UILightMode();
+            _configuration.AppSettings.Settings["darkMode"].Value = "false";
         }
 
-        private void refresh_Click(object sender, EventArgs e)
+
+        _configuration.Save(ConfigurationSaveMode.Modified);
+        ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
+    }
+
+    private void FixLightUIBackgrounds()
+    {
+        tableLayoutPanel1.BackColor = Color.White;
+        tableLayoutPanel2.BackColor = Color.White;
+        tableLayoutPanel4.BackColor = Color.White;
+        tableLayoutPanel5.BackColor = Color.White;
+        tableLayoutPanel6.BackColor = Color.White;
+        tableLayoutPanel7.BackColor = Color.White;
+
+        settingsTabTrackerGroupBox.ForeColor = Color.Black;
+        settingsTabClientGroupBox.ForeColor = Color.Black;
+        settingsTabTrackerGroupBox.BackColor = Color.White;
+        settingsTabClientGroupBox.BackColor = Color.White;
+
+        foreach (TabPage tabPage in tabControl1.TabPages)
         {
-            _searchOnFlag = false;
-            Show(_allPage, _storage.GetAllTorrentFiles());
+            tabPage.BackColor = Color.White;
         }
+    }
 
-        private void button1_Click(object sender, EventArgs e)
+    private void UILightMode()
+    {
+        _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+
+        panel1.BackColor = Color.FromArgb(240, 240, 240);
+
+        FixLightUIBackgrounds();
+    }
+
+    private void UIDarkMode()
+    {
+        _materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.DARK;
+
+        Color darkColor = Color.FromArgb(50, 50, 50);
+
+        panel1.BackColor = Color.FromArgb(240, 240, 240);
+        panel1.Location = new Point(492, 67);
+        panel1.Size = new Size(404, 37);
+
+        tableLayoutPanel1.BackColor = darkColor;
+        tableLayoutPanel2.BackColor = darkColor;
+        tableLayoutPanel4.BackColor = darkColor;
+        tableLayoutPanel5.BackColor = darkColor;
+        tableLayoutPanel6.BackColor = darkColor;
+        tableLayoutPanel7.BackColor = darkColor;
+
+        settingsTabTrackerGroupBox.ForeColor = Color.White;
+        settingsTabClientGroupBox.ForeColor = Color.White;
+        settingsTabTrackerGroupBox.BackColor = darkColor;
+        settingsTabClientGroupBox.BackColor = darkColor;
+
+        //UpdateBackgroundColors
+    }
+
+
+    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        if (startMinimizedCheckbox.Checked)
         {
-            if (!_searchOnFlag)
-            {
-                if (_allPage - 1 >= 0)
-                {
-                    _allPage--;
-                    pagelabel.Text = "Page Number " + _allPage.ToString();
-                }
-                Show(_allPage, _storage.GetAllTorrentFiles());
-            }
-            else
-            {
-                if (_resultPage - 1 >= 0)
-                {
-                    _resultPage--;
-                    pagelabel.Text = "Page Number " + _resultPage.ToString();
-                }
-                Show(_resultPage, _storage.GetResultTorrentFiles());
-            }
-
+            _configuration.AppSettings.Settings["startMinimized"].Value = "true";
         }
-
-        private void button2_Click(object sender, EventArgs e)
+        else
         {
-            if (!_searchOnFlag)
-            {
-                if (_allPage + 1 < _allMaxPage)
-                {
-                    _allPage++;
-                    pagelabel.Text = "Page Number " + _allPage.ToString();
-                }
-                Show(_allPage, _storage.GetAllTorrentFiles());
-            }
-            else
-            {
-                if (_resultPage + 1 < _resultMaxPage)
-                {
-                    _resultPage++;
-                    pagelabel.Text = "Page Number " + _resultPage.ToString();
-                }
-                Show(_resultPage, _storage.GetResultTorrentFiles());
-            }
-
-        }
-
-        void Show(int i, List<TorrentFile> torrentFiles)
-        {
-            List<TorrentFile> disable = StatusDownloadButton();
-            int row = i * 5;
-            for (int index = 0; index < _titleControls.Count; index++)
-            {
-                Control titleControl = _titleControls[index];
-                Control sizeControl = _sizeControls[index];
-                Control descriptionControl = _descriptionControls[index];
-                Control downloadButtonControl = _downloadControls[index];
-
-                if (index + row < torrentFiles.Count)
-                {
-                    if (titleControl != null)
-                    {
-                        titleControl.Text = torrentFiles[index + row].info.torrentName;
-                    }
-
-                    if (sizeControl != null)
-                    {
-                        sizeControl.Text = _commonUtils.FormatFileSize(torrentFiles[index + row].info.length);
-                    }
-
-                    if (descriptionControl != null)
-                    {
-                        descriptionControl.Text = torrentFiles[index + row].info.description;
-                    }
-
-                    if (downloadButtonControl != null)
-                    {
-                        downloadButtonControl.Visible = true;
-                    }
-                }
-                else
-                {
-                    // If there are no more items in torrentFiles, clear the text of the controls
-
-
-                    if (titleControl != null)
-                    {
-                        titleControl.Text = "";
-                    }
-
-                    if (sizeControl != null)
-                    {
-                        sizeControl.Text = "";
-                    }
-
-                    if (descriptionControl != null)
-                    {
-                        descriptionControl.Text = "";
-                    }
-
-                    if (downloadButtonControl != null)
-                    {
-                        downloadButtonControl.Visible = false;
-                    }
-                }
-                if (_torrentDownloadingNames.Count != 0)
-                {
-                    foreach (string name in _torrentDownloadingNames)
-                    {
-                        if (titleControl.Text == name)
-                        {
-                            _downloadControls[index].Enabled = false;
-                            break;
-                        }
-                        if (titleControl.Text != name)
-                        {
-                            _downloadControls[index].Enabled = true;
-                        }
-
-                    }
-                }
-
-            }
-        }
-        private List<TorrentFile> StatusDownloadButton()
-
-        {
-            if (tableLayoutPanel1.RowCount == 1)
-            {
-                return null;
-            }
-            List<string> downloadingTorrentsNames = new List<string>();
-            List<TorrentFile> torrentFiles = new List<TorrentFile>();
-            if (_searchOnFlag)
-            {
-                torrentFiles = _storage.GetResultTorrentFiles();
-            }
-            else
-            {
-                torrentFiles = _storage.GetAllTorrentFiles();
-            }
-            for (int i = 0; i < tableLayoutPanel1.RowCount - 1; i++)
-            {
-                downloadingTorrentsNames.Add(tableLayoutPanel1.GetControlFromPosition(0, i).Text);
-            }
-            List<TorrentFile> downloading = new List<TorrentFile>();
-            foreach (TorrentFile torrent in torrentFiles)
-            {
-                foreach (string s in downloadingTorrentsNames)
-                    if (torrent.info.fileName == s)
-                    {
-                        downloading.Add(torrent);
-                    }
-            }
-            return downloading;
-        }
-        
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedIndex == 1)
-            {
-                _torrentFileServices.LoadData(_storage, this, ref _allMaxPage);
-            }
-            if (tabControl1.SelectedIndex == 3)
-            {
-                MessageBox.Show("before");
-                _commonUtils.ReceateTorrentFileForDownloadedFile(_storage, "770c27b920265cd2b0f0e579418e212d2f7ff26c672834d70697daf42a9852f5", this);
-                MessageBox.Show("after");
-            }
-        }
-
-        // Downloading torrents tab..
-        public void DownloadButton_Click(object sender, EventArgs e)
-        
-        {
-            Button downloadButton = (Button)sender;
-            _storage.GetPeerWithMyFaile();
-            if (!(sender as Control).Enabled)
-            {
-                return;
-            }
-
-            downloadButton.Enabled = false;
-
-            int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
-            Label torrentNameLabel = (Label)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
-            Label sizeLabel = (Label)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
-
-            Label label1 = new Label();
-            label1.Text = torrentNameLabel.Text;
-            List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
-            Label label2 = new Label();
-            label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
-            _storage.GetDownlodTorrentFiles().AddRange(torrentFiles);
-
-            ProgressBar progressBar = new ProgressBar();
-
-            Button button = new Button();
-            button.Text = "Pause";
-
-            // Create a new row
-            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
-
-            // Move the existing controls to the next row
-            foreach (Control control in tableLayoutPanel1.Controls)
-            {
-                int row = tableLayoutPanel1.GetRow(control);
-                tableLayoutPanel1.SetRow(control, row + 1);
-            }
-
-            // Insert the new controls into the first row
-            tableLayoutPanel1.Controls.Add(label1, 0, 0); // Add label1 to the first column of the first row
-            tableLayoutPanel1.Controls.Add(label2, 1, 0); // Add label2 to the second column of the first row
-            tableLayoutPanel1.Controls.Add(progressBar, 2, 0); // Add progressBar to the third column of the first row
-            tableLayoutPanel1.Controls.Add(button, 3, 0); // Add button to the fourth column of the first row
-
-            // Increment the row count
-            tableLayoutPanel1.RowCount++;
-
-            _torrentDownloadingNames.Add(label1.Text);
-        }
-
-        
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
-                Show(_resultPage, results);
-
-                _storage.GetResultTorrentFiles().Clear();
-                _storage.GetResultTorrentFiles().AddRange(results);
-
-                // Optionally, you can prevent the "Enter" key from adding a newline to the TextBox
-                e.SuppressKeyPress = true;
-            }
-        }
-
-        private void save_Click(object sender, EventArgs e)
-        {
-            string trackerIpField;
-            int trackerPortField;
-
-            (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
-
+            _configuration.AppSettings.Settings["startMinimized"].Value = "false";
             _udpSender.Start(trackerIP.Text.Trim());
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
-        }
-
-        private void createNewTorrent_Click(object sender, EventArgs e)
-        {
-            FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
-            formNewTorrent.ShowDialog();
-        }
-
-        public string TextForAnnoncer()
-        {
-            return trackerIP.Text;
-        }
-
-        private void buhTorrent_Click(object sender, EventArgs e)
-        {
 
         }
 
-        public string GetIpFieldText()
+        if (startupCheckbox.Checked)
         {
-            return trackerIP.Text.Trim();
+            _configuration.AppSettings.Settings["startWithWindows"].Value = "true";
+        }
+        else
+        {
+            _configuration.AppSettings.Settings["startWithWindows"].Value = "false";
+        }
+
+        _configuration.Save(ConfigurationSaveMode.Modified);
+        ConfigurationManager.RefreshSection("appSettings");
+
+        if (e.CloseReason == CloseReason.UserClosing)
+        {
+            e.Cancel = true;
+            WindowState = FormWindowState.Minimized;
+            ShowInTaskbar = false;
+            notifyIcon1.Visible = true;
         }
     }
+
+
+    private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
+    {
+        if (e.Button == MouseButtons.Left)
+        {
+            WindowState = FormWindowState.Normal;
+            Show();
+
+            notifyIcon1.Visible = false;
+        }
+        if (e.Button == MouseButtons.Right)
+        {
+
+        }
+    }
+
+    private void maxDownloadsFromPeersSlider_MouseUp(object sender, MouseEventArgs e)
+    {
+        string temp = maxDownloadsFromPeersSlider.Value.ToString();
+        _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
+    }
+
+    private void materialButton1_Click(object sender, EventArgs e)
+    {
+        using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog())
+        {
+            if (openBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                _sharedFileDownloadFolder = openBrowserDialog.SelectedPath;
+
+                materialTextBox22.Text = _sharedFileDownloadFolder;
+
+                try
+                {
+                    _configuration.AppSettings.Settings["downloadSharedFileLocation"].Value = _sharedFileDownloadFolder;
+                    _configuration.Save(ConfigurationSaveMode.Modified);
+                    ConfigurationManager.RefreshSection("appSettings");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while saving configuration: {ex.Message}");
+                }
+
+                _configuration.Save(ConfigurationSaveMode.Modified);
+                ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
+            }
+        }
+    }
+
+    private void btnDisconnect_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void materialButton2_Click(object sender, EventArgs e)
+    {
+        string trackerIpField;
+        int trackerPortField;
+
+        (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
+
+        _connections.DestroyPeer(trackerIpField, trackerPortField);
+    }
+}
 }

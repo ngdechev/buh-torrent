@@ -6,7 +6,6 @@ namespace PeerSoftware.Utils
 {
     public class NetworkUtils
     {
-
         public (string, int) SplitIpAndPort(Form1 form1)
         {
             if (form1.GetIpFieldText() == null)
@@ -16,8 +15,8 @@ namespace PeerSoftware.Utils
 
             string[] parts = form1.GetIpFieldText().Split(':');
 
-            string ipAddressString = "127.0.0.1";
-            int port = 12346;
+            string ipAddressString = "172.20.60.22";
+            int port = 12345;
 
             if (parts.Length == 2)
             {

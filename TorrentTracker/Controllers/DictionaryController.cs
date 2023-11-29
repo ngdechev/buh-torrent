@@ -30,44 +30,53 @@ namespace TorrentTracker.Controllers
 
         public void ReadDictionaryFromFile()
         {
-            _torrentDictionary.Clear();
-            if (File.Exists(filename))
+            lock (_lock) 
             {
-                if (new FileInfo(filename).Length == 0)
+                _torrentDictionary.Clear();
+                if (File.Exists(filename))
                 {
-                    Console.WriteLine("Load Dictionary");
+                    if (new FileInfo(filename).Length == 0)
+                    {
+                        Console.WriteLine("Load Dictionary");
+                    }
+                    else
+                    {
+                        string json = File.ReadAllText(filename);
+                        Dictionary<string, List<string>> dictionaryFromFile = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
+                        foreach (var pair in dictionaryFromFile)
+                        {
+                            string key = pair.Key;
+                            string[] addres = key.Split(' ', 4);
+
+
+                            Peer peer = new Peer(int.Parse(addres[0]), addres[1], int.Parse(addres[2]), DateTime.Parse(addres[3]));
+                            _torrentDictionary.Add(peer, pair.Value);
+
+                        }
+                    }
                 }
                 else
                 {
-                    string json = File.ReadAllText(filename);
-                    Dictionary<string, List<string>> dictionaryFromFile = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(json);
-                    foreach (var pair in dictionaryFromFile)
-                    {
-                        string key = pair.Key;
-                        string[] addres = key.Split(' ', 3);
-                        Peer peer = new Peer(int.Parse(addres[0]), addres[1], int.Parse(addres[2]), DateTime.UtcNow);
-                        _torrentDictionary.Add(peer, pair.Value);
-                    }
+                    throw new Exception("File does not exist.");
                 }
-            }
-            else
-            {
-                throw new Exception("File does not exist.");
             }
         }
 
         public void WriteDictionaryToFile() 
         {
-            File.WriteAllText(filename, string.Empty);
-            Dictionary<string,List<string>>dictionaryForFale = new Dictionary<string,List<string>>();
-            foreach (var pair in _torrentDictionary)
+            lock (_lock)
             {
+                File.WriteAllText(filename, string.Empty);
+                Dictionary<string, List<string>> dictionaryForFale = new Dictionary<string, List<string>>();
+                foreach (var pair in _torrentDictionary)
+                {
                     dictionaryForFale.Add(pair.Key.ToString(), pair.Value);
+                }
+                string json = JsonConvert.SerializeObject(dictionaryForFale);
+                File.WriteAllText(filename, json);
+                dictionaryForFale.Clear();
+                //_torrentDictionary.Clear();
             }
-            string json = JsonConvert.SerializeObject(dictionaryForFale);
-            File.WriteAllText(filename, json);
-            dictionaryForFale.Clear();
-            //_torrentDictionary.Clear();
         }   
     }
 }

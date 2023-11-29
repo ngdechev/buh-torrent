@@ -8,18 +8,19 @@ namespace TorrentTracker.Controllers
     {
         private DictionaryController _dictionaryController;
         private TorrentManagementController _torrentController;
-        private List<string> _peerWithTorrentFile;
+        private List<string> _peerWithTorrentFile = new();
         public PeerManagementController(DictionaryController dictionaryController)
         {
             _dictionaryController = dictionaryController;
+            _torrentController = new TorrentManagementController(_dictionaryController);
         }
 
         public void CreatePeer(string ip, int port)
-        {
+        { 
             bool flag = true;
             if (_dictionaryController.GetDictionary().Count() == 0)
             {
-                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.UtcNow);
+                Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.Now);
                 _dictionaryController.GetDictionary().Add(peer, new List<string>());
             }
             else
@@ -37,7 +38,7 @@ namespace TorrentTracker.Controllers
                
                 if (flag == true)
                 { 
-                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.UtcNow);
+                         Peer peer = new Peer(_dictionaryController.GetDictionary().Count() + 1, ip, port, DateTime.Now);
                         _dictionaryController.GetDictionary().Add(peer, new List<string>());
                 }
                 flag = true;
@@ -46,14 +47,16 @@ namespace TorrentTracker.Controllers
 
         public void DestroyPeer(string ip)
         {
+            string[] peerSocket = ip.Split(":");
+
             Peer PeerForRemove = new Peer();
+
             foreach (var pair in _dictionaryController.GetDictionary())
             {
-                if (pair.Key.IPAddress == ip)
+                if (pair.Key.IPAddress == peerSocket[0])
                 {
                     PeerForRemove = pair.Key;
                     _dictionaryController.GetDictionary().Remove(PeerForRemove);
-
                 }
                 else
                 {
@@ -64,7 +67,10 @@ namespace TorrentTracker.Controllers
 
         public List<string> ListPeersWithTorrentFile(string checksum)
         {
+            _peerWithTorrentFile.Clear();
+
             string torrernt="";
+
             foreach (TorrentFile torrentFile in _torrentController.GetAllTorrents())
             {
                 if (torrentFile.info.checksum == checksum)
@@ -75,24 +81,29 @@ namespace TorrentTracker.Controllers
 
             foreach (var pair in _dictionaryController.GetDictionary())
             {
+                /*Console.WriteLine(pair.Key.Date + "   IP: " + pair.Key.IPAddress);*/
+
                 foreach (string torrentName in pair.Value)
                 {
                     if (torrernt == torrentName)
                     {
-                        TimeSpan lastActive = pair.Key.Date - DateTime.Now;
-                        double secendLastActive = lastActive.TotalSeconds;
-                        if(secendLastActive <= 20)
+                        string raw = pair.ToString();
+                        DateTime targetDate = pair.Key.Date;
+                        DateTime currentTime = DateTime.Now;
+
+                        double timeDifferenceInSeconds = (currentTime - targetDate).TotalSeconds;
+                        double twentySeconds = 20.0;
+
+                        if (timeDifferenceInSeconds < twentySeconds)
                         {
-                            
                             _peerWithTorrentFile.Add(pair.Key.StringIPAndPort());
-                            break;
+                            //break;
                         }
                         
                     }
                 }
             }
 
-            Console.WriteLine(_peerWithTorrentFile.ToString());
 
             return _peerWithTorrentFile;
         }

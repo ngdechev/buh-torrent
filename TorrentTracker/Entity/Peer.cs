@@ -21,7 +21,7 @@
     }
     public string ToString()
     {
-         return peerID+" "+IPAddress+" "+Port;
+         return peerID+" "+IPAddress+" "+Port+" "+Date;
     }
     public string StringIPAndPort()
     {

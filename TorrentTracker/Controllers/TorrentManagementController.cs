@@ -25,54 +25,85 @@ namespace TorrentTracker.Controllers
             return _AllTorrents;
         }
 
-        public void CreateTorrent(string ip,string torrentFile)
+        public void CreateTorrent(string ip, string torrentFile)
         {
             TorrentFile NewTorrent = JsonSerializer.Deserialize<TorrentFile>(torrentFile);
             string[] addres = ip.Split(':', 2);
             int.TryParse(addres[1], out int int_port);
-        
-                foreach (var pair in _dictionaryController.GetDictionary())
+            bool isFlag = false;
+            
+
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                if (addres[0] == pair.Key.IPAddress)
                 {
-                    if (addres[0] == pair.Key.IPAddress)
+                    if (pair.Value.Count == 0)
                     {
                         pair.Value.Add(NewTorrent.info.torrentName);
                         string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName + ".json");
                         File.WriteAllText(filePath, torrentFile);
+                        break;
                     }
-                   
+                    else
+                    {
+                        for (int i = 0; i < pair.Value.Count; i++)
+                        {
+                            if (NewTorrent.info.torrentName == pair.Value[i])
+                            {
+                                isFlag = true;
+                            }
+                            
+                        }
+                        if (isFlag==false)
+                        {
+                            pair.Value.Add(NewTorrent.info.torrentName);
+                            string filePath = Path.Combine(folderPath, NewTorrent.info.torrentName + ".json");
+                            File.WriteAllText(filePath, torrentFile);
+                            break;
+                        }
+
+                    }
                 }
-        } 
+
+            }
+        }
 
         public void DeleteTorrent(string ip, string checksum)
         {
-            //foreach (var pair in _dictionaryController.GetDictionary())
-            //{
-            //    foreach (TorrentFile torrent in pair.Value)
+            TorrentFile torrent = _AllTorrents.Find(t => t.info.checksum == checksum);
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                foreach (string torrentNane in pair.Value)
+                {
+                    if (torrentNane == torrent.info.torrentName)
+                    {
+                        pair.Value.Remove(torrentNane);
+                        RemoveTorrentFromDictionary(ip, torrent.info.torrentName);
 
-            //    {
-            //        if (checksum == torrent.info.checksum)
-            //        {
-            //            pair.Value.Remove(torrent);
-            //            RemoveTorrentFromDictionary(checksum);
-            //        }
-            //        else
-            //        {
-            //            break;
-            //        }
-            //    }
-            //}
+                        return;
+                    }
+                }
+            }
         }
-        public void RemoveTorrentFromDictionary(string checksum)
+        public void RemoveTorrentFromDictionary(string ip, string torrentNameToDelete)
         {
-                //string jsonContent = File.ReadAllText("Dictionary.json");
-                //List<TorrentFile> torrents = JsonConvert.DeserializeObject<List<TorrentFile>>(jsonContent);
-                //TorrentFile torrentToRemove = torrents.FirstOrDefault(t => t.info.checksum == checksum);
-                //if (torrentToRemove != null)
-                //{
-                //    torrents.Remove(torrentToRemove);
-                //}
-                //string updatedJsonContent = JsonConvert.SerializeObject(torrents, Formatting.Indented);
-                //File.WriteAllText("Dictionary.json", updatedJsonContent);            
+            _dictionaryController.ReadDictionaryFromFile();
+            foreach (var pair in _dictionaryController.GetDictionary())
+            {
+                if (ip == pair.Key.IPAddress)
+                {
+                    foreach (var torrentName in pair.Value)
+                    {
+                        if (torrentName == torrentNameToDelete)
+                        {
+                            pair.Value.Remove(torrentNameToDelete);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            _dictionaryController.WriteDictionaryToFile();
         }
 
         public TorrentFile SearchTorrent(string torrentName)
@@ -105,7 +136,7 @@ namespace TorrentTracker.Controllers
                         {
 
                             _AllTorrents.Add(torrent);
-                        }     
+                        }
                     }
                     catch (Exception exception)
                     {
@@ -117,6 +148,11 @@ namespace TorrentTracker.Controllers
             {
                 throw new Exception("Missing folder");
             }
+        }
+
+        public void RemoveTorrentFromDictionary(string checksum)
+        {
+            throw new NotImplementedException();
         }
     }
 }

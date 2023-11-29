@@ -37,6 +37,7 @@ namespace PTP_Parser
         {
             return  ConcatenateByteArrays(BitConverter.GetBytes(_id), BitConverter.GetBytes(_size), _data);
         }
+
         public byte[] ConcatenateByteArrays(params byte[][] arrays)
         {
             int totalLength = 0;
@@ -70,17 +71,23 @@ namespace PTP_Parser
             }
             switch (type)
             {
-                case "available":
+                case "Available":
                     {
-                        return true;
+                        if (Encoding.ASCII.GetString(_data).StartsWith(type))
+                        { return true; }
+                        break;
                     }
-                case "unavailable":
+                case "Unavailable":
                     {
-                        return true;
+                        if (Encoding.ASCII.GetString(_data).StartsWith(type))
+                        { return true; }
+                        break;
                     }
                 case "StartPackage":
                     {
-                        return true;
+                        if (Encoding.ASCII.GetString(_data).StartsWith(type))
+                        { return true; }
+                        break;
                     }
             }
             return false;
@@ -91,15 +98,16 @@ namespace PTP_Parser
     {
         public static PTPBlock ParseToBlock(NetworkStream networkStream)
         {
-            byte[]? id = null;
-            byte[]? data = null;
-            byte[]? size = null;
+            byte[] id = new byte[4];
+            byte[] size = new byte[4];
 
             networkStream.Read(id, 0, 4);
-            int.TryParse(Encoding.ASCII.GetString(id), out int block_id);
-            networkStream.Read(size, 4, 4);
-            int.TryParse(Encoding.ASCII.GetString(size), out int block_size);
-            networkStream.Read(data, 8, block_size);
+            networkStream.Read(size, 0, 4);
+            
+            int block_id = BitConverter.ToInt32(id, 0);
+            int block_size = BitConverter.ToInt32(size, 0);
+            byte[] data = new byte[block_size];
+            networkStream.Read(data, 0, block_size);
             
             return new PTPBlock(block_id, block_size, data);
         }
@@ -111,7 +119,7 @@ namespace PTP_Parser
 
         public static byte[] AvailablePackage()
         {
-            string msg = "available";
+            string msg = "Available";
             PTPBlock response = new PTPBlock(0, msg.Length, Encoding.ASCII.GetBytes( msg));
 
             return response.ToPackage();
@@ -119,14 +127,14 @@ namespace PTP_Parser
 
         public static byte[] UnavailablePackage()
         {
-            string msg = "unavailable";
+            string msg = "Unavailable";
             PTPBlock response = new PTPBlock(0, msg.Length, Encoding.ASCII.GetBytes(msg));
             return response.ToPackage();
         }
 
-        public static byte[] StartPackage()
+        public static byte[] StartPackage(string pacets)
         {
-            string msg = "StartPackage";
+            string msg = "StartPackage" + "/" + pacets;
             PTPBlock response = new PTPBlock(0, msg.Length, Encoding.ASCII.GetBytes(msg));
             return response.ToPackage();
         }

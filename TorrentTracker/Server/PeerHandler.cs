@@ -31,9 +31,7 @@ namespace TorrentTracker.Server
         public void HandlePeer()
         {
             PTTBlock _block;
-           // _dictionaryController.ReadDictionaryFromFile();
             _stream = _peerSocket.GetStream();
-
 
             _block = PTT.ParseToBlock(_stream);
 
@@ -46,10 +44,12 @@ namespace TorrentTracker.Server
                 string[] ip = payload.Split(':', 2);
                 int.TryParse(ip[1], out int int_port);
                 _peerManagementController.CreatePeer(ip[0],int_port);
+
             } 
             else if (command == 49) //1
             {
-                _peerManagementController.DestroyPeer(payload);
+                string[] ip = payload.Split(':', 2);
+                _peerManagementController.DestroyPeer(ip[0]);
             }
             else if (command == 50) //2
             {
@@ -62,11 +62,12 @@ namespace TorrentTracker.Server
             }
             else if (command == 51) //3
             {
-                string[] payloadArray = payload.Split(";", 2);
+                string[] payloadArray = payload.Split("|", 2);
 
-                string ip = payloadArray[0];
+                string[] ipAmdPort = payloadArray[0].Split(':',2);
                 string checksum = payloadArray[1];
-
+                string ip = ipAmdPort[0];
+                string port = ipAmdPort[1];
                 _torrentManagementController.DeleteTorrent(ip, checksum);
             }
             else if (command == 52) //4
@@ -89,16 +90,26 @@ namespace TorrentTracker.Server
                 {
                     Console.WriteLine("Error sending data: " + ex.Message);
                 }
-
             }
 
             else if (command == 54) //6
             {
                 List<string> peersIpAndPort = _peerManagementController.ListPeersWithTorrentFile(payload);
+                //List<string> peersIpAndPort = new List<string>();
 
-                PTTBlock PTTBlock = new(0x07, peersIpAndPort.ToString().Length, peersIpAndPort.ToString());
+
+                //PTTBlock PTTBlock = new(0x07, peersIpAndPort.ToString().Length, peersIpAndPort.ToString());
+
+                string[] parts;
+                string json = JsonSerializer.Serialize(peersIpAndPort);
+                //string result = json.Trim('[', ']', '"');
+
+                PTTBlock PTTBlock = new(0x07, json.Length, json);
 
                 byte[] bytes = Encoding.ASCII.GetBytes(PTTBlock.ToString());
+
+
+
 
                 try
                 {
