@@ -4,9 +4,9 @@ using System.Windows.Forms.VisualStyles;
 
 namespace PeerSoftware.Utils
 {
-    public partial class CustomMessageBox : MaterialForm
+    public partial class CustomMessageBoxYesNo : MaterialForm
     {
-        public CustomMessageBox(Form1 form1)
+        public CustomMessageBoxYesNo(Form1 form1)
         {
             InitializeComponent();
 

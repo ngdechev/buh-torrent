@@ -48,9 +48,8 @@ namespace TorrentTracker.Server
             } 
             else if (command == 49) //1
             {
-                _peerManagementController.DestroyPeer(payload);
-                _dictionaryController.WriteDictionaryToFile();
-
+                string[] ip = payload.Split(':', 2);
+                _peerManagementController.DestroyPeer(ip[0]);
             }
             else if (command == 50) //2
             {
