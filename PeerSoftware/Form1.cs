@@ -5,10 +5,24 @@ using PeerSoftware.Services;
 using PeerSoftware.Storage;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
+<<<<<<< HEAD
+=======
+using PeerSoftware.Download;
+using System.Drawing;
+using Microsoft.VisualBasic;
+using Timer = System.Windows.Forms.Timer;
+using MaterialSkin.Controls;
+using System.Windows.Forms;
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
 using PeerSoftware.Utils;
 using PTT_Parser;
 using System.Configuration;
+<<<<<<< HEAD
 using System.Net.Sockets;
+=======
+using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
 
 namespace PeerSoftware
 {
@@ -156,6 +170,8 @@ namespace PeerSoftware
                 MaterialLabel materialSizeLabel = new MaterialLabel();
                 MaterialLabel materialDescriptionLabel = new MaterialLabel();
                 MaterialButton materialDownloadButton = new MaterialButton();
+
+                materialTitleLabel.AutoSize = true;
 
                 materialDownloadButton.Visible = false;
                 materialDownloadButton.Text = "Download";
@@ -405,10 +421,22 @@ namespace PeerSoftware
             }
             else
             {
+<<<<<<< HEAD
                 if (materialTitleControl != null)
                 {
                     materialTitleControl.Text = "";
                 }
+=======
+                MaterialLabel materialMyTorrentName = new MaterialLabel();
+                materialMyTorrentName.Text = torrentFile.info.torrentName;
+                materialMyTorrentName.AutoSize = true;
+
+                MaterialLabel materialMyTorrentDescription = new MaterialLabel();
+                materialMyTorrentDescription.Text = torrentFile.info.description;
+
+                MaterialLabel materialMyTorrentSize = new MaterialLabel();
+                materialMyTorrentSize.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
 
                 if (materialSizeControl != null)
                 {
@@ -450,6 +478,7 @@ namespace PeerSoftware
     {
         if (tabControl1.SelectedIndex == 1)
         {
+<<<<<<< HEAD
             _torrentFileServices.LoadData(_storage, _networkUtils, this);
         }
         if (tabControl1.SelectedIndex == 2)
@@ -459,6 +488,13 @@ namespace PeerSoftware
             ShowMyTorrents();
         }
     }
+=======
+            MaterialButton deleteButton = (MaterialButton)sender;
+            int rowIndex = tableLayoutPanel4.GetRow(deleteButton);
+            Label torrentName = (Label)tableLayoutPanel4.GetControlFromPosition(0, rowIndex);
+            List<TorrentFile> torrentFiles = _torrentFileServices
+                .SearchTorrentFiles(torrentName.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetMyTorrentFiles());
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
 
     private async void ShowMyTorrents()
     {
@@ -526,8 +562,15 @@ namespace PeerSoftware
 
         string folderPath = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\{torrentName.Text}.json";
 
+<<<<<<< HEAD
         _customMessageBoxYesNo.SetTitle("Delete Confirmation");
         _customMessageBoxYesNo.SetMessageText($"Do you want to delete {torrentName.Text}.json?");
+=======
+            _storage.GetDownloadTorrentStatus().Add(_storage.GetDownloadTorrentStatus().Count,true);
+
+            // Create a new row
+            tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
 
         if (_customMessageBoxYesNo.ShowDialog() == DialogResult.Yes)
         {
@@ -560,9 +603,32 @@ namespace PeerSoftware
 
         downloadButton.Enabled = false;
 
+<<<<<<< HEAD
         int rowIndex = tableLayoutPanel2.GetRow(downloadButton); // Get the row index of the clicked button
         MaterialLabel torrentNameLabel = (MaterialLabel)tableLayoutPanel2.GetControlFromPosition(0, rowIndex);
         MaterialLabel sizeLabel = (MaterialLabel)tableLayoutPanel2.GetControlFromPosition(1, rowIndex);
+=======
+            int rowIndex = tableLayoutPanel1.GetRow(pauseButton);
+
+            bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
+            if (state)
+            {
+                _downloader.Pause(rowIndex);
+                _storage.GetDownloadTorrentStatus()[rowIndex] = false;
+            }
+            else
+            {
+                TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
+                _storage.GetDownloadTorrentStatus()[rowIndex] = true;
+                MaterialProgressBar progressBar = (MaterialProgressBar)tableLayoutPanel1.GetControlFromPosition(3,rowIndex);
+
+                PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
+                List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
+                
+                _downloader.Download(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this);
+            }
+        }
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
 
         MaterialLabel label1 = new MaterialLabel();
         label1.Text = torrentNameLabel.Text;

@@ -642,6 +642,7 @@ namespace PeerSoftware
             // 
             // settingsTabClientGroupBox
             // 
+<<<<<<< HEAD
             this.settingsTabClientGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.settingsTabClientGroupBox.Controls.Add(this.startupSettings);
             this.settingsTabClientGroupBox.Controls.Add(this.theme);
@@ -664,6 +665,30 @@ namespace PeerSoftware
             this.startupSettings.TabIndex = 12;
             this.startupSettings.TabStop = false;
             this.startupSettings.Text = "Startup Settings";
+=======
+            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            settingsTabClientGroupBox.Controls.Add(startupSettings);
+            settingsTabClientGroupBox.Controls.Add(theme);
+            settingsTabClientGroupBox.Controls.Add(peerSettings);
+            settingsTabClientGroupBox.Location = new Point(481, 9);
+            settingsTabClientGroupBox.Name = "settingsTabClientGroupBox";
+            settingsTabClientGroupBox.Size = new Size(400, 395);
+            settingsTabClientGroupBox.TabIndex = 7;
+            settingsTabClientGroupBox.TabStop = false;
+            settingsTabClientGroupBox.Text = "Client Settings";
+            // 
+            // startupSettings
+            // 
+            startupSettings.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            startupSettings.Controls.Add(startMinimizedCheckbox);
+            startupSettings.Controls.Add(startupCheckbox);
+            startupSettings.Location = new Point(6, 22);
+            startupSettings.Name = "startupSettings";
+            startupSettings.Size = new Size(388, 62);
+            startupSettings.TabIndex = 12;
+            startupSettings.TabStop = false;
+            startupSettings.Text = "Startup Settings";
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
             // 
             // startMinimizedCheckbox
             // 
@@ -699,6 +724,7 @@ namespace PeerSoftware
             // 
             // theme
             // 
+<<<<<<< HEAD
             this.theme.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.theme.Controls.Add(this.comboBoxTheme);
             this.theme.Controls.Add(this.darkModeSwitch);
@@ -708,6 +734,40 @@ namespace PeerSoftware
             this.theme.TabIndex = 11;
             this.theme.TabStop = false;
             this.theme.Text = "Theme Settings";
+=======
+            theme.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            theme.Controls.Add(comboBoxTheme);
+            theme.Controls.Add(darkModeSwitch);
+            theme.Location = new Point(6, 90);
+            theme.Name = "theme";
+            theme.Size = new Size(388, 86);
+            theme.TabIndex = 11;
+            theme.TabStop = false;
+            theme.Text = "Theme Settings";
+            // 
+            // comboBoxTheme
+            // 
+            comboBoxTheme.AutoResize = false;
+            comboBoxTheme.BackColor = Color.FromArgb(255, 255, 255);
+            comboBoxTheme.Depth = 0;
+            comboBoxTheme.DrawMode = DrawMode.OwnerDrawVariable;
+            comboBoxTheme.DropDownHeight = 174;
+            comboBoxTheme.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxTheme.DropDownWidth = 121;
+            comboBoxTheme.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            comboBoxTheme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            comboBoxTheme.FormattingEnabled = true;
+            comboBoxTheme.IntegralHeight = false;
+            comboBoxTheme.ItemHeight = 43;
+            comboBoxTheme.Location = new Point(6, 22);
+            comboBoxTheme.MaxDropDownItems = 4;
+            comboBoxTheme.MouseState = MaterialSkin.MouseState.OUT;
+            comboBoxTheme.Name = "comboBoxTheme";
+            comboBoxTheme.Size = new Size(235, 49);
+            comboBoxTheme.StartIndex = 0;
+            comboBoxTheme.TabIndex = 9;
+            comboBoxTheme.SelectedIndexChanged += comboBoxTheme_SelectedIndexChanged;
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
             // 
             // darkModeSwitch
             // 
@@ -727,6 +787,7 @@ namespace PeerSoftware
             // 
             // peerSettings
             // 
+<<<<<<< HEAD
             this.peerSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.peerSettings.Controls.Add(this.downloadLocationLabel);
             this.peerSettings.Controls.Add(this.btnBrowseDownloadLocation);
@@ -751,6 +812,19 @@ namespace PeerSoftware
             this.downloadLocationLabel.Size = new System.Drawing.Size(161, 19);
             this.downloadLocationLabel.TabIndex = 12;
             this.downloadLocationLabel.Text = "Put new downloads in:";
+=======
+            peerSettings.Controls.Add(browseDownloadsLocationLabel);
+            peerSettings.Controls.Add(btnBrowseDownloadLocation);
+            peerSettings.Controls.Add(materialTextBox22);
+            peerSettings.Controls.Add(maxActiveDownloadsSlider);
+            peerSettings.Controls.Add(maxDownloadsFromPeersSlider);
+            peerSettings.Location = new Point(6, 182);
+            peerSettings.Name = "peerSettings";
+            peerSettings.Size = new Size(388, 207);
+            peerSettings.TabIndex = 6;
+            peerSettings.TabStop = false;
+            peerSettings.Text = "Peer Settings";
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
             // 
             // btnBrowseDownloadLocation
             // 
@@ -834,6 +908,7 @@ namespace PeerSoftware
             // 
             // settingsTabTrackerGroupBox
             // 
+<<<<<<< HEAD
             this.settingsTabTrackerGroupBox.Controls.Add(this.materialTextBox21);
             this.settingsTabTrackerGroupBox.Controls.Add(this.save);
             this.settingsTabTrackerGroupBox.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -843,6 +918,18 @@ namespace PeerSoftware
             this.settingsTabTrackerGroupBox.TabIndex = 6;
             this.settingsTabTrackerGroupBox.TabStop = false;
             this.settingsTabTrackerGroupBox.Text = "Tracker Settings";
+=======
+            settingsTabTrackerGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            settingsTabTrackerGroupBox.Controls.Add(trackerIP);
+            settingsTabTrackerGroupBox.Controls.Add(save);
+            settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
+            settingsTabTrackerGroupBox.Location = new Point(3, 9);
+            settingsTabTrackerGroupBox.Name = "settingsTabTrackerGroupBox";
+            settingsTabTrackerGroupBox.Size = new Size(472, 395);
+            settingsTabTrackerGroupBox.TabIndex = 6;
+            settingsTabTrackerGroupBox.TabStop = false;
+            settingsTabTrackerGroupBox.Text = "Tracker Settings";
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
             // 
             // materialTextBox21
             // 
@@ -1141,6 +1228,7 @@ namespace PeerSoftware
             // 
             // Form1
             // 
+<<<<<<< HEAD
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
@@ -1179,6 +1267,43 @@ namespace PeerSoftware
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
+=======
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.White;
+            ClientSize = new Size(899, 520);
+            Controls.Add(panel1);
+            Controls.Add(tabControl1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
+            MinimumSize = new Size(899, 520);
+            Name = "Form1";
+            Padding = new Padding(0, 64, 0, 500);
+            Text = "BuhTorrent";
+            FormClosing += MainForm_FormClosing;
+            tabControl1.ResumeLayout(false);
+            buhTorrent.ResumeLayout(false);
+            tableLayoutPanel5.ResumeLayout(false);
+            tableLayoutPanel5.PerformLayout();
+            browes.ResumeLayout(false);
+            tableLayoutPanel7.ResumeLayout(false);
+            tableLayoutPanel7.PerformLayout();
+            myTorrents.ResumeLayout(false);
+            tableLayoutPanel6.ResumeLayout(false);
+            tableLayoutPanel6.PerformLayout();
+            settings.ResumeLayout(false);
+            settingsTabClientGroupBox.ResumeLayout(false);
+            startupSettings.ResumeLayout(false);
+            startupSettings.PerformLayout();
+            theme.ResumeLayout(false);
+            theme.PerformLayout();
+            peerSettings.ResumeLayout(false);
+            peerSettings.PerformLayout();
+            settingsTabTrackerGroupBox.ResumeLayout(false);
+            tableLayoutPanel3.ResumeLayout(false);
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
+            ResumeLayout(false);
+>>>>>>> d2d8a1f57560ff10980e0080dc6acd1b3ca64a28
         }
 
 

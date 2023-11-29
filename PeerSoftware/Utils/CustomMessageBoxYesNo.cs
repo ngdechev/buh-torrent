@@ -1,5 +1,6 @@
 ﻿using MaterialSkin.Controls;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace PeerSoftware.Utils
 {
@@ -8,6 +9,8 @@ namespace PeerSoftware.Utils
         public CustomMessageBoxYesNo(Form1 form1)
         {
             InitializeComponent();
+
+
         }
 
         public void SetTitle(string title)
