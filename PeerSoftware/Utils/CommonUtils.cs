@@ -64,7 +64,6 @@ namespace PeerSoftware.Utils
 
         }
 
-
         public List<TorrentFile> LoadMyTorrents(ITorrentStorage storage)
         {
             string folderPath = Directory.GetCurrentDirectory();
