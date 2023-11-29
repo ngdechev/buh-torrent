@@ -91,7 +91,6 @@ namespace PeerSoftware
             _networkUtils = new NetworkUtils();
             _connections = new Connections(_networkUtils);
             _udpSender = new UDPSender(_networkUtils);
-
             _customMessageBoxYesNo = new CustomMessageBoxYesNo(this);
             _customMessageBoxOK = new CustomMessageBoxOK();
 
@@ -743,7 +742,6 @@ namespace PeerSoftware
 
         settingsTabTrackerGroupBox.ForeColor = Color.White;
         settingsTabClientGroupBox.ForeColor = Color.White;
-
         settingsTabTrackerGroupBox.BackColor = darkColor;
         settingsTabClientGroupBox.BackColor = darkColor;
 
@@ -760,6 +758,10 @@ namespace PeerSoftware
         else
         {
             _configuration.AppSettings.Settings["startMinimized"].Value = "false";
+            _udpSender.Start(trackerIP.Text.Trim());
+
+            _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
+
         }
 
         if (startupCheckbox.Checked)
