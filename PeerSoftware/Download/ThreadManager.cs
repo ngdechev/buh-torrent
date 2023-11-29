@@ -39,7 +39,7 @@ namespace PeerSoftware.Download
 
         public void StopThread(int index)
         {
-            if (index >= 0 && index <= threads.Count && threads[index].IsAlive)
+            if (index >= 0 && index < threads.Count && threads[index].IsAlive)
             {
                 threads[index].Abort();
                 threads.RemoveAt(index);
@@ -66,7 +66,7 @@ namespace PeerSoftware.Download
 
         public void RemoveDownloadTCPManeger(int index)
         {
-            downloadTcpManagers.RemoveAt(index-1);
+            downloadTcpManagers.RemoveAt(index);
         }
         
         public DownloadTcpManager GerDownloadTCPManeger(int index)

@@ -51,11 +51,6 @@ namespace PeerSoftware.Download
 
                     Reassemble(torrentFile, connectionManager.GetPTPBlocks(), form.GetSharedFileDownloadFolder());
                     Finally(connectionManager,form,torrentFile,networkUtils);
-
-                    new ToastContentBuilder()
-                        .AddText($"{torrentFile.info.torrentName} has been downloaded!")
-                        .Show();
-
                     _threadManager.StopThread(_index);
                     _index--;
 
@@ -64,7 +59,7 @@ namespace PeerSoftware.Download
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Download failed: {ex.Message}");
+                    //Console.WriteLine($"Download failed: {ex.Message}");
                     // Handle or log the exception as needed
                 }
                 
@@ -159,6 +154,10 @@ namespace PeerSoftware.Download
                 // Handle any response from the server if needed
                 // ...
                 //TorrentReader.WriteJSON("MyTorrent", torrentFile);
+
+                new ToastContentBuilder()
+                    .AddText($"{torrentFile.info.torrentName} has been downloaded!")
+                    .Show();
             }
         }
 

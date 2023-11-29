@@ -122,7 +122,7 @@ namespace PeerSoftware
                 {
 
                     await client.ConnectAsync(ipAddressString, port);
-                    string? myip = _networkUtils.GetLocalIPAddress() + ":" + _networkUtils.GetLocalPort().ToString();
+                    string? myip = _networkUtils.GetLocalIPAddress() +":"+ _networkUtils.GetLocalPort().ToString();
 
 
                     // Send data asynchronously
@@ -136,7 +136,7 @@ namespace PeerSoftware
                     // Handle any response from the server if needed
                     // ...
                     TorrentReader.WriteJSON("MyTorrent", _newTorrent);
-
+                    
                     client.Close();
                 }
 
