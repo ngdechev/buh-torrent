@@ -45,7 +45,7 @@ namespace PeerSoftware.Upload
         {
             _blocks = new List<PTPBlock>();
 
-            TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
+            TorrentFile torrentFile = _storage.GetMyTorrentFiles().Find(r => r.info.checksum == cheksum);
 
             if (torrentFile == null)
             {
