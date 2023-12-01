@@ -176,9 +176,9 @@ namespace PeerSoftware
 
             string[] ip = _serverSocket.Split(':', 2);
             int.TryParse(ip[1], out int int_port);
-            //_connections.AnnounceNewPeer(ip[0], int_port);
-            //_udpSender.Start(_serverSocket);
-            //Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+            _connections.AnnounceNewPeer(ip[0], int_port);
+            _udpSender.Start(_serverSocket);
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
             _configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
