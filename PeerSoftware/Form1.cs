@@ -519,7 +519,7 @@ namespace PeerSoftware
             _customMessageBoxYesNo.SetTitle("Delete Confirmation");
             _customMessageBoxYesNo.SetMessageText($"Do you want to delete {torrentName.Text}.json?");
 
-            
+
 
             // Create a new row
             tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
@@ -857,11 +857,6 @@ namespace PeerSoftware
                     ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
                 }
             }
-        }
-
-        private void btnDisconnect_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void materialButton2_Click(object sender, EventArgs e)
