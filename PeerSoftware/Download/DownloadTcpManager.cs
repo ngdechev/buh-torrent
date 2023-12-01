@@ -77,7 +77,7 @@ namespace PeerSoftware.Download
             }
         }
 
-        public void ReceiveData()
+        public bool ReceiveData()
         {
             while (_pTPBlocks.Count < _numberOfBlocks)
             {
@@ -87,7 +87,7 @@ namespace PeerSoftware.Download
                     {
                         SaveToTemp();
                         DisconnectAll();
-                        return;
+                        return false;
                     }
                     if (client.Connected && client.GetStream().DataAvailable)
                     {
@@ -96,12 +96,13 @@ namespace PeerSoftware.Download
                     }
                     else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks)
                     {
-                        return;
+                        return true;
                     }
                     
                 }
                 Thread.Sleep(50);
             }
+            return true;
         }
 
         public void DisconnectAll()
@@ -119,14 +120,16 @@ namespace PeerSoftware.Download
 
         public void SaveToTemp()
         {
-            string json = JsonSerializer.Serialize(_pTPBlocks);
+            string json = JsonSerializer.Serialize(_pTPBlocks.ToString());
             string path = _torrentFile.info.torrentName + ".json";
-            StreamWriter tempFile = new StreamWriter(path);
-            if (File.Exists(path))
+            using (StreamWriter tempFile = new StreamWriter(path))
             {
-                tempFile.Write(json);
-                tempFile.Flush();
-                //outputFile.Close();
+                if (File.Exists(path))
+                {
+                    tempFile.Write(json);
+                    tempFile.Flush();
+                    //outputFile.Close();
+                }
             }
         }
 
