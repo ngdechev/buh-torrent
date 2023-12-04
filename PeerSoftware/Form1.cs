@@ -6,9 +6,11 @@ using PeerSoftware.Storage;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
 using PeerSoftware.Utils;
+using PTP_Parser;
 using PTT_Parser;
 using System.Configuration;
 using System.Net.Sockets;
+using System.Text.Json;
 
 namespace PeerSoftware
 {
@@ -52,7 +54,6 @@ namespace PeerSoftware
         public Form1()
         {
             InitializeComponent();
-            MessageBox.Show("I AM ALIVEEEE!");
 
             // New UI Stuff
             _materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
@@ -139,7 +140,7 @@ namespace PeerSoftware
             Label nameLabel = new Label();
             nameLabel.Text = "Name1";
 
-
+            _commonUtils.LoadMyTorrents(_storage);
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
             Thread peerThread = new Thread(uploadserver.Start);
@@ -174,12 +175,23 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
+            try
+            {
+                string[] ip = _serverSocket.Split(':', 2);
+                int.TryParse(ip[1], out int int_port);
+                _connections.AnnounceNewPeer(ip[0], int_port);
+                _udpSender.Start(_serverSocket);
+                Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+            }
+            catch(Exception ex)
+            {
             string[] ip = _serverSocket.Split(':', 2);
             int.TryParse(ip[1], out int int_port);
             _connections.AnnounceNewPeer(ip[0], int_port);
             _udpSender.Start(_serverSocket);
             Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
+            }
             _configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
         }

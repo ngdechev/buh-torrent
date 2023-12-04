@@ -118,19 +118,31 @@ namespace PeerSoftware.Download
             return _pTPBlocks;
         }
 
+        public void SetPTPBlocks(List<PTPBlock> pTPBlocks)
+        {
+            _pTPBlocks = pTPBlocks;
+        }
+
         public void SaveToTemp()
         {
-            string json = JsonSerializer.Serialize(_pTPBlocks.ToString());
-            string path = _torrentFile.info.torrentName + ".json";
+            List<TempPTPBlock> tempPTPBlocks = new List<TempPTPBlock>();
+            foreach (PTPBlock block in _pTPBlocks)
+            {
+                tempPTPBlocks.Add(new TempPTPBlock(block.GetId(), block.GetSize(), block.GetDataByte()));
+            }
+            string path = "temp\\"+_torrentFile.info.torrentName + ".json";
             using (StreamWriter tempFile = new StreamWriter(path))
             {
                 if (File.Exists(path))
                 {
+                    string json = JsonSerializer.Serialize(tempPTPBlocks);
                     tempFile.Write(json);
                     tempFile.Flush();
                     //outputFile.Close();
                 }
             }
+            
+
         }
 
         public void SetDownloadingFlag(bool value)
