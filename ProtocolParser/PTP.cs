@@ -7,9 +7,9 @@ namespace PTP_Parser
 {
     public class PTPBlock
     {
-        private int _id { get; }
-        private int _size { get; }
-        private byte[] _data { get; }
+        private int _id;
+        private int _size;
+        private byte[] _data;
 
         public PTPBlock(int id, int size, byte[] data)
         {
@@ -31,6 +31,10 @@ namespace PTP_Parser
         public string GetData()
         {
             return Encoding.ASCII.GetString(_data);
+        }
+        public byte[] GetDataByte()
+        {
+            return _data;
         }
 
         public byte[] ToPackage()
