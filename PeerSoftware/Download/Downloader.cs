@@ -74,7 +74,7 @@ namespace PeerSoftware.Download
                     Console.WriteLine($"Download failed: {ex.Message}");
                     // Handle or log the exception as needed
                 }
-                
+
 
             });
 
@@ -93,7 +93,28 @@ namespace PeerSoftware.Download
                     _threadManager.AddDownloadTCPManeger(connectionManager);
 
                     SharedFileServices sharedFileServices = new SharedFileServices();
-                    Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(peers, (int)torrentFile.info.length, form.GetNPeersUploading());
+
+                    string path = "temp\\" + torrentFile.info.torrentName + ".json";
+                    List<PTPBlock> pTPBlocks = new List<PTPBlock>();
+                    List<TempPTPBlock> tempPTPBlocks = new List<TempPTPBlock>();
+
+                    string jsonString = File.ReadAllText(path);
+
+                    tempPTPBlocks = JsonSerializer.Deserialize<List<TempPTPBlock>>(jsonString);
+
+                    foreach (TempPTPBlock block in tempPTPBlocks)
+                    {
+                        pTPBlocks.Add(new PTPBlock(block.Id, block.Size, block.Data));
+                    }
+
+                    List<int> ints = new List<int>();
+
+                    foreach (PTPBlock block in pTPBlocks)
+                    {
+                        ints.Add(block.GetId());
+                    }
+                    connectionManager.SetPTPBlocks(pTPBlocks);
+                    Dictionary<string, string> peersAndBlocks = sharedFileServices.ReCalculateParticions(peers, (int)torrentFile.info.length, ints, form.GetNPeersUploading());
 
                     // Connect to multiple servers synchronously
                     connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);
@@ -132,7 +153,7 @@ namespace PeerSoftware.Download
 
             _index++;
         }
-        public void Finally(DownloadTcpManager connectionManager,Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils)
+        public void Finally(DownloadTcpManager connectionManager, Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils)
         {
             // Ensure progress bar is updated even if an exception occurs
             connectionManager.UpdateProgressBar();
@@ -172,7 +193,7 @@ namespace PeerSoftware.Download
             StreamWriter outputFile = new StreamWriter(path);
             if (File.Exists(path))
             {
-
+                ptpBlocks = ptpBlocks.OrderBy(block => block.GetId()).ToList();
                 foreach (PTPBlock block in ptpBlocks)
                 {
                     outputFile.Write(block.GetData());
@@ -191,6 +212,23 @@ namespace PeerSoftware.Download
         public void Pause(int index)
         {
             _threadManager.GerDownloadTCPManeger(index).isRunnig = false;
+        }
+
+        public List<PTPBlock> ReadBlocks(string path)
+        {
+            List<PTPBlock> pTPBlocks = new List<PTPBlock>();
+            List<TempPTPBlock> tempPTPBlocks = new List<TempPTPBlock>();
+
+            string jsonString = File.ReadAllText(path);
+
+            tempPTPBlocks = JsonSerializer.Deserialize<List<TempPTPBlock>>(jsonString);
+
+            foreach(TempPTPBlock block in tempPTPBlocks)
+            {
+                pTPBlocks.Add(new PTPBlock(block.Id,block.Size,block.Data));
+            }
+
+            return pTPBlocks;
         }
 
     }
