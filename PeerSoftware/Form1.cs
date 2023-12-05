@@ -5,20 +5,16 @@ using PeerSoftware.Services;
 using PeerSoftware.Storage;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
-<<<<<<< HEAD
-=======
 using PeerSoftware.Download;
 using System.Drawing;
 using Microsoft.VisualBasic;
 using Timer = System.Windows.Forms.Timer;
 using MaterialSkin.Controls;
 using System.Windows.Forms;
->>>>>>> 2f062bf (resume)
 using PeerSoftware.Utils;
 using PTP_Parser;
 using PTT_Parser;
 using System.Configuration;
-<<<<<<< HEAD
 using System.Net.Sockets;
 using System.Text.Json;
 

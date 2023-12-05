@@ -169,9 +169,5 @@ namespace PeerSoftware.Download
             }
         }
 
-        public void SetPTPBlocks(List<PTPBlock> pTPBlocks)
-        {
-            _pTPBlocks.AddRange(pTPBlocks);
-        }
     }
 }

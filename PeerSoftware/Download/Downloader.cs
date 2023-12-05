@@ -84,6 +84,14 @@ namespace PeerSoftware.Download
 
         public void Resume(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
         {
+            List<string> peersList = peers;
+
+            if (peersList.Count == 0)
+            {
+                MessageBox.Show("There are no available peers who has the file.");
+                return;
+            }
+
             _threadManager.CreateThread(() =>
             {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
@@ -120,6 +128,7 @@ namespace PeerSoftware.Download
 
                     // Receive data from all connected servers
 
+
                     if (connectionManager.ReceiveData())
                     {
                         //connectionManager.DisconnectAll();
@@ -137,6 +146,7 @@ namespace PeerSoftware.Download
                     _threadManager.StopThread(_index);
                     _index--;
 
+
                     // Disconnect from all servers
                 }
                 catch (Exception ex)
@@ -152,7 +162,9 @@ namespace PeerSoftware.Download
 
             _index++;
         }
+
         public void Finally(DownloadTcpManager connectionManager, Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils)
+
         {
             // Ensure progress bar is updated even if an exception occurs
             connectionManager.UpdateProgressBar();

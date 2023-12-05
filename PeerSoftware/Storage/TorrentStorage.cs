@@ -3,7 +3,6 @@ namespace PeerSoftware.Storage
 {
     public class TorrentStorage : ITorrentStorage
     {
-        private Dictionary<int, bool> _downloadTorrentStatus = new Dictionary<int, bool>();
         private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
         private List<TorrentFile> _myTorrents = new List<TorrentFile>();
         private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
