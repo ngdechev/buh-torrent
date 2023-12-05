@@ -32,6 +32,10 @@ namespace PTP_Parser
         {
             return Encoding.ASCII.GetString(_data);
         }
+        public byte[] GetDataByte()
+        {
+            return _data;
+        }
 
         public byte[] ToPackage()
         {

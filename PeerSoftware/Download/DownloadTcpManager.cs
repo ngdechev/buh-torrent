@@ -77,7 +77,7 @@ namespace PeerSoftware.Download
             }
         }
 
-        public void ReceiveData()
+        public bool ReceiveData()
         {
             while (_pTPBlocks.Count < _numberOfBlocks)
             {
@@ -87,7 +87,7 @@ namespace PeerSoftware.Download
                     {
                         SaveToTemp();
                         DisconnectAll();
-                        return;
+                        return false;
                     }
                     if (client.Connected && client.GetStream().DataAvailable)
                     {
@@ -96,12 +96,13 @@ namespace PeerSoftware.Download
                     }
                     else if (client.Connected && _pTPBlocks.Count == _numberOfBlocks)
                     {
-                        return;
+                        return true;
                     }
                     
                 }
                 Thread.Sleep(50);
             }
+            return true;
         }
 
         public void DisconnectAll()
@@ -117,17 +118,31 @@ namespace PeerSoftware.Download
             return _pTPBlocks;
         }
 
+        public void SetPTPBlocks(List<PTPBlock> pTPBlocks)
+        {
+            _pTPBlocks = pTPBlocks;
+        }
+
         public void SaveToTemp()
         {
-            string json = JsonSerializer.Serialize(_pTPBlocks);
-            string path = _torrentFile.info.torrentName + ".json";
-            StreamWriter tempFile = new StreamWriter(path);
-            if (File.Exists(path))
+            List<TempPTPBlock> tempPTPBlocks = new List<TempPTPBlock>();
+            foreach (PTPBlock block in _pTPBlocks)
             {
-                tempFile.Write(json);
-                tempFile.Flush();
-                //outputFile.Close();
+                tempPTPBlocks.Add(new TempPTPBlock(block.GetId(), block.GetSize(), block.GetDataByte()));
             }
+            string path = "temp\\"+_torrentFile.info.torrentName + ".json";
+            using (StreamWriter tempFile = new StreamWriter(path))
+            {
+                if (File.Exists(path))
+                {
+                    string json = JsonSerializer.Serialize(tempPTPBlocks);
+                    tempFile.Write(json);
+                    tempFile.Flush();
+                    //outputFile.Close();
+                }
+            }
+            
+
         }
 
         public void SetDownloadingFlag(bool value)

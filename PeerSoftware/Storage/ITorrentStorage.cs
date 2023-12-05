@@ -12,6 +12,7 @@ namespace PeerSoftware.Storage
         public List<TorrentFile> GetAllTorrentFiles();
         public List<TorrentFile> GetResultTorrentFiles();
         public List<TorrentFile> GetMyTorrentFiles();
+        public Dictionary<int, bool> GetDownloadTorrentStatus();
         public List<string> GetPeerWithMyFaile();
 
         public Dictionary<int,bool> GetDownloadTorrentStatus();

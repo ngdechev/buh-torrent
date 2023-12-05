@@ -9,7 +9,7 @@ namespace PeerSoftware.Storage
         private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
         private List<string>_peerWithMyFaile=new List<string>();
         private List<TorrentFile> _downloadTorrentFiles = new List<TorrentFile>();
-
+        private Dictionary<int,bool>  _downloadTorrentStatus = new Dictionary<int,bool>();
 
         public List<string> GetPeerWithMyFaile()
         {

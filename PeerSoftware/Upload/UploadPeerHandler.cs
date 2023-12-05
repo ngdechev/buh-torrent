@@ -40,12 +40,15 @@ namespace PeerSoftware.Upload
                 _server.Disconect(this);
             }
         }
-
+        public List<PTPBlock> GetPTPBlocks()
+        {
+            return _blocks;
+        }
         public void Disasemble(string cheksum, string blocks)
         {
             _blocks = new List<PTPBlock>();
 
-            TorrentFile torrentFile = _storage.GetAllTorrentFiles().Find(r => r.info.checksum == cheksum);
+            TorrentFile torrentFile = _storage.GetMyTorrentFiles().Find(r => r.info.checksum == cheksum);
 
             if (torrentFile == null)
             {
