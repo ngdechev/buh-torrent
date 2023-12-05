@@ -177,15 +177,23 @@ namespace PeerSoftware
 
             try
             {
-                string[] ip = _serverSocket.Split(':', 2);
-                int.TryParse(ip[1], out int int_port);
-                _connections.AnnounceNewPeer(ip[0], int_port);
-                _udpSender.Start(_serverSocket);
-                Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
-            }
-            catch(Exception ex)
-            {
+                if (materialTextBox21.Text != null)
+                {
+                    string[] ip = materialTextBox21.Text.Split(':', 2);
+                    int.TryParse(ip[1], out int int_port);
+                    _connections.AnnounceNewPeer(ip[0], int_port);
+                    if (_connections.IsConnected() == true)
+                    {
+                        save.Text = "DICONNECT";
+                        _udpSender.Start(_serverSocket);
+                        Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+                    }
+                }
 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
             _configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
@@ -453,7 +461,7 @@ namespace PeerSoftware
 
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (tabControl1.SelectedIndex == 1)
+            if (tabControl1.SelectedIndex == 1 && _connections.IsConnected() == true)
             {
 
                 _torrentFileServices.LoadData(_storage, _networkUtils, this);
@@ -874,6 +882,7 @@ namespace PeerSoftware
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
             _connections.DestroyPeer(trackerIpField, trackerPortField);
+            save.Text = "CONNECT";
         }
     }
 }
