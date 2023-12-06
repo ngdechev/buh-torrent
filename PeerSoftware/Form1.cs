@@ -507,7 +507,7 @@ namespace PeerSoftware
                 materialMyTorrentDownloadButton.Click += DeleteMyTorrentButton_Click;
 
                 int rowIndex = tableLayoutPanel4.RowCount++;
-                //tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
                 tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, rowIndex);
                 tableLayoutPanel4.Controls.Add(materialMyTorrentSize, 1, rowIndex);
