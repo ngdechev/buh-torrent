@@ -5,7 +5,14 @@ using PeerSoftware.Services;
 using PeerSoftware.Storage;
 using PeerSoftware.UDP;
 using PeerSoftware.Upload;
+using PeerSoftware.Download;
+using System.Drawing;
+using Microsoft.VisualBasic;
+using Timer = System.Windows.Forms.Timer;
+using MaterialSkin.Controls;
+using System.Windows.Forms;
 using PeerSoftware.Utils;
+using PTP_Parser;
 using PTT_Parser;
 using System.Configuration;
 using System.Net.Sockets;
@@ -139,7 +146,7 @@ namespace PeerSoftware
             Label nameLabel = new Label();
             nameLabel.Text = "Name1";
 
-
+            _commonUtils.LoadMyTorrents(_storage);
 
             UploadPeerServer uploadserver = new UploadPeerServer(_storage);
             Thread peerThread = new Thread(uploadserver.Start);
@@ -174,14 +181,23 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
-            string[] ip = _serverSocket.Split(':', 2);
-            int.TryParse(ip[1], out int int_port);
-            _connections.AnnounceNewPeer(ip[0], int_port);
-            _udpSender.Start(_serverSocket);
-            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
-            Resume_OnStartUp();
+Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
+            try
+            {
+                string[] ip = _serverSocket.Split(':', 2);
+                int.TryParse(ip[1], out int int_port);
+                _connections.AnnounceNewPeer(ip[0], int_port);
+                _udpSender.Start(_serverSocket);
+                Resume_OnStartUp();
+                
+            }
+            catch (Exception ex)
+            {
+
+
+            }
             _configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
         }
@@ -679,6 +695,7 @@ namespace PeerSoftware
             _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
         }
 
         private void createNewTorrent_Click(object sender, EventArgs e)
@@ -872,6 +889,7 @@ namespace PeerSoftware
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
             _connections.DestroyPeer(trackerIpField, trackerPortField);
+            _udpSender.Stop();
         }
 
         private void Resume_OnStartUp()

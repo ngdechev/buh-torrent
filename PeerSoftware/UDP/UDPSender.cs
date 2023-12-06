@@ -24,6 +24,7 @@ namespace PeerSoftware.UDP
 
         public void Start(string trackerIpPlusPort)
         {
+            _disposed = false;
             (IPAddress serverIp, int serverPort) = IpAdressSplitter(trackerIpPlusPort);
 
             _udpClient = new UdpClient();
