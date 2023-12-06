@@ -17,6 +17,7 @@ using PTT_Parser;
 using System.Configuration;
 using System.Net.Sockets;
 using System.Text.Json;
+using System;
 
 namespace PeerSoftware
 {
@@ -388,6 +389,13 @@ namespace PeerSoftware
 
         private void Show(int i, List<TorrentFile> torrentFiles)
         {
+            if (torrentFiles.Count == 0)
+            {
+                MaterialLabel materialDescriptionControl = _materialTitleControls[0];
+                materialDescriptionControl.Text = "No torrents";
+                return;
+            }
+
             int row = i * 5;
 
             for (int index = 0; index < _materialTitleControls.Count; index++)
