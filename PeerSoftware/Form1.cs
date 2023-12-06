@@ -684,6 +684,7 @@ namespace PeerSoftware
             _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
         }
 
         private void createNewTorrent_Click(object sender, EventArgs e)
