@@ -461,36 +461,35 @@ namespace PeerSoftware
             }
         }
 
-
         private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl1.SelectedIndex == 1)
             {
-
                 _torrentFileServices.LoadData(_storage, _networkUtils, this);
             }
-            if (tabControl1.SelectedIndex == 2)
+            else if (tabControl1.SelectedIndex == 2)
             {
+                tableLayoutPanel4.Controls.Clear(); // Clear existing controls
+                tableLayoutPanel4.RowStyles.Clear(); // Clear existing row styles
+                tableLayoutPanel4.RowCount = 0; // Reset the row count
+                tableLayoutPanel4.SuspendLayout();
                 ShowMyTorrents();
+                tableLayoutPanel4.ResumeLayout();
             }
         }
 
-
         private async void ShowMyTorrents()
         {
-            List<TorrentFile> temp = new List<TorrentFile>();
+            List<TorrentFile> temp = _commonUtils.LoadMyTorrents(_storage);
 
-            while (tableLayoutPanel4.Controls.Count > 0)
+            tableLayoutPanel4.SuspendLayout();
+
+            tableLayoutPanel4.Controls.Clear();
+
+            for (int i = 0; i < temp.Count; i++)
             {
-                tableLayoutPanel4.Controls[0].Dispose();
+                TorrentFile torrentFile = temp[i];
 
-                temp.Clear();
-            }
-            temp = _commonUtils.LoadMyTorrents(_storage);
-
-
-            foreach (TorrentFile torrentFile in temp)
-            {
                 MaterialLabel materialMyTorrentName = new MaterialLabel();
                 materialMyTorrentName.Text = torrentFile.info.torrentName;
                 materialMyTorrentName.AutoSize = true;
@@ -507,20 +506,18 @@ namespace PeerSoftware
                 materialMyTorrentDownloadButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\delete.png");
                 materialMyTorrentDownloadButton.Click += DeleteMyTorrentButton_Click;
 
-                tableLayoutPanel4.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
+                int rowIndex = tableLayoutPanel4.RowCount++;
+                tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-                foreach (Control control in tableLayoutPanel4.Controls)
-                {
-                    int row = tableLayoutPanel4.GetRow(control);
-                    tableLayoutPanel4.SetRow(control, row + 1);
-                }
-
-                tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, 0);
-                tableLayoutPanel4.Controls.Add(materialMyTorrentSize, 1, 0);
-                tableLayoutPanel4.Controls.Add(materialMyTorrentDescription, 2, 0);
-                tableLayoutPanel4.Controls.Add(materialMyTorrentDownloadButton, 3, 0);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, rowIndex);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentSize, 1, rowIndex);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentDescription, 2, rowIndex);
+                tableLayoutPanel4.Controls.Add(materialMyTorrentDownloadButton, 3, rowIndex);
             }
+
+            tableLayoutPanel4.ResumeLayout();
         }
+
 
 
         public void DeleteMyTorrentButton_Click(object sender, EventArgs e)
