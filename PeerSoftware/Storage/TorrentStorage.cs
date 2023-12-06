@@ -3,13 +3,13 @@ namespace PeerSoftware.Storage
 {
     public class TorrentStorage : ITorrentStorage
     {
-        //private List<TorrentFile> _downloadingTorrents = new List<TorrentFile>();
         private List<TorrentFile> _allTorrentFiles = new List<TorrentFile>();
         private List<TorrentFile> _myTorrents = new List<TorrentFile>();
         private List<TorrentFile> _resultTorrentFiles = new List<TorrentFile>();
         private List<string>_peerWithMyFaile=new List<string>();
         private List<TorrentFile> _downloadTorrentFiles = new List<TorrentFile>();
         private Dictionary<int,bool>  _downloadTorrentStatus = new Dictionary<int,bool>();
+        private List<TorrentFile> _pausedTorrentFiles = new List<TorrentFile>();
 
         public List<string> GetPeerWithMyFaile()
         {
@@ -33,9 +33,14 @@ namespace PeerSoftware.Storage
         {
             return _downloadTorrentFiles;
         }
-        public Dictionary<int,bool> GetDownloadTorrentStatus()
+
+        public Dictionary<int, bool> GetDownloadTorrentStatus()
         {
             return _downloadTorrentStatus;
+        }
+        public List<TorrentFile> GetPausedTorrentFiles()
+        {
+            return _pausedTorrentFiles;
         }
     }
 }
