@@ -478,9 +478,18 @@ namespace PeerSoftware
             }
         }
 
-        private async void ShowMyTorrents()
+        private void ShowMyTorrents()
         {
             List<TorrentFile> temp = _commonUtils.LoadMyTorrents(_storage);
+
+            if (temp.Count == 0)
+            {
+                MaterialLabel materialMyTorrentName = new MaterialLabel();
+                materialMyTorrentName.Text = "You don't have any torrents yet";
+                tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, 0);
+
+                return;
+            }
 
             tableLayoutPanel4.SuspendLayout();
 
