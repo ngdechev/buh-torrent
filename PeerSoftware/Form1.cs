@@ -183,7 +183,7 @@ namespace PeerSoftware
                 _udpSender.Start(_serverSocket);
                 Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -874,6 +874,7 @@ namespace PeerSoftware
             (trackerIpField, trackerPortField) = _networkUtils.SplitIpAndPort(this);
 
             _connections.DestroyPeer(trackerIpField, trackerPortField);
+            _udpSender.Stop();
         }
     }
 }
