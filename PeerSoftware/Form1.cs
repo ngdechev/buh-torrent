@@ -469,9 +469,9 @@ namespace PeerSoftware
             }
             else if (tabControl1.SelectedIndex == 2)
             {
-                tableLayoutPanel4.Controls.Clear(); // Clear existing controls
-                tableLayoutPanel4.RowStyles.Clear(); // Clear existing row styles
-                tableLayoutPanel4.RowCount = 0; // Reset the row count
+                tableLayoutPanel4.Controls.Clear(); 
+                tableLayoutPanel4.RowStyles.Clear(); 
+                tableLayoutPanel4.RowCount = 0; 
                 tableLayoutPanel4.SuspendLayout();
                 ShowMyTorrents();
                 tableLayoutPanel4.ResumeLayout();
@@ -507,7 +507,7 @@ namespace PeerSoftware
                 materialMyTorrentDownloadButton.Click += DeleteMyTorrentButton_Click;
 
                 int rowIndex = tableLayoutPanel4.RowCount++;
-                tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                //tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
                 tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, rowIndex);
                 tableLayoutPanel4.Controls.Add(materialMyTorrentSize, 1, rowIndex);
@@ -517,8 +517,6 @@ namespace PeerSoftware
 
             tableLayoutPanel4.ResumeLayout();
         }
-
-
 
         public void DeleteMyTorrentButton_Click(object sender, EventArgs e)
         {
