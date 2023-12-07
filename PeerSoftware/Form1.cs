@@ -124,7 +124,15 @@ namespace PeerSoftware
 
             _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
 
-            materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
+            if (!(ConfigurationManager.AppSettings["downloadSharedFileLocation"] == "noPath"))
+            {
+                materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
+            }
+            else
+            {
+                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\Download";
+            }
+
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
 
             int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
