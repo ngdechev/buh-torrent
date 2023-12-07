@@ -15,6 +15,7 @@ namespace PeerSoftware
         TorrentFile _newTorrent;
         NetworkUtils _networkUtils;
         CommonUtils _commonUtils;
+        CustomMessageBoxOK _customMessageBoxOK = new();
 
         public FormNewTorrent(Form1 mainForm, NetworkUtils networkUtils, CommonUtils commonUtils)
         {
@@ -78,35 +79,33 @@ namespace PeerSoftware
 
         private async void upload_Click(object sender, EventArgs e)
         {
-            // Disable UI controls that should not be used while sending data
-            upload.Enabled = false;
-
-            _newTorrent.info.torrentName = torrentName.Text;
-            _newTorrent.info.description = description.Text;
-            _newTorrent.announce = _mainForm.TextForAnnoncer();
-
-            // Disable other controls as needed
-
             try
             {
-                // Perform your TCP operations asynchronously
+                upload.Enabled = false;
+
+                if (_newTorrent.info == null)
+                {
+                    throw new Exception("The specified path does not exist or is empty. Please enter a valid path and try again..");
+                }
+
+                _newTorrent.info.torrentName = torrentName.Text;
+                _newTorrent.info.description = description.Text;
+                _newTorrent.announce = _mainForm.TextForAnnoncer();
+                
                 await SendDataAsync();
 
-                // Enable the UI controls after sending is done
                 upload.Enabled = true;
-                // Enable other controls as needed
+
                 this.Close();
             }
             catch (Exception ex)
             {
-                // Handle any exceptions that may occur during the TCP operation
-                MessageBox.Show("An error occurred: " + ex.Message);
+                _customMessageBoxOK.SetTitle("Attention");
+                _customMessageBoxOK.SetMessageText(ex.Message);
+                _customMessageBoxOK.ShowDialog();
 
-                // Make sure to re-enable the UI controls in case of an error
                 upload.Enabled = true;
-                // Enable other controls as needed
             }
-
         }
 
         private async Task SendDataAsync()
