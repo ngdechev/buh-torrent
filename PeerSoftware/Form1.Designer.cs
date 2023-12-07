@@ -66,6 +66,7 @@ namespace PeerSoftware
             startMinimizedCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
             startupCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
             theme = new GroupBox();
+            comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             darkModeSwitch = new MaterialSkin.Controls.MaterialSwitch();
             peerSettings = new GroupBox();
             downloadLocationLabel = new MaterialSkin.Controls.MaterialLabel();
@@ -116,12 +117,11 @@ namespace PeerSoftware
             tabControl1.Controls.Add(settings);
             tabControl1.Controls.Add(help);
             tabControl1.ImageList = tabControlIcons;
-            tabControl1.Location = new Point(5, 87);
-            tabControl1.Margin = new Padding(3, 4, 3, 4);
-            tabControl1.MinimumSize = new Size(1019, 600);
+            tabControl1.Location = new Point(4, 65);
+            tabControl1.MinimumSize = new Size(892, 450);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1019, 600);
+            tabControl1.Size = new Size(892, 450);
             tabControl1.TabIndex = 0;
             tabControl1.SelectedIndexChanged += tabControl1_SelectedIndexChanged;
             // 
@@ -134,10 +134,9 @@ namespace PeerSoftware
             buhTorrent.Controls.Add(tableLayoutPanel1);
             buhTorrent.ImageKey = "downloading_torrents.png";
             buhTorrent.Location = new Point(4, 39);
-            buhTorrent.Margin = new Padding(3, 4, 3, 4);
             buhTorrent.Name = "buhTorrent";
-            buhTorrent.Padding = new Padding(3, 4, 3, 4);
-            buhTorrent.Size = new Size(1011, 557);
+            buhTorrent.Padding = new Padding(3);
+            buhTorrent.Size = new Size(884, 407);
             buhTorrent.TabIndex = 0;
             buhTorrent.Text = "Downloading";
             // 
@@ -150,12 +149,12 @@ namespace PeerSoftware
             button5.Depth = 0;
             button5.HighEmphasis = true;
             button5.Icon = (Image)resources.GetObject("button5.Icon");
-            button5.Location = new Point(870, 63);
-            button5.Margin = new Padding(5, 8, 5, 8);
+            button5.Location = new Point(761, 47);
+            button5.Margin = new Padding(4, 6, 4, 6);
             button5.MouseState = MaterialSkin.MouseState.HOVER;
             button5.Name = "button5";
             button5.NoAccentTextColor = Color.Empty;
-            button5.Size = new Size(133, 48);
+            button5.Size = new Size(116, 36);
             button5.TabIndex = 14;
             button5.Text = "Resume";
             button5.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -171,12 +170,12 @@ namespace PeerSoftware
             button4.Depth = 0;
             button4.HighEmphasis = true;
             button4.Icon = (Image)resources.GetObject("button4.Icon");
-            button4.Location = new Point(870, 12);
-            button4.Margin = new Padding(5, 8, 5, 8);
+            button4.Location = new Point(761, 9);
+            button4.Margin = new Padding(4, 6, 4, 6);
             button4.MouseState = MaterialSkin.MouseState.HOVER;
             button4.Name = "button4";
             button4.NoAccentTextColor = Color.Empty;
-            button4.Size = new Size(133, 48);
+            button4.Size = new Size(116, 36);
             button4.TabIndex = 13;
             button4.Text = "Pause All";
             button4.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -189,16 +188,15 @@ namespace PeerSoftware
             tableLayoutPanel5.ColumnCount = 3;
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84.21986F));
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.78014F));
-            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 211F));
+            tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 184F));
             tableLayoutPanel5.Controls.Add(label3, 2, 0);
             tableLayoutPanel5.Controls.Add(label2, 1, 0);
             tableLayoutPanel5.Controls.Add(label1, 0, 0);
-            tableLayoutPanel5.Location = new Point(3, 88);
-            tableLayoutPanel5.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel5.Location = new Point(3, 66);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 1;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel5.Size = new Size(850, 32);
+            tableLayoutPanel5.Size = new Size(744, 24);
             tableLayoutPanel5.TabIndex = 12;
             // 
             // label3
@@ -207,7 +205,7 @@ namespace PeerSoftware
             label3.AutoSize = true;
             label3.Depth = 0;
             label3.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label3.Location = new Point(641, 6);
+            label3.Location = new Point(562, 2);
             label3.MouseState = MaterialSkin.MouseState.HOVER;
             label3.Name = "label3";
             label3.Size = new Size(139, 19);
@@ -220,7 +218,7 @@ namespace PeerSoftware
             label2.AutoSize = true;
             label2.Depth = 0;
             label2.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label2.Location = new Point(541, 6);
+            label2.Location = new Point(474, 2);
             label2.MouseState = MaterialSkin.MouseState.HOVER;
             label2.Name = "label2";
             label2.Size = new Size(31, 19);
@@ -233,7 +231,7 @@ namespace PeerSoftware
             label1.AutoSize = true;
             label1.Depth = 0;
             label1.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label1.Location = new Point(3, 6);
+            label1.Location = new Point(3, 2);
             label1.MouseState = MaterialSkin.MouseState.HOVER;
             label1.Name = "label1";
             label1.Size = new Size(43, 19);
@@ -248,13 +246,14 @@ namespace PeerSoftware
             tableLayoutPanel1.ColumnCount = 4;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 84.85523F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15.14477F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 222F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 146F));
-            tableLayoutPanel1.Location = new Point(3, 121);
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 194F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 126F));
+            tableLayoutPanel1.Location = new Point(3, 91);
+            tableLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(1000, 415);
+            tableLayoutPanel1.Size = new Size(875, 311);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // browes
@@ -270,10 +269,9 @@ namespace PeerSoftware
             browes.Controls.Add(tableLayoutPanel7);
             browes.ImageKey = "search.png";
             browes.Location = new Point(4, 39);
-            browes.Margin = new Padding(3, 4, 3, 4);
             browes.Name = "browes";
-            browes.Padding = new Padding(3, 4, 3, 4);
-            browes.Size = new Size(1011, 557);
+            browes.Padding = new Padding(3);
+            browes.Size = new Size(884, 407);
             browes.TabIndex = 1;
             browes.Text = "Browse";
             // 
@@ -283,7 +281,7 @@ namespace PeerSoftware
             newPageLabel.AutoSize = true;
             newPageLabel.Depth = 0;
             newPageLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            newPageLabel.Location = new Point(833, 113);
+            newPageLabel.Location = new Point(729, 85);
             newPageLabel.MouseState = MaterialSkin.MouseState.HOVER;
             newPageLabel.Name = "newPageLabel";
             newPageLabel.Size = new Size(112, 19);
@@ -303,8 +301,7 @@ namespace PeerSoftware
             serachTorrentsBar.HideSelection = true;
             serachTorrentsBar.Hint = "Search for torrents..";
             serachTorrentsBar.LeadingIcon = null;
-            serachTorrentsBar.Location = new Point(7, 21);
-            serachTorrentsBar.Margin = new Padding(3, 4, 3, 4);
+            serachTorrentsBar.Location = new Point(6, 16);
             serachTorrentsBar.MaxLength = 32767;
             serachTorrentsBar.MouseState = MaterialSkin.MouseState.OUT;
             serachTorrentsBar.Name = "serachTorrentsBar";
@@ -316,7 +313,7 @@ namespace PeerSoftware
             serachTorrentsBar.SelectionLength = 0;
             serachTorrentsBar.SelectionStart = 0;
             serachTorrentsBar.ShortcutsEnabled = true;
-            serachTorrentsBar.Size = new Size(719, 48);
+            serachTorrentsBar.Size = new Size(629, 48);
             serachTorrentsBar.TabIndex = 15;
             serachTorrentsBar.TabStop = false;
             serachTorrentsBar.TextAlign = HorizontalAlignment.Left;
@@ -332,8 +329,7 @@ namespace PeerSoftware
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.Location = new Point(5, 188);
-            tableLayoutPanel2.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel2.Location = new Point(4, 141);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 5;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
@@ -341,7 +337,7 @@ namespace PeerSoftware
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 20F));
-            tableLayoutPanel2.Size = new Size(999, 351);
+            tableLayoutPanel2.Size = new Size(874, 263);
             tableLayoutPanel2.TabIndex = 8;
             // 
             // button2
@@ -354,12 +350,12 @@ namespace PeerSoftware
             button2.Depth = 0;
             button2.HighEmphasis = true;
             button2.Icon = (Image)resources.GetObject("button2.Icon");
-            button2.Location = new Point(959, 101);
-            button2.Margin = new Padding(5, 8, 5, 8);
+            button2.Location = new Point(839, 76);
+            button2.Margin = new Padding(4, 6, 4, 6);
             button2.MouseState = MaterialSkin.MouseState.HOVER;
             button2.Name = "button2";
             button2.NoAccentTextColor = Color.Empty;
-            button2.Size = new Size(43, 48);
+            button2.Size = new Size(38, 36);
             button2.TabIndex = 14;
             button2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             button2.UseAccentColor = false;
@@ -375,12 +371,12 @@ namespace PeerSoftware
             button1.Depth = 0;
             button1.HighEmphasis = true;
             button1.Icon = (Image)resources.GetObject("button1.Icon");
-            button1.Location = new Point(789, 101);
-            button1.Margin = new Padding(5, 8, 5, 8);
+            button1.Location = new Point(690, 76);
+            button1.Margin = new Padding(4, 6, 4, 6);
             button1.MouseState = MaterialSkin.MouseState.HOVER;
             button1.Name = "button1";
             button1.NoAccentTextColor = Color.Empty;
-            button1.Size = new Size(46, 48);
+            button1.Size = new Size(40, 36);
             button1.TabIndex = 0;
             button1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Text;
             button1.UseAccentColor = false;
@@ -396,12 +392,12 @@ namespace PeerSoftware
             refresh.Depth = 0;
             refresh.HighEmphasis = true;
             refresh.Icon = (Image)resources.GetObject("refresh.Icon");
-            refresh.Location = new Point(866, 37);
-            refresh.Margin = new Padding(5, 8, 5, 8);
+            refresh.Location = new Point(758, 28);
+            refresh.Margin = new Padding(4, 6, 4, 6);
             refresh.MouseState = MaterialSkin.MouseState.HOVER;
             refresh.Name = "refresh";
             refresh.NoAccentTextColor = Color.Empty;
-            refresh.Size = new Size(128, 48);
+            refresh.Size = new Size(112, 36);
             refresh.TabIndex = 13;
             refresh.Text = "Refresh";
             refresh.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -418,12 +414,12 @@ namespace PeerSoftware
             search.Depth = 0;
             search.HighEmphasis = true;
             search.Icon = (Image)resources.GetObject("search.Icon");
-            search.Location = new Point(734, 37);
-            search.Margin = new Padding(5, 8, 5, 8);
+            search.Location = new Point(642, 28);
+            search.Margin = new Padding(4, 6, 4, 6);
             search.MouseState = MaterialSkin.MouseState.HOVER;
             search.Name = "search";
             search.NoAccentTextColor = Color.Empty;
-            search.Size = new Size(128, 48);
+            search.Size = new Size(112, 36);
             search.TabIndex = 0;
             search.Text = "Search";
             search.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -437,18 +433,17 @@ namespace PeerSoftware
             tableLayoutPanel7.ColumnCount = 4;
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50.57915F));
             tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 49.42085F));
-            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 538F));
-            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 157F));
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 471F));
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 136F));
             tableLayoutPanel7.Controls.Add(browseTabTorrentAction, 3, 0);
             tableLayoutPanel7.Controls.Add(browseTabTorrentDescription, 2, 0);
             tableLayoutPanel7.Controls.Add(browseTabTorrentSize, 1, 0);
             tableLayoutPanel7.Controls.Add(browseTabTorrentName, 0, 0);
-            tableLayoutPanel7.Location = new Point(3, 152);
-            tableLayoutPanel7.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel7.Location = new Point(3, 114);
             tableLayoutPanel7.Name = "tableLayoutPanel7";
             tableLayoutPanel7.RowCount = 1;
             tableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel7.Size = new Size(999, 32);
+            tableLayoutPanel7.Size = new Size(874, 24);
             tableLayoutPanel7.TabIndex = 12;
             // 
             // browseTabTorrentAction
@@ -457,7 +452,7 @@ namespace PeerSoftware
             browseTabTorrentAction.AutoSize = true;
             browseTabTorrentAction.Depth = 0;
             browseTabTorrentAction.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentAction.Location = new Point(844, 6);
+            browseTabTorrentAction.Location = new Point(740, 2);
             browseTabTorrentAction.MouseState = MaterialSkin.MouseState.HOVER;
             browseTabTorrentAction.Name = "browseTabTorrentAction";
             browseTabTorrentAction.Size = new Size(46, 19);
@@ -470,7 +465,7 @@ namespace PeerSoftware
             browseTabTorrentDescription.AutoSize = true;
             browseTabTorrentDescription.Depth = 0;
             browseTabTorrentDescription.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentDescription.Location = new Point(306, 6);
+            browseTabTorrentDescription.Location = new Point(269, 2);
             browseTabTorrentDescription.MouseState = MaterialSkin.MouseState.HOVER;
             browseTabTorrentDescription.Name = "browseTabTorrentDescription";
             browseTabTorrentDescription.Size = new Size(81, 19);
@@ -483,7 +478,7 @@ namespace PeerSoftware
             browseTabTorrentSize.AutoSize = true;
             browseTabTorrentSize.Depth = 0;
             browseTabTorrentSize.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentSize.Location = new Point(156, 6);
+            browseTabTorrentSize.Location = new Point(138, 2);
             browseTabTorrentSize.MouseState = MaterialSkin.MouseState.HOVER;
             browseTabTorrentSize.Name = "browseTabTorrentSize";
             browseTabTorrentSize.Size = new Size(31, 19);
@@ -496,7 +491,7 @@ namespace PeerSoftware
             browseTabTorrentName.AutoSize = true;
             browseTabTorrentName.Depth = 0;
             browseTabTorrentName.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            browseTabTorrentName.Location = new Point(3, 6);
+            browseTabTorrentName.Location = new Point(3, 2);
             browseTabTorrentName.MouseState = MaterialSkin.MouseState.HOVER;
             browseTabTorrentName.Name = "browseTabTorrentName";
             browseTabTorrentName.Size = new Size(43, 19);
@@ -511,9 +506,8 @@ namespace PeerSoftware
             myTorrents.Controls.Add(tableLayoutPanel4);
             myTorrents.ImageKey = "files.png";
             myTorrents.Location = new Point(4, 39);
-            myTorrents.Margin = new Padding(3, 4, 3, 4);
             myTorrents.Name = "myTorrents";
-            myTorrents.Size = new Size(1011, 557);
+            myTorrents.Size = new Size(884, 407);
             myTorrents.TabIndex = 2;
             myTorrents.Text = "My Torrents";
             // 
@@ -525,12 +519,12 @@ namespace PeerSoftware
             createNewTorrent.Depth = 0;
             createNewTorrent.HighEmphasis = true;
             createNewTorrent.Icon = (Image)resources.GetObject("createNewTorrent.Icon");
-            createNewTorrent.Location = new Point(5, 15);
-            createNewTorrent.Margin = new Padding(5, 8, 5, 8);
+            createNewTorrent.Location = new Point(4, 11);
+            createNewTorrent.Margin = new Padding(4, 6, 4, 6);
             createNewTorrent.MouseState = MaterialSkin.MouseState.HOVER;
             createNewTorrent.Name = "createNewTorrent";
             createNewTorrent.NoAccentTextColor = Color.Empty;
-            createNewTorrent.Size = new Size(197, 48);
+            createNewTorrent.Size = new Size(172, 36);
             createNewTorrent.TabIndex = 12;
             createNewTorrent.Text = "Create Torrent";
             createNewTorrent.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -544,19 +538,18 @@ namespace PeerSoftware
             tableLayoutPanel6.ColumnCount = 4;
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.74799F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 434F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 147F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 128F));
             tableLayoutPanel6.Controls.Add(myTorrentsTabNameLabel, 0, 0);
             tableLayoutPanel6.Controls.Add(myTorrentsTabDescriptionLabel, 2, 0);
             tableLayoutPanel6.Controls.Add(myTorrentsTabActionLabel, 2, 0);
             tableLayoutPanel6.Controls.Add(label5, 1, 0);
-            tableLayoutPanel6.Location = new Point(3, 75);
-            tableLayoutPanel6.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel6.Location = new Point(3, 56);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
             tableLayoutPanel6.RowCount = 1;
             tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Absolute, 32F));
-            tableLayoutPanel6.Size = new Size(1003, 32);
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Absolute, 24F));
+            tableLayoutPanel6.Size = new Size(878, 24);
             tableLayoutPanel6.TabIndex = 11;
             // 
             // myTorrentsTabNameLabel
@@ -565,7 +558,7 @@ namespace PeerSoftware
             myTorrentsTabNameLabel.AutoSize = true;
             myTorrentsTabNameLabel.Depth = 0;
             myTorrentsTabNameLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabNameLabel.Location = new Point(3, 6);
+            myTorrentsTabNameLabel.Location = new Point(3, 2);
             myTorrentsTabNameLabel.MouseState = MaterialSkin.MouseState.HOVER;
             myTorrentsTabNameLabel.Name = "myTorrentsTabNameLabel";
             myTorrentsTabNameLabel.Size = new Size(43, 19);
@@ -578,7 +571,7 @@ namespace PeerSoftware
             myTorrentsTabDescriptionLabel.AutoSize = true;
             myTorrentsTabDescriptionLabel.Depth = 0;
             myTorrentsTabDescriptionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabDescriptionLabel.Location = new Point(424, 6);
+            myTorrentsTabDescriptionLabel.Location = new Point(372, 2);
             myTorrentsTabDescriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             myTorrentsTabDescriptionLabel.Name = "myTorrentsTabDescriptionLabel";
             myTorrentsTabDescriptionLabel.Size = new Size(81, 19);
@@ -591,7 +584,7 @@ namespace PeerSoftware
             myTorrentsTabActionLabel.AutoSize = true;
             myTorrentsTabActionLabel.Depth = 0;
             myTorrentsTabActionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabActionLabel.Location = new Point(858, 6);
+            myTorrentsTabActionLabel.Location = new Point(752, 2);
             myTorrentsTabActionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             myTorrentsTabActionLabel.Name = "myTorrentsTabActionLabel";
             myTorrentsTabActionLabel.Size = new Size(46, 19);
@@ -604,7 +597,7 @@ namespace PeerSoftware
             label5.AutoSize = true;
             label5.Depth = 0;
             label5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label5.Location = new Point(331, 6);
+            label5.Location = new Point(290, 2);
             label5.MouseState = MaterialSkin.MouseState.HOVER;
             label5.Name = "label5";
             label5.Size = new Size(31, 19);
@@ -619,15 +612,14 @@ namespace PeerSoftware
             tableLayoutPanel4.ColumnCount = 4;
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.74799F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 434F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150F));
-            tableLayoutPanel4.Location = new Point(3, 108);
-            tableLayoutPanel4.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 129F));
+            tableLayoutPanel4.Location = new Point(3, 81);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 1;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 429F));
-            tableLayoutPanel4.Size = new Size(1003, 431);
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 322F));
+            tableLayoutPanel4.Size = new Size(878, 323);
             tableLayoutPanel4.TabIndex = 9;
             // 
             // settings
@@ -637,9 +629,8 @@ namespace PeerSoftware
             settings.Controls.Add(settingsTabTrackerGroupBox);
             settings.ImageKey = "settings.png";
             settings.Location = new Point(4, 39);
-            settings.Margin = new Padding(3, 4, 3, 4);
             settings.Name = "settings";
-            settings.Size = new Size(1011, 557);
+            settings.Size = new Size(884, 407);
             settings.TabIndex = 3;
             settings.Text = "Settings";
             // 
@@ -649,11 +640,9 @@ namespace PeerSoftware
             settingsTabClientGroupBox.Controls.Add(startupSettings);
             settingsTabClientGroupBox.Controls.Add(theme);
             settingsTabClientGroupBox.Controls.Add(peerSettings);
-            settingsTabClientGroupBox.Location = new Point(550, 12);
-            settingsTabClientGroupBox.Margin = new Padding(3, 4, 3, 4);
+            settingsTabClientGroupBox.Location = new Point(481, 9);
             settingsTabClientGroupBox.Name = "settingsTabClientGroupBox";
-            settingsTabClientGroupBox.Padding = new Padding(3, 4, 3, 4);
-            settingsTabClientGroupBox.Size = new Size(457, 527);
+            settingsTabClientGroupBox.Size = new Size(400, 395);
             settingsTabClientGroupBox.TabIndex = 7;
             settingsTabClientGroupBox.TabStop = false;
             settingsTabClientGroupBox.Text = "Client Settings";
@@ -663,11 +652,9 @@ namespace PeerSoftware
             startupSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             startupSettings.Controls.Add(startMinimizedCheckbox);
             startupSettings.Controls.Add(startupCheckbox);
-            startupSettings.Location = new Point(7, 29);
-            startupSettings.Margin = new Padding(3, 4, 3, 4);
+            startupSettings.Location = new Point(6, 22);
             startupSettings.Name = "startupSettings";
-            startupSettings.Padding = new Padding(3, 4, 3, 4);
-            startupSettings.Size = new Size(443, 83);
+            startupSettings.Size = new Size(388, 62);
             startupSettings.TabIndex = 12;
             startupSettings.TabStop = false;
             startupSettings.Text = "Startup Settings";
@@ -676,7 +663,7 @@ namespace PeerSoftware
             // 
             startMinimizedCheckbox.AutoSize = true;
             startMinimizedCheckbox.Depth = 0;
-            startMinimizedCheckbox.Location = new Point(203, 25);
+            startMinimizedCheckbox.Location = new Point(178, 19);
             startMinimizedCheckbox.Margin = new Padding(0);
             startMinimizedCheckbox.MouseLocation = new Point(-1, -1);
             startMinimizedCheckbox.MouseState = MaterialSkin.MouseState.HOVER;
@@ -692,7 +679,7 @@ namespace PeerSoftware
             // 
             startupCheckbox.AutoSize = true;
             startupCheckbox.Depth = 0;
-            startupCheckbox.Location = new Point(7, 25);
+            startupCheckbox.Location = new Point(6, 19);
             startupCheckbox.Margin = new Padding(0);
             startupCheckbox.MouseLocation = new Point(-1, -1);
             startupCheckbox.MouseState = MaterialSkin.MouseState.HOVER;
@@ -707,21 +694,42 @@ namespace PeerSoftware
             // theme
             // 
             theme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            theme.Controls.Add(comboBoxTheme);
             theme.Controls.Add(darkModeSwitch);
-            theme.Location = new Point(7, 120);
-            theme.Margin = new Padding(3, 4, 3, 4);
+            theme.Location = new Point(6, 90);
             theme.Name = "theme";
-            theme.Padding = new Padding(3, 4, 3, 4);
-            theme.Size = new Size(443, 115);
+            theme.Size = new Size(388, 86);
             theme.TabIndex = 11;
             theme.TabStop = false;
             theme.Text = "Theme Settings";
+            // 
+            // comboBoxTheme
+            // 
+            comboBoxTheme.AutoResize = false;
+            comboBoxTheme.BackColor = Color.FromArgb(255, 255, 255);
+            comboBoxTheme.Depth = 0;
+            comboBoxTheme.DrawMode = DrawMode.OwnerDrawVariable;
+            comboBoxTheme.DropDownHeight = 174;
+            comboBoxTheme.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxTheme.DropDownWidth = 121;
+            comboBoxTheme.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Bold, GraphicsUnit.Pixel);
+            comboBoxTheme.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            comboBoxTheme.FormattingEnabled = true;
+            comboBoxTheme.IntegralHeight = false;
+            comboBoxTheme.ItemHeight = 43;
+            comboBoxTheme.Location = new Point(6, 31);
+            comboBoxTheme.MaxDropDownItems = 4;
+            comboBoxTheme.MouseState = MaterialSkin.MouseState.OUT;
+            comboBoxTheme.Name = "comboBoxTheme";
+            comboBoxTheme.Size = new Size(241, 49);
+            comboBoxTheme.StartIndex = 0;
+            comboBoxTheme.TabIndex = 9;
             // 
             // darkModeSwitch
             // 
             darkModeSwitch.AutoSize = true;
             darkModeSwitch.Depth = 0;
-            darkModeSwitch.Location = new Point(286, 45);
+            darkModeSwitch.Location = new Point(250, 34);
             darkModeSwitch.Margin = new Padding(0);
             darkModeSwitch.MouseLocation = new Point(-1, -1);
             darkModeSwitch.MouseState = MaterialSkin.MouseState.HOVER;
@@ -742,11 +750,9 @@ namespace PeerSoftware
             peerSettings.Controls.Add(materialTextBox22);
             peerSettings.Controls.Add(maxActiveDownloadsSlider);
             peerSettings.Controls.Add(maxDownloadsFromPeersSlider);
-            peerSettings.Location = new Point(7, 243);
-            peerSettings.Margin = new Padding(3, 4, 3, 4);
+            peerSettings.Location = new Point(6, 182);
             peerSettings.Name = "peerSettings";
-            peerSettings.Padding = new Padding(3, 4, 3, 4);
-            peerSettings.Size = new Size(443, 276);
+            peerSettings.Size = new Size(388, 207);
             peerSettings.TabIndex = 6;
             peerSettings.TabStop = false;
             peerSettings.Text = "Peer Settings";
@@ -756,7 +762,7 @@ namespace PeerSoftware
             downloadLocationLabel.AutoSize = true;
             downloadLocationLabel.Depth = 0;
             downloadLocationLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            downloadLocationLabel.Location = new Point(7, 25);
+            downloadLocationLabel.Location = new Point(6, 19);
             downloadLocationLabel.MouseState = MaterialSkin.MouseState.HOVER;
             downloadLocationLabel.Name = "downloadLocationLabel";
             downloadLocationLabel.Size = new Size(161, 19);
@@ -771,8 +777,8 @@ namespace PeerSoftware
             btnBrowseDownloadLocation.Depth = 0;
             btnBrowseDownloadLocation.HighEmphasis = true;
             btnBrowseDownloadLocation.Icon = (Image)resources.GetObject("btnBrowseDownloadLocation.Icon");
-            btnBrowseDownloadLocation.Location = new Point(326, 125);
-            btnBrowseDownloadLocation.Margin = new Padding(5);
+            btnBrowseDownloadLocation.Location = new Point(272, 94);
+            btnBrowseDownloadLocation.Margin = new Padding(4);
             btnBrowseDownloadLocation.MouseState = MaterialSkin.MouseState.HOVER;
             btnBrowseDownloadLocation.Name = "btnBrowseDownloadLocation";
             btnBrowseDownloadLocation.NoAccentTextColor = Color.Empty;
@@ -795,7 +801,8 @@ namespace PeerSoftware
             materialTextBox22.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialTextBox22.HideSelection = true;
             materialTextBox22.LeadingIcon = null;
-            materialTextBox22.Location = new Point(7, 53);
+            materialTextBox22.Location = new Point(6, 40);
+            materialTextBox22.Margin = new Padding(3, 2, 3, 2);
             materialTextBox22.MaxLength = 32767;
             materialTextBox22.MouseState = MaterialSkin.MouseState.OUT;
             materialTextBox22.Name = "materialTextBox22";
@@ -807,7 +814,7 @@ namespace PeerSoftware
             materialTextBox22.SelectionLength = 0;
             materialTextBox22.SelectionStart = 0;
             materialTextBox22.ShortcutsEnabled = true;
-            materialTextBox22.Size = new Size(430, 48);
+            materialTextBox22.Size = new Size(376, 48);
             materialTextBox22.TabIndex = 5;
             materialTextBox22.TabStop = false;
             materialTextBox22.TextAlign = HorizontalAlignment.Left;
@@ -818,12 +825,11 @@ namespace PeerSoftware
             // 
             maxActiveDownloadsSlider.Depth = 0;
             maxActiveDownloadsSlider.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            maxActiveDownloadsSlider.Location = new Point(7, 212);
-            maxActiveDownloadsSlider.Margin = new Padding(3, 4, 3, 4);
+            maxActiveDownloadsSlider.Location = new Point(6, 159);
             maxActiveDownloadsSlider.MouseState = MaterialSkin.MouseState.HOVER;
             maxActiveDownloadsSlider.Name = "maxActiveDownloadsSlider";
             maxActiveDownloadsSlider.RangeMax = 5;
-            maxActiveDownloadsSlider.Size = new Size(430, 40);
+            maxActiveDownloadsSlider.Size = new Size(376, 40);
             maxActiveDownloadsSlider.TabIndex = 10;
             maxActiveDownloadsSlider.Text = "Max Parallel Downloads:    ";
             maxActiveDownloadsSlider.Value = 2;
@@ -835,13 +841,12 @@ namespace PeerSoftware
             // 
             maxDownloadsFromPeersSlider.Depth = 0;
             maxDownloadsFromPeersSlider.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            maxDownloadsFromPeersSlider.Location = new Point(7, 168);
-            maxDownloadsFromPeersSlider.Margin = new Padding(3, 4, 3, 4);
+            maxDownloadsFromPeersSlider.Location = new Point(6, 126);
             maxDownloadsFromPeersSlider.MouseState = MaterialSkin.MouseState.HOVER;
             maxDownloadsFromPeersSlider.Name = "maxDownloadsFromPeersSlider";
             maxDownloadsFromPeersSlider.RangeMax = 5;
             maxDownloadsFromPeersSlider.RangeMin = 1;
-            maxDownloadsFromPeersSlider.Size = new Size(430, 40);
+            maxDownloadsFromPeersSlider.Size = new Size(376, 40);
             maxDownloadsFromPeersSlider.TabIndex = 9;
             maxDownloadsFromPeersSlider.Text = "Max Parallel Peers per File:";
             maxDownloadsFromPeersSlider.Value = 2;
@@ -854,11 +859,9 @@ namespace PeerSoftware
             settingsTabTrackerGroupBox.Controls.Add(materialTextBox21);
             settingsTabTrackerGroupBox.Controls.Add(save);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
-            settingsTabTrackerGroupBox.Location = new Point(3, 12);
-            settingsTabTrackerGroupBox.Margin = new Padding(3, 4, 3, 4);
+            settingsTabTrackerGroupBox.Location = new Point(3, 9);
             settingsTabTrackerGroupBox.Name = "settingsTabTrackerGroupBox";
-            settingsTabTrackerGroupBox.Padding = new Padding(3, 4, 3, 4);
-            settingsTabTrackerGroupBox.Size = new Size(539, 527);
+            settingsTabTrackerGroupBox.Size = new Size(472, 395);
             settingsTabTrackerGroupBox.TabIndex = 6;
             settingsTabTrackerGroupBox.TabStop = false;
             settingsTabTrackerGroupBox.Text = "Tracker Settings";
@@ -874,7 +877,8 @@ namespace PeerSoftware
             materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialTextBox21.HideSelection = true;
             materialTextBox21.LeadingIcon = null;
-            materialTextBox21.Location = new Point(6, 21);
+            materialTextBox21.Location = new Point(5, 16);
+            materialTextBox21.Margin = new Padding(3, 2, 3, 2);
             materialTextBox21.MaxLength = 32767;
             materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
             materialTextBox21.Name = "materialTextBox21";
@@ -886,7 +890,7 @@ namespace PeerSoftware
             materialTextBox21.SelectionLength = 0;
             materialTextBox21.SelectionStart = 0;
             materialTextBox21.ShortcutsEnabled = true;
-            materialTextBox21.Size = new Size(385, 48);
+            materialTextBox21.Size = new Size(337, 48);
             materialTextBox21.TabIndex = 4;
             materialTextBox21.TabStop = false;
             materialTextBox21.TextAlign = HorizontalAlignment.Left;
@@ -901,12 +905,12 @@ namespace PeerSoftware
             save.Depth = 0;
             save.HighEmphasis = true;
             save.Icon = (Image)resources.GetObject("save.Icon");
-            save.Location = new Point(399, 37);
-            save.Margin = new Padding(5, 8, 5, 8);
+            save.Location = new Point(349, 28);
+            save.Margin = new Padding(4, 6, 4, 6);
             save.MouseState = MaterialSkin.MouseState.HOVER;
             save.Name = "save";
             save.NoAccentTextColor = Color.Empty;
-            save.Size = new Size(133, 48);
+            save.Size = new Size(116, 36);
             save.TabIndex = 3;
             save.Text = "Connect";
             save.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -919,9 +923,8 @@ namespace PeerSoftware
             help.BackColor = Color.White;
             help.ImageKey = "help.png";
             help.Location = new Point(4, 39);
-            help.Margin = new Padding(3, 4, 3, 4);
             help.Name = "help";
-            help.Size = new Size(1011, 557);
+            help.Size = new Size(884, 407);
             help.TabIndex = 4;
             help.Text = "Help";
             // 
@@ -1101,10 +1104,10 @@ namespace PeerSoftware
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.White;
             panel1.Controls.Add(materialButton2);
-            panel1.Location = new Point(565, 89);
+            panel1.Location = new Point(494, 67);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(461, 49);
+            panel1.Size = new Size(403, 37);
             panel1.TabIndex = 15;
             // 
             // materialButton2
@@ -1116,12 +1119,12 @@ namespace PeerSoftware
             materialButton2.Depth = 0;
             materialButton2.HighEmphasis = true;
             materialButton2.Icon = (Image)resources.GetObject("materialButton2.Icon");
-            materialButton2.Location = new Point(389, 4);
-            materialButton2.Margin = new Padding(5);
+            materialButton2.Location = new Point(340, 3);
+            materialButton2.Margin = new Padding(4);
             materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
             materialButton2.Name = "materialButton2";
             materialButton2.NoAccentTextColor = Color.Empty;
-            materialButton2.Size = new Size(50, 40);
+            materialButton2.Size = new Size(44, 30);
             materialButton2.TabIndex = 0;
             materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             materialButton2.UseAccentColor = false;
@@ -1137,18 +1140,17 @@ namespace PeerSoftware
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1027, 693);
+            ClientSize = new Size(899, 520);
             Controls.Add(panel1);
             Controls.Add(tabControl1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
-            MinimumSize = new Size(1027, 693);
+            MinimumSize = new Size(899, 520);
             Name = "Form1";
-            Padding = new Padding(0, 85, 0, 667);
+            Padding = new Padding(0, 64, 0, 500);
             Text = "BuhTorrent";
             FormClosing += MainForm_FormClosing;
             Load += Form1_Load;

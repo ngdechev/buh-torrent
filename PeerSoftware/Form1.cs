@@ -59,7 +59,7 @@ namespace PeerSoftware
 
         private ContextMenuStrip _systemTrayContextMenu;
 
-
+        
 
         public Form1()
         {
@@ -130,7 +130,7 @@ namespace PeerSoftware
             }
             else
             {
-                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\Download";
+                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\MyTorrent\Download";
             }
 
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
@@ -194,8 +194,12 @@ namespace PeerSoftware
                 _materialDownloadControls.Add(materialDownloadButton);
             }
 
+
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+
             try
             {
+
                 if (materialTextBox21.Text != null)
                 {
                     string[] ip = materialTextBox21.Text.Split(':', 2);
@@ -205,15 +209,15 @@ namespace PeerSoftware
                     {
                         save.Text = "CONNECTED";
                         _udpSender.Start(_serverSocket);
-                        Task.Run(() => _commonUtils.AnaunceMyTorrents_OnStartUp(_storage, _networkUtils, this));
+                        Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
                     }
                 }
             }
             catch (Exception ex)
             {
-
+             
             }
-
+            
             _configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
         }
@@ -492,9 +496,9 @@ namespace PeerSoftware
             }
             else if (tabControl1.SelectedIndex == 2)
             {
-                tableLayoutPanel4.Controls.Clear();
-                tableLayoutPanel4.RowStyles.Clear();
-                tableLayoutPanel4.RowCount = 0;
+                tableLayoutPanel4.Controls.Clear(); 
+                tableLayoutPanel4.RowStyles.Clear(); 
+                tableLayoutPanel4.RowCount = 0; 
                 tableLayoutPanel4.SuspendLayout();
                 ShowMyTorrents();
                 tableLayoutPanel4.ResumeLayout();
@@ -724,7 +728,7 @@ namespace PeerSoftware
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
             if (_connections.IsConnected() == true)
             {
-                Task.Run(() => _commonUtils.AnaunceMyTorrents_OnStartUp(_storage, _networkUtils, this));
+                Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
                 save.Text = "CONNECTED";
             }
         }
@@ -942,7 +946,7 @@ namespace PeerSoftware
         private void Resume_OnStartUp()
         {
             LoadPausedData();
-            foreach (TorrentFile torrentFile in _storage.GetPausedTorrentFiles())
+            foreach(TorrentFile torrentFile in _storage.GetPausedTorrentFiles())
             {
 
                 MaterialLabel label1 = new MaterialLabel();
@@ -950,7 +954,7 @@ namespace PeerSoftware
 
                 MaterialLabel label2 = new MaterialLabel();
                 label2.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
-
+                
                 _storage.GetDownloadTorrentFiles().Add(torrentFile);
 
                 MaterialProgressBar progressBar = new MaterialProgressBar();
@@ -969,16 +973,16 @@ namespace PeerSoftware
 
                 // Create a new row
                 tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
-
+                
                 PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
-                List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this);
-                _storage.GetPausedTorrentFiles().Remove(torrentFile);
+                List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); 
+                _storage.GetPausedTorrentFiles().Remove(torrentFile); 
                 _downloader.Resume(torrentFile, receivedLivePeers, progressBar, _networkUtils, this);
             }
         }
         private void SavePausedData_OnShuttingDown()
         {
-            for (int rowIndex = 0; rowIndex < _storage.GetDownloadTorrentFiles().Count; rowIndex++)
+            for(int rowIndex = 0; rowIndex < _storage.GetDownloadTorrentFiles().Count; rowIndex++)
             {
                 if (_storage.GetDownloadTorrentStatus()[rowIndex])
                 {
@@ -988,7 +992,7 @@ namespace PeerSoftware
                 }
 
             }
-
+        
             string json = JsonSerializer.Serialize(_storage.GetPausedTorrentFiles());
             using (StreamWriter streamWriter = new StreamWriter("temp\\pausedTorrentFiles.json"))
             {
@@ -999,16 +1003,16 @@ namespace PeerSoftware
         private void LoadPausedData()
         {
             string json;
-            using (StreamReader streamReader = new StreamReader("temp\\pausedTorrentFiles.json"))
+            using(StreamReader streamReader = new StreamReader("temp\\pausedTorrentFiles.json"))
             {
                 json = streamReader.ReadToEnd();
             }
-            if (json == null)
+            if(json == null)
             {
                 _storage.GetPausedTorrentFiles().AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(json));
             }
         }
 
-
+       
     }
 }
