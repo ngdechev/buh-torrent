@@ -130,7 +130,7 @@ namespace PeerSoftware
             }
             else
             {
-                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\\MyTorrent\\Download";
+                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\MyTorrent\Download";
             }
 
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
