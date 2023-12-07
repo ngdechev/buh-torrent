@@ -835,6 +835,7 @@ namespace PeerSoftware
             maxActiveDownloadsSlider.Value = 2;
             maxActiveDownloadsSlider.ValueMax = 5;
             maxActiveDownloadsSlider.ValueSuffix = " Peers";
+            maxActiveDownloadsSlider.MouseUp += maxActiveDownloadsSlider_MouseUp;
             // 
             // maxDownloadsFromPeersSlider
             // 
@@ -851,6 +852,7 @@ namespace PeerSoftware
             maxDownloadsFromPeersSlider.Value = 2;
             maxDownloadsFromPeersSlider.ValueMax = 5;
             maxDownloadsFromPeersSlider.ValueSuffix = " Peers";
+            maxDownloadsFromPeersSlider.MouseUp += maxDownloadsFromPeersSlider_MouseUp;
             // 
             // settingsTabTrackerGroupBox
             // 

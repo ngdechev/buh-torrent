@@ -38,6 +38,7 @@ namespace PeerSoftware
         private int _allMaxPage = 0;
 
         private int _nPeersUploading;
+        private int _nParallelDownloads;
         private string _sharedFileDownloadFolder;
         private string _serverSocket;
 
@@ -121,16 +122,15 @@ namespace PeerSoftware
 
             _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
 
-
-
-
             materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
 
             int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
             maxDownloadsFromPeersSlider.Value = _nPeersUploading;
 
-            //maxActiveDownloadsSlider
+            int.TryParse(ConfigurationManager.AppSettings["peersDownloading"], out _nParallelDownloads);
+            maxActiveDownloadsSlider.Value = _nParallelDownloads;
+
 
             string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
             MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
@@ -858,6 +858,16 @@ namespace PeerSoftware
         {
             string temp = maxDownloadsFromPeersSlider.Value.ToString();
             _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
+            _configuration.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void maxActiveDownloadsSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            string temp = maxActiveDownloadsSlider.Value.ToString();
+            _configuration.AppSettings.Settings["peersDownloading"].Value = temp;
+            _configuration.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
         }
 
         private void materialButton1_Click(object sender, EventArgs e)
@@ -896,5 +906,7 @@ namespace PeerSoftware
 
             _connections.DestroyPeer(trackerIpField, trackerPortField);
         }
+
+       
     }
 }
