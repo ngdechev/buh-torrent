@@ -29,41 +29,49 @@ namespace TorrentTracker
 
         public void Start(int serverPort, int udpPort)
         {
-            _listener = new(IPAddress.Any, serverPort);
-            _udpServer = new UdpClient(udpPort);
-
-            _listener.Start();
-
-            Console.WriteLine($"Tracker server started!");
-            _dictionary.ReadDictionaryFromFile();
-
-            while (_isRunning)
+            try
             {
+                _listener = new(IPAddress.Any, serverPort);
+                _udpServer = new UdpClient(udpPort);
 
+                _listener.Start();
 
-                if (_listener.Pending())
+                Console.WriteLine($"Tracker server started!");
+                _dictionary.ReadDictionaryFromFile();
+
+                while (_isRunning)
                 {
-                    TcpClient clientSocket = _listener.AcceptTcpClient();
+
+
+                    if (_listener.Pending())
+                    {
+                        TcpClient clientSocket = _listener.AcceptTcpClient();
                    
 
-                    Console.WriteLine("Peer opened the app!");
-                    _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
+                        Console.WriteLine("Peer opened the app!");
+                        _peerHandler = new(clientSocket, _torrentManagementController, _peerManagementController,_dictionary);
 
-                    Thread peerThread = new Thread(_peerHandler.HandlePeer);
+                        Thread peerThread = new Thread(_peerHandler.HandlePeer);
 
-                    peerThread.Start();
+                        peerThread.Start();
+                    }
+
+                    HandleUdpPackets();
+
+                    Thread.Sleep(10);
                 }
 
-                HandleUdpPackets();
-
-                Thread.Sleep(10);
+                if (_listener != null)
+                {
+                    _listener?.Stop();
+                    _udpServer.Close();
+                }
             }
-
-            if (_listener != null)
+            catch (Exception ex)
             {
-                _listener?.Stop();
-                _udpServer.Close();
+                Console.WriteLine("|===| Error: " + ex.Message + "|===|");
             }
+
         }
 
         private void HandleUdpPackets()
@@ -83,26 +91,19 @@ namespace TorrentTracker
                 DateTime dateTime = DateTime.Now;
                 Console.WriteLine(dateTime.ToString("MM/dd/yyyy HH:mm:ss") + " IP: "+parts[0]);
 
-                // Don't work due to Dictionary Problem
-
                 foreach (Peer peer in _dictionary.GetDictionary().Keys)
                 {
-                    if (peer.IPAddress == parts[0]/* && peer.Port == peerPort*/)
+                    if (peer.IPAddress == parts[0])
                     {
                         peer.Date = dateTime;
                         break;
                     }
 
                 }
-
-               // _dictionary.ReadDictionaryFromFile();
-               // _dictionary.WriteDictionaryToFile();
-
-                //map
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error handling UDP packets: " + ex.Message);
+                Console.WriteLine("|===| Error handling UDP packets: " + ex.Message + "|===|");
             }
         }
 
