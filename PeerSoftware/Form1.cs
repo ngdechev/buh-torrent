@@ -130,7 +130,7 @@ namespace PeerSoftware
             }
             else
             {
-                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\MyTorrent\Download";
+                materialTextBox22.Text = $@"{Directory.GetCurrentDirectory()}\Download";
             }
 
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
@@ -195,7 +195,6 @@ namespace PeerSoftware
             }
 
 
-            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
             try
             {
@@ -209,7 +208,7 @@ namespace PeerSoftware
                     {
                         save.Text = "CONNECTED";
                         _udpSender.Start(_serverSocket);
-                        Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+                        Task.Run(() => _commonUtils.AnonceMyTorrents_OnStartUp(_storage, _networkUtils, this));
                     }
                 }
             }
@@ -728,7 +727,7 @@ namespace PeerSoftware
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
             if (_connections.IsConnected() == true)
             {
-                Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+                Task.Run(() => _commonUtils.AnonceMyTorrents_OnStartUp(_storage, _networkUtils, this));
                 save.Text = "CONNECTED";
             }
         }
