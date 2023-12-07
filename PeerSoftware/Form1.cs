@@ -207,7 +207,7 @@ namespace PeerSoftware
                     _connections.AnnounceNewPeer(ip[0], int_port);
                     if (_connections.IsConnected() == true)
                     {
-                        save.Text = "DICONNECT";
+                        save.Text = "CONNECTED";
                         _udpSender.Start(_serverSocket);
                         Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
                     }
@@ -726,7 +726,11 @@ namespace PeerSoftware
             _configuration.AppSettings.Settings["serverSocket"].Value = materialTextBox21.Text.Trim();
 
             _connections.AnnounceNewPeer(trackerIpField, trackerPortField);
-            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+            if (_connections.IsConnected() == true)
+            {
+                Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+                save.Text = "CONNECTED";
+            }
         }
 
         private void createNewTorrent_Click(object sender, EventArgs e)
