@@ -87,7 +87,7 @@ namespace PeerSoftware.Utils
             return temp;
         }
 
-        public List<TorrentFile> LoadMyTorrentsStartUp(ITorrentStorage storage,NetworkUtils networkUtils,Form1 mainForm)
+        public List<TorrentFile> AnaunceMyTorrents_OnStartUp(ITorrentStorage storage,NetworkUtils networkUtils,Form1 mainForm)
         {
             string folderPath = Directory.GetCurrentDirectory();
             folderPath = folderPath + "\\MyTorrent";
