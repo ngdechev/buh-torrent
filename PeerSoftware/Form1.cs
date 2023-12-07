@@ -17,6 +17,7 @@ using PTT_Parser;
 using System.Configuration;
 using System.Net.Sockets;
 using System.Text.Json;
+using System;
 
 namespace PeerSoftware
 {
@@ -37,6 +38,7 @@ namespace PeerSoftware
         private int _allMaxPage = 0;
 
         private int _nPeersUploading;
+        private int _nParallelDownloads;
         private string _sharedFileDownloadFolder;
         private string _serverSocket;
 
@@ -56,6 +58,8 @@ namespace PeerSoftware
         private Configuration _configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
         private ContextMenuStrip _systemTrayContextMenu;
+
+        
 
         public Form1()
         {
@@ -120,14 +124,15 @@ namespace PeerSoftware
 
             _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
 
-
-
-
             materialTextBox22.Text = ConfigurationManager.AppSettings["downloadSharedFileLocation"];
             materialTextBox21.Text = ConfigurationManager.AppSettings["serverSocket"];
 
             int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
             maxDownloadsFromPeersSlider.Value = _nPeersUploading;
+
+            int.TryParse(ConfigurationManager.AppSettings["peersDownloading"], out _nParallelDownloads);
+            maxActiveDownloadsSlider.Value = _nParallelDownloads;
+
 
             string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
             MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
@@ -182,10 +187,11 @@ namespace PeerSoftware
             }
 
 
-Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
             try
             {
+
                 if (materialTextBox21.Text != null)
                 {
                     string[] ip = materialTextBox21.Text.Split(':', 2);
@@ -198,6 +204,10 @@ Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this)
                         Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+             
             }
             
             _configuration.Save(ConfigurationSaveMode.Modified);
@@ -390,6 +400,13 @@ Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this)
 
         private void Show(int i, List<TorrentFile> torrentFiles)
         {
+            if (torrentFiles.Count == 0)
+            {
+                MaterialLabel materialDescriptionControl = _materialTitleControls[0];
+                materialDescriptionControl.Text = "No torrents";
+                return;
+            }
+
             int row = i * 5;
 
             for (int index = 0; index < _materialTitleControls.Count; index++)
@@ -713,6 +730,10 @@ Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this)
             return trackerIP.Text;
         }
 
+        public int GetNParallelDownloads()
+        {
+            return _nParallelDownloads;
+        }
 
         public string GetIpFieldText()
         {
@@ -854,6 +875,16 @@ Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this)
         {
             string temp = maxDownloadsFromPeersSlider.Value.ToString();
             _configuration.AppSettings.Settings["peersUpoading"].Value = temp;
+            _configuration.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void maxActiveDownloadsSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            string temp = maxActiveDownloadsSlider.Value.ToString();
+            _configuration.AppSettings.Settings["peersDownloading"].Value = temp;
+            _configuration.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
         }
 
         private void materialButton1_Click(object sender, EventArgs e)
@@ -965,5 +996,7 @@ Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this)
                 _storage.GetPausedTorrentFiles().AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(json));
             }
         }
+
+       
     }
 }

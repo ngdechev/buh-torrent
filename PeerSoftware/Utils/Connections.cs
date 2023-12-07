@@ -139,7 +139,7 @@ namespace PeerSoftware.Utils
             }
             catch (Exception ex)
             {
-                throw new Exception("Error sending data: " + ex.Message);
+                MessageBox.Show("Error sending data: " + ex.Message);
             }
         }
 
