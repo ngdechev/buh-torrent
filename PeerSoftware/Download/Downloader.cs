@@ -77,7 +77,9 @@ namespace PeerSoftware.Download
 
             });
 
-            _threadManager.StartThread(_index);
+            int maxParallelDownloads = form.GetNParallelDownloads();
+
+            _threadManager.StartThread(_index, maxParallelDownloads);
 
             _index++;
         }
@@ -158,7 +160,9 @@ namespace PeerSoftware.Download
 
             });
 
-            _threadManager.StartThread(_index);
+            int maxParallelDownloads = form.GetNParallelDownloads();
+
+            _threadManager.StartThread(_index, maxParallelDownloads);
 
             _index++;
         }

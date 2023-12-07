@@ -1,4 +1,5 @@
-﻿using PeerSoftware.Storage;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using PeerSoftware.Storage;
 using PTT_Parser;
 using System.Net;
 using System.Net.Sockets;
@@ -11,6 +12,7 @@ namespace PeerSoftware.Utils
     {
         private NetworkUtils _networkUtils;
         private CustomMessageBoxOK _customMessageBoxOK;
+        private bool _isConnected = false;
 
         public Connections(NetworkUtils networkUtils)
         {
@@ -28,7 +30,10 @@ namespace PeerSoftware.Utils
             client.GetStream().Write(messageBytes, 0, messageBytes.Length);
             client.GetStream().Flush();
         }
-
+        public bool IsConnected()
+        {
+            return _isConnected;
+        }
         public void AnnounceNewPeer(string trackerIpField, int trackerPortField)
         {
 
@@ -39,19 +44,29 @@ namespace PeerSoftware.Utils
                     try
                     {
                         client.Connect(trackerIpField, trackerPortField);
+                        _isConnected = true;
                         NetworkStream stream = client.GetStream();
 
                         string localIpPort = $"{_networkUtils.GetLocalIPAddress()}:{_networkUtils.GetLocalPort()}";
                         SendPTTMessage(client, 0x00, localIpPort);
 
-                       // MessageBox.Show($"Connected to {trackerIpField}");
-                       //Notification
+                        new ToastContentBuilder()
+                            .AddText($"You are connected to server IP: {trackerIpField}")
+                            .Show();
                         CloseConnection(client);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Error connecting to {trackerIpField}: {ex.Message}");
-                        //Notification
+                        if (ex.Message == "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. [::ffff:172.20.60.22]:12345")
+                        {
+                            _customMessageBoxOK.SetTitle("The server is closed");
+                            _customMessageBoxOK.SetMessageText($"Error connecting to {trackerIpField}");
+                            _customMessageBoxOK.ShowDialog();
+                        }
+                        else 
+                        {
+                            throw new Exception(ex.Message);
+                        }
                     }
 
                 }
@@ -80,6 +95,10 @@ namespace PeerSoftware.Utils
                     _customMessageBoxOK.ShowDialog();
 
                     CloseConnection(client);
+                    _isConnected = false;
+                    new ToastContentBuilder()
+                            .AddText($"You Disconect to server IP: {trackerIpField}")
+                            .Show();
                 }
                 catch (Exception ex)
                 {
@@ -120,7 +139,7 @@ namespace PeerSoftware.Utils
             }
             catch (Exception ex)
             {
-                throw new Exception("Error sending data: " + ex.Message);
+                MessageBox.Show("Error sending data: " + ex.Message);
             }
         }
 
