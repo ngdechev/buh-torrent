@@ -1,4 +1,6 @@
-﻿using Windows.ApplicationModel.VoiceCommands;
+﻿using Microsoft.Toolkit.Uwp.Notifications;
+using PeerSoftware.Utils;
+using Windows.ApplicationModel.VoiceCommands;
 
 namespace PeerSoftware.Download
 {
@@ -25,13 +27,18 @@ namespace PeerSoftware.Download
             }
         }
 
-        public void StartThread(int index)
+        public void StartThread(int index, int maxParallelDownloads)
         {
             if (index >= 0 && index < threads.Count)
             {
-                if (index >= 1)
+                if (index >= maxParallelDownloads)
                 {
-                    MessageBox.Show("You can download only 1 file at the samet time");
+                    CustomMessageBoxOK msgBox = new CustomMessageBoxOK();
+
+                    msgBox.SetTitle("Attention");
+                    msgBox.SetMessageText($"You can download only {maxParallelDownloads} file at the samet time. You can change it from settings.");
+                    msgBox.Show();
+
                     return;
                 }
                 threads[index].Start();

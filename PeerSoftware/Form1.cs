@@ -59,6 +59,8 @@ namespace PeerSoftware
 
         private ContextMenuStrip _systemTrayContextMenu;
 
+        
+
         public Form1()
         {
             InitializeComponent();
@@ -720,6 +722,10 @@ namespace PeerSoftware
             return trackerIP.Text;
         }
 
+        public int GetNParallelDownloads()
+        {
+            return _nParallelDownloads;
+        }
 
         public string GetIpFieldText()
         {
