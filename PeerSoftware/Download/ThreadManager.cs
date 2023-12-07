@@ -29,6 +29,11 @@ namespace PeerSoftware.Download
         {
             if (index >= 0 && index < threads.Count)
             {
+                if (index >= 1)
+                {
+                    MessageBox.Show("You can download only 1 file at the samet time");
+                    return;
+                }
                 threads[index].Start();
             }
             else
