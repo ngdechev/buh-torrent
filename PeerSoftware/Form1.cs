@@ -130,6 +130,8 @@ namespace PeerSoftware
             int.TryParse(ConfigurationManager.AppSettings["peersUpoading"], out _nPeersUploading);
             maxDownloadsFromPeersSlider.Value = _nPeersUploading;
 
+            //maxActiveDownloadsSlider
+
             string selectedTheme = ConfigurationManager.AppSettings["theme"].ToString();
             MaterialSkin.ColorScheme selectedColorScheme = _commonUtils.LoadTheme(selectedTheme);
             _materialSkinManager.ColorScheme = selectedColorScheme;
@@ -190,13 +192,13 @@ namespace PeerSoftware
                 _udpSender.Start(_serverSocket);
                 Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-            string[] ip = _serverSocket.Split(':', 2);
-            int.TryParse(ip[1], out int int_port);
-            _connections.AnnounceNewPeer(ip[0], int_port);
-            _udpSender.Start(_serverSocket);
-            Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
+                string[] ip = _serverSocket.Split(':', 2);
+                int.TryParse(ip[1], out int int_port);
+                _connections.AnnounceNewPeer(ip[0], int_port);
+                _udpSender.Start(_serverSocket);
+                Task.Run(() => _commonUtils.LoadMyTorrentsStartUp(_storage, _networkUtils, this));
 
             }
             _configuration.Save(ConfigurationSaveMode.Modified);
