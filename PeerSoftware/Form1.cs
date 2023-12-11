@@ -18,6 +18,7 @@ using System.Configuration;
 using System.Net.Sockets;
 using System.Text.Json;
 using System;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace PeerSoftware
 {
@@ -209,6 +210,7 @@ namespace PeerSoftware
                         save.Text = "CONNECTED";
                         _udpSender.Start(_serverSocket);
                         Task.Run(() => _commonUtils.AnonceMyTorrents_OnStartUp(_storage, _networkUtils, this));
+                        Resume_OnStartUp();
                     }
                 }
             }
@@ -1028,5 +1030,53 @@ namespace PeerSoftware
         {
             materialHelp.Text = "BuhTorrent Help \r\n\r\nGetting Started\r\n\r\nBrowse Torrents: Click on the \"Browse\" tab to explore available torrents.\r\nSearch: Use the search bar to find specific torrents by their names or descriptions.\r\nDownload: Click on the \"Download\" button next to a torrent to start the download process.\r\nUpload: Go to the \"Upload\" section to share your own torrents.\r\nManaging Downloads\r\n\r\nPause/Resume: During a download, you can pause or resume the process using the \"Pause\" button.\r\nView Progress: Check the progress of your downloads in the \"Downloads\" tab.\r\nManaging Uploads\r\n\r\nCreating Torrents: To upload a file, select the \"Upload\" tab and follow the steps to create and share a torrent.\r\nSettings\r\n\r\nTheme: Adjust the app's theme in the \"Settings\" menu.\r\nConnection: Configure the connection settings for peer-to-peer sharing.\r\nFile Storage: Set the location for downloaded files in the settings.\r\nHelp and Support\r\n\r\nAbout: Find information about the BitTorrent application, version details, and developer contacts.\r\nFAQs: Get answers to common questions in the FAQ section.\r\nExiting the Application\r\n\r\nMinimize: Minimize the app to the system tray to keep it running in the background.\r\nClose: Exit the application using the close option.";
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            MaterialLabel label = new MaterialLabel();
+            int count = tableLayoutPanel1.GetRowSpan(label);
+            for (int rowIndex = 0; rowIndex < count; rowIndex++)
+            {
+                MaterialButton pauseButton = tableLayoutPanel1.GetControlFromPosition(, rowIndex);
+                TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
+                bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
+                if (state)
+                {
+                    _downloader.Pause(rowIndex);
+                    _storage.GetDownloadTorrentStatus()[rowIndex] = false;
+                    _storage.GetPausedTorrentFiles().Add(torrentFile);
+
+                    pauseButton.Text = "Resume";
+                    pauseButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\resume.png");
+                }
+
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            MaterialLabel label = new MaterialLabel();
+            int count = tableLayoutPanel1.GetRowSpan(label);
+            for (int rowIndex = 0; rowIndex < count; rowIndex++)
+            {
+                MaterialButton pauseButton = tableLayoutPanel1.GetControlFromPosition(, rowIndex);
+                TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
+                bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
+                if (state)
+                {
+                    _storage.GetDownloadTorrentStatus()[rowIndex] = true;
+                    MaterialProgressBar progressBar = (MaterialProgressBar)tableLayoutPanel1.GetControlFromPosition(2, rowIndex);
+
+                    PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
+                    List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
+                    _storage.GetPausedTorrentFiles().Remove(torrentFile);
+                    _downloader.Resume(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this);
+
+                    pauseButton.Text = "Pause";
+                    pauseButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
+                }
+            }
+        }
+
     }
 }

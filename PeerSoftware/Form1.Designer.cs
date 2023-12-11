@@ -78,6 +78,7 @@ namespace PeerSoftware
             materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
             save = new MaterialSkin.Controls.MaterialButton();
             help = new TabPage();
+            materialHelp = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             tabControlIcons = new ImageList(components);
             pagelabel = new MaterialSkin.Controls.MaterialLabel();
             searchBar = new MaterialSkin.Controls.MaterialTextBox2();
@@ -91,7 +92,6 @@ namespace PeerSoftware
             panel1 = new Panel();
             materialButton2 = new MaterialSkin.Controls.MaterialButton();
             notifyIcon1 = new NotifyIcon(components);
-            materialHelp = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
@@ -162,6 +162,7 @@ namespace PeerSoftware
             button5.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             button5.UseAccentColor = false;
             button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // button4
             // 
@@ -183,6 +184,7 @@ namespace PeerSoftware
             button4.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             button4.UseAccentColor = false;
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // tableLayoutPanel5
             // 
@@ -931,6 +933,23 @@ namespace PeerSoftware
             help.TabIndex = 4;
             help.Text = "Help";
             // 
+            // materialHelp
+            // 
+            materialHelp.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            materialHelp.BackColor = Color.FromArgb(255, 255, 255);
+            materialHelp.BorderStyle = BorderStyle.None;
+            materialHelp.Depth = 0;
+            materialHelp.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialHelp.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialHelp.Location = new Point(0, 3);
+            materialHelp.MouseState = MaterialSkin.MouseState.HOVER;
+            materialHelp.Name = "materialHelp";
+            materialHelp.ReadOnly = true;
+            materialHelp.ScrollBars = RichTextBoxScrollBars.Vertical;
+            materialHelp.Size = new Size(881, 401);
+            materialHelp.TabIndex = 0;
+            materialHelp.Text = "";
+            // 
             // tabControlIcons
             // 
             tabControlIcons.ColorDepth = ColorDepth.Depth32Bit;
@@ -1140,23 +1159,6 @@ namespace PeerSoftware
             notifyIcon1.BalloonTipTitle = "BuhTorrent";
             notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
             notifyIcon1.Text = "notifyIcon1";
-            // 
-            // materialHelp
-            // 
-            materialHelp.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            materialHelp.BackColor = Color.FromArgb(255, 255, 255);
-            materialHelp.BorderStyle = BorderStyle.None;
-            materialHelp.Depth = 0;
-            materialHelp.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialHelp.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            materialHelp.Location = new Point(0, 3);
-            materialHelp.MouseState = MaterialSkin.MouseState.HOVER;
-            materialHelp.Name = "materialHelp";
-            materialHelp.ReadOnly = true;
-            materialHelp.ScrollBars = RichTextBoxScrollBars.Vertical;
-            materialHelp.Size = new Size(881, 401);
-            materialHelp.TabIndex = 0;
-            materialHelp.Text = "";
             // 
             // Form1
             // 
