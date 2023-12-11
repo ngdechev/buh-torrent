@@ -59,7 +59,7 @@ namespace PeerSoftware
 
         private ContextMenuStrip _systemTrayContextMenu;
 
-        
+
 
         public Form1()
         {
@@ -119,7 +119,7 @@ namespace PeerSoftware
                 comboBoxTheme.Items.Add(themeName);
             }
 
-
+            SetHelp();
             //settings
 
             _serverSocket = ConfigurationManager.AppSettings["serverSocket"];
@@ -214,9 +214,9 @@ namespace PeerSoftware
             }
             catch (Exception ex)
             {
-             
+
             }
-            
+
             _configuration.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings"); // Refresh the appSettings section
         }
@@ -495,9 +495,9 @@ namespace PeerSoftware
             }
             else if (tabControl1.SelectedIndex == 2)
             {
-                tableLayoutPanel4.Controls.Clear(); 
-                tableLayoutPanel4.RowStyles.Clear(); 
-                tableLayoutPanel4.RowCount = 0; 
+                tableLayoutPanel4.Controls.Clear();
+                tableLayoutPanel4.RowStyles.Clear();
+                tableLayoutPanel4.RowCount = 0;
                 tableLayoutPanel4.SuspendLayout();
                 ShowMyTorrents();
                 tableLayoutPanel4.ResumeLayout();
@@ -512,6 +512,9 @@ namespace PeerSoftware
             {
                 MaterialLabel materialMyTorrentName = new MaterialLabel();
                 materialMyTorrentName.Text = "You don't have any torrents yet";
+
+                materialMyTorrentName.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                materialMyTorrentName.AutoSize = true;
                 tableLayoutPanel4.Controls.Add(materialMyTorrentName, 0, 0);
 
                 return;
@@ -527,9 +530,12 @@ namespace PeerSoftware
 
                 MaterialLabel materialMyTorrentName = new MaterialLabel();
                 materialMyTorrentName.Text = torrentFile.info.torrentName;
+                materialMyTorrentName.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
                 materialMyTorrentName.AutoSize = true;
 
                 MaterialLabel materialMyTorrentDescription = new MaterialLabel();
+                materialMyTorrentDescription.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+
                 materialMyTorrentDescription.Text = torrentFile.info.description;
 
                 MaterialLabel materialMyTorrentSize = new MaterialLabel();
@@ -945,7 +951,7 @@ namespace PeerSoftware
         private void Resume_OnStartUp()
         {
             LoadPausedData();
-            foreach(TorrentFile torrentFile in _storage.GetPausedTorrentFiles())
+            foreach (TorrentFile torrentFile in _storage.GetPausedTorrentFiles())
             {
 
                 MaterialLabel label1 = new MaterialLabel();
@@ -953,7 +959,7 @@ namespace PeerSoftware
 
                 MaterialLabel label2 = new MaterialLabel();
                 label2.Text = _commonUtils.FormatFileSize(torrentFile.info.length);
-                
+
                 _storage.GetDownloadTorrentFiles().Add(torrentFile);
 
                 MaterialProgressBar progressBar = new MaterialProgressBar();
@@ -972,16 +978,16 @@ namespace PeerSoftware
 
                 // Create a new row
                 tableLayoutPanel1.RowStyles.Insert(0, new RowStyle(SizeType.AutoSize));
-                
+
                 PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
-                List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); 
-                _storage.GetPausedTorrentFiles().Remove(torrentFile); 
+                List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this);
+                _storage.GetPausedTorrentFiles().Remove(torrentFile);
                 _downloader.Resume(torrentFile, receivedLivePeers, progressBar, _networkUtils, this);
             }
         }
         private void SavePausedData_OnShuttingDown()
         {
-            for(int rowIndex = 0; rowIndex < _storage.GetDownloadTorrentFiles().Count; rowIndex++)
+            for (int rowIndex = 0; rowIndex < _storage.GetDownloadTorrentFiles().Count; rowIndex++)
             {
                 if (_storage.GetDownloadTorrentStatus()[rowIndex])
                 {
@@ -991,7 +997,7 @@ namespace PeerSoftware
                 }
 
             }
-        
+
             string json = JsonSerializer.Serialize(_storage.GetPausedTorrentFiles());
             using (StreamWriter streamWriter = new StreamWriter("temp\\pausedTorrentFiles.json"))
             {
@@ -1002,16 +1008,19 @@ namespace PeerSoftware
         private void LoadPausedData()
         {
             string json;
-            using(StreamReader streamReader = new StreamReader("temp\\pausedTorrentFiles.json"))
+            using (StreamReader streamReader = new StreamReader("temp\\pausedTorrentFiles.json"))
             {
                 json = streamReader.ReadToEnd();
             }
-            if(json == null)
+            if (json == null)
             {
                 _storage.GetPausedTorrentFiles().AddRange(JsonSerializer.Deserialize<List<TorrentFile>>(json));
             }
         }
 
-       
+        private void SetHelp()
+        {
+            materialHelp.Text = "BuhTorrent Help \r\n\r\nGetting Started\r\n\r\nBrowse Torrents: Click on the \"Browse\" tab to explore available torrents.\r\nSearch: Use the search bar to find specific torrents by their names or descriptions.\r\nDownload: Click on the \"Download\" button next to a torrent to start the download process.\r\nUpload: Go to the \"Upload\" section to share your own torrents.\r\nManaging Downloads\r\n\r\nPause/Resume: During a download, you can pause or resume the process using the \"Pause\" button.\r\nView Progress: Check the progress of your downloads in the \"Downloads\" tab.\r\nManaging Uploads\r\n\r\nCreating Torrents: To upload a file, select the \"Upload\" tab and follow the steps to create and share a torrent.\r\nSettings\r\n\r\nTheme: Adjust the app's theme in the \"Settings\" menu.\r\nConnection: Configure the connection settings for peer-to-peer sharing.\r\nFile Storage: Set the location for downloaded files in the settings.\r\nHelp and Support\r\n\r\nAbout: Find information about the BitTorrent application, version details, and developer contacts.\r\nFAQs: Get answers to common questions in the FAQ section.\r\nExiting the Application\r\n\r\nMinimize: Minimize the app to the system tray to keep it running in the background.\r\nClose: Exit the application using the close option.";
+        }
     }
 }

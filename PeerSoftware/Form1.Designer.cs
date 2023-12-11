@@ -91,6 +91,7 @@ namespace PeerSoftware
             panel1 = new Panel();
             materialButton2 = new MaterialSkin.Controls.MaterialButton();
             notifyIcon1 = new NotifyIcon(components);
+            materialHelp = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             tabControl1.SuspendLayout();
             buhTorrent.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
@@ -104,6 +105,7 @@ namespace PeerSoftware
             theme.SuspendLayout();
             peerSettings.SuspendLayout();
             settingsTabTrackerGroupBox.SuspendLayout();
+            help.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -921,6 +923,7 @@ namespace PeerSoftware
             // help
             // 
             help.BackColor = Color.White;
+            help.Controls.Add(materialHelp);
             help.ImageKey = "help.png";
             help.Location = new Point(4, 39);
             help.Name = "help";
@@ -1138,6 +1141,23 @@ namespace PeerSoftware
             notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
             notifyIcon1.Text = "notifyIcon1";
             // 
+            // materialHelp
+            // 
+            materialHelp.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            materialHelp.BackColor = Color.FromArgb(255, 255, 255);
+            materialHelp.BorderStyle = BorderStyle.None;
+            materialHelp.Depth = 0;
+            materialHelp.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialHelp.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialHelp.Location = new Point(0, 3);
+            materialHelp.MouseState = MaterialSkin.MouseState.HOVER;
+            materialHelp.Name = "materialHelp";
+            materialHelp.ReadOnly = true;
+            materialHelp.ScrollBars = RichTextBoxScrollBars.Vertical;
+            materialHelp.Size = new Size(881, 401);
+            materialHelp.TabIndex = 0;
+            materialHelp.Text = "";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1174,6 +1194,7 @@ namespace PeerSoftware
             peerSettings.ResumeLayout(false);
             peerSettings.PerformLayout();
             settingsTabTrackerGroupBox.ResumeLayout(false);
+            help.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
@@ -1250,6 +1271,7 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialLabel downloadLocationLabel;
         private MaterialSkin.Controls.MaterialLabel newPageLabel;
         private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
+        private MaterialSkin.Controls.MaterialMultiLineTextBox materialHelp;
     }
 }
 

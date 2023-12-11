@@ -173,7 +173,10 @@ namespace PeerSoftware.Download
             // Ensure progress bar is updated even if an exception occurs
             connectionManager.UpdateProgressBar();
             _threadManager.RemoveDownloadTCPManeger(_index);
+            
             new CommonUtils().ReceateTorrentFileForDownloadedFile(form.GetTorrentStorage(), torrentFile.info.checksum, form);
+            form.GetTorrentStorage().GetDownloadTorrentFiles().Remove(torrentFile);
+
             (string ip, int port) = networkUtils.SplitIpAndPort(form);
 
             using (TcpClient client = new TcpClient())
