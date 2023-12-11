@@ -33,8 +33,19 @@ namespace PeerSoftware.Upload
 
                 foreach (PTPBlock pTPBlock in _blocks)
                 {
+
                     Thread.Sleep(10);
-                    stream.Write(PTPParser.ParseToPackage(pTPBlock));
+                    try
+                    {
+
+                        stream.Write(PTPParser.ParseToPackage(pTPBlock));
+
+                    }
+                    catch(Exception ex)  
+                    {
+                        Console.WriteLine( ex.Message);
+                    }
+
                 }
 
                 _server.Disconect(this);
@@ -74,7 +85,7 @@ namespace PeerSoftware.Upload
         }
 
         public void CheckBlocks(int startPosition, int firstBlock, int lastBlock, int allBlocksFile, double fileLength)
-        {   
+        {
             if (lastBlock == 1)
             {
                 _lengthToRead = (int)fileLength;
