@@ -59,11 +59,9 @@ namespace PeerSoftware.Download
                     }
 
                     connectionManager.DisconnectAll();
-
-                    connectionManager.DisconnectAll();
-
-                    _threadManager.StopThread(_index);
                     _index--;
+                    _threadManager.StopThread(_index);
+                  
 
 
                     // Disconnect from all servers
@@ -144,9 +142,9 @@ namespace PeerSoftware.Download
                     }
 
                     connectionManager.DisconnectAll();
-
-                    _threadManager.StopThread(_index);
                     _index--;
+                    _threadManager.StopThread(_index);
+                    
 
 
                     // Disconnect from all servers

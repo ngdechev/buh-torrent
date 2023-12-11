@@ -691,6 +691,9 @@ namespace PeerSoftware
                 _downloader.Pause(rowIndex);
                 _storage.GetDownloadTorrentStatus()[rowIndex] = false;
                 _storage.GetPausedTorrentFiles().Add(torrentFile);
+
+                pauseButton.Text = "Resume";
+                pauseButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\resume.png");
             }
             else
             {
@@ -701,6 +704,9 @@ namespace PeerSoftware
                 List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
                 _storage.GetPausedTorrentFiles().Remove(torrentFile);
                 _downloader.Resume(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this);
+
+                pauseButton.Text = "Pause";
+                pauseButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
             }
 
         }

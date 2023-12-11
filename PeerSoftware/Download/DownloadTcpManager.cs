@@ -34,7 +34,11 @@ namespace PeerSoftware.Download
             timer.Interval = 1000;
             timer.Elapsed += (sender, e) =>  UpdateProgressBar();
             timer.Start();
-            
+
+            string[] idBlocks = peersAndBlocks.Last().Value.Split('-', 2);
+            //int.TryParse(idBlocks[0], out int firstBlock);
+            int.TryParse(idBlocks[1], out int lastBlock);
+
             foreach (var serverIp in peersAndBlocks)
             {
                 TcpClient client = new TcpClient();
@@ -46,6 +50,7 @@ namespace PeerSoftware.Download
                     client.Connect(peerIpAndPort[0], _serverPort);
                     byte[] data = PTPParser.StartPackage($"{torrentFile.info.checksum}/{serverIp.Value}");
                     client.GetStream().Write(data);
+                    _progressBar.Maximum = lastBlock;
                     // Console.WriteLine($"Connected to server at {serverIp}:{_serverPort}");
                     // You can now send and receive data on 'client' synchronously.
                 }
@@ -54,10 +59,8 @@ namespace PeerSoftware.Download
                     Console.WriteLine($"Failed to connect to {serverIp}:{_serverPort}: {ex.Message}");
                 }
             }
-            string[] idBlocks = peersAndBlocks.Last().Value.Split('-', 2);
-            //int.TryParse(idBlocks[0], out int firstBlock);
-            int.TryParse(idBlocks[1], out int lastBlock);
-            _progressBar.Maximum = lastBlock ;
+            
+            //
             _numberOfBlocks = lastBlock;
         }
 
