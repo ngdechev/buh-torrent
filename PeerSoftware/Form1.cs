@@ -495,7 +495,7 @@ namespace PeerSoftware
             }
         }
 
-        private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ClearAndShowMyTorrents()
         {
             if (tabControl1.SelectedIndex == 1 && _connections.IsConnected() == true)
             {
@@ -510,6 +510,11 @@ namespace PeerSoftware
                 ShowMyTorrents();
                 tableLayoutPanel4.ResumeLayout();
             }
+        }
+
+        private async void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ClearAndShowMyTorrents();
         }
 
         private void ShowMyTorrents()
@@ -606,7 +611,8 @@ namespace PeerSoftware
                 {
                     File.Delete(folderPath);
                 }
-                ShowMyTorrents();
+
+                ClearAndShowMyTorrents();
             }
 
         }
@@ -757,7 +763,7 @@ namespace PeerSoftware
             FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
             formNewTorrent.ShowDialog();
 
-            ShowMyTorrents();
+            ClearAndShowMyTorrents();
         }
 
         public string TextForAnnoncer()
