@@ -65,7 +65,7 @@ namespace PeerSoftware.Utils
                         if (ex.Message == "A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond. [::ffff:172.20.60.22]:12345")
                         {
                             _customMessageBoxOK.SetTitle("The server is closed");
-                            _customMessageBoxOK.SetMessageText($"Error connecting to {trackerIpField}");
+                            _customMessageBoxOK.SetMessageText($"Error connecting to {trackerIpField}!");
                             _customMessageBoxOK.ShowDialog();
                         }
                         else 
@@ -103,7 +103,7 @@ namespace PeerSoftware.Utils
                     CloseConnection(client);
                     _isConnected = false;
                     new ToastContentBuilder()
-                            .AddText($"Disconected from server [{trackerIpField}].")
+                            .AddText($"Disconected from the server {trackerIpField}!")
                             .Show();
                 }
                 catch (Exception ex)
@@ -152,8 +152,8 @@ namespace PeerSoftware.Utils
             {
                 Logger.e(ex.Message);
 
-                _customMessageBoxOK.SetMessageText("Error sending data: " + ex.Message);
-                _customMessageBoxOK.ShowDialog();
+                //_customMessageBoxOK.SetMessageText("Error sending data: " + ex.Message);
+                //_customMessageBoxOK.ShowDialog();
             }
         }
 
