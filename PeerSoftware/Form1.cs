@@ -1037,7 +1037,7 @@ namespace PeerSoftware
             int count = tableLayoutPanel1.GetRowSpan(label);
             for (int rowIndex = 0; rowIndex < count; rowIndex++)
             {
-                MaterialButton pauseButton = tableLayoutPanel1.GetControlFromPosition(, rowIndex);
+                MaterialButton pauseButton = (MaterialButton)tableLayoutPanel1.GetControlFromPosition(3, rowIndex);
                 TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
                 bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
                 if (state)
@@ -1059,7 +1059,7 @@ namespace PeerSoftware
             int count = tableLayoutPanel1.GetRowSpan(label);
             for (int rowIndex = 0; rowIndex < count; rowIndex++)
             {
-                MaterialButton pauseButton = tableLayoutPanel1.GetControlFromPosition(, rowIndex);
+                MaterialButton pauseButton = (MaterialButton)tableLayoutPanel1.GetControlFromPosition(3, rowIndex);
                 TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
                 bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
                 if (state)
