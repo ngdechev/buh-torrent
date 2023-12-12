@@ -15,25 +15,34 @@ namespace PeerSoftware.Download
     {
         private int _index;
         private ThreadManager _threadManager;
+        private CustomMessageBoxOK _customMessageBoxOK;
 
         public Downloader()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             _index = 0;
             _threadManager = new ThreadManager();
+            _customMessageBoxOK = new CustomMessageBoxOK();
         }
 
         public void Download(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<string> peersList = peers;
 
             if (peersList.Count == 0)
             {
-                MessageBox.Show("There are no available peers who has the file.");
+                _customMessageBoxOK.SetMessageText("There are no available peers who has the file.");
+                _customMessageBoxOK.ShowDialog();
                 return;
             }
 
             _threadManager.CreateThread(() =>
             {
+                Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 try
                 {
@@ -70,7 +79,7 @@ namespace PeerSoftware.Download
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Download failed: {ex.Message}");
+                    Logger.e($"Download failed: {ex.Message}");
                     // Handle or log the exception as needed
                 }
 
@@ -90,12 +99,15 @@ namespace PeerSoftware.Download
 
             if (peersList.Count == 0)
             {
-                MessageBox.Show("There are no available peers who has the file.");
+                _customMessageBoxOK.SetMessageText("There are no available peers who has the file.");
+                _customMessageBoxOK.ShowDialog();
                 return;
             }
 
             _threadManager.CreateThread(() =>
             {
+                Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 try
                 {
@@ -153,8 +165,7 @@ namespace PeerSoftware.Download
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine($"Download failed: {ex.Message}");
-                    // Handle or log the exception as needed
+                    Logger.e($"Download failed: {ex.Message}");
                 }
 
 
@@ -168,8 +179,9 @@ namespace PeerSoftware.Download
         }
 
         public void Finally(DownloadTcpManager connectionManager, Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils)
-
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             // Ensure progress bar is updated even if an exception occurs
             connectionManager.UpdateProgressBar();
             _threadManager.RemoveDownloadTCPManeger(_index);
@@ -195,8 +207,9 @@ namespace PeerSoftware.Download
         }
 
         public void Reassemble(TorrentFile torrentFile, List<PTPBlock> ptpBlocks, string sharedFileDownloadFolder)
-
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             string fileExtension = Path.GetExtension(torrentFile.info.fileName);
 
             if (!string.IsNullOrEmpty(fileExtension))
@@ -218,7 +231,7 @@ namespace PeerSoftware.Download
             }
             else
             {
-                Console.WriteLine("File is not created.");
+                Logger.e("File is not created.");
             }
 
             outputFile.Close();
@@ -226,11 +239,15 @@ namespace PeerSoftware.Download
 
         public void Pause(int index)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             _threadManager.GerDownloadTCPManeger(index).isRunnig = false;
         }
 
         public List<PTPBlock> ReadBlocks(string path)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<PTPBlock> pTPBlocks = new List<PTPBlock>();
             List<TempPTPBlock> tempPTPBlocks = new List<TempPTPBlock>();
 

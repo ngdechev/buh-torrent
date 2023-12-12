@@ -62,6 +62,10 @@ namespace PeerSoftware
             tableLayoutPanel4 = new TableLayoutPanel();
             settings = new TabPage();
             settingsTabClientGroupBox = new GroupBox();
+            groupBox3 = new GroupBox();
+            downloadLocationLabel = new MaterialSkin.Controls.MaterialLabel();
+            btnBrowseDownloadLocation = new MaterialSkin.Controls.MaterialButton();
+            materialTextBox22 = new MaterialSkin.Controls.MaterialTextBox2();
             startupSettings = new GroupBox();
             startMinimizedCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
             startupCheckbox = new MaterialSkin.Controls.MaterialCheckbox();
@@ -69,12 +73,10 @@ namespace PeerSoftware
             comboBoxTheme = new MaterialSkin.Controls.MaterialComboBox();
             darkModeSwitch = new MaterialSkin.Controls.MaterialSwitch();
             peerSettings = new GroupBox();
-            downloadLocationLabel = new MaterialSkin.Controls.MaterialLabel();
-            btnBrowseDownloadLocation = new MaterialSkin.Controls.MaterialButton();
-            materialTextBox22 = new MaterialSkin.Controls.MaterialTextBox2();
-            maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
             maxDownloadsFromPeersSlider = new MaterialSkin.Controls.MaterialSlider();
+            maxActiveDownloadsSlider = new MaterialSkin.Controls.MaterialSlider();
             settingsTabTrackerGroupBox = new GroupBox();
+            groupBox1 = new GroupBox();
             materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
             save = new MaterialSkin.Controls.MaterialButton();
             help = new TabPage();
@@ -100,10 +102,12 @@ namespace PeerSoftware
             tableLayoutPanel6.SuspendLayout();
             settings.SuspendLayout();
             settingsTabClientGroupBox.SuspendLayout();
+            groupBox3.SuspendLayout();
             startupSettings.SuspendLayout();
             theme.SuspendLayout();
             peerSettings.SuspendLayout();
             settingsTabTrackerGroupBox.SuspendLayout();
+            groupBox1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -637,15 +641,92 @@ namespace PeerSoftware
             // settingsTabClientGroupBox
             // 
             settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            settingsTabClientGroupBox.Controls.Add(groupBox3);
             settingsTabClientGroupBox.Controls.Add(startupSettings);
             settingsTabClientGroupBox.Controls.Add(theme);
             settingsTabClientGroupBox.Controls.Add(peerSettings);
-            settingsTabClientGroupBox.Location = new Point(481, 9);
+            settingsTabClientGroupBox.Location = new Point(3, 118);
             settingsTabClientGroupBox.Name = "settingsTabClientGroupBox";
-            settingsTabClientGroupBox.Size = new Size(400, 395);
+            settingsTabClientGroupBox.Size = new Size(878, 328);
             settingsTabClientGroupBox.TabIndex = 7;
             settingsTabClientGroupBox.TabStop = false;
             settingsTabClientGroupBox.Text = "Client Settings";
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(downloadLocationLabel);
+            groupBox3.Controls.Add(btnBrowseDownloadLocation);
+            groupBox3.Controls.Add(materialTextBox22);
+            groupBox3.Location = new Point(6, 182);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(866, 104);
+            groupBox3.TabIndex = 4;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Downloads";
+            // 
+            // downloadLocationLabel
+            // 
+            downloadLocationLabel.AutoSize = true;
+            downloadLocationLabel.Depth = 0;
+            downloadLocationLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            downloadLocationLabel.Location = new Point(6, 19);
+            downloadLocationLabel.MouseState = MaterialSkin.MouseState.HOVER;
+            downloadLocationLabel.Name = "downloadLocationLabel";
+            downloadLocationLabel.Size = new Size(161, 19);
+            downloadLocationLabel.TabIndex = 12;
+            downloadLocationLabel.Text = "Put new downloads in:";
+            // 
+            // btnBrowseDownloadLocation
+            // 
+            btnBrowseDownloadLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnBrowseDownloadLocation.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnBrowseDownloadLocation.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnBrowseDownloadLocation.Depth = 0;
+            btnBrowseDownloadLocation.HighEmphasis = true;
+            btnBrowseDownloadLocation.Icon = (Image)resources.GetObject("btnBrowseDownloadLocation.Icon");
+            btnBrowseDownloadLocation.Location = new Point(750, 52);
+            btnBrowseDownloadLocation.Margin = new Padding(4);
+            btnBrowseDownloadLocation.MouseState = MaterialSkin.MouseState.HOVER;
+            btnBrowseDownloadLocation.Name = "btnBrowseDownloadLocation";
+            btnBrowseDownloadLocation.NoAccentTextColor = Color.Empty;
+            btnBrowseDownloadLocation.Size = new Size(108, 36);
+            btnBrowseDownloadLocation.TabIndex = 11;
+            btnBrowseDownloadLocation.Text = "Browse";
+            btnBrowseDownloadLocation.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnBrowseDownloadLocation.UseAccentColor = false;
+            btnBrowseDownloadLocation.UseVisualStyleBackColor = true;
+            btnBrowseDownloadLocation.Click += materialButton1_Click;
+            // 
+            // materialTextBox22
+            // 
+            materialTextBox22.AnimateReadOnly = false;
+            materialTextBox22.AutoCompleteMode = AutoCompleteMode.None;
+            materialTextBox22.AutoCompleteSource = AutoCompleteSource.None;
+            materialTextBox22.BackgroundImageLayout = ImageLayout.None;
+            materialTextBox22.CharacterCasing = CharacterCasing.Normal;
+            materialTextBox22.Depth = 0;
+            materialTextBox22.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialTextBox22.HideSelection = true;
+            materialTextBox22.LeadingIcon = null;
+            materialTextBox22.Location = new Point(6, 40);
+            materialTextBox22.Margin = new Padding(3, 2, 3, 2);
+            materialTextBox22.MaxLength = 32767;
+            materialTextBox22.MouseState = MaterialSkin.MouseState.OUT;
+            materialTextBox22.Name = "materialTextBox22";
+            materialTextBox22.PasswordChar = '\0';
+            materialTextBox22.PrefixSuffixText = null;
+            materialTextBox22.ReadOnly = true;
+            materialTextBox22.RightToLeft = RightToLeft.No;
+            materialTextBox22.SelectedText = "";
+            materialTextBox22.SelectionLength = 0;
+            materialTextBox22.SelectionStart = 0;
+            materialTextBox22.ShortcutsEnabled = true;
+            materialTextBox22.Size = new Size(737, 48);
+            materialTextBox22.TabIndex = 5;
+            materialTextBox22.TabStop = false;
+            materialTextBox22.TextAlign = HorizontalAlignment.Left;
+            materialTextBox22.TrailingIcon = null;
+            materialTextBox22.UseSystemPasswordChar = false;
             // 
             // startupSettings
             // 
@@ -745,108 +826,25 @@ namespace PeerSoftware
             // peerSettings
             // 
             peerSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            peerSettings.Controls.Add(downloadLocationLabel);
-            peerSettings.Controls.Add(btnBrowseDownloadLocation);
-            peerSettings.Controls.Add(materialTextBox22);
-            peerSettings.Controls.Add(maxActiveDownloadsSlider);
             peerSettings.Controls.Add(maxDownloadsFromPeersSlider);
-            peerSettings.Location = new Point(6, 182);
+            peerSettings.Controls.Add(maxActiveDownloadsSlider);
+            peerSettings.Location = new Point(400, 22);
             peerSettings.Name = "peerSettings";
-            peerSettings.Size = new Size(388, 207);
+            peerSettings.Size = new Size(472, 154);
             peerSettings.TabIndex = 6;
             peerSettings.TabStop = false;
             peerSettings.Text = "Peer Settings";
-            // 
-            // downloadLocationLabel
-            // 
-            downloadLocationLabel.AutoSize = true;
-            downloadLocationLabel.Depth = 0;
-            downloadLocationLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            downloadLocationLabel.Location = new Point(6, 19);
-            downloadLocationLabel.MouseState = MaterialSkin.MouseState.HOVER;
-            downloadLocationLabel.Name = "downloadLocationLabel";
-            downloadLocationLabel.Size = new Size(161, 19);
-            downloadLocationLabel.TabIndex = 12;
-            downloadLocationLabel.Text = "Put new downloads in:";
-            // 
-            // btnBrowseDownloadLocation
-            // 
-            btnBrowseDownloadLocation.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnBrowseDownloadLocation.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            btnBrowseDownloadLocation.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            btnBrowseDownloadLocation.Depth = 0;
-            btnBrowseDownloadLocation.HighEmphasis = true;
-            btnBrowseDownloadLocation.Icon = (Image)resources.GetObject("btnBrowseDownloadLocation.Icon");
-            btnBrowseDownloadLocation.Location = new Point(272, 94);
-            btnBrowseDownloadLocation.Margin = new Padding(4);
-            btnBrowseDownloadLocation.MouseState = MaterialSkin.MouseState.HOVER;
-            btnBrowseDownloadLocation.Name = "btnBrowseDownloadLocation";
-            btnBrowseDownloadLocation.NoAccentTextColor = Color.Empty;
-            btnBrowseDownloadLocation.Size = new Size(108, 36);
-            btnBrowseDownloadLocation.TabIndex = 11;
-            btnBrowseDownloadLocation.Text = "Browse";
-            btnBrowseDownloadLocation.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnBrowseDownloadLocation.UseAccentColor = false;
-            btnBrowseDownloadLocation.UseVisualStyleBackColor = true;
-            btnBrowseDownloadLocation.Click += materialButton1_Click;
-            // 
-            // materialTextBox22
-            // 
-            materialTextBox22.AnimateReadOnly = false;
-            materialTextBox22.AutoCompleteMode = AutoCompleteMode.None;
-            materialTextBox22.AutoCompleteSource = AutoCompleteSource.None;
-            materialTextBox22.BackgroundImageLayout = ImageLayout.None;
-            materialTextBox22.CharacterCasing = CharacterCasing.Normal;
-            materialTextBox22.Depth = 0;
-            materialTextBox22.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
-            materialTextBox22.HideSelection = true;
-            materialTextBox22.LeadingIcon = null;
-            materialTextBox22.Location = new Point(6, 40);
-            materialTextBox22.Margin = new Padding(3, 2, 3, 2);
-            materialTextBox22.MaxLength = 32767;
-            materialTextBox22.MouseState = MaterialSkin.MouseState.OUT;
-            materialTextBox22.Name = "materialTextBox22";
-            materialTextBox22.PasswordChar = '\0';
-            materialTextBox22.PrefixSuffixText = null;
-            materialTextBox22.ReadOnly = true;
-            materialTextBox22.RightToLeft = RightToLeft.No;
-            materialTextBox22.SelectedText = "";
-            materialTextBox22.SelectionLength = 0;
-            materialTextBox22.SelectionStart = 0;
-            materialTextBox22.ShortcutsEnabled = true;
-            materialTextBox22.Size = new Size(376, 48);
-            materialTextBox22.TabIndex = 5;
-            materialTextBox22.TabStop = false;
-            materialTextBox22.TextAlign = HorizontalAlignment.Left;
-            materialTextBox22.TrailingIcon = null;
-            materialTextBox22.UseSystemPasswordChar = false;
-            // 
-            // maxActiveDownloadsSlider
-            // 
-            maxActiveDownloadsSlider.Depth = 0;
-            maxActiveDownloadsSlider.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            maxActiveDownloadsSlider.Location = new Point(6, 159);
-            maxActiveDownloadsSlider.MouseState = MaterialSkin.MouseState.HOVER;
-            maxActiveDownloadsSlider.Name = "maxActiveDownloadsSlider";
-            maxActiveDownloadsSlider.RangeMax = 5;
-            maxActiveDownloadsSlider.Size = new Size(376, 40);
-            maxActiveDownloadsSlider.TabIndex = 10;
-            maxActiveDownloadsSlider.Text = "Max Parallel Downloads:    ";
-            maxActiveDownloadsSlider.Value = 2;
-            maxActiveDownloadsSlider.ValueMax = 5;
-            maxActiveDownloadsSlider.ValueSuffix = " Peers";
-            maxActiveDownloadsSlider.MouseUp += maxActiveDownloadsSlider_MouseUp;
             // 
             // maxDownloadsFromPeersSlider
             // 
             maxDownloadsFromPeersSlider.Depth = 0;
             maxDownloadsFromPeersSlider.ForeColor = Color.FromArgb(222, 0, 0, 0);
-            maxDownloadsFromPeersSlider.Location = new Point(6, 126);
+            maxDownloadsFromPeersSlider.Location = new Point(6, 42);
             maxDownloadsFromPeersSlider.MouseState = MaterialSkin.MouseState.HOVER;
             maxDownloadsFromPeersSlider.Name = "maxDownloadsFromPeersSlider";
             maxDownloadsFromPeersSlider.RangeMax = 5;
             maxDownloadsFromPeersSlider.RangeMin = 1;
-            maxDownloadsFromPeersSlider.Size = new Size(376, 40);
+            maxDownloadsFromPeersSlider.Size = new Size(458, 40);
             maxDownloadsFromPeersSlider.TabIndex = 9;
             maxDownloadsFromPeersSlider.Text = "Max Parallel Peers per File:";
             maxDownloadsFromPeersSlider.Value = 2;
@@ -854,17 +852,43 @@ namespace PeerSoftware
             maxDownloadsFromPeersSlider.ValueSuffix = " Peers";
             maxDownloadsFromPeersSlider.MouseUp += maxDownloadsFromPeersSlider_MouseUp;
             // 
+            // maxActiveDownloadsSlider
+            // 
+            maxActiveDownloadsSlider.Depth = 0;
+            maxActiveDownloadsSlider.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            maxActiveDownloadsSlider.Location = new Point(6, 88);
+            maxActiveDownloadsSlider.MouseState = MaterialSkin.MouseState.HOVER;
+            maxActiveDownloadsSlider.Name = "maxActiveDownloadsSlider";
+            maxActiveDownloadsSlider.RangeMax = 5;
+            maxActiveDownloadsSlider.Size = new Size(458, 40);
+            maxActiveDownloadsSlider.TabIndex = 10;
+            maxActiveDownloadsSlider.Text = "Max Parallel Downloads:    ";
+            maxActiveDownloadsSlider.Value = 2;
+            maxActiveDownloadsSlider.ValueMax = 5;
+            maxActiveDownloadsSlider.ValueSuffix = " Peers";
+            maxActiveDownloadsSlider.MouseUp += maxActiveDownloadsSlider_MouseUp;
+            // 
             // settingsTabTrackerGroupBox
             // 
-            settingsTabTrackerGroupBox.Controls.Add(materialTextBox21);
-            settingsTabTrackerGroupBox.Controls.Add(save);
+            settingsTabTrackerGroupBox.Controls.Add(groupBox1);
             settingsTabTrackerGroupBox.ForeColor = SystemColors.ControlText;
             settingsTabTrackerGroupBox.Location = new Point(3, 9);
             settingsTabTrackerGroupBox.Name = "settingsTabTrackerGroupBox";
-            settingsTabTrackerGroupBox.Size = new Size(472, 395);
+            settingsTabTrackerGroupBox.Size = new Size(878, 103);
             settingsTabTrackerGroupBox.TabIndex = 6;
             settingsTabTrackerGroupBox.TabStop = false;
             settingsTabTrackerGroupBox.Text = "Tracker Settings";
+            // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(materialTextBox21);
+            groupBox1.Controls.Add(save);
+            groupBox1.Location = new Point(6, 21);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(866, 76);
+            groupBox1.TabIndex = 13;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Connection";
             // 
             // materialTextBox21
             // 
@@ -877,7 +901,7 @@ namespace PeerSoftware
             materialTextBox21.Font = new Font("Microsoft Sans Serif", 16F, FontStyle.Regular, GraphicsUnit.Pixel);
             materialTextBox21.HideSelection = true;
             materialTextBox21.LeadingIcon = null;
-            materialTextBox21.Location = new Point(5, 16);
+            materialTextBox21.Location = new Point(6, 21);
             materialTextBox21.Margin = new Padding(3, 2, 3, 2);
             materialTextBox21.MaxLength = 32767;
             materialTextBox21.MouseState = MaterialSkin.MouseState.OUT;
@@ -890,7 +914,7 @@ namespace PeerSoftware
             materialTextBox21.SelectionLength = 0;
             materialTextBox21.SelectionStart = 0;
             materialTextBox21.ShortcutsEnabled = true;
-            materialTextBox21.Size = new Size(337, 48);
+            materialTextBox21.Size = new Size(379, 48);
             materialTextBox21.TabIndex = 4;
             materialTextBox21.TabStop = false;
             materialTextBox21.TextAlign = HorizontalAlignment.Left;
@@ -905,12 +929,12 @@ namespace PeerSoftware
             save.Depth = 0;
             save.HighEmphasis = true;
             save.Icon = (Image)resources.GetObject("save.Icon");
-            save.Location = new Point(349, 28);
+            save.Location = new Point(394, 31);
             save.Margin = new Padding(4, 6, 4, 6);
             save.MouseState = MaterialSkin.MouseState.HOVER;
             save.Name = "save";
             save.NoAccentTextColor = Color.Empty;
-            save.Size = new Size(116, 36);
+            save.Size = new Size(142, 36);
             save.TabIndex = 3;
             save.Text = "Connect";
             save.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -1167,13 +1191,15 @@ namespace PeerSoftware
             tableLayoutPanel6.PerformLayout();
             settings.ResumeLayout(false);
             settingsTabClientGroupBox.ResumeLayout(false);
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             startupSettings.ResumeLayout(false);
             startupSettings.PerformLayout();
             theme.ResumeLayout(false);
             theme.PerformLayout();
             peerSettings.ResumeLayout(false);
-            peerSettings.PerformLayout();
             settingsTabTrackerGroupBox.ResumeLayout(false);
+            groupBox1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
@@ -1250,6 +1276,8 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialLabel downloadLocationLabel;
         private MaterialSkin.Controls.MaterialLabel newPageLabel;
         private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
+        private GroupBox groupBox1;
+        private GroupBox groupBox3;
     }
 }
 
