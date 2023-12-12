@@ -172,8 +172,14 @@ namespace PeerSoftware
             for (int i = 0; i < 5; i++)
             {
                 MaterialLabel materialTitleLabel = new MaterialLabel();
+                materialTitleLabel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                materialTitleLabel.AutoSize = true;
                 MaterialLabel materialSizeLabel = new MaterialLabel();
+                materialSizeLabel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                materialSizeLabel.AutoSize = true;
                 MaterialLabel materialDescriptionLabel = new MaterialLabel();
+                materialDescriptionLabel.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+                materialDescriptionLabel.AutoSize = true;
                 MaterialButton materialDownloadButton = new MaterialButton();
 
                 materialDownloadButton.Visible = false;

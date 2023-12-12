@@ -540,9 +540,9 @@ namespace PeerSoftware
             // 
             tableLayoutPanel6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel6.ColumnCount = 4;
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.74799F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 72.431076F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 27.568922F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 350F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 128F));
             tableLayoutPanel6.Controls.Add(myTorrentsTabNameLabel, 0, 0);
             tableLayoutPanel6.Controls.Add(myTorrentsTabDescriptionLabel, 2, 0);
@@ -575,7 +575,7 @@ namespace PeerSoftware
             myTorrentsTabDescriptionLabel.AutoSize = true;
             myTorrentsTabDescriptionLabel.Depth = 0;
             myTorrentsTabDescriptionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabDescriptionLabel.Location = new Point(372, 2);
+            myTorrentsTabDescriptionLabel.Location = new Point(402, 2);
             myTorrentsTabDescriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             myTorrentsTabDescriptionLabel.Name = "myTorrentsTabDescriptionLabel";
             myTorrentsTabDescriptionLabel.Size = new Size(81, 19);
@@ -601,7 +601,7 @@ namespace PeerSoftware
             label5.AutoSize = true;
             label5.Depth = 0;
             label5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label5.Location = new Point(290, 2);
+            label5.Location = new Point(292, 2);
             label5.MouseState = MaterialSkin.MouseState.HOVER;
             label5.Name = "label5";
             label5.Size = new Size(31, 19);
@@ -614,9 +614,9 @@ namespace PeerSoftware
             tableLayoutPanel4.AutoScroll = true;
             tableLayoutPanel4.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel4.ColumnCount = 4;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.74799F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 71.68831F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.3116875F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 345F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 129F));
             tableLayoutPanel4.Location = new Point(3, 81);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
