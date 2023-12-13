@@ -80,6 +80,7 @@ namespace PeerSoftware
             materialTextBox21 = new MaterialSkin.Controls.MaterialTextBox2();
             save = new MaterialSkin.Controls.MaterialButton();
             help = new TabPage();
+            materialHelp = new MaterialSkin.Controls.MaterialMultiLineTextBox();
             tabControlIcons = new ImageList(components);
             pagelabel = new MaterialSkin.Controls.MaterialLabel();
             searchBar = new MaterialSkin.Controls.MaterialTextBox2();
@@ -108,6 +109,7 @@ namespace PeerSoftware
             peerSettings.SuspendLayout();
             settingsTabTrackerGroupBox.SuspendLayout();
             groupBox1.SuspendLayout();
+            help.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -164,6 +166,7 @@ namespace PeerSoftware
             button5.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             button5.UseAccentColor = false;
             button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
             // 
             // button4
             // 
@@ -185,6 +188,7 @@ namespace PeerSoftware
             button4.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             button4.UseAccentColor = false;
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // tableLayoutPanel5
             // 
@@ -540,9 +544,9 @@ namespace PeerSoftware
             // 
             tableLayoutPanel6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel6.ColumnCount = 4;
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.74799F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
-            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 72.431076F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 27.568922F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 350F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 128F));
             tableLayoutPanel6.Controls.Add(myTorrentsTabNameLabel, 0, 0);
             tableLayoutPanel6.Controls.Add(myTorrentsTabDescriptionLabel, 2, 0);
@@ -575,7 +579,7 @@ namespace PeerSoftware
             myTorrentsTabDescriptionLabel.AutoSize = true;
             myTorrentsTabDescriptionLabel.Depth = 0;
             myTorrentsTabDescriptionLabel.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            myTorrentsTabDescriptionLabel.Location = new Point(372, 2);
+            myTorrentsTabDescriptionLabel.Location = new Point(402, 2);
             myTorrentsTabDescriptionLabel.MouseState = MaterialSkin.MouseState.HOVER;
             myTorrentsTabDescriptionLabel.Name = "myTorrentsTabDescriptionLabel";
             myTorrentsTabDescriptionLabel.Size = new Size(81, 19);
@@ -601,7 +605,7 @@ namespace PeerSoftware
             label5.AutoSize = true;
             label5.Depth = 0;
             label5.Font = new Font("Roboto", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
-            label5.Location = new Point(290, 2);
+            label5.Location = new Point(292, 2);
             label5.MouseState = MaterialSkin.MouseState.HOVER;
             label5.Name = "label5";
             label5.Size = new Size(31, 19);
@@ -614,9 +618,9 @@ namespace PeerSoftware
             tableLayoutPanel4.AutoScroll = true;
             tableLayoutPanel4.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
             tableLayoutPanel4.ColumnCount = 4;
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 77.74799F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 22.25201F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 71.68831F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28.3116875F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 345F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 129F));
             tableLayoutPanel4.Location = new Point(3, 81);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -943,12 +947,30 @@ namespace PeerSoftware
             // help
             // 
             help.BackColor = Color.White;
+            help.Controls.Add(materialHelp);
             help.ImageKey = "help.png";
             help.Location = new Point(4, 39);
             help.Name = "help";
             help.Size = new Size(884, 407);
             help.TabIndex = 4;
             help.Text = "Help";
+            // 
+            // materialHelp
+            // 
+            materialHelp.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            materialHelp.BackColor = Color.FromArgb(255, 255, 255);
+            materialHelp.BorderStyle = BorderStyle.None;
+            materialHelp.Depth = 0;
+            materialHelp.Font = new Font("Microsoft Sans Serif", 14F, FontStyle.Regular, GraphicsUnit.Pixel);
+            materialHelp.ForeColor = Color.FromArgb(222, 0, 0, 0);
+            materialHelp.Location = new Point(0, 3);
+            materialHelp.MouseState = MaterialSkin.MouseState.HOVER;
+            materialHelp.Name = "materialHelp";
+            materialHelp.ReadOnly = true;
+            materialHelp.ScrollBars = RichTextBoxScrollBars.Vertical;
+            materialHelp.Size = new Size(881, 401);
+            materialHelp.TabIndex = 0;
+            materialHelp.Text = "";
             // 
             // tabControlIcons
             // 
@@ -1200,6 +1222,7 @@ namespace PeerSoftware
             peerSettings.ResumeLayout(false);
             settingsTabTrackerGroupBox.ResumeLayout(false);
             groupBox1.ResumeLayout(false);
+            help.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ResumeLayout(false);
@@ -1278,6 +1301,7 @@ namespace PeerSoftware
         private GroupBox groupBox1;
         private GroupBox groupBox3;
         private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
+        private MaterialSkin.Controls.MaterialMultiLineTextBox materialHelp;
     }
 }
 

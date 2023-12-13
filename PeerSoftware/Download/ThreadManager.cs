@@ -42,7 +42,7 @@ namespace PeerSoftware.Download
                     CustomMessageBoxOK msgBox = new CustomMessageBoxOK();
 
                     msgBox.SetTitle("Attention");
-                    msgBox.SetMessageText($"You can download only {maxParallelDownloads} file at the samet time. You can change it from settings.");
+                    msgBox.SetMessageText($"You can download only {maxParallelDownloads} file at the same time. You can change it from settings.");
                     msgBox.Show();
 
                     return;
@@ -59,10 +59,11 @@ namespace PeerSoftware.Download
         {
             Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
 
-            if (index >= 0 && index <= threads.Count && threads[index].IsAlive)
+            if (index >= 0 && index <= threads.Count)
             {
-                threads[index].Abort();
+                Thread tr = threads[index];
                 threads.RemoveAt(index);
+                tr.Abort();
             }
         }
 

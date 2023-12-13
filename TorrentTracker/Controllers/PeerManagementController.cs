@@ -31,6 +31,7 @@ namespace TorrentTracker.Controllers
                     {
                         flag = false;
                         pear.Key.Port= port;
+                        pear.Value.Clear();
                         break;
                     }
                    
@@ -43,6 +44,7 @@ namespace TorrentTracker.Controllers
                 }
                 flag = true;
             }
+            
         }
 
         public void DestroyPeer(string ip)
