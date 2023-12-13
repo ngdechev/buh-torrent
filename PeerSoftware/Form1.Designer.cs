@@ -640,7 +640,7 @@ namespace PeerSoftware
             // 
             // settingsTabClientGroupBox
             // 
-            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            settingsTabClientGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             settingsTabClientGroupBox.Controls.Add(groupBox3);
             settingsTabClientGroupBox.Controls.Add(startupSettings);
             settingsTabClientGroupBox.Controls.Add(theme);
@@ -730,7 +730,6 @@ namespace PeerSoftware
             // 
             // startupSettings
             // 
-            startupSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             startupSettings.Controls.Add(startMinimizedCheckbox);
             startupSettings.Controls.Add(startupCheckbox);
             startupSettings.Location = new Point(6, 22);
@@ -774,7 +773,6 @@ namespace PeerSoftware
             // 
             // theme
             // 
-            theme.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             theme.Controls.Add(comboBoxTheme);
             theme.Controls.Add(darkModeSwitch);
             theme.Location = new Point(6, 90);
@@ -798,7 +796,7 @@ namespace PeerSoftware
             comboBoxTheme.FormattingEnabled = true;
             comboBoxTheme.IntegralHeight = false;
             comboBoxTheme.ItemHeight = 43;
-            comboBoxTheme.Location = new Point(6, 31);
+            comboBoxTheme.Location = new Point(6, 22);
             comboBoxTheme.MaxDropDownItems = 4;
             comboBoxTheme.MouseState = MaterialSkin.MouseState.OUT;
             comboBoxTheme.Name = "comboBoxTheme";
@@ -825,7 +823,6 @@ namespace PeerSoftware
             // 
             // peerSettings
             // 
-            peerSettings.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             peerSettings.Controls.Add(maxDownloadsFromPeersSlider);
             peerSettings.Controls.Add(maxActiveDownloadsSlider);
             peerSettings.Location = new Point(400, 22);
@@ -881,6 +878,7 @@ namespace PeerSoftware
             // 
             // groupBox1
             // 
+            groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox1.Controls.Add(materialTextBox21);
             groupBox1.Controls.Add(save);
             groupBox1.Location = new Point(6, 21);
@@ -1175,6 +1173,8 @@ namespace PeerSoftware
             MinimumSize = new Size(899, 520);
             Name = "Form1";
             Padding = new Padding(0, 64, 0, 500);
+            Sizable = false;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "BuhTorrent";
             FormClosing += MainForm_FormClosing;
             Load += Form1_Load;
@@ -1275,9 +1275,9 @@ namespace PeerSoftware
         private MaterialSkin.Controls.MaterialTextBox2 serachTorrentsBar;
         private MaterialSkin.Controls.MaterialLabel downloadLocationLabel;
         private MaterialSkin.Controls.MaterialLabel newPageLabel;
-        private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
         private GroupBox groupBox1;
         private GroupBox groupBox3;
+        private MaterialSkin.Controls.MaterialComboBox comboBoxTheme;
     }
 }
 

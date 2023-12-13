@@ -56,8 +56,11 @@ namespace PeerSoftware.Utils
                         SendPTTMessage(client, 0x00, localIpPort);
 
                         new ToastContentBuilder()
-                            .AddText($"You are connected to server IP: {trackerIpField}")
+                            .AddText($"You are connected to {trackerIpField}.")
                             .Show();
+
+                        Logger.i($"You are connected to {trackerIpField}.");
+
                         CloseConnection(client);
                     }
                     catch (Exception ex)
@@ -67,6 +70,8 @@ namespace PeerSoftware.Utils
                             _customMessageBoxOK.SetTitle("The server is closed");
                             _customMessageBoxOK.SetMessageText($"Error connecting to {trackerIpField}!");
                             _customMessageBoxOK.ShowDialog();
+
+                            Logger.e($"Error connecting to {trackerIpField} - The server is closed!");
                         }
                         else 
                         {
