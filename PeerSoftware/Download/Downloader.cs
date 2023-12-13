@@ -16,6 +16,7 @@ namespace PeerSoftware.Download
         private ThreadManager _threadManager;
         private List<Thread> _threads = new List<Thread>();
         private List<DownloadTcpManager> _downloadTcpManagers = new List<DownloadTcpManager>();
+        private CustomMessageBoxOK _customMessageBoxOK;
 
         public Downloader()
         {
@@ -177,6 +178,7 @@ namespace PeerSoftware.Download
         }
 
         public void Finally(DownloadTcpManager connectionManager, Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils, int index)
+        { 
             // Ensure progress bar is updated even if an exception occurs
             connectionManager.UpdateProgressBar();
             RemoveDownloadTCPManeger(index);
