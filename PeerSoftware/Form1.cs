@@ -60,11 +60,12 @@ namespace PeerSoftware
 
         private ContextMenuStrip _systemTrayContextMenu;
 
-
-
         public Form1()
         {
             InitializeComponent();
+            Logger.ClearLogFile();
+
+            Logger.d($"Class -> {GetType().Name} | Method -> Form1()");
 
             // New UI Stuff
             _materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
@@ -93,7 +94,6 @@ namespace PeerSoftware
 
             _systemTrayContextMenu.Items.Add("Settings", null, OnMenuItem1Clicked);
             _systemTrayContextMenu.Items.Add("Close App", null, OnMenuItem2Clicked);
-
 
             _storage = new TorrentStorage();
             _torrentFileServices = new TorrentFileServices();
@@ -205,7 +205,6 @@ namespace PeerSoftware
 
             try
             {
-
                 if (materialTextBox21.Text != null)
                 {
                     string[] ip = materialTextBox21.Text.Split(':', 2);
@@ -231,6 +230,8 @@ namespace PeerSoftware
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (ConfigurationManager.AppSettings["darkMode"] == "true")
             {
                 darkModeSwitch.Checked = true;
@@ -275,9 +276,10 @@ namespace PeerSoftware
             }
         }
 
-
         public void SetStartup(bool isChecked)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             string appName = Application.ProductName;
             string executablePath = Application.ExecutablePath;
 
@@ -300,6 +302,8 @@ namespace PeerSoftware
 
         private void ComboBoxTheme_SelectedIndexChanged(object? sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (comboBoxTheme.SelectedItem != null)
             {
                 string selectedTheme = comboBoxTheme.SelectedItem.ToString();
@@ -353,6 +357,8 @@ namespace PeerSoftware
 
         private void search_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
             Show(_resultPage, results);
 
@@ -362,6 +368,8 @@ namespace PeerSoftware
 
         private void refresh_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             _searchOnFlag = false;
             _allMaxPage = (int)Math.Ceiling(_storage.GetAllTorrentFiles().Count / 5.0);
             Show(_allPage, _storage.GetAllTorrentFiles());
@@ -369,6 +377,8 @@ namespace PeerSoftware
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (!_searchOnFlag)
             {
                 if (_allPage - 1 >= 0)
@@ -392,6 +402,8 @@ namespace PeerSoftware
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (!_searchOnFlag)
             {
                 if (_allPage + 1 < _allMaxPage)
@@ -415,6 +427,8 @@ namespace PeerSoftware
 
         private void Show(int i, List<TorrentFile> torrentFiles)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (torrentFiles.Count == 0)
             {
                 MaterialLabel materialDescriptionControl = _materialTitleControls[0];
@@ -497,6 +511,8 @@ namespace PeerSoftware
 
         private void ClearAndShowMyTorrents()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (tabControl1.SelectedIndex == 1 && _connections.IsConnected() == true)
             {
                 _torrentFileServices.LoadData(_storage, _networkUtils, this);
@@ -519,6 +535,8 @@ namespace PeerSoftware
 
         private void ShowMyTorrents()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<TorrentFile> temp = _commonUtils.LoadMyTorrents(_storage);
 
             if (temp.Count == 0)
@@ -574,6 +592,8 @@ namespace PeerSoftware
 
         public void DeleteMyTorrentButton_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             MaterialButton deleteButton = (MaterialButton)sender;
             int rowIndex = tableLayoutPanel4.GetRow(deleteButton);
             Label torrentName = (Label)tableLayoutPanel4.GetControlFromPosition(0, rowIndex);
@@ -620,6 +640,8 @@ namespace PeerSoftware
         // Downloading torrents tab..
         public void DownloadButton_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             MaterialButton downloadButton = (MaterialButton)sender;
 
             _storage.GetPeerWithMyFaile();
@@ -702,6 +724,8 @@ namespace PeerSoftware
 
         private void PauseResume_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             MaterialButton pauseButton = (MaterialButton)sender;
 
             int rowIndex = tableLayoutPanel1.GetRow(pauseButton);
@@ -735,6 +759,8 @@ namespace PeerSoftware
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (e.KeyCode == Keys.Enter)
             {
                 List<TorrentFile> results = _torrentFileServices.SearchTorrentFiles(searchBar.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
@@ -749,6 +775,8 @@ namespace PeerSoftware
 
         private void save_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             string trackerIpField;
             int trackerPortField;
 
@@ -768,6 +796,8 @@ namespace PeerSoftware
 
         private void createNewTorrent_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             FormNewTorrent formNewTorrent = new FormNewTorrent(this, _networkUtils, _commonUtils);
             formNewTorrent.ShowDialog();
 
@@ -869,6 +899,8 @@ namespace PeerSoftware
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (startMinimizedCheckbox.Checked)
             {
                 _configuration.AppSettings.Settings["startMinimized"].Value = "true";
@@ -938,6 +970,8 @@ namespace PeerSoftware
 
         private void materialButton1_Click(object sender, EventArgs e)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             using (FolderBrowserDialog openBrowserDialog = new FolderBrowserDialog())
             {
                 if (openBrowserDialog.ShowDialog() == DialogResult.OK)
@@ -954,7 +988,7 @@ namespace PeerSoftware
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error while saving configuration: {ex.Message}");
+                        Logger.e($"Error while saving configuration: {ex.Message}");
                     }
 
                     _configuration.Save(ConfigurationSaveMode.Modified);
@@ -978,6 +1012,8 @@ namespace PeerSoftware
 
         private void Resume_OnStartUp()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             LoadPausedData();
             foreach (TorrentFile torrentFile in _storage.GetPausedTorrentFiles())
             {
@@ -1015,6 +1051,8 @@ namespace PeerSoftware
         }
         private void SavePausedData_OnShuttingDown()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             for (int rowIndex = 0; rowIndex < _storage.GetDownloadTorrentFiles().Count; rowIndex++)
             {
                 if (_storage.GetDownloadTorrentStatus()[rowIndex])
@@ -1035,6 +1073,8 @@ namespace PeerSoftware
         }
         private void LoadPausedData()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             string json;
             using (StreamReader streamReader = new StreamReader("temp\\pausedTorrentFiles.json"))
             {

@@ -1,4 +1,5 @@
 ﻿using PeerSoftware.Storage;
+using PeerSoftware.Utils;
 using PTP_Parser;
 using System.Net.Sockets;
 
@@ -16,6 +17,8 @@ namespace PeerSoftware.Upload
 
         public UploadPeerHandler(ITorrentStorage storage, TcpClient client, UploadPeerServer server)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             _storage = storage;
             _tcpClient = client;
             _server = server;
@@ -23,6 +26,8 @@ namespace PeerSoftware.Upload
 
         public void Handle()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             NetworkStream stream = _tcpClient.GetStream();
             PTPBlock block = PTPParser.ParseToBlock(stream);
 
@@ -43,7 +48,7 @@ namespace PeerSoftware.Upload
                     }
                     catch(Exception ex)  
                     {
-                        Console.WriteLine( ex.Message);
+                        Logger.e( ex.Message);
                     }
 
                 }
@@ -57,6 +62,8 @@ namespace PeerSoftware.Upload
         }
         public void Disasemble(string cheksum, string blocks)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             _blocks = new List<PTPBlock>();
 
             TorrentFile torrentFile = _storage.GetMyTorrentFiles().Find(r => r.info.checksum == cheksum);
@@ -86,6 +93,8 @@ namespace PeerSoftware.Upload
 
         public void CheckBlocks(int startPosition, int firstBlock, int lastBlock, int allBlocksFile, double fileLength)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (lastBlock == 1)
             {
                 _lengthToRead = (int)fileLength;
@@ -136,6 +145,8 @@ namespace PeerSoftware.Upload
 
         public void UploadFilePackets(string filePath, int startPosition, int firstBlock, int lastBlock)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 fs.Seek(startPosition, SeekOrigin.Begin);

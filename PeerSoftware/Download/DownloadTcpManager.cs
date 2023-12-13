@@ -11,6 +11,7 @@ using System.Timers;
 using MaterialSkin.Controls;
 using System.Text.Json;
 using PTT_Parser;
+using PeerSoftware.Utils;
 
 namespace PeerSoftware.Download
 {
@@ -27,6 +28,8 @@ namespace PeerSoftware.Download
 
         public void ConnectAndManageConnections(Dictionary<string, string> peersAndBlocks, TorrentFile torrentFile, MaterialProgressBar progressBar)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             isRunnig = true;
             _progressBar = progressBar;
             _torrentFile = torrentFile;
@@ -50,13 +53,15 @@ namespace PeerSoftware.Download
                     client.Connect(peerIpAndPort[0], _serverPort);
                     byte[] data = PTPParser.StartPackage($"{torrentFile.info.checksum}/{serverIp.Value}");
                     client.GetStream().Write(data);
+
+                    Logger.i($"Connected to server at {serverIp}:{_serverPort}");
+                  
                     _progressBar.Maximum = lastBlock;
-                    // Console.WriteLine($"Connected to server at {serverIp}:{_serverPort}");
                     // You can now send and receive data on 'client' synchronously.
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Failed to connect to {serverIp}:{_serverPort}: {ex.Message}");
+                    Logger.e($"Failed to connect to {serverIp}:{_serverPort}: {ex.Message}");
                 }
             }
             
@@ -68,6 +73,8 @@ namespace PeerSoftware.Download
 
         public void SendDataOnce(string data)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             foreach (var client in _clients)
             {
                 if (client.Connected)
@@ -75,13 +82,15 @@ namespace PeerSoftware.Download
                     NetworkStream stream = client.GetStream();
                     byte[] buffer = Encoding.ASCII.GetBytes(data);
                     stream.Write(buffer, 0, buffer.Length);
-                    //Console.WriteLine($"Data sent to {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
+                    Logger.i($"Data sent to {((IPEndPoint)client.Client.RemoteEndPoint).Address}");
                 }
             }
         }
 
         public bool ReceiveData()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             while (_pTPBlocks.Count < _numberOfBlocks)
             {
                 foreach (var client in _clients)
@@ -110,6 +119,8 @@ namespace PeerSoftware.Download
 
         public void DisconnectAll()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             foreach (var client in _clients)
             {
                 client.Close();
@@ -128,6 +139,8 @@ namespace PeerSoftware.Download
 
         public void SaveToTemp()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<TempPTPBlock> tempPTPBlocks = new List<TempPTPBlock>();
             foreach (PTPBlock block in _pTPBlocks)
             {
@@ -159,6 +172,8 @@ namespace PeerSoftware.Download
 
         public void UpdateProgressBar()
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (_progressBar.InvokeRequired)
             {
                 _progressBar.BeginInvoke(new Action(() =>

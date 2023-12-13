@@ -34,6 +34,8 @@ namespace PeerSoftware.Utils
 
         public void ReceateTorrentFileForDownloadedFile(ITorrentStorage torrentStorage,  string checksum, Form1 mainForm)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             TorrentFile newTorrent =new TorrentFile();
             if(torrentStorage.GetDownloadTorrentFiles() == null )
             {
@@ -44,8 +46,6 @@ namespace PeerSoftware.Utils
                 if (item.info.checksum == checksum)
                 {
                     newTorrent = item;
-                    
-                    //MessageBox.Show("in");
                     
                     string fileExtension = Path.GetExtension(item.info.fileName);
 
@@ -66,6 +66,8 @@ namespace PeerSoftware.Utils
 
         public List<TorrentFile> LoadMyTorrents(ITorrentStorage storage)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             string folderPath = Directory.GetCurrentDirectory();
             folderPath = folderPath + "\\MyTorrent";
             List<TorrentFile> temp = new List<TorrentFile>();
@@ -89,6 +91,8 @@ namespace PeerSoftware.Utils
 
         public List<TorrentFile> AnonceMyTorrents_OnStartUp(ITorrentStorage storage,NetworkUtils networkUtils,Form1 mainForm)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             string folderPath = Directory.GetCurrentDirectory();
             folderPath = folderPath + "\\MyTorrent";
             List<TorrentFile> temp = new List<TorrentFile>();
@@ -122,7 +126,7 @@ namespace PeerSoftware.Utils
                     }
                     catch (Exception ex)
                     {
-                        throw new Exception("Error sending data: " + ex.Message);
+                        Logger.e("Error sending data: " + ex.Message);
                     }
                 }
             }

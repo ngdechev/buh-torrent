@@ -10,6 +10,8 @@ namespace PeerSoftware.Download
 
         public Thread CreateThread(Action threadAction)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+            
             Thread newThread = new Thread(() =>
             {
                 threadAction();
@@ -19,6 +21,8 @@ namespace PeerSoftware.Download
 
         public void StartAllThreads(List<Thread> threads)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             foreach (var thread in threads)
             {
                 thread.Start();
@@ -27,6 +31,8 @@ namespace PeerSoftware.Download
 
         public void StartThread(int index, int maxParallelDownloads, List<Thread> threads)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (index >= 0 && index < threads.Count)
             {
                 if (index > maxParallelDownloads)
@@ -43,12 +49,14 @@ namespace PeerSoftware.Download
             }
             else
             {
-                Console.WriteLine("Invalid thread index.");
+                Logger.e("Invalid thread index.");
             }
         }
 
         public void StopThread(int index, ref List<Thread> threads)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             if (index >= 0 && index <= threads.Count)
             {
                 threads.ElementAt(index).Join();
@@ -57,6 +65,8 @@ namespace PeerSoftware.Download
 
         public void StopAllThreads(List<Thread> threads)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             foreach (var thread in threads)
             {
                 if (thread.IsAlive)
