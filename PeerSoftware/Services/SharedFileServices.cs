@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PeerSoftware.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,14 +12,18 @@ namespace PeerSoftware.Services
     {
         public Dictionary<string, string> _peersAndBlocks = new Dictionary<string, string>();
         public Dictionary<string, string> _newPeersAndBlocks = new Dictionary<string, string>();
+        private CustomMessageBoxOK _customMessageBoxOK = new CustomMessageBoxOK();
 
         public Dictionary<string, string> CalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile, int nPeersUploading)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             int numberOfPeers = peersIpPlusPort.Count();
 
             if (numberOfPeers == 0)
             {
-                throw new Exception("There are no active peers.");
+                _customMessageBoxOK.SetMessageText("There are no active peers.");
+                _customMessageBoxOK.Show();
             }
 
             if (nPeersUploading > numberOfPeers) 
@@ -58,6 +63,8 @@ namespace PeerSoftware.Services
         }
         public Dictionary<string, string> ReCalculateParticions(List<string> peersIpPlusPort, int sizeOfSharedFile,List<int> downloadBlocks, int nPeersUploading)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<int> blocksForDownload=new List<int>();
             List<string> listWithFinalyBlocks = new List<string>();
             _peersAndBlocks.Clear();
@@ -97,6 +104,8 @@ namespace PeerSoftware.Services
         }
         public List<string> SplitBlocks(List<int> inputList)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             List<List<int>> result = new List<List<int>>();
             List<int> sublist = new List<int> { inputList[0] };
             List<string>list = new List<string>();

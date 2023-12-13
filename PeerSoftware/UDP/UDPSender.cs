@@ -19,6 +19,8 @@ namespace PeerSoftware.UDP
 
         public UDPSender(NetworkUtils networkUtils)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             _networkUtils = networkUtils;
         }
 
@@ -67,7 +69,7 @@ namespace PeerSoftware.UDP
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: " + ex.Message);
+                Logger.e("Error: " + ex.Message);
             }
         }
 

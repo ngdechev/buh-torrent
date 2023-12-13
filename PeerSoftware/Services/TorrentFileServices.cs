@@ -14,8 +14,12 @@ namespace PeerSoftware.Services
 {
     public class TorrentFileServices
     {
+        private CustomMessageBoxOK _customMessageBox = new CustomMessageBoxOK();
+
         public List<TorrentFile> SearchTorrentFiles(string searchTerm, ref int resultMaxPage, ref bool searchOnFlag, List<TorrentFile> allTorrentFiles)
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             // Convert the search term to lowercase for case-insensitive search
             searchTerm = searchTerm.ToLower();
 
@@ -33,6 +37,8 @@ namespace PeerSoftware.Services
 
         public void LoadData(ITorrentStorage torrentStorage, NetworkUtils networkUtils, Form1 form1 )
         {
+            Logger.d($"Class -> {GetType().Name}.cs | Method -> {System.Reflection.MethodBase.GetCurrentMethod().Name}()");
+
             torrentStorage.GetAllTorrentFiles().Clear();
 
             try
@@ -46,7 +52,10 @@ namespace PeerSoftware.Services
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred: " + ex.Message);
+                Logger.e(ex.Message);
+
+                _customMessageBox.SetMessageText("An error occurred: " + ex.Message);
+                _customMessageBox.ShowDialog();
             }
         }
     }
