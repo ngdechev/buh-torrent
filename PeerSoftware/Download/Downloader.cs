@@ -13,16 +13,16 @@ namespace PeerSoftware.Download
 {
     public class Downloader
     {
-        private int _index;
         private ThreadManager _threadManager;
+        private List<Thread> _threads = new List<Thread>();
+        private List<DownloadTcpManager> _downloadTcpManagers = new List<DownloadTcpManager>();
 
         public Downloader()
         {
-            _index = 0;
             _threadManager = new ThreadManager();
         }
 
-        public void Download(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
+        public void Download(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form, int index)
         {
             List<string> peersList = peers;
 
@@ -32,57 +32,60 @@ namespace PeerSoftware.Download
                 return;
             }
 
-            _threadManager.CreateThread(() =>
-            {
-                DownloadTcpManager connectionManager = new DownloadTcpManager();
-                try
+            _threads.Insert( index,
+                _threadManager.CreateThread(() =>
                 {
-                    _threadManager.AddDownloadTCPManeger(connectionManager);
-
-                    SharedFileServices sharedFileServices = new SharedFileServices();
-                    Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(peersList, (int)torrentFile.info.length, form.GetNPeersUploading());
-
-                    // Connect to multiple servers synchronously
-                    connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);
-
-                    // Receive data from all connected servers
-                    if (connectionManager.ReceiveData())
+                    DownloadTcpManager connectionManager = new DownloadTcpManager();
+                    try
                     {
-                        //connectionManager.DisconnectAll();
+                        AddDownloadTCPManeger(index, connectionManager);
 
-                        Reassemble(torrentFile, connectionManager.GetPTPBlocks(), form.GetSharedFileDownloadFolder());
-                        Finally(connectionManager, form, torrentFile, networkUtils);
+                        SharedFileServices sharedFileServices = new SharedFileServices();
+                        Dictionary<string, string> peersAndBlocks = sharedFileServices.CalculateParticions(peersList, (int)torrentFile.info.length, form.GetNPeersUploading());
 
-                        new ToastContentBuilder()
-                            .AddText($"{torrentFile.info.torrentName} has been downloaded!")
-                            .Show();
+                        // Connect to multiple servers synchronously
+                        connectionManager.ConnectAndManageConnections(peersAndBlocks, torrentFile, progressBar);
+
+                        // Receive data from all connected servers
+                        if (connectionManager.ReceiveData())
+                        {
+                            //connectionManager.DisconnectAll();
+
+                            
+                            Reassemble(torrentFile, connectionManager.GetPTPBlocks(), form.GetSharedFileDownloadFolder());
+                            Finally(connectionManager, form, torrentFile, networkUtils, index);
+
+                            new ToastContentBuilder()
+                                .AddText($"{torrentFile.info.torrentName} has been downloaded!")
+                                .Show();
+
+                            _threadManager.StopThread(index, ref _threads);
+                        }
+
+                        connectionManager.DisconnectAll();
+                        
+
+
+
+                        // Disconnect from all servers
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Download failed: {ex.Message}");
+                        // Handle or log the exception as needed
                     }
 
-                    connectionManager.DisconnectAll();
-                    _index--;
-                    _threadManager.StopThread(_index);
-                  
 
-
-                    // Disconnect from all servers
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Download failed: {ex.Message}");
-                    // Handle or log the exception as needed
-                }
-
-
-            });
-
+                })
+            );
             int maxParallelDownloads = form.GetNParallelDownloads();
 
-            _threadManager.StartThread(_index, maxParallelDownloads);
+            _threadManager.StartThread(index, maxParallelDownloads, _threads);
 
-            _index++;
+            
         }
 
-        public void Resume(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form)
+        public void Resume(TorrentFile torrentFile, List<string> peers, MaterialProgressBar progressBar, NetworkUtils networkUtils, Form1 form, int index)
         {
             List<string> peersList = peers;
 
@@ -92,12 +95,12 @@ namespace PeerSoftware.Download
                 return;
             }
 
-            _threadManager.CreateThread(() =>
+            _threads[index] = _threadManager.CreateThread(() =>
             {
                 DownloadTcpManager connectionManager = new DownloadTcpManager();
                 try
                 {
-                    _threadManager.AddDownloadTCPManeger(connectionManager);
+                    _downloadTcpManagers[index] = connectionManager;
 
                     SharedFileServices sharedFileServices = new SharedFileServices();
 
@@ -132,19 +135,21 @@ namespace PeerSoftware.Download
                     if (connectionManager.ReceiveData())
                     {
                         //connectionManager.DisconnectAll();
-
                         Reassemble(torrentFile, connectionManager.GetPTPBlocks(), form.GetSharedFileDownloadFolder());
-                        Finally(connectionManager, form, torrentFile, networkUtils);
+                        Finally(connectionManager, form, torrentFile, networkUtils,index);
 
                         new ToastContentBuilder()
                             .AddText($"{torrentFile.info.torrentName} has been downloaded!")
                             .Show();
+
+                        _threadManager.StopThread(index, ref _threads);
+
                     }
 
                     connectionManager.DisconnectAll();
-                    _index--;
-                    _threadManager.StopThread(_index);
                     
+                    
+
 
 
                     // Disconnect from all servers
@@ -160,18 +165,17 @@ namespace PeerSoftware.Download
 
             int maxParallelDownloads = form.GetNParallelDownloads();
 
-            _threadManager.StartThread(_index, maxParallelDownloads);
+            _threadManager.StartThread(index, maxParallelDownloads, _threads);
 
-            _index++;
+            
         }
 
-        public void Finally(DownloadTcpManager connectionManager, Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils)
-
+        public void Finally(DownloadTcpManager connectionManager, Form1 form, TorrentFile torrentFile, NetworkUtils networkUtils, int index)
         {
             // Ensure progress bar is updated even if an exception occurs
             connectionManager.UpdateProgressBar();
-            _threadManager.RemoveDownloadTCPManeger(_index);
-            
+            RemoveDownloadTCPManeger(index);
+
             new CommonUtils().ReceateTorrentFileForDownloadedFile(form.GetTorrentStorage(), torrentFile.info.checksum, form);
             form.GetTorrentStorage().GetDownloadTorrentFiles().Remove(torrentFile);
 
@@ -227,7 +231,7 @@ namespace PeerSoftware.Download
 
         public void Pause(int index)
         {
-            _threadManager.GerDownloadTCPManeger(index).isRunnig = false;
+            GerDownloadTCPManeger(index).isRunnig = false;
         }
 
         public List<PTPBlock> ReadBlocks(string path)
@@ -239,13 +243,27 @@ namespace PeerSoftware.Download
 
             tempPTPBlocks = JsonSerializer.Deserialize<List<TempPTPBlock>>(jsonString);
 
-            foreach(TempPTPBlock block in tempPTPBlocks)
+            foreach (TempPTPBlock block in tempPTPBlocks)
             {
-                pTPBlocks.Add(new PTPBlock(block.Id,block.Size,block.Data));
+                pTPBlocks.Add(new PTPBlock(block.Id, block.Size, block.Data));
             }
 
             return pTPBlocks;
         }
 
+        private void AddDownloadTCPManeger(int index, DownloadTcpManager downloadTcpManager)
+        {
+            _downloadTcpManagers.Insert(index, downloadTcpManager);
+        }
+
+        private void RemoveDownloadTCPManeger(int index)
+        {
+            _downloadTcpManagers.RemoveAt(index);
+        }
+
+        private DownloadTcpManager GerDownloadTCPManeger(int index)
+        {
+            return _downloadTcpManagers.ElementAt(index);
+        }
     }
 }

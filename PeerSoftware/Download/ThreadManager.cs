@@ -6,20 +6,18 @@ namespace PeerSoftware.Download
 {
     public class ThreadManager
     {
-        private List<Thread> threads = new List<Thread>();
-        private List<DownloadTcpManager> downloadTcpManagers = new List<DownloadTcpManager>();
+        
 
-        public void CreateThread(Action threadAction)
+        public Thread CreateThread(Action threadAction)
         {
             Thread newThread = new Thread(() =>
             {
                 threadAction();
             });
-
-            threads.Add(newThread);
+            return newThread;
         }
 
-        public void StartAllThreads()
+        public void StartAllThreads(List<Thread> threads)
         {
             foreach (var thread in threads)
             {
@@ -27,11 +25,11 @@ namespace PeerSoftware.Download
             }
         }
 
-        public void StartThread(int index, int maxParallelDownloads)
+        public void StartThread(int index, int maxParallelDownloads, List<Thread> threads)
         {
             if (index >= 0 && index < threads.Count)
             {
-                if (index >= maxParallelDownloads)
+                if (index > maxParallelDownloads)
                 {
                     CustomMessageBoxOK msgBox = new CustomMessageBoxOK();
 
@@ -49,17 +47,15 @@ namespace PeerSoftware.Download
             }
         }
 
-        public void StopThread(int index)
+        public void StopThread(int index, ref List<Thread> threads)
         {
             if (index >= 0 && index <= threads.Count)
             {
-                Thread tr = threads[index];
-                threads.RemoveAt(index);
-                tr.Abort();
+                threads.ElementAt(index).Join();
             }
         }
 
-        public void StopAllThreads()
+        public void StopAllThreads(List<Thread> threads)
         {
             foreach (var thread in threads)
             {
@@ -72,19 +68,6 @@ namespace PeerSoftware.Download
             threads.Clear();
         }
 
-        public void AddDownloadTCPManeger(DownloadTcpManager downloadTcpManager)
-        {
-            downloadTcpManagers.Add(downloadTcpManager);
-        }
-
-        public void RemoveDownloadTCPManeger(int index)
-        {
-            downloadTcpManagers.RemoveAt(index-1);
-        }
         
-        public DownloadTcpManager GerDownloadTCPManeger(int index)
-        {
-            return downloadTcpManagers.ElementAt(index);
-        }
     }
 }

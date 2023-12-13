@@ -34,7 +34,7 @@ namespace PeerSoftware.Upload
                 foreach (PTPBlock pTPBlock in _blocks)
                 {
 
-                    Thread.Sleep(10);
+                    Thread.Sleep(5);
                     try
                     {
 

@@ -103,7 +103,7 @@ namespace PeerSoftware.Download
                     }
                     
                 }
-                Thread.Sleep(50);
+                Thread.Sleep(10);
             }
             return true;
         }

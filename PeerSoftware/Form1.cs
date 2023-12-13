@@ -640,13 +640,21 @@ namespace PeerSoftware
             MaterialLabel label1 = new MaterialLabel();
             label1.Text = torrentNameLabel.Text;
 
-            List<TorrentFile> torrentFiles = _torrentFileServices.SearchTorrentFiles(label1.Text, ref _resultMaxPage, ref _searchOnFlag, _storage.GetAllTorrentFiles());
+            int idOfDownload;
+            if (_searchOnFlag)
+            {
+                idOfDownload = rowIndex + _resultPage * 5;
+            }
+            else
+            {
+                idOfDownload = rowIndex + _allPage * 5;
+            }
+            TorrentFile torrentFile = _storage.GetAllTorrentFiles()[idOfDownload];
 
             MaterialLabel label2 = new MaterialLabel();
-            label2.Text = _commonUtils.FormatFileSize(torrentFiles[0].info.length);//((long)sizeLabel.Text.ToString);
-            _storage.GetDownloadTorrentFiles().AddRange(torrentFiles);
+            label2.Text = _commonUtils.FormatFileSize(torrentFile.info.length);//((long)sizeLabel.Text.ToString);
+            _storage.GetDownloadTorrentFiles().Insert(0,torrentFile);
 
-            _storage.GetDownloadTorrentFiles().Add(torrentFiles[0]);
 
             MaterialProgressBar progressBar = new MaterialProgressBar();
             progressBar.Minimum = 0;
@@ -683,10 +691,10 @@ namespace PeerSoftware
             // Increment the row count
             tableLayoutPanel1.RowCount++;
 
-            PTTBlock block = new PTTBlock(0x06, torrentFiles.First().info.checksum.Length, torrentFiles.First().info.checksum);
+            PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
             List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
 
-            _downloader.Download(torrentFiles.First(), receivedLivePeers, progressBar, _networkUtils, this);
+            _downloader.Download(torrentFile, receivedLivePeers, progressBar, _networkUtils, this, 0);
 
             //_torrentFileServices.StartDownload(_connections, this, _storage, _sharedFileServices, _networkUtils);
             _torrentDownloadingNames.Add(label1.Text);
@@ -717,7 +725,7 @@ namespace PeerSoftware
                 PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
                 List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
                 _storage.GetPausedTorrentFiles().Remove(torrentFile);
-                _downloader.Resume(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this);
+                _downloader.Resume(torrentFile, receivedLivePeers, progressBar, _networkUtils, this, rowIndex);
 
                 pauseButton.Text = "Pause";
                 pauseButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
@@ -1002,7 +1010,7 @@ namespace PeerSoftware
                 PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
                 List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this);
                 _storage.GetPausedTorrentFiles().Remove(torrentFile);
-                _downloader.Resume(torrentFile, receivedLivePeers, progressBar, _networkUtils, this);
+                //_downloader.Resume(torrentFile, receivedLivePeers, progressBar, _networkUtils, this, );
             }
         }
         private void SavePausedData_OnShuttingDown()
@@ -1046,8 +1054,8 @@ namespace PeerSoftware
         private void button4_Click(object sender, EventArgs e)
         {
             MaterialLabel label = new MaterialLabel();
-            int count = tableLayoutPanel1.GetRowSpan(label);
-            for (int rowIndex = 0; rowIndex < count; rowIndex++)
+            int count = tableLayoutPanel1.RowCount;
+            for (int rowIndex = 0; rowIndex < count-1; rowIndex++)
             {
                 MaterialButton pauseButton = (MaterialButton)tableLayoutPanel1.GetControlFromPosition(3, rowIndex);
                 TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
@@ -1068,13 +1076,13 @@ namespace PeerSoftware
         private void button5_Click(object sender, EventArgs e)
         {
             MaterialLabel label = new MaterialLabel();
-            int count = tableLayoutPanel1.GetRowSpan(label);
-            for (int rowIndex = 0; rowIndex < count; rowIndex++)
+            int count = tableLayoutPanel1.RowCount;
+            for (int rowIndex = 0; rowIndex < count - 1; rowIndex++)
             {
                 MaterialButton pauseButton = (MaterialButton)tableLayoutPanel1.GetControlFromPosition(3, rowIndex);
                 TorrentFile torrentFile = _storage.GetDownloadTorrentFiles()[rowIndex];
                 bool state = _storage.GetDownloadTorrentStatus().GetValueOrDefault(rowIndex);
-                if (state)
+                if (!state)
                 {
                     _storage.GetDownloadTorrentStatus()[rowIndex] = true;
                     MaterialProgressBar progressBar = (MaterialProgressBar)tableLayoutPanel1.GetControlFromPosition(2, rowIndex);
@@ -1082,7 +1090,7 @@ namespace PeerSoftware
                     PTTBlock block = new PTTBlock(0x06, torrentFile.info.checksum.Length, torrentFile.info.checksum);
                     List<string> receivedLivePeers = _connections.SendAndRecieveData06(block, this); // LIVEPEERS broke here
                     _storage.GetPausedTorrentFiles().Remove(torrentFile);
-                    _downloader.Resume(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this);
+                    _downloader.Resume(torrentFile, receivedLivePeers, (MaterialProgressBar)progressBar, _networkUtils, this, rowIndex);
 
                     pauseButton.Text = "Pause";
                     pauseButton.Icon = Image.FromFile($"{Directory.GetCurrentDirectory()}\\Resources\\icons\\pause.png");
