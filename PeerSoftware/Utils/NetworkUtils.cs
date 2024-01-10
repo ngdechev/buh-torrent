@@ -15,7 +15,7 @@ namespace PeerSoftware.Utils
 
             string[] parts = form1.GetIpFieldText().Split(':');
 
-            string ipAddressString = "172.20.60.22";
+            string ipAddressString = "192.168.99.100";
             int port = 12345;
 
             if (parts.Length == 2)
