@@ -1,22 +1,31 @@
-# Use the .NET 6.0 SDK as the base image
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
-WORKDIR /app
+# Use the .NET SDK image to build the application
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /App
 
-# Copy the necessary files
+# Copy only the solution file and restore dependencies
+COPY ./TorrentTracker/TorrentTracker.csproj .
+RUN dotnet restore 
+
+# Copy the entire solution to leverage Docker cache for dependencies
+COPY ./ProtocolParser/ProtocolParser.csproj .
+
+
+
+# Build and publish the TorrentTracker project
+
 COPY . .
-RUN dotnet restore "./TorrentTracker/TorrentTracker.csproj" --disable-parallel
-RUN dotnet publish "./TorrentTracker/TorrentTracker.csproj" -c release -o /app/out --no-restore
+WORKDIR /App/TorrentTracker
+RUN dotnet publish -c Release -o out
 
-# Build the final runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
-WORKDIR /app
-COPY --from=build /app/out ./
-COPY "./TorrentTracker/bin/Debug/net6.0-windows/TorrentFile" ./app/out
-COPY "./TorrentTracker/bin/Debug/net6.0-windows/Dictionary.json" ./app/out
 
-# Expose ports 12345 and 12346
-EXPOSE 12345
-EXPOSE 12346
+WORKDIR /App/TorrentTracker/out
+RUN mkdir TorrentFile
+RUN touch Dictionary.json
 
-# Set the entry point for your application
+# Build the runtime image
+FROM mcr.microsoft.com/dotnet/sdk:6.0
+WORKDIR /App/TorrentTracker
+COPY --from=build-env /App/TorrentTracker/out .
+
+# Set the entry point for the application
 ENTRYPOINT ["dotnet", "TorrentTracker.dll"]
