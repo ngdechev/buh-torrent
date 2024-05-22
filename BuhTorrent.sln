@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BuhTorrentSetup", "BuhTorrentSetup\BuhTorrentSetup.vdproj", "{6F9AED59-1B16-4173-866C-DED643CAD37E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,8 @@ Global
 		{AB5CE26E-2BB5-4AF6-AD48-504848815C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB5CE26E-2BB5-4AF6-AD48-504848815C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB5CE26E-2BB5-4AF6-AD48-504848815C3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F9AED59-1B16-4173-866C-DED643CAD37E}.Debug|Any CPU.ActiveCfg = Debug
+		{6F9AED59-1B16-4173-866C-DED643CAD37E}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
