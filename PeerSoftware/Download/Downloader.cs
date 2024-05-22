@@ -4,6 +4,7 @@ using PeerSoftware.Services;
 using PeerSoftware.Utils;
 using PTP_Parser;
 using PTT_Parser;
+using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -167,7 +168,7 @@ namespace PeerSoftware.Download
                     Logger.e($"Download failed: {ex.Message}");
                 }
 
-
+               
             });
 
             int maxParallelDownloads = form.GetNParallelDownloads();
